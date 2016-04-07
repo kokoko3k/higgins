@@ -42,8 +42,8 @@ Path="prova.gambas"
 
 [OpenFile]
 File[1]=".src/FMain.form"
-Active=1
-File[2]=".src/FMain.class:2.116"
+Active=2
+File[2]=".src/FMain.class:45.204"
 Count=3
 File[3]=".src/DesktopApps.class:3.155"
 

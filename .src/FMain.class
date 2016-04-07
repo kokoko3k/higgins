@@ -199,3 +199,9 @@ End
 Public Sub Form_Close()
   TimerClose_Timer()
 End
+
+Public Sub Form_KeyRelease()
+
+  If Key.code = Key.esc Then TimerClose.trigger
+
+End
