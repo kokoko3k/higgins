@@ -1,0 +1,14 @@
+# Gambas Project File 3.0
+# Compiled with Gambas 3.8.4
+Title=provaa
+Startup=FMain
+Version=0.0.27
+Component=gb.image
+Component=gb.qt4
+Component=gb.form
+Component=gb.desktop.x11
+Component=gb.desktop
+Component=gb.settings
+TabSize=2
+Language=it
+Packager=1

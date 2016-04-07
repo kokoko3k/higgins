@@ -1,0 +1,201 @@
+' Gambas class file
+
+Public locatep As Process
+Public results_file As String = Temp()
+Public results_list As New String[]
+Private hApp As DesktopApps
+
+Public Sub TextBox1_Change()
+  Dim previous_search As String
+  Dim current_search As String
+  Try current_search = TextBox1.text 
+  If Error Then Return
+  
+  If current_search = "" Then 
+    resize_form()
+    Return
+  Endif
+  
+  Try previous_search = TextBox1.text
+  If Error Then Return
+  Wait 0.5
+
+  Try current_search = TextBox1.text 
+  If Error Then Return
+  If previous_search <> current_search Then Return
+  If String.Len(current_search) < 4 Then Return
+  locate(current_search)
+End
+
+Public Sub initgrid()
+  ResultGrid.Rows.count = 0
+  ResultGrid.columns.count = 1
+  ResultGrid.mode = Select.Single
+  ResultGrid.Show()
+End
+
+Public Sub reinit()
+  results_list.Clear()
+  initgrid()
+  Try locatep.kill
+  need_concat = False
+  resize_form()
+End
+
+
+Public Sub locate(term As String)
+  Dim results As String
+  reinit()
+  FMain.h = TextBox1.h + (Desktop.scale * 2) + resultgrid.h
+  locatep = Shell "unbuffer locate -l 1000 -i " & "'" & term & "'" For Read Write As "locatep"
+  Debug "locate " & "'" & term & "'" 
+  FMain.mouse = Mouse.wait
+  While locatep.state = Process.running
+    If closing Then Return
+    Wait 0.1
+  Wend
+  FMain.mouse = Mouse.Default
+End
+
+Private need_concat As Boolean = False
+Public Sub locatep_read()
+  Dim results, result As String
+  Try Read #locatep, results, -4096
+  If Left(results) = "\n" Then need_concat = False
+  'Stop
+
+  If Error Then Return
+    For Each result In Split(results, "\n", "", True)
+    If need_concat Then
+      results_list[results_list.max] &= result
+      need_concat = False
+        Else
+      ResultGrid.Rows.count += 1
+      results_list.Add(result)
+    Endif
+  Next
+  need_concat = Right(results) <> "\n"
+End
+
+
+Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
+  Dim pic As New Picture
+  Dim t As String
+  t = results_list[Row]
+  resultgrid.data.text = t
+  Try pic = DesktopMime.FromFile(t).GetIcon(16).picture
+  resultgrid.Data.picture = pic
+End
+
+Public Sub TextBox1_KeyPress()
+  If Key.code = Key.Down Then ResultGrid.SetFocus()
+End
+
+Public Sub ResultGrid_activate()
+  Desktop.Open(resultgrid.Current.text)
+  TimerClose.Trigger
+End
+
+Public Sub ResultGrid_KeyPress()
+  If (Key.code = Key.enter) Or (Key.code = Key.return) Then 
+    Desktop.Open(resultgrid.Current.text)
+    TimerClose.trigger
+  Endif
+End
+
+
+Public Sub resize_form()
+  FMain.h = TextBox1.h + (Desktop.scale * 2)
+End
+
+Public Sub OpenFolder_Click()
+  Try Desktop.Open(File.Dir(resultgrid.Current.text))
+End
+
+Public Sub OpenFile_Click()
+  Try Desktop.Open(resultgrid.Current.text)
+End
+
+
+
+Private Function Screenbypos(x As Integer, y As Integer) As Screen
+  Dim s As Screen
+  For Each s In Screens
+    If (x >= s.x) And x <= (s.x + s.W) Then
+      If (y >= s.y) And y <= (s.y + s.h) Then
+        Return s
+      Endif
+    Endif
+  Next
+  
+  'no screen found !? repeat with more tolerance:
+  For Each s In Screens
+    If (x + 50 >= s.x) And x <= (s.x + s.W + 50) Then
+      If (y + 50 >= s.y) And y <= (s.y + s.h + 50) Then
+        Return s
+      Endif
+    Endif
+  Next
+
+  'still no screen found? return the first.
+  Debug "Couldn 't get the matching screen (!)"
+  Return Screens[0]
+End
+
+
+Public Function Relative_window_geom(o As Window) As Integer[]
+  'get the object position relative to the screen is on
+  Dim rx, ry, ox, oy As Integer
+  Dim cs As Screen
+  Dim out As New Integer[]
+  cs = Screenbypos(o.x, o.y)
+  ox = cs.X 'offset
+  oy = cs.Y 'offset
+  rx = o.x - ox
+  ry = o.y - oy
+  out.Add(rx)
+  out.Add(ry)
+  out.Add(o.w)
+  out.Add(o.h)
+  Return out
+End
+
+Public Sub Form_Hide()
+  fmain.close()
+End
+
+Public Sub Form_Open()
+  load_geometry()
+  reinit()
+End
+
+Public Sub load_geometry()
+  Dim s As Screen
+  Dim rx, ry, w, h As Integer
+  s = Screenbypos(Mouse.ScreenX, Mouse.ScreenY)
+  rx = Settings["win_rx", 0] 
+  ry = Settings["win_ry", 0] 
+  w = Settings["win_w", (s.w Div 2)] 
+  h = Settings["win_h", 64] 
+  fmain.Move(rx + s.x, ry + s.y, w, h)
+End
+
+Public Sub save_geometry()
+  Dim xy_r As Integer[]
+  xy_r = Relative_window_geom(fmain)
+  Settings["win_rx"] = xy_r[0]
+  Settings["win_ry"] = xy_r[1]
+  Settings["win_w"] = xy_r[2]
+  Settings["win_h"] = xy_r[3]
+End
+
+Private closing As Boolean = False
+Public Sub TimerClose_Timer()
+  closing = True
+  save_geometry()
+  fmain.close
+End
+
+Public Sub Form_Close()
+  TimerClose_Timer()
+End

@@ -1,0 +1,37 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,85,43)
+  Text = ("GbLocate")
+  Icon = Picture["icon:/small/find"]
+  Stacking = Window.Above
+  Sticky = True
+  SkipTaskbar = True
+  Arrangement = Arrange.Vertical
+  Margin = True
+  { Popup1 Menu
+    Text = ("Popup1")
+    Visible = False
+    { OpenFolder Menu
+      Text = ("Open folder")
+      Picture = Picture["icon:/small/directory"]
+    }
+    { OpenFile Menu
+      Text = ("Open File")
+      Picture = Picture["icon:/small/file"]
+    }
+  }
+  { TimerClose #Timer
+    #MoveScaled(77,0)
+  }
+  { TextBox1 TextBox
+    MoveScaled(2,2,80,4)
+  }
+  { ResultGrid GridView
+    MoveScaled(2,7,82,34)
+    Visible = False
+    Expand = True
+    PopupMenu = "Popup1"
+    Grid = False
+  }
+}
