@@ -8,6 +8,7 @@ Component=gb.qt4
 Component=gb.form
 Component=gb.desktop.x11
 Component=gb.desktop
+Component=gb.eval
 Component=gb.settings
 TabSize=2
 Language=it

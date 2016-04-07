@@ -3,7 +3,12 @@
 Public locatep As Process
 Public results_file As String = Temp()
 Public results_list As New String[]
-Private hApp As DesktopApps
+Public rSize As Integer
+
+
+Public Sub resize_form()
+  FMain.h = TextBox1.h + (Desktop.scale * 2)
+End
 
 Public Sub TextBox1_Change()
   Dim previous_search As String
@@ -24,7 +29,7 @@ Public Sub TextBox1_Change()
   If Error Then Return
   If previous_search <> current_search Then Return
   If String.Len(current_search) < 4 Then Return
-  locate(current_search)
+  search(current_search)
 End
 
 Public Sub initgrid()
@@ -37,33 +42,55 @@ End
 Public Sub reinit()
   results_list.Clear()
   initgrid()
+  MyDesktop.init()
   Try locatep.kill
   need_concat = False
   resize_form()
+  rSize = ResultGrid.Rows.H
+End
+
+
+Public Sub search(term As String)
+  Dim results As String
+  reinit()
+  FMain.h = TextBox1.h + (Desktop.scale * 2) + resultgrid.h
+  FMain.mouse = Mouse.wait
+  resultgrid.tag = ""
+  Select Left(term)
+    Case "="
+      resultgrid.tag = "calculate"
+      Calculate(Right(term, -1))
+    Case Else
+      resultgrid.tag = "locate"
+      locate(term)
+  End Select
+  FMain.mouse = Mouse.Default
+End
+
+Public Sub Calculate(term As String)
+  resultgrid.Rows.count = 1
+  Try results_list.Add(Eval(term))
+  'Try resultgrid[resultgrid.Rows.max, 0].text = Eval(term)
 End
 
 
 Public Sub locate(term As String)
-  Dim results As String
-  reinit()
-  FMain.h = TextBox1.h + (Desktop.scale * 2) + resultgrid.h
   locatep = Shell "unbuffer locate -l 1000 -i " & "'" & term & "'" For Read Write As "locatep"
   Debug "locate " & "'" & term & "'" 
-  FMain.mouse = Mouse.wait
   While locatep.state = Process.running
     If closing Then Return
     Wait 0.1
   Wend
-  FMain.mouse = Mouse.Default
 End
 
+
 Private need_concat As Boolean = False
+
 Public Sub locatep_read()
   Dim results, result As String
   Try Read #locatep, results, -4096
   If Left(results) = "\n" Then need_concat = False
   'Stop
-
   If Error Then Return
     For Each result In Split(results, "\n", "", True)
     If need_concat Then
@@ -71,7 +98,13 @@ Public Sub locatep_read()
       need_concat = False
         Else
       ResultGrid.Rows.count += 1
-      results_list.Add(result)
+      If resultgrid.Rows.count = 1 Then resultgrid.Rows[0].Selected = True
+      If result Ends ".desktop" Then 
+        results_list.Add(result, 0)
+          Else
+        results_list.Add(result)
+      Endif
+      
     Endif
   Next
   need_concat = Right(results) <> "\n"
@@ -79,43 +112,89 @@ End
 
 
 Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
-  Dim pic As New Picture
+  Dim img As Image
   Dim t As String
+  If results_list.count = 0 Then Return
   t = results_list[Row]
   resultgrid.data.text = t
-  Try pic = DesktopMime.FromFile(t).GetIcon(16).picture
-  resultgrid.Data.picture = pic
+  Select resultgrid.Tag
+    Case "locate"
+      If t Ends ".desktop" Then
+        MyDesktop.parse(t)
+        Try img = MyDesktop.GetIcon(MyDesktop.dIconName, rSize)
+      Endif
+      If Not img Then Try img = DesktopMime.FromFile(t).GetIcon(rSize)
+      If Not Error Then resultgrid.Data.picture = img.picture
+    Case "calculate"
+      resultgrid.Data.picture = Picture["icon:/small/calculator"]
+  End Select
 End
 
 Public Sub TextBox1_KeyPress()
-  If Key.code = Key.Down Then ResultGrid.SetFocus()
+  Select Key.Code
+    Case Key.down
+      ResultGrid.SetFocus()
+      Try resultgrid.Rows[1].Selected = True
+    Case Key.PgDown
+      ResultGrid.SetFocus()
+      Try resultgrid.Rows[1].Selected = True
+    Case Key.enter
+      Try start_item(ResultGrid[0, 0].Text)
+      TimerClose.Trigger()
+    Case Key.Return
+      Try start_item(ResultGrid[0, 0].Text)
+      TimerClose.Trigger()
+  End Select
+
 End
 
-Public Sub ResultGrid_activate()
+Public Sub start_item(i As String)
+  If i Ends ".desktop" Then
+    MyDesktop.init()
+    MyDesktop.parse(i)
+    If MyDesktop.dExec <> "" Then
+      Shell MyDesktop.dExec
+      Return
+    Endif
+  Endif
+  
   Desktop.Open(resultgrid.Current.text)
+End
+
+
+Public Sub ResultGrid_activate()
+  start_item(resultgrid.Current.text)
   TimerClose.Trigger
 End
 
 Public Sub ResultGrid_KeyPress()
-  If (Key.code = Key.enter) Or (Key.code = Key.return) Then 
-    Desktop.Open(resultgrid.Current.text)
-    TimerClose.trigger
-  Endif
+  Select Key.Code
+    Case Key.Enter
+      start_item(resultgrid.Current.text)
+      TimerClose.trigger
+    Case Key.Return
+      start_item(resultgrid.Current.text)
+      TimerClose.trigger
+    Case Key.up
+      If ResultGrid.Rows[0].Selected Then TextBox1.SetFocus()
+    Case Key.PageUp
+      If ResultGrid.Rows[0].Selected Then TextBox1.SetFocus()
+  End Select
 End
 
 
-Public Sub resize_form()
-  FMain.h = TextBox1.h + (Desktop.scale * 2)
-End
-
-Public Sub OpenFolder_Click()
+Public Sub MenuOpenFolder_Click()
+Stop
   Try Desktop.Open(File.Dir(resultgrid.Current.text))
 End
 
-Public Sub OpenFile_Click()
+Public Sub MenuOpenFile_Click()
   Try Desktop.Open(resultgrid.Current.text)
 End
 
+Public Sub MenuCopy_Click()
+  Try Clipboard.Copy(ResultGrid.Current.Text)
+End
 
 
 Private Function Screenbypos(x As Integer, y As Integer) As Screen
@@ -201,7 +280,6 @@ Public Sub Form_Close()
 End
 
 Public Sub Form_KeyRelease()
-
   If Key.code = Key.esc Then TimerClose.trigger
-
 End
+

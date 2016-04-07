@@ -12,24 +12,31 @@
   { Popup1 Menu
     Text = ("Popup1")
     Visible = False
-    { OpenFolder Menu
+    { MenuOpenFolder Menu
       Text = ("Open folder")
       Picture = Picture["icon:/small/directory"]
     }
-    { OpenFile Menu
+    { MenuOpenFile Menu
       Text = ("Open File")
       Picture = Picture["icon:/small/file"]
+    }
+    { MenuCopy Menu
+      Text = ("Copy to Clipboard")
+      Picture = Picture["icon:/small/copy"]
     }
   }
   { TimerClose #Timer
     #MoveScaled(77,0)
   }
-  { TextBox1 TextBox
-    MoveScaled(2,2,80,4)
+  { TextBox1 ButtonBox
+    MoveScaled(2,2,80,5)
+    Picture = Picture["icon:/small/find"]
+    ClearButton = True
   }
   { ResultGrid GridView
-    MoveScaled(2,7,82,34)
+    MoveScaled(3,8,80,33)
     Visible = False
+    Font = Font["+1"]
     Expand = True
     PopupMenu = "Popup1"
     Grid = False
