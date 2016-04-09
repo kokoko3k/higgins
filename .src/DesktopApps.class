@@ -1,0 +1,451 @@
+' Gambas class file
+
+' Innova Project - Launcher of APP
+'
+' Copyright (C) Herberth Guzmán
+'
+' This program is free software; you can redistribute it and/or modify
+' it under the terms of the GNU General Public License as published by
+' the Free Software Foundation; either version 2 of the License, or
+' (at your option) any later version.
+'
+' This program is distributed in the hope that it will be useful,
+' but WITHOUT ANY WARRANTY; without even the implied warranty of
+' MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+' GNU General Public License for more details.
+'
+' You should have received a copy of the GNU General Public License
+' along with this program; if not, write to the Free Software
+' Foundation, Inc., 51 Franklin St, Fifth Floor,
+' Boston, MA  02110-1301  USA
+
+' Homepage: http://http://sourceforge.net/projects/innovadesktop
+' This code belongs to Fabien Bodard and was adapted for Innova Project
+
+Export
+
+Property Read Name As String
+Property Read IconName As String
+Property Read Category As String[]
+Property Read GenericName As String
+Property Read Comment As String
+Property Read Comment_ES As String
+Property Read Exec_R As String
+
+Property Read NoDisplay As Boolean
+Property Read DisplayOnlyIn As Boolean
+
+Property Read NotShowIn As String
+
+Private $sLastGenericName As String
+Private $sLastComment As String
+Private $sLastComment_ES As String
+Private $sLastName As String
+Public _$Name As String
+Public _$IconName As String
+Public _$Category As String
+Public _$Path As String
+Public _$Exec As String
+Public _$Type As String
+Public _$Comment As String
+Public _$Comment_ES As String
+Public _$GenericName As String
+Public _$Terminal As Boolean
+Public _$NoDisplay As Boolean
+Public _$DisplayOnlyIn As String
+Public _$NotShowIn As String
+Public Language As String = ((Left(System.Language, 2)))
+Private $hImage As Image
+Static Private $aDataDir As String[]
+Static Private $cApps As New Collection
+Static Private $aApps As String[]
+Static Private $cAppsPath As New Collection
+Static Private anotherdir As String
+
+Static Public Sub _init()
+
+End
+
+Static Private Sub MakeAppList()
+  
+  Dim sPath As String
+  $aApps = New String[]
+  
+  For Each sPath In GetDataDir()
+    If Not Exist(sPath &/ "applications") Then Continue
+    AddFile(sPath &/ "applications")
+  Next
+
+  If anotherdir <> "" Then AddFile(anotherdir)
+
+
+ $aApps.Sort(gb.Natural)
+  
+  'Print $aApps.Join("\n")
+  
+End
+
+Static Private Sub AddFile(sPath As String)
+  
+  Dim s As String
+  
+  For Each s In Dir(sPath)
+    If IsDir(sPath &/ s) Then
+      AddFile(sPath &/ s)
+    Else
+      If s Ends ".desktop" Then 
+        s = File.BaseName(s)
+        If Not $aApps.Exist(s) Then 
+          $aApps.Add(s)
+          $cAppsPath[s] = sPath &/ s & ".desktop"
+        Endif
+      Endif
+    Endif
+  Next
+  
+End
+
+Public Function GetAppName(sApp As String, Language As String) As String
+  
+  Dim hApp As DesktopApps = DesktopApps[sApp]
+  
+  If hApp.GetGenericName(Language) Then 
+    Return hApp.GetGenericName(Language)
+  Else
+    If hApp.GetName(Language) Then
+      Return hApp.GetName(Language)
+    Else
+      If hApp.GenericName Then 
+        Return hApp.GenericName
+      Endif
+    Endif
+  Endif
+  
+  Return hApp.Name
+  
+End
+
+Public Function GetAppComment(sApp As String, Language As String) As String
+  
+  Dim hApp As DesktopApps = DesktopApps[sApp]
+  
+  If hApp.GetComment(Language) Then 
+    Return hApp.GetComment(Language)
+  Else
+    If hApp.GetComment(Language) Then
+      Return hApp.GetComment(Language)
+    Else
+      If hApp.Comment Then 
+        Return hApp.Comment
+      Endif
+    Endif
+  Endif
+  
+  Return hApp.Name
+  
+End
+
+Static Public Function _get(AppName As String) As DesktopApps 
+  
+  Dim sLine, sPath As String
+  Dim sAppPath As String
+  Dim hDApps As DesktopApps
+  Dim sSection As String
+
+
+  If IsNull($aApps) Then MakeAppList
+  If $cApps.Exist(AppName) Then Return $cApps[AppName]
+  'For Each sPath In GetDataDir()
+  sAppPath = $cAppsPath[AppName]
+  If Exist(sAppPath) Then 
+    hDApps = New DesktopApps
+    hDApps._$Path = sAppPath
+    For Each sLine In Split(File.Load(sAppPath), "\n")
+      sLine = Trim(sLine)
+      If sLine Begins "[" Then 
+        sSection = Mid(sLine, 2, Len(sLine) - 2)
+        If LCase(sSection) <> "desktop entry" Then Break
+      Endif
+      If sLine Begins "Name=" Then hDApps._$Name = Right(sLine, - InStr(sLine, "="))
+      If sLine Begins "Exec" Then hDApps._$Exec = Right(sLine, - InStr(sLine, "="))
+      If sLine Begins "Terminal" Then hDApps._$Terminal = CBool(Right(sLine, - InStr(sLine, "=")))
+      If sLine Begins "Type" Then hDApps._$Type = Right(sLine, - InStr(sLine, "="))
+      If sLine Begins "Icon" Then hDApps._$IconName = Right(sLine, - InStr(sLine, "="))
+      If sLine Begins "Categories" Then hDApps._$Category = Right(sLine, - InStr(sLine, "="))
+      If sLine Begins "GenericName=" Then hDApps._$GenericName = Right(sLine, - InStr(sLine, "="))
+      If sLine Begins "Comment=" Then hDApps._$Comment = Right(sLine, - InStr(sLine, "="))
+      If sLine Begins "Comment[es]=" Then hDApps._$Comment_ES = Right(sLine, - InStr(sLine, "="))
+      If sLine Begins "NoDisplay" Then hDApps._$NoDisplay = CBool(Right(sLine, - InStr(sLine, "=")))
+      If sLine Begins "DisplayOnlyIn" Then hDApps._$DisplayOnlyIn = CBool(Right(sLine, - InStr(sLine, "=")))
+      If sLine Begins "NotShowIn" Then hDApps._$NotShowIn = CBool(Right(sLine, - InStr(sLine, "=")))
+      
+    Next
+    $cApps[AppName] = hDApps
+
+    Return hDApps
+    'Break
+  Endif
+  
+  'Next
+  
+End
+
+Static Public Function _next() As String
+  
+  If IsNull($aApps) Then MakeAppList
+  
+  If Not Enum.Index Then 
+    Enum.Index = 0
+  Endif
+  Enum.Index += 1
+  If Enum.Index = $aApps.Count + 1 Then 
+    Enum.Stop
+    Return
+  Endif
+  Return $aApps[Enum.Index - 1]
+  
+End
+
+Private Function Name_Read() As String
+  
+  Return _$Name
+  
+End
+
+Private Function IconName_Read() As String
+  
+  Return _$IconName
+  
+End
+
+Private Function Category_Read() As String[]
+  
+  Return Split(_$Category, ";")
+  
+End
+
+Public Function GetName(Language As String) As String
+  
+  Dim s As String
+  
+  If $sLastName Begins Language & ":" Then Return Right($sLastName, - (Len(Language) + 1))
+  
+  s = GetValue(_$Path, "Name[" & Language & "]")
+  $sLastName = Language & ":" & s
+  If s Then
+    Return s
+  Endif
+  
+End
+
+Public Function GetGenericName(Language As String) As String
+  
+  Dim s As String
+  
+  If $sLastGenericName Begins Language & ":" Then Return Right($sLastGenericName, - (Len(Language) + 1))
+  
+  s = GetValue(_$Path, "GenericName[" & Language & "]")
+  $sLastGenericName = Language & ":" & s
+  If s Then
+    Return s
+  Endif
+  
+End
+
+Public Function GetComment(Language As String) As String
+  
+  Dim s As String
+  
+  If $sLastComment Begins Language & ":" Then Return Right($sLastComment, - Len(Language) + 1)
+  
+  s = GetValue(_$Path, "Comment[" & Language & "]")
+  
+  $sLastComment = Language '& ":" & s
+  If s Then 
+    Return s
+  Endif
+  
+End
+
+Public Function GetComment_ES(Language As String) As String
+  
+  Dim s As String
+  
+  If $sLastComment_ES Begins Language & ":" Then Return Right($sLastComment_ES, - Len(Language) + 1)
+  
+  s = GetValue(_$Path, "Comment[" & Language & "]")
+  
+  $sLastComment_ES = Language '& ":" & s
+  If s Then 
+    Return s
+  Endif
+  
+End
+
+Static Private Sub GetDataDir() As String[]
+  
+  If Not $aDataDir Then
+    $aDataDir = Split(Desktop.DataDir, ":", "", True)
+    $aDataDir.Insert(Split(Env["XDG_DATA_DIRS"], ":", "", True))
+  Endif
+  
+  Return $aDataDir
+  
+End
+
+Static Public Sub Reset(Optional otherdir As String)
+  
+  $aApps = Null
+  $cApps.Clear
+  $cAppsPath.Clear
+  anotherdir = otherdir
+End
+
+Static Private Function GetValue(sFile As String, sKey As String) As String
+  
+  Dim s As String
+  
+  For Each s In Split(File.Load(sFile), "\n")
+    If Trim(s) Begins sKey Then
+      Try s = Scan(Trim(s), "*=*")[1]
+      If Not Error Then Return s
+    Endif
+  Next
+  
+End
+
+Private Function GenericName_Read() As String
+  
+  Return _$GenericName
+  
+End
+
+Private Function Comment_Read() As String
+  
+  Return _$Comment
+  
+End
+
+Private Function Comment_ES_Read() As String
+  
+  Return _$Comment_ES
+  
+End
+
+Public Sub GetIcon(Optional Size As Integer = 16) As Image
+  
+  Dim sPath As String
+  Dim hImage As Image
+  Dim sKey As String
+  
+  Dim sDir As String
+  Dim sSize As String
+  Dim hSvg As SvgImage
+  Dim s As String
+
+  If $hImage Then Return $hImage
+  If Exist(_$IconName) Then 
+    If _$IconName Ends ".svg" Then
+      hSvg = SvgImage.Load(_$IconName)
+      hImage = New Image(Size, Size)
+      Paint.Begin(hImage)
+      hSvg.Resize(size, Size)
+      hSvg.Paint
+      Paint.End
+    Else
+      Try hImage = Image.Load(_$IconName)
+    Endif
+    
+  Else
+    If _$IconName Ends ".png" Then _$IconName = File.BaseName(_$IconName)
+    For Each sDir In [Desktop.DataDir &/ "icons", "/usr/share/icons"]
+      'For Each sSize In [CStr(Size), "128", "64", "32"]      
+      For Each sSize In [CStr(Size), "256", "128", "64", "48", "32" "22", "16", "8"]
+        sPath = Subst(sDir &/ "hicolor/&1x&1/apps/&2.png", sSize, _$IconName)
+        If Exist(sPath) Then 
+          Try hImage = Image.Load(sPath)
+          If hImage Then Break
+        Endif
+      Next
+      If hImage Then Break
+    Next
+    
+    If Not hImage Then
+      sPath = Subst("/usr/share/pixmaps/&1.png", _$IconName)
+      If Exist(sPath) Then Try hImage = Image.Load(sPath)
+    Endif
+    
+  Endif
+  If Not hImage Then
+    'For Each s In ["apps", "actions", "places", "devices"]
+    For Each s In ["apps", "actions", "places", "devices", "categories", "emblems", "mime", "misc", "status", "mimetypes"]
+      Try hImage = Stock[CStr(Size) &/ s &/ _$IconName].Image
+      If hImage Then Break
+    Next
+  Endif
+  If Not hImage Then hImage = Stock[CStr(Size) &/ "program"].Image
+  If hImage.W <> Size Or If hImage.H <> Size Then hImage = hImage.Stretch(Size, Size)
+  $hImage = hImage
+  Return hImage
+Catch
+  
+End
+
+Private Function NoDisplay_Read() As Boolean
+  
+  Return _$NoDisplay
+  
+End
+
+Private Function DisplayOnlyIn_Read() As Boolean
+  
+  Return _$DisplayOnlyIn
+  
+End
+
+Private Function NotShowIn_Read() As String
+  
+  Return _$NotShowIn
+  
+End
+
+Public Sub Exec(Optional Args As String)
+  
+  Dim ars As String[]
+  Dim i As Integer
+  
+  ars = Split(_$Exec, " ")
+  If ars.Count > 0 Then
+    
+    If Not Args Then
+      Exec [ars[0]]
+    Else
+      For i = 0 To ars.Max
+        If ars[i] Begins "%" Then 
+          Try ars.Remove(i, ars.Max - i)
+          Break
+        Endif
+      Next
+      If InStr(ars[ars.Max], "%") Then
+        ars[ars.Max] = Args
+      Endif
+      Exec ars
+    Endif
+  Endif
+  
+End
+
+Public Sub _free()
+  
+  '   $aDataDir = Null
+  ' $cApps = Null
+  ' $aApps = Null
+  ' $cAppsPath = Null
+  
+End
+
+Private Function Exec_R_Read() As String
+  
+  Return _$Exec
+  
+End
