@@ -8,6 +8,7 @@
   Sticky = True
   SkipTaskbar = True
   Arrangement = Arrange.Vertical
+  Spacing = True
   Margin = True
   { Popup1 Menu
     Text = ("Popup1")

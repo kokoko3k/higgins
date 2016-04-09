@@ -4,6 +4,15 @@ Count=0
 [DebugWindow]
 Count=0
 
+[DebugWindow/$aApps]
+Geometry=[1407,332,224,280]
+
+[DebugWindow/$cAppsPath]
+Geometry=[1269,459,224,280]
+
+[DebugWindow/DesktopIcon]
+Geometry=[1280,0,224,549]
+
 [DebugWindow/FileView1]
 Geometry=[47,0,224,280]
 
@@ -16,8 +25,14 @@ Geometry=[425,184,224,280]
 [DebugWindow/Split(results, "\n", "", True)]
 Geometry=[413,279,224,280]
 
+[DebugWindow/Stock[CStr(Size) &| "program"].Image]
+Geometry=[1280,-3,345,363]
+
 [DebugWindow/global]
 Geometry=[47,0,224,280]
+
+[DebugWindow/hImage]
+Geometry=[1280,307,224,280]
 
 [DebugWindow/locatep]
 Geometry=[1280,-3,254,449]
@@ -29,7 +44,10 @@ Geometry=[1294,11,254,449]
 Geometry=[47,0,224,280]
 
 [DebugWindow/pic]
-Geometry=[1280,0,224,280]
+Geometry=[1280,614,224,280]
+
+[DebugWindow/pic.image]
+Geometry=[1280,-3,224,280]
 
 [DebugWindow/resultgrid[ResultGrid.Rows.max, 0]]
 Geometry=[1280,-3,224,280]
@@ -43,9 +61,9 @@ Path="prova.gambas"
 [OpenFile]
 File[1]=".src/FMain.form"
 Active=2
-File[2]=".src/FMain.class:39.115"
+File[2]=".src/FMain.class:33.106"
 Count=3
-File[3]=".src/DesktopApps.class:3.155"
+File[3]=".src/MyDesktop.class:17.27"
 
 [Watches]
 Count=0

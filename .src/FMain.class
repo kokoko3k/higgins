@@ -7,7 +7,7 @@ Public rSize As Integer
 
 
 Public Sub resize_form()
-  FMain.h = TextBox1.h + (Desktop.scale * 2)
+  FMain.h = TextBox1.h + (Desktop.scale * 3)
 End
 
 Public Sub TextBox1_Change()
@@ -15,7 +15,6 @@ Public Sub TextBox1_Change()
   Dim current_search As String
   Try current_search = TextBox1.text 
   If Error Then Return
-  
   If current_search = "" Then 
     resize_form()
     Return
@@ -23,7 +22,7 @@ Public Sub TextBox1_Change()
   
   Try previous_search = TextBox1.text
   If Error Then Return
-  Wait 0.5
+  Wait 0.1
 
   Try current_search = TextBox1.text 
   If Error Then Return
@@ -53,7 +52,7 @@ End
 Public Sub search(term As String)
   Dim results As String
   reinit()
-  FMain.h = TextBox1.h + (Desktop.scale * 2) + resultgrid.h
+  FMain.h = TextBox1.h + (Desktop.scale * 3) + resultgrid.h
   FMain.mouse = Mouse.wait
   resultgrid.tag = ""
   Select Left(term)
@@ -62,6 +61,11 @@ Public Sub search(term As String)
       Calculate(Right(term, -1))
     Case Else
       resultgrid.tag = "locate"
+
+      'search for apps
+      find_apps(term)
+
+      'search for files
       locate(term)
   End Select
   FMain.mouse = Mouse.Default
@@ -71,6 +75,21 @@ Public Sub Calculate(term As String)
   resultgrid.Rows.count = 1
   Try results_list.Add(Eval(term))
   'Try resultgrid[resultgrid.Rows.max, 0].text = Eval(term)
+End
+
+
+
+Public Sub find_apps(term As String)
+  Dim happ As DesktopApps
+  Dim app As String
+
+  For Each app In DesktopApps
+    If InStr(Lower(app), Lower(term)) Then
+      happ = DesktopApps[app]
+      results_list.Add(happ.name & "           ")
+      ResultGrid.Rows.count += 1
+    Endif
+  Next
 End
 
 
@@ -88,41 +107,60 @@ Private need_concat As Boolean = False
 
 Public Sub locatep_read()
   Dim results, result As String
-  Try Read #locatep, results, -4096
+  Dim is_desktop_exec As Boolean = False
+  Try Read #locatep, results, -8192
   If Left(results) = "\n" Then need_concat = False
   'Stop
   If Error Then Return
-    For Each result In Split(results, "\n", "", True)
-    If need_concat Then
+  For Each result In Split(results, "\n", "", True)
+    If need_concat Then ' we have to reconstruct lines from stdin that doesn't ends with \n
       results_list[results_list.max] &= result
       need_concat = False
         Else
       ResultGrid.Rows.count += 1
-      If resultgrid.Rows.count = 1 Then resultgrid.Rows[0].Selected = True
-      If result Ends ".desktop" Then 
-        results_list.Add(result, 0)
-          Else
-        results_list.Add(result)
-      Endif
+      'put executable desktop files at the top:
+        If result Ends ".desktop" Then 
+          MyDesktop.init()
+          MyDesktop.parse(result)
+          If MyDesktop.dExec <> "" Then is_desktop_exec = True
+        Endif
+        If is_desktop_exec Then
+          results_list.Add(result, 0)
+            Else
+          results_list.Add(result)
+        Endif
       
     Endif
   Next
   need_concat = Right(results) <> "\n"
 End
 
-
 Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
   Dim img As Image
   Dim t As String
+  Dim happ As DesktopApps
+  Dim appname As String
+
   If results_list.count = 0 Then Return
+  If resultgrid.current = Null Then resultgrid.Rows[0].Selected = True
   t = results_list[Row]
   resultgrid.data.text = t
   Select resultgrid.Tag
     Case "locate"
+      'generic desktop files
       If t Ends ".desktop" Then
         MyDesktop.parse(t)
         Try img = MyDesktop.GetIcon(MyDesktop.dIconName, rSize)
       Endif
+      'application launchers
+      If t Ends "           " Then
+        Stop
+        appname = Left(results_list[Row], -11)
+        resultgrid.Data.Text = t
+        happ = DesktopApps[appname]
+        Try img = happ.GetIcon(rSize)
+      Endif
+      
       If Not img Then Try img = DesktopMime.FromFile(t).GetIcon(rSize)
       If Not Error Then resultgrid.Data.picture = img.picture
     Case "calculate"
@@ -149,6 +187,8 @@ Public Sub TextBox1_KeyPress()
 End
 
 Public Sub start_item(i As String)
+  Dim happ As Desktopapps
+  Dim app As String
   If i Ends ".desktop" Then
     MyDesktop.init()
     MyDesktop.parse(i)
@@ -156,6 +196,13 @@ Public Sub start_item(i As String)
       Shell MyDesktop.dExec
       Return
     Endif
+  Endif
+
+  If i Ends "           " Then 'desktop app launcher
+    app = Left(i, -11)
+    happ = DesktopApps[app]
+    happ.Exec()
+    Return
   Endif
   
   Desktop.Open(resultgrid.Current.text)
@@ -184,7 +231,6 @@ End
 
 
 Public Sub MenuOpenFolder_Click()
-Stop
   Try Desktop.Open(File.Dir(resultgrid.Current.text))
 End
 
@@ -242,6 +288,10 @@ End
 Public Sub Form_Hide()
   fmain.close()
 End
+
+
+
+
 
 Public Sub Form_Open()
   load_geometry()

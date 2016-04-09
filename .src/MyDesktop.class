@@ -111,5 +111,7 @@ Static Public Sub GetIcon(dIconName As String, Optional Size As Integer = 16) As
   If hImage.W <> Size Or If hImage.H <> Size Then hImage = hImage.Stretch(Size, Size)
   Return hImage
 Catch
-  
+
 End
+
+
