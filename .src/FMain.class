@@ -271,7 +271,13 @@ Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
     Case "desktopexec"
       resultgrid.Data.Picture = DesktopMime.FromFile(rcResult.mExec).GetIcon(rSize).Picture
     Case "locate"
-      resultgrid.Data.Picture = DesktopMime.FromFile(rcResult.mExec).GetIcon(rSize).Picture
+      If Exist(rcResult.uri, True) Then
+        If Stat(rcResult.uri, True).type = gb.Directory Then
+          resultgrid.Data.Picture = Picture["icon:/" & rSize & "/directory"]
+            Else
+          resultgrid.Data.Picture = DesktopMime.FromFile(rcResult.uri).GetIcon(rSize).Picture
+        Endif
+      Endif
     Case "calculate"
       resultgrid.Data.Picture = Picture["icon:/small/calculator"]
   End Select
@@ -391,8 +397,6 @@ End
 Public Sub Form_Hide()
   fmain.close()
 End
-
-
 
 
 
