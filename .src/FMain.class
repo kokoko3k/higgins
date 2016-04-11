@@ -286,7 +286,6 @@ End
 
 Public Sub start_item(i As Integer)
   Dim rcResult As New RItem
-
   rcResult = results_list[i]
   Select Case rcResult.Category 'app,locate,calculate,desktopexec
     Case "locate"
@@ -341,10 +340,12 @@ End
 
 Public Sub MenuOpenFolder_Click()
   Try Desktop.Open(File.Dir(results_list[resultgrid.row].uri))
+  TimerClose.Trigger
 End
 
 Public Sub MenuOpenFile_Click()
   Try Desktop.Open(resultgrid.Current.text)
+  TimerClose.Trigger
 End
 
 Public Sub MenuCopy_Click()
