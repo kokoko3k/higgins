@@ -8,7 +8,6 @@
   Sticky = True
   SkipTaskbar = True
   Arrangement = Arrange.Vertical
-  AutoResize = True
   Spacing = True
   Margin = True
   { Popup1 Menu
@@ -39,6 +38,7 @@
     MoveScaled(3,8,80,33)
     Visible = False
     Font = Font["+1"]
+    Expand = True
     PopupMenu = "Popup1"
     Grid = False
   }

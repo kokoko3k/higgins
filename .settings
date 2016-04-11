@@ -3,13 +3,19 @@ Count=0
 
 [DebugWindow]
 Count=1
-DebugWindow[1]="results_list"
+DebugWindow[1]="Picture[\"icon:/\" & rSize & \"/file\"]"
 
 [DebugWindow/$aApps]
 Geometry=[1407,332,224,280]
 
 [DebugWindow/$cAppsPath]
 Geometry=[1269,459,224,280]
+
+[DebugWindow/DesktopApps]
+Geometry=[1280,0,224,280]
+
+[DebugWindow/DesktopApps[app]]
+Geometry=[1297,307,224,458]
 
 [DebugWindow/DesktopIcon]
 Geometry=[1280,0,224,549]
@@ -23,8 +29,20 @@ Geometry=[61,14,224,280]
 [DebugWindow/FileView1.Children[0]]
 Geometry=[425,184,224,280]
 
+[DebugWindow/Picture["icon:|" & rSize & "|directory"]]
+Geometry=[1280,0,224,280]
+
+[DebugWindow/Picture["icon:|" & rSize & "|file"]]
+Geometry=[1280,0,224,280]
+
+[DebugWindow/Split(File.Load(sAppPath), "\n")]
+Geometry=[1280,0,224,280]
+
 [DebugWindow/Split(results, "\n", "", True)]
-Geometry=[413,279,224,280]
+Geometry=[146,254,224,280]
+
+[DebugWindow/Stat(rcResult.uri, True)]
+Geometry=[1280,0,224,280]
 
 [DebugWindow/Stock[CStr(Size) &| "program"].Image]
 Geometry=[1280,-3,345,363]
@@ -34,6 +52,9 @@ Geometry=[47,0,224,280]
 
 [DebugWindow/hImage]
 Geometry=[1280,307,224,280]
+
+[DebugWindow/happ]
+Geometry=[1280,-3,361,555]
 
 [DebugWindow/locatep]
 Geometry=[1280,-3,254,449]
@@ -50,11 +71,35 @@ Geometry=[1280,614,224,280]
 [DebugWindow/pic.image]
 Geometry=[1280,-3,224,280]
 
+[DebugWindow/rcResult]
+Geometry=[1280,-3,224,280]
+
+[DebugWindow/result]
+Geometry=[1280,0,224,280]
+
 [DebugWindow/resultgrid[ResultGrid.Rows.max, 0]]
 Geometry=[1280,-3,224,280]
 
 [DebugWindow/results_list]
 Geometry=[637,279,643,535]
+
+[DebugWindow/results_list[0]]
+Geometry=[651,293,643,535]
+
+[DebugWindow/results_list[1022]]
+Geometry=[637,293,643,535]
+
+[DebugWindow/results_list[1]]
+Geometry=[651,293,643,535]
+
+[DebugWindow/results_list[ResultGrid.row]]
+Geometry=[1280,0,224,280]
+
+[DebugWindow/results_list[resultgrid.row]]
+Geometry=[122,226,705,394]
+
+[DebugWindow/sLines]
+Geometry=[1280,307,224,280]
 
 [Executable]
 Path="prova.gambas"
@@ -62,9 +107,10 @@ Path="prova.gambas"
 [OpenFile]
 File[1]=".src/FMain.form"
 Active=2
-File[2]=".src/FMain.class:33.106"
-Count=3
-File[3]=".src/MyDesktop.class:17.27"
+File[2]=".src/FMain.class:0.83"
+Count=4
+File[3]=".src/MyDesktop.class:28.80"
+File[4]=".src/DesktopApps.class:0.176"
 
 [Watches]
 Count=0
