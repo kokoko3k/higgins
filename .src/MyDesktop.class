@@ -68,6 +68,7 @@ Static Public Sub GetIcon(dIconName As String, Optional Size As Integer = 16) As
   Dim sSize As String
   Dim hSvg As SvgImage
   Dim s As String
+
   If Exist(dIconName) Then 
     If dIconName Ends ".svg" Then
       hSvg = SvgImage.Load(dIconName)

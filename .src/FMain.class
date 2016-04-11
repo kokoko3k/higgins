@@ -1,9 +1,29 @@
 ' Gambas class file
 
+Public Struct rItem
+  Priority As Integer
+  Category As String 'app,locate,calculate,desktopexec
+  Text As String
+  uri As String
+  pic As Picture
+End Struct
+
 Public locatep As Process
 Public results_file As String = Temp()
-Public results_list As New String[]
+Public results_list As New RItem[]
 Public rSize As Integer
+
+'how many characters needs to be entered to start the following searches
+Public Const min_char_app As Integer = 1
+Public Const min_char_calculate As Integer = 2
+Public Const min_char_locate As Integer = 3
+
+'no effect by now, may come handy to sort the results (?)
+Public Const calculate_priority As Integer = 100
+Public Const app_priority As Integer = 90
+Public Const DesktopExec_priority As Integer = 80
+Public Const locate_priority As Integer = 70
+
 
 
 Public Sub resize_form()
@@ -22,12 +42,12 @@ Public Sub TextBox1_Change()
   
   Try previous_search = TextBox1.text
   If Error Then Return
-  Wait 0.1
+  Wait 0.25
 
   Try current_search = TextBox1.text 
   If Error Then Return
   If previous_search <> current_search Then Return
-  If String.Len(current_search) < 4 Then Return
+  'If String.Len(current_search) < 3 Then Return
   search(current_search)
 End
 
@@ -39,10 +59,22 @@ Public Sub initgrid()
 End
 
 Public Sub reinit()
+  Dim running As String
   results_list.Clear()
   initgrid()
   MyDesktop.init()
-  Try locatep.kill
+  If locatep <> Null Then
+    Repeat
+      Debug "kill  locate"
+      Try locatep.drop
+      Try locatep.close
+      Try locatep.kill
+      Wait
+      running = Exist("/proc/" & locatep.handle)
+    Until Not running
+    'Until (locatep.state <> locatep.Running) 
+
+  Endif
   need_concat = False
   resize_form()
   rSize = ResultGrid.Rows.H
@@ -54,10 +86,9 @@ Public Sub search(term As String)
   reinit()
   FMain.h = TextBox1.h + (Desktop.scale * 3) + resultgrid.h
   FMain.mouse = Mouse.wait
-  resultgrid.tag = ""
+
   Select Left(term)
     Case "="
-      resultgrid.tag = "calculate"
       Calculate(Right(term, -1))
     Case Else
       resultgrid.tag = "locate"
@@ -72,21 +103,39 @@ Public Sub search(term As String)
 End
 
 Public Sub Calculate(term As String)
+  Dim result As New RItem
+  If String.Len(term) < min_char_calculate Then Return
+  Try result.Text = Eval(Term)
+  If Error Then Return
+  result.Category = "calculate"
+  result.pic = Picture["icon:/small/calculator"]
+  result.Priority = calculate_priority
+  result.uri = ""
   resultgrid.Rows.count = 1
-  Try results_list.Add(Eval(term))
-  'Try resultgrid[resultgrid.Rows.max, 0].text = Eval(term)
+  results_list.Add(result)
 End
-
 
 
 Public Sub find_apps(term As String)
   Dim happ As DesktopApps
   Dim app As String
+  Dim result As RItem
+  If String.Len(term) < min_char_app Then Return
 
   For Each app In DesktopApps
     If InStr(Lower(app), Lower(term)) Then
+
       happ = DesktopApps[app]
-      results_list.Add(happ.name & "           ")
+      result = New RItem
+      result.category = "app"
+      result.pic = happ.GetIcon(rSize).picture
+      result.Priority = app_priority
+      result.Text = happ.name
+
+      result.uri = happ.exec(, True)
+
+      results_list.Add(result)
+      
       ResultGrid.Rows.count += 1
     Endif
   Next
@@ -94,45 +143,116 @@ End
 
 
 Public Sub locate(term As String)
-  locatep = Shell "unbuffer locate -l 1000 -i " & "'" & term & "'" For Read Write As "locatep"
+Dim tmp As String
+  If String.Len(term) < min_char_locate Then Return
+  locatep = Shell "locate -l 1000 -i " & "'" & term & "'" For Input As "locatep"
+  locatep.tag = term
   Debug "locate " & "'" & term & "'" 
-  While locatep.state = Process.running
-    If closing Then Return
-    Wait 0.1
+  ' While locatep.state = Process.running
+  '   If closing Then Return
+  '   Wait 0.1
+  ' Wend
+End
+
+
+Public Sub locatep_read()
+  Dim results, result As String
+  Dim rResult As RItem
+  Dim is_desktop_exec As Boolean = False
+
+  While Not Eof(locatep)
+    Line Input #locatep, result
+    If (result = "") Or (locatep.tag <> TextBox1.text) Then 
+      Wait
+      Return
+    Endif
+    rResult = New RItem
+    'put executable desktop files at the top:
+    If result Ends ".desktop" Then 
+      MyDesktop.init()
+      MyDesktop.parse(result)
+      If MyDesktop.dExec <> "" Then is_desktop_exec = True
+    Endif
+
+    If is_desktop_exec Then
+      rResult.Category = "desktopexec"
+      rResult.Priority = DesktopExec_priority
+      rResult.pic = MyDesktop.GetIcon(MyDesktop.dIconName, rSize).Picture
+        Else
+      rResult.Category = "locate"
+      rResult.Priority = locate_priority
+       rResult.pic = DesktopMime.FromFile(result).GetIcon(rSize).Picture
+    Endif
+
+        'rResult.pic = MyDesktop.GetIcon(MyDesktop.dIconName, rSize).Picture
+        rResult.Text = result
+        rResult.uri = result
+      
+      results_list.Add(rResult)
+      ResultGrid.Rows.count += 1
   Wend
+'Stop
+ 
 End
 
 
 Private need_concat As Boolean = False
 
-Public Sub locatep_read()
+Public Sub old_locatep_read()
   Dim results, result As String
+  Dim rResult As RItem
   Dim is_desktop_exec As Boolean = False
+
   Try Read #locatep, results, -8192
+  If (results = "") Or (locatep.tag <> TextBox1.text) Then 
+    Wait
+    Return
+  Endif
+  
   If Left(results) = "\n" Then need_concat = False
-  'Stop
+  If results_list.max < 0 Then need_concat = False
+'Stop
   If Error Then Return
   For Each result In Split(results, "\n", "", True)
+    rResult = New RItem
     If need_concat Then ' we have to reconstruct lines from stdin that doesn't ends with \n
-      results_list[results_list.max] &= result
+
+      results_list[results_list.max].Text &= result
+      results_list[results_list.max].uri = results_list[results_list.max].Text
       need_concat = False
         Else
-      ResultGrid.Rows.count += 1
       'put executable desktop files at the top:
         If result Ends ".desktop" Then 
           MyDesktop.init()
           MyDesktop.parse(result)
           If MyDesktop.dExec <> "" Then is_desktop_exec = True
         Endif
+
         If is_desktop_exec Then
-          results_list.Add(result, 0)
+          rResult.Category = "desktopexec"
+          rResult.Priority = DesktopExec_priority
+          rResult.pic = MyDesktop.GetIcon(MyDesktop.dIconName, rSize).Picture
             Else
-          results_list.Add(result)
+          rResult.Category = "locate"
+          rResult.Priority = locate_priority
+           rResult.pic = DesktopMime.FromFile(result).GetIcon(rSize).Picture
         Endif
+        
+        'rResult.pic = MyDesktop.GetIcon(MyDesktop.dIconName, rSize).Picture
+        rResult.Text = result
+        rResult.uri = result
       
+      results_list.Add(rResult)
+      ResultGrid.Rows.count += 1
     Endif
   Next
+  
   need_concat = Right(results) <> "\n"
+  ' If need_concat Then 
+  '   Debug "need_concat"
+  '   Debug "because results = " & results
+  '   Debug "-----------------------------------"
+  ' Endif
 End
 
 Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
@@ -140,32 +260,35 @@ Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
   Dim t As String
   Dim happ As DesktopApps
   Dim appname As String
+  Dim rcResult As New RItem
 
   If results_list.count = 0 Then Return
+  rcResult = results_list[Row]
+
   If resultgrid.current = Null Then resultgrid.Rows[0].Selected = True
-  t = results_list[Row]
-  resultgrid.data.text = t
-  Select resultgrid.Tag
+
+  ResultGrid.Data.Picture = rcResult.pic
+  resultgrid.data.text = rcResult.Text
+End
+
+Public Sub start_item(i As Integer)
+  Dim rcResult As New RItem
+
+  rcResult = results_list[i]
+  Select Case rcResult.Category 'app,locate,calculate,desktopexec
     Case "locate"
-      'generic desktop files
-      If t Ends ".desktop" Then
-        MyDesktop.parse(t)
-        Try img = MyDesktop.GetIcon(MyDesktop.dIconName, rSize)
-      Endif
-      'application launchers
-      If t Ends "           " Then
-        Stop
-        appname = Left(results_list[Row], -11)
-        resultgrid.Data.Text = t
-        happ = DesktopApps[appname]
-        Try img = happ.GetIcon(rSize)
-      Endif
-      
-      If Not img Then Try img = DesktopMime.FromFile(t).GetIcon(rSize)
-      If Not Error Then resultgrid.Data.picture = img.picture
-    Case "calculate"
-      resultgrid.Data.picture = Picture["icon:/small/calculator"]
+      Desktop.Open(rcResult.uri)
+    Case "app"
+      Shell rcResult.uri
+    Case "desktopexec"
+      Shell rcResult.uri
   End Select
+End
+
+
+Public Sub ResultGrid_activate()
+  start_item(resultgrid.row)
+  TimerClose.Trigger
 End
 
 Public Sub TextBox1_KeyPress()
@@ -177,50 +300,23 @@ Public Sub TextBox1_KeyPress()
       ResultGrid.SetFocus()
       Try resultgrid.Rows[1].Selected = True
     Case Key.enter
-      Try start_item(ResultGrid[0, 0].Text)
+      Try start_item(0)
       TimerClose.Trigger()
     Case Key.Return
-      Try start_item(ResultGrid[0, 0].Text)
+      Try start_item(0)
       TimerClose.Trigger()
   End Select
 
 End
 
-Public Sub start_item(i As String)
-  Dim happ As Desktopapps
-  Dim app As String
-  If i Ends ".desktop" Then
-    MyDesktop.init()
-    MyDesktop.parse(i)
-    If MyDesktop.dExec <> "" Then
-      Shell MyDesktop.dExec
-      Return
-    Endif
-  Endif
-
-  If i Ends "           " Then 'desktop app launcher
-    app = Left(i, -11)
-    happ = DesktopApps[app]
-    happ.Exec()
-    Return
-  Endif
-  
-  Desktop.Open(resultgrid.Current.text)
-End
-
-
-Public Sub ResultGrid_activate()
-  start_item(resultgrid.Current.text)
-  TimerClose.Trigger
-End
 
 Public Sub ResultGrid_KeyPress()
   Select Key.Code
     Case Key.Enter
-      start_item(resultgrid.Current.text)
+      start_item(resultgrid.row)
       TimerClose.trigger
     Case Key.Return
-      start_item(resultgrid.Current.text)
+      start_item(resultgrid.row)
       TimerClose.trigger
     Case Key.up
       If ResultGrid.Rows[0].Selected Then TextBox1.SetFocus()
@@ -332,4 +428,5 @@ End
 Public Sub Form_KeyRelease()
   If Key.code = Key.esc Then TimerClose.trigger
 End
+
 

@@ -2,7 +2,8 @@
 Count=0
 
 [DebugWindow]
-Count=0
+Count=1
+DebugWindow[1]="results_list"
 
 [DebugWindow/$aApps]
 Geometry=[1407,332,224,280]
