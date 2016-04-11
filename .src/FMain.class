@@ -78,8 +78,7 @@ Public Sub reinit()
     'Until (locatep.state <> locatep.Running) 
 
   Endif
-  need_concat = False
-  resize_form()
+
   rSize = ResultGrid.Rows.H
 End
 
@@ -165,6 +164,7 @@ Public Sub locatep_read()
       Wait
       Return
     Endif
+    If Not Exist(result, True) Then Return
     rResult = New RItem
     'put executable desktop files at the top:
     If result Ends ".desktop" Then 
@@ -191,69 +191,10 @@ Public Sub locatep_read()
       results_list.Add(rResult)
       ResultGrid.Rows.count += 1
   Wend
-'Stop
- 
+
 End
 
 
-Private need_concat As Boolean = False
-
-Public Sub old_locatep_read()
-  Dim results, result As String
-  Dim rResult As RItem
-  Dim is_desktop_exec As Boolean = False
-
-  Try Read #locatep, results, -8192
-  If (results = "") Or (locatep.tag <> TextBox1.text) Then 
-    Wait
-    Return
-  Endif
-  
-  If Left(results) = "\n" Then need_concat = False
-  If results_list.max < 0 Then need_concat = False
-
-  If Error Then Return
-  For Each result In Split(results, "\n", "", True)
-    rResult = New RItem
-    If need_concat Then ' we have to reconstruct lines from stdin that doesn't ends with \n
-
-      results_list[results_list.max].Text &= result
-      results_list[results_list.max].mExec = results_list[results_list.max].Text
-      need_concat = False
-        Else
-      'put executable desktop files at the top:
-        If result Ends ".desktop" Then 
-          MyDesktop.init()
-          MyDesktop.parse(result)
-          If MyDesktop.dExec <> "" Then is_desktop_exec = True
-        Endif
-
-        If is_desktop_exec Then
-          rResult.Category = "desktopexec"
-          rResult.Priority = DesktopExec_priority
-          rResult.pic = MyDesktop.GetIcon(MyDesktop.dIconName, rSize).Picture
-            Else
-          rResult.Category = "locate"
-          rResult.Priority = locate_priority
-           rResult.pic = DesktopMime.FromFile(result).GetIcon(rSize).Picture
-        Endif
-        
-        'rResult.pic = MyDesktop.GetIcon(MyDesktop.dIconName, rSize).Picture
-        rResult.Text = result
-        rResult.mExec = result
-      
-      results_list.Add(rResult)
-      ResultGrid.Rows.count += 1
-    Endif
-  Next
-  
-  need_concat = Right(results) <> "\n"
-  ' If need_concat Then 
-  '   Debug "need_concat"
-  '   Debug "because results = " & results
-  '   Debug "-----------------------------------"
-  ' Endif
-End
 
 Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
   Dim img As Image
@@ -263,7 +204,7 @@ Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
   rcResult = results_list[Row]
   If resultgrid.current = Null Then resultgrid.Rows[0].Selected = True
   resultgrid.data.text = rcResult.Text
-  
+
   'find pic
   Select Case rcResult.Category  'app,locate,calculate,desktopexec
     Case "app"
@@ -279,8 +220,11 @@ Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
         Endif
       Endif
     Case "calculate"
-      resultgrid.Data.Picture = Picture["icon:/small/calculator"]
+      resultgrid.Data.Picture = Picture["icon:/" & rSize & "/calculator"]
   End Select
+  If resultgrid.Data.picture = Null Then
+    resultgrid.Data.Picture = Picture["icon:/" & rSize & "/file"]
+  Endif
   
 End
 
@@ -404,6 +348,7 @@ End
 Public Sub Form_Open()
   load_geometry()
   reinit()
+  resize_form()
 End
 
 Public Sub load_geometry()
