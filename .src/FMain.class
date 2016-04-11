@@ -5,7 +5,8 @@ Public Struct rItem
   Category As String 'app,locate,calculate,desktopexec
   Text As String
   uri As String
-  pic As Picture
+  'pic As Picture
+  happ As DesktopApps
 End Struct
 
 Public locatep As Process
@@ -37,12 +38,13 @@ Public Sub TextBox1_Change()
   If Error Then Return
   If current_search = "" Then 
     resize_form()
+    reinit()
     Return
   Endif
   
   Try previous_search = TextBox1.text
   If Error Then Return
-  Wait 0.25
+  Wait 0.1
 
   Try current_search = TextBox1.text 
   If Error Then Return
@@ -108,7 +110,6 @@ Public Sub Calculate(term As String)
   Try result.Text = Eval(Term)
   If Error Then Return
   result.Category = "calculate"
-  result.pic = Picture["icon:/small/calculator"]
   result.Priority = calculate_priority
   result.uri = ""
   resultgrid.Rows.count = 1
@@ -128,12 +129,11 @@ Public Sub find_apps(term As String)
       happ = DesktopApps[app]
       result = New RItem
       result.category = "app"
-      result.pic = happ.GetIcon(rSize).picture
+      'result.pic = happ.GetIcon(rSize).picture
       result.Priority = app_priority
       result.Text = happ.name
-
       result.uri = happ.exec(, True)
-
+      result.happ = happ
       results_list.Add(result)
       
       ResultGrid.Rows.count += 1
@@ -177,11 +177,11 @@ Public Sub locatep_read()
     If is_desktop_exec Then
       rResult.Category = "desktopexec"
       rResult.Priority = DesktopExec_priority
-      rResult.pic = MyDesktop.GetIcon(MyDesktop.dIconName, rSize).Picture
+      'rResult.pic = MyDesktop.GetIcon(MyDesktop.dIconName, rSize).Picture
         Else
       rResult.Category = "locate"
       rResult.Priority = locate_priority
-       rResult.pic = DesktopMime.FromFile(result).GetIcon(rSize).Picture
+      'rResult.pic = DesktopMime.FromFile(result).GetIcon(rSize).Picture
     Endif
 
         'rResult.pic = MyDesktop.GetIcon(MyDesktop.dIconName, rSize).Picture
@@ -211,7 +211,7 @@ Public Sub old_locatep_read()
   
   If Left(results) = "\n" Then need_concat = False
   If results_list.max < 0 Then need_concat = False
-'Stop
+
   If Error Then Return
   For Each result In Split(results, "\n", "", True)
     rResult = New RItem
@@ -258,17 +258,24 @@ End
 Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
   Dim img As Image
   Dim t As String
-  Dim happ As DesktopApps
-  Dim appname As String
   Dim rcResult As New RItem
-
   If results_list.count = 0 Then Return
   rcResult = results_list[Row]
-
   If resultgrid.current = Null Then resultgrid.Rows[0].Selected = True
-
-  ResultGrid.Data.Picture = rcResult.pic
   resultgrid.data.text = rcResult.Text
+  
+  'find pic
+  Select Case rcResult.Category  'app,locate,calculate,desktopexec
+    Case "app"
+      resultgrid.Data.Picture = rcResult.happ.GetIcon(rSize).Picture
+    Case "desktopexec"
+      resultgrid.Data.Picture = DesktopMime.FromFile(rcResult.uri).GetIcon(rSize).Picture
+    Case "locate"
+      resultgrid.Data.Picture = DesktopMime.FromFile(rcResult.uri).GetIcon(rSize).Picture
+    Case "calculate"
+      resultgrid.Data.Picture = Picture["icon:/small/calculator"]
+  End Select
+  
 End
 
 Public Sub start_item(i As Integer)
