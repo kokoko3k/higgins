@@ -4,9 +4,10 @@ Public Struct rItem
   Priority As Integer
   Category As String 'app,locate,calculate,desktopexec
   Text As String
-  uri As String
+  Mexec As String
   'pic As Picture
   happ As DesktopApps
+  uri As String
 End Struct
 
 Public locatep As Process
@@ -111,31 +112,29 @@ Public Sub Calculate(term As String)
   If Error Then Return
   result.Category = "calculate"
   result.Priority = calculate_priority
-  result.uri = ""
   resultgrid.Rows.count = 1
   results_list.Add(result)
 End
 
 
 Public Sub find_apps(term As String)
-  Dim happ As DesktopApps
+  Dim happ As New DesktopApps
   Dim app As String
   Dim result As RItem
   If String.Len(term) < min_char_app Then Return
 
   For Each app In DesktopApps
     If InStr(Lower(app), Lower(term)) Then
-
       happ = DesktopApps[app]
       result = New RItem
       result.category = "app"
       'result.pic = happ.GetIcon(rSize).picture
       result.Priority = app_priority
       result.Text = happ.name
-      result.uri = happ.exec(, True)
+      result.mExec = happ.Exec_R_noargs
+      result.uri = happ.file_path
       result.happ = happ
       results_list.Add(result)
-      
       ResultGrid.Rows.count += 1
     Endif
   Next
@@ -186,6 +185,7 @@ Public Sub locatep_read()
 
         'rResult.pic = MyDesktop.GetIcon(MyDesktop.dIconName, rSize).Picture
         rResult.Text = result
+        rResult.mExec = result
         rResult.uri = result
       
       results_list.Add(rResult)
@@ -218,7 +218,7 @@ Public Sub old_locatep_read()
     If need_concat Then ' we have to reconstruct lines from stdin that doesn't ends with \n
 
       results_list[results_list.max].Text &= result
-      results_list[results_list.max].uri = results_list[results_list.max].Text
+      results_list[results_list.max].mExec = results_list[results_list.max].Text
       need_concat = False
         Else
       'put executable desktop files at the top:
@@ -240,7 +240,7 @@ Public Sub old_locatep_read()
         
         'rResult.pic = MyDesktop.GetIcon(MyDesktop.dIconName, rSize).Picture
         rResult.Text = result
-        rResult.uri = result
+        rResult.mExec = result
       
       results_list.Add(rResult)
       ResultGrid.Rows.count += 1
@@ -269,9 +269,9 @@ Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
     Case "app"
       resultgrid.Data.Picture = rcResult.happ.GetIcon(rSize).Picture
     Case "desktopexec"
-      resultgrid.Data.Picture = DesktopMime.FromFile(rcResult.uri).GetIcon(rSize).Picture
+      resultgrid.Data.Picture = DesktopMime.FromFile(rcResult.mExec).GetIcon(rSize).Picture
     Case "locate"
-      resultgrid.Data.Picture = DesktopMime.FromFile(rcResult.uri).GetIcon(rSize).Picture
+      resultgrid.Data.Picture = DesktopMime.FromFile(rcResult.mExec).GetIcon(rSize).Picture
     Case "calculate"
       resultgrid.Data.Picture = Picture["icon:/small/calculator"]
   End Select
@@ -284,11 +284,11 @@ Public Sub start_item(i As Integer)
   rcResult = results_list[i]
   Select Case rcResult.Category 'app,locate,calculate,desktopexec
     Case "locate"
-      Desktop.Open(rcResult.uri)
+      Desktop.Open(rcResult.mExec)
     Case "app"
-      Shell rcResult.uri
+      Shell rcResult.mExec
     Case "desktopexec"
-      Shell rcResult.uri
+      Shell rcResult.mExec
   End Select
 End
 
@@ -334,7 +334,7 @@ End
 
 
 Public Sub MenuOpenFolder_Click()
-  Try Desktop.Open(File.Dir(resultgrid.Current.text))
+  Try Desktop.Open(File.Dir(results_list[resultgrid.row].uri))
 End
 
 Public Sub MenuOpenFile_Click()
@@ -342,7 +342,7 @@ Public Sub MenuOpenFile_Click()
 End
 
 Public Sub MenuCopy_Click()
-  Try Clipboard.Copy(ResultGrid.Current.Text)
+  Try Clipboard.Copy(results_list[ResultGrid.row].uri)
 End
 
 

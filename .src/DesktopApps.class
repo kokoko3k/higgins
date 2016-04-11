@@ -31,11 +31,14 @@ Property Read GenericName As String
 Property Read Comment As String
 Property Read Comment_ES As String
 Property Read Exec_R As String
+Property Read Exec_R_noargs As String
 
 Property Read NoDisplay As Boolean
 Property Read DisplayOnlyIn As Boolean
 
 Property Read NotShowIn As String
+
+Property Read file_path As String
 
 Private $sLastGenericName As String
 Private $sLastComment As String
@@ -151,7 +154,8 @@ Static Public Function _get(AppName As String) As DesktopApps
   Dim sAppPath As String
   Dim hDApps As DesktopApps
   Dim sSection As String
-
+  Dim sLines As New String[]
+  Dim i As Integer
 
   If IsNull($aApps) Then MakeAppList
   If $cApps.Exist(AppName) Then Return $cApps[AppName]
@@ -160,12 +164,20 @@ Static Public Function _get(AppName As String) As DesktopApps
   If Exist(sAppPath) Then 
     hDApps = New DesktopApps
     hDApps._$Path = sAppPath
-    For Each sLine In Split(File.Load(sAppPath), "\n")
-      sLine = Trim(sLine)
-      If sLine Begins "[" Then 
-        sSection = Mid(sLine, 2, Len(sLine) - 2)
-        If LCase(sSection) <> "desktop entry" Then Break
+
+    'find section "desktop entry"
+    sLines = Split(File.Load(sAppPath), "\n")
+    For i = 0 To sLines.max
+      sLine = sLines[i]
+      If LCase(sLine) = "[desktop entry]" Then
+        sLines.Extract(0, i + 1)
+        Break
       Endif
+    Next
+
+    For Each sLine In sLines
+      If sLine Begins "[" Then Break
+      sLine = Trim(sLine)
       If sLine Begins "Name=" Then hDApps._$Name = Right(sLine, - InStr(sLine, "="))
       If sLine Begins "Exec" Then hDApps._$Exec = Right(sLine, - InStr(sLine, "="))
       If sLine Begins "Terminal" Then hDApps._$Terminal = CBool(Right(sLine, - InStr(sLine, "=")))
@@ -178,7 +190,6 @@ Static Public Function _get(AppName As String) As DesktopApps
       If sLine Begins "NoDisplay" Then hDApps._$NoDisplay = CBool(Right(sLine, - InStr(sLine, "=")))
       If sLine Begins "DisplayOnlyIn" Then hDApps._$DisplayOnlyIn = CBool(Right(sLine, - InStr(sLine, "=")))
       If sLine Begins "NotShowIn" Then hDApps._$NotShowIn = CBool(Right(sLine, - InStr(sLine, "=")))
-      
     Next
     $cApps[AppName] = hDApps
 
@@ -409,7 +420,7 @@ Private Function NotShowIn_Read() As String
   
 End
 
-Public Function Exec(Optional Args As String, Optional readonly As Boolean = False) As String
+Public Sub Exec(Optional Args As String)
   
   Dim ars As String[]
   Dim i As Integer
@@ -418,11 +429,7 @@ Public Function Exec(Optional Args As String, Optional readonly As Boolean = Fal
   If ars.Count > 0 Then
     
     If Not Args Then
-      If readonly Then 
-        Return ars[0]
-          Else
-        Exec [ars[0]]
-      Endif
+      Exec [ars[0]]
     Else
       For i = 0 To ars.Max
         If ars[i] Begins "%" Then 
@@ -433,15 +440,37 @@ Public Function Exec(Optional Args As String, Optional readonly As Boolean = Fal
       If InStr(ars[ars.Max], "%") Then
         ars[ars.Max] = Args
       Endif
-      If readonly Then 
-        Return ars
-          Else
-        Exec ars
-      Endif
+      Exec ars
     Endif
   Endif
   
 End
+
+Private Function Exec_R_noargs_read() As String
+  Dim nExec As String
+  Dim field_codes As String[] = ["f", "F", "u", "U", "d", "D", "n", "N", "i", "c", "k", "v", "m"]
+  Dim code As String
+  nExec = _$Exec
+  For Each code In field_codes
+    nExec = Replace(nExec, " %" & code & " ", " ")
+  Next
+  Return nExec  
+End
+
+
+Private Function Exec_R_Read() As String
+  
+  Return _$Exec
+  
+End
+
+
+Private Function file_path_read() As String
+  
+  Return _$Path
+  
+End
+
 
 Public Sub _free()
   
@@ -452,8 +481,3 @@ Public Sub _free()
   
 End
 
-Private Function Exec_R_Read() As String
-  
-  Return _$Exec
-  
-End
