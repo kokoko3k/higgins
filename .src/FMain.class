@@ -2,8 +2,9 @@
 
 Public Struct rItem
   Priority As Integer
-  Category As String 'app,locate,calculate,desktopexec
+  Category As String 'app,locate,calculate,desktopexec,execute
   Text As String
+  SubText As String
   Mexec As String
   'pic As Picture
   happ As DesktopApps
@@ -17,16 +18,19 @@ Public rSize As Integer
 
 'how many characters needs to be entered to start the following searches
 Public Const min_char_app As Integer = 1
+Public Const min_char_execute As Integer = 2
 Public Const min_char_app_by_desc As Integer = 4
 Public Const min_char_calculate As Integer = 2
 Public Const min_char_locate As Integer = 3
 
 
+
 'no effect by now, may come handy to sort the results (?)
 Public Const calculate_priority As Integer = 100
 Public Const app_priority As Integer = 90
-Public Const DesktopExec_priority As Integer = 80
-Public Const locate_priority As Integer = 70
+Public Const execute_priority As Integer = 80
+Public Const DesktopExec_priority As Integer = 70
+Public Const locate_priority As Integer = 60
 
 
 
@@ -81,7 +85,7 @@ Public Sub reinit()
     'Until (locatep.state <> locatep.Running) 
 
   Endif
-resultgrid.grid = True
+
   padding = (Desktop.scale * 2)
   resultgrid.Rows.h = resultgrid.Font.RichTextHeight("|j<br>|j") + padding
   rSize = ResultGrid.Rows.H - padding
@@ -102,9 +106,12 @@ Public Sub search(term As String)
 
       'search for apps
       find_apps(term)
-
+      
       'search for apps by description
       find_apps_by_desc(term)
+
+      'search for executables
+      find_executables(term)
 
       'search for files
       locate(term)
@@ -138,7 +145,7 @@ Public Sub find_apps(term As String)
       'result.pic = happ.GetIcon(rSize).picture
       result.Priority = app_priority
       result.Text = happ.name
-      result.text &= "\n" & happ.comment
+      result.subtext = happ.comment
       result.mExec = happ.Exec_R_noargs
       result.uri = happ.file_path
       result.happ = happ
@@ -163,7 +170,7 @@ Public Sub find_apps_by_desc(term As String)
       'result.pic = happ.GetIcon(rSize).picture
       result.Priority = app_priority
       result.Text = happ.name
-      result.text &= "\n" & happ.comment
+      result.subtext = happ.comment
       result.mExec = happ.Exec_R_noargs
       result.uri = happ.file_path
       result.happ = happ
@@ -173,6 +180,16 @@ Public Sub find_apps_by_desc(term As String)
   Next
 End
 
+Public Sub find_executables(term As String)
+  Dim executable As String 
+  Dim result As RItem
+  
+  Try executable = Split(term, " ", "", True)[0]
+  If executable = "" Then Return
+  
+  
+  
+End
 
 
 Public Sub locate(term As String)
@@ -223,7 +240,8 @@ Public Sub locatep_read()
         rResult.mExec = result
         rResult.uri = result
       
-        rResult.Text = File.Name(result) & "\n" & File.Dir(result)
+        rResult.Text = File.Name(result) 
+        rResult.SubText = File.Dir(result)
       
       results_list.Add(rResult)
       ResultGrid.Rows.count += 1
@@ -236,7 +254,6 @@ End
 Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
   Dim img As Image
   Dim t As String
-  Dim ts As String[]
   Dim i As Integer
   Dim rcResult As New RItem
   If results_list.count = 0 Then Return
@@ -244,14 +261,12 @@ Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
   If resultgrid.current = Null Then resultgrid.Rows[0].Selected = True
 
   'two lines:
-  ts = Split(rcResult.Text, "\n", "", True)
-  resultgrid.data.RichText = "<b>" & ts[0] & "</b>"
-  If ts.max > 0 Then
-    For i = 1 To ts.max
-      resultgrid.data.RichText &= "<br><font size=-1>" & ts[i] & "</font>"
-    Next
+  resultgrid.data.RichText = "<b>" & rcResult.text & "</b>"
+  If rcResult.subtext <> "" Then 
+    resultgrid.data.RichText &= "<br><font size=-1>" & rcResult.subtext & "</font>"
   Endif
-  'resultgrid.Rows[row].h = resultgrid.Font.RichTextHeight(resultgrid.data.RichText) + ((Desktop.Scale * (ts.max + 1)) * 0.7)
+
+
   'find pic
   Select Case rcResult.Category  'app,locate,calculate,desktopexec
     Case "app"
