@@ -17,8 +17,10 @@ Public rSize As Integer
 
 'how many characters needs to be entered to start the following searches
 Public Const min_char_app As Integer = 1
+Public Const min_char_app_by_desc As Integer = 4
 Public Const min_char_calculate As Integer = 2
 Public Const min_char_locate As Integer = 3
+
 
 'no effect by now, may come handy to sort the results (?)
 Public Const calculate_priority As Integer = 100
@@ -45,7 +47,7 @@ Public Sub TextBox1_Change()
   
   Try previous_search = TextBox1.text
   If Error Then Return
-  Wait 0.1
+  Wait 0.25
 
   Try current_search = TextBox1.text 
   If Error Then Return
@@ -63,6 +65,7 @@ End
 
 Public Sub reinit()
   Dim running As String
+  Dim padding As Integer
   results_list.Clear()
   initgrid()
   MyDesktop.init()
@@ -78,8 +81,10 @@ Public Sub reinit()
     'Until (locatep.state <> locatep.Running) 
 
   Endif
-
-  rSize = ResultGrid.Rows.H
+resultgrid.grid = True
+  padding = (Desktop.scale * 2)
+  resultgrid.Rows.h = resultgrid.Font.RichTextHeight("|j<br>|j") + padding
+  rSize = ResultGrid.Rows.H - padding
 End
 
 
@@ -97,6 +102,9 @@ Public Sub search(term As String)
 
       'search for apps
       find_apps(term)
+
+      'search for apps by description
+      find_apps_by_desc(term)
 
       'search for files
       locate(term)
@@ -130,6 +138,32 @@ Public Sub find_apps(term As String)
       'result.pic = happ.GetIcon(rSize).picture
       result.Priority = app_priority
       result.Text = happ.name
+      result.text &= "\n" & happ.comment
+      result.mExec = happ.Exec_R_noargs
+      result.uri = happ.file_path
+      result.happ = happ
+      results_list.Add(result)
+      ResultGrid.Rows.count += 1
+      Wait
+    Endif
+  Next
+End
+
+Public Sub find_apps_by_desc(term As String)
+  Dim happ As New DesktopApps
+  Dim app As String
+  Dim result As RItem
+  
+  If String.Len(term) < min_char_app_by_desc Then Return
+  For Each app In DesktopApps
+    happ = DesktopApps[app]
+    If InStr(Lower(happ._$Comment), Lower(term)) > 0 Then
+      result = New RItem
+      result.category = "app"
+      'result.pic = happ.GetIcon(rSize).picture
+      result.Priority = app_priority
+      result.Text = happ.name
+      result.text &= "\n" & happ.comment
       result.mExec = happ.Exec_R_noargs
       result.uri = happ.file_path
       result.happ = happ
@@ -138,6 +172,7 @@ Public Sub find_apps(term As String)
     Endif
   Next
 End
+
 
 
 Public Sub locate(term As String)
@@ -157,6 +192,7 @@ Public Sub locatep_read()
   Dim results, result As String
   Dim rResult As RItem
   Dim is_desktop_exec As Boolean = False
+  Dim t As String
 
   While Not Eof(locatep)
     Line Input #locatep, result
@@ -184,9 +220,10 @@ Public Sub locatep_read()
     Endif
 
         'rResult.pic = MyDesktop.GetIcon(MyDesktop.dIconName, rSize).Picture
-        rResult.Text = result
         rResult.mExec = result
         rResult.uri = result
+      
+        rResult.Text = File.Name(result) & "\n" & File.Dir(result)
       
       results_list.Add(rResult)
       ResultGrid.Rows.count += 1
@@ -199,12 +236,22 @@ End
 Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
   Dim img As Image
   Dim t As String
+  Dim ts As String[]
+  Dim i As Integer
   Dim rcResult As New RItem
   If results_list.count = 0 Then Return
   rcResult = results_list[Row]
   If resultgrid.current = Null Then resultgrid.Rows[0].Selected = True
-  resultgrid.data.text = rcResult.Text
 
+  'two lines:
+  ts = Split(rcResult.Text, "\n", "", True)
+  resultgrid.data.RichText = "<b>" & ts[0] & "</b>"
+  If ts.max > 0 Then
+    For i = 1 To ts.max
+      resultgrid.data.RichText &= "<br><font size=-1>" & ts[i] & "</font>"
+    Next
+  Endif
+  'resultgrid.Rows[row].h = resultgrid.Font.RichTextHeight(resultgrid.data.RichText) + ((Desktop.Scale * (ts.max + 1)) * 0.7)
   'find pic
   Select Case rcResult.Category  'app,locate,calculate,desktopexec
     Case "app"
@@ -385,5 +432,6 @@ End
 Public Sub Form_KeyRelease()
   If Key.code = Key.esc Then TimerClose.trigger
 End
+
 
 

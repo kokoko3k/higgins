@@ -1,6 +1,6 @@
 # Gambas Project File 3.0
 # Compiled with Gambas 3.8.4
-Title=provaa
+Title=gbLocate
 Startup=FMain
 Version=0.0.27
 Component=gb.image
