@@ -180,15 +180,35 @@ Public Sub find_apps_by_desc(term As String)
   Next
 End
 
+Public Function Which(exe As String) As String
+  Dim exefound As String
+  Shell "which " & exe To exefound
+  Return Trim(exefound)
+End
+
 Public Sub find_executables(term As String)
-  Dim executable As String 
+  Dim exe, exe_found As String 
   Dim result As RItem
   
-  Try executable = Split(term, " ", "", True)[0]
-  If executable = "" Then Return
   
+  Try exe = Split(term, " ", "", True)[0]
+  If exe = "" Then Return
   
+  exe_found = Which(exe)
+  If exe_found = "" Then Return
+
+  result = New RItem
+  result.Category = "execute"
+  result.Mexec = term
+  result.Priority = execute_priority
   
+  result.Text = "Run " & term
+  result.SubText = "From " & File.Dir(exe_found)
+  
+  result.uri = exe_found
+  
+  results_list.Add(result)
+  ResultGrid.Rows.count += 1
 End
 
 
@@ -266,11 +286,12 @@ Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
     resultgrid.data.RichText &= "<br><font size=-1>" & rcResult.subtext & "</font>"
   Endif
 
-
   'find pic
   Select Case rcResult.Category  'app,locate,calculate,desktopexec
     Case "app"
       resultgrid.Data.Picture = rcResult.happ.GetIcon(rSize).Picture
+    Case "execute"
+      resultgrid.Data.Picture = Picture["icon:/" & rSize & "/terminal"]
     Case "desktopexec"
       resultgrid.Data.Picture = DesktopMime.FromFile(rcResult.mExec).GetIcon(rSize).Picture
     Case "locate"
@@ -296,6 +317,9 @@ Public Sub start_item(i As Integer)
   Select Case rcResult.Category 'app,locate,calculate,desktopexec
     Case "locate"
       Desktop.Open(rcResult.mExec)
+    Case "execute"
+      Stop
+      Shell rcResult.mExec
     Case "app"
       Shell rcResult.mExec
     Case "desktopexec"
