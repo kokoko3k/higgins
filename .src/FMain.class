@@ -142,7 +142,6 @@ Public Sub find_apps(term As String)
       happ = DesktopApps[app]
       result = New RItem
       result.category = "app"
-      'result.pic = happ.GetIcon(rSize).picture
       result.Priority = app_priority
       result.Text = happ.name
       result.subtext = happ.comment
@@ -167,7 +166,6 @@ Public Sub find_apps_by_desc(term As String)
     If InStr(Lower(happ._$Comment), Lower(term)) > 0 Then
       result = New RItem
       result.category = "app"
-      'result.pic = happ.GetIcon(rSize).picture
       result.Priority = app_priority
       result.Text = happ.name
       result.subtext = happ.comment
@@ -189,26 +187,31 @@ End
 Public Sub find_executables(term As String)
   Dim exe, exe_found As String 
   Dim result As RItem
-  
-  
   Try exe = Split(term, " ", "", True)[0]
   If exe = "" Then Return
   
   exe_found = Which(exe)
   If exe_found = "" Then Return
-
   result = New RItem
   result.Category = "execute"
   result.Mexec = term
   result.Priority = execute_priority
-  
   result.Text = "Run " & term
   result.SubText = "From " & File.Dir(exe_found)
-  
   result.uri = exe_found
-  
   results_list.Add(result)
   ResultGrid.Rows.count += 1
+  
+  result = New RItem
+  result.Category = "execute_terminal"
+  result.Mexec = term
+  result.Priority = execute_priority
+  result.Text = "Run " & term & " in the terminal emulator"
+  result.SubText = "From " & File.Dir(exe_found) 
+  result.uri = exe_found
+  results_list.Add(result)
+  ResultGrid.Rows.count += 1
+  
 End
 
 
@@ -249,22 +252,19 @@ Public Sub locatep_read()
     If is_desktop_exec Then
       rResult.Category = "desktopexec"
       rResult.Priority = DesktopExec_priority
-      'rResult.pic = MyDesktop.GetIcon(MyDesktop.dIconName, rSize).Picture
         Else
       rResult.Category = "locate"
       rResult.Priority = locate_priority
-      'rResult.pic = DesktopMime.FromFile(result).GetIcon(rSize).Picture
     Endif
 
-        'rResult.pic = MyDesktop.GetIcon(MyDesktop.dIconName, rSize).Picture
-        rResult.mExec = result
-        rResult.uri = result
-      
-        rResult.Text = File.Name(result) 
-        rResult.SubText = File.Dir(result)
-      
-      results_list.Add(rResult)
-      ResultGrid.Rows.count += 1
+    rResult.mExec = result
+    rResult.uri = result
+  
+    rResult.Text = File.Name(result) 
+    rResult.SubText = File.Dir(result)
+    
+    results_list.Add(rResult)
+    ResultGrid.Rows.count += 1
   Wend
 
 End
@@ -292,6 +292,8 @@ Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
       resultgrid.Data.Picture = rcResult.happ.GetIcon(rSize).Picture
     Case "execute"
       resultgrid.Data.Picture = Picture["icon:/" & rSize & "/terminal"]
+    Case "execute_terminal"
+      resultgrid.Data.Picture = Picture["icon:/" & rSize & "/terminal"]
     Case "desktopexec"
       resultgrid.Data.Picture = DesktopMime.FromFile(rcResult.mExec).GetIcon(rSize).Picture
     Case "locate"
@@ -313,15 +315,27 @@ End
 
 Public Sub start_item(i As Integer)
   Dim rcResult As New RItem
+  Dim df As Desktopfile
+  Dim xdg_terminal As String
+  Dim cmdline As String
+  
   rcResult = results_list[i]
   Select Case rcResult.Category 'app,locate,calculate,desktopexec
+
     Case "locate"
       Desktop.Open(rcResult.mExec)
+
+    Case "execute_terminal"
+      xdg_terminal = Temp
+      Copy "xdg-terminal.sh" To xdg_terminal
+      Chmod xdg_terminal To "rwxr-x---" 
+      Shell xdg_terminal & " \"" & "sh -c ' " & rcResult.mExec & "; echo; echo  Press enter to exit ; read ' \""
     Case "execute"
-      Stop
       Shell rcResult.mExec
+
     Case "app"
       Shell rcResult.mExec
+
     Case "desktopexec"
       Shell rcResult.mExec
   End Select
@@ -348,7 +362,6 @@ Public Sub TextBox1_KeyPress()
       Try start_item(0)
       TimerClose.Trigger()
   End Select
-
 End
 
 
