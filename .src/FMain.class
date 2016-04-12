@@ -158,12 +158,16 @@ End
 Public Sub find_apps_by_desc(term As String)
   Dim happ As New DesktopApps
   Dim app As String
+  Dim ismatched As Boolean = False
   Dim result As RItem
-  
+  'cerca anche in categories e keywords
   If String.Len(term) < min_char_app_by_desc Then Return
   For Each app In DesktopApps
     happ = DesktopApps[app]
-    If InStr(Lower(happ._$Comment), Lower(term)) > 0 Then
+    ismatched = InStr(Lower(happ._$Comment), Lower(term)) > 0 
+    ismatched = ismatched Or InStr(Lower(happ._$Category), Lower(term)) > 0 
+    ismatched = ismatched Or InStr(Lower(happ._$Keywords), Lower(term)) > 0 
+    If ismatched Then
       result = New RItem
       result.category = "app"
       result.Priority = app_priority
@@ -291,7 +295,7 @@ Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
     Case "app"
       resultgrid.Data.Picture = rcResult.happ.GetIcon(rSize).Picture
     Case "execute"
-      resultgrid.Data.Picture = Picture["icon:/" & rSize & "/terminal"]
+      resultgrid.Data.Picture = Picture["icon:/" & rSize & "/exec"]
     Case "execute_terminal"
       resultgrid.Data.Picture = Picture["icon:/" & rSize & "/terminal"]
     Case "desktopexec"

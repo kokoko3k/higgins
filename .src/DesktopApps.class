@@ -50,6 +50,7 @@ Public _$Category As String
 Public _$Path As String
 Public _$Exec As String
 Public _$Type As String
+Public _$Keywords As String
 Public _$Comment As String
 Public _$Comment_ES As String
 Public _$GenericName As String
@@ -184,6 +185,7 @@ Static Public Function _get(AppName As String) As DesktopApps
       If sLine Begins "Type" Then hDApps._$Type = Right(sLine, - InStr(sLine, "="))
       If sLine Begins "Icon" Then hDApps._$IconName = Right(sLine, - InStr(sLine, "="))
       If sLine Begins "Categories" Then hDApps._$Category = Right(sLine, - InStr(sLine, "="))
+      If sLine Begins "Keywords" Then hDApps._$Keywords = Right(sLine, - InStr(sLine, "="))
       If sLine Begins "GenericName=" Then hDApps._$GenericName = Right(sLine, - InStr(sLine, "="))
       If sLine Begins "Comment=" Then hDApps._$Comment = Right(sLine, - InStr(sLine, "="))
       If sLine Begins "Comment[es]=" Then hDApps._$Comment_ES = Right(sLine, - InStr(sLine, "="))
