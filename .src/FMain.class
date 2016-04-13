@@ -24,7 +24,6 @@ Public Const min_char_calculate As Integer = 2
 Public Const min_char_locate As Integer = 3
 
 
-
 'no effect by now, may come handy to sort the results (?)
 Public Const calculate_priority As Integer = 100
 Public Const app_priority As Integer = 90
@@ -32,10 +31,15 @@ Public Const execute_priority As Integer = 80
 Public Const DesktopExec_priority As Integer = 70
 Public Const locate_priority As Integer = 60
 
+Public Socket_File As String = Settings.defaultdir & "/" & Application.name & ".socket"
+Public Lock_File As String = Settings.defaultdir & "/" & Application.name & ".lock"
 
+'Public Socket_File As String = "/tmp/socket"
+'Public Lock_File As String = "/tmp/lock"
 
 Public Sub resize_form()
   FMain.h = TextBox1.h + (Desktop.scale * 3)
+
 End
 
 Public Sub TextBox1_Change()
@@ -239,10 +243,6 @@ Dim tmp As String
   locatep.Blocking = True
   locatep.tag = term
   Debug "locate " & "'" & term & "'" 
-  ' While locatep.state = Process.running
-  '   If closing Then Return
-  '   Wait 0.1
-  ' Wend
 End
 
 
@@ -265,7 +265,7 @@ Public Sub locatep_read()
   Endif
   If Not Exist(result, True) Then Return
   rResult = New RItem
-  'put executable desktop files at the top:
+
   If result Ends ".desktop" Then 
     MyDesktop.init()
     MyDesktop.parse(result)
@@ -463,15 +463,73 @@ Public Function Relative_window_geom(o As Window) As Integer[]
   Return out
 End
 
-Public Sub Form_Hide()
-  fmain.close()
+
+'======================================== START SOCKET FUNCTIONS ========================================
+
+Public My_listening_socket As ServerSocket
+
+
+Public hLock As Stream
+
+Public Sub socket_init()
+  'TRY TO get a LOCK file:
+  Try hLock = Lock Lock_File
+  If Error Then 'alreadyrunning
+    show_other_instance()
+    Quit
+  Endif
+  'start to listen for remote commands, one connection is ok.
+  My_listening_socket = New ServerSocket As "My_listening_socket"
+  My_listening_socket.type = Net.Unix
+  My_listening_socket.path = Socket_File
+  My_listening_socket.Listen(1)
 End
 
+Public MyCSock As Socket
+Public Sub show_other_instance()
+  Dim sBuf As String
+  MyCSock = New Socket
+  MyCSock.path = Socket_File
+  MyCSock.Port = Net.Local
+  MyCSock.Connect()
+  While (MyCSock.Status <> 7) And (MyCSock.Status > 0)
+    Wait 0.1
+  Wend
+  If MyCSock.Status = 7 Then
+    sBuf = "show\n"
+    Write #MyCSock, sBuf, Len(sBuf)
+    Close #MycSock
+    Stop
+  Endif
+End
+
+Public Host As Object
+Public Sub My_listening_socket_connection(RemoteHostIP As String)
+  'just accept on localhost.
+  host = My_listening_socket.Accept()
+End
+
+Public Sub socket_Read()
+  Dim command As String = ""
+  Line Input #Last, command
+  If command = "show" Then
+    Repeat
+      fmain.visible = True
+      Wait
+    Until fmain.visible = True
+    Debug fmain.visible
+  Endif
+  My_listening_socket.close
+  My_listening_socket.Listen(1)
+End
+
+'-- END SOCKET FUNCTIONS ---------------------------------------------------------------------
 
 
 Public Sub Form_Open()
   load_geometry()
-  reinit()
+  socket_init()
+  'reinit()
   resize_form()
 End
 
@@ -482,8 +540,8 @@ Public Sub load_geometry()
   rx = Settings["win_rx", 0] 
   ry = Settings["win_ry", 0] 
   w = Settings["win_w", (s.w Div 2)] 
-  h = Settings["win_h", 64] 
-  fmain.Move(rx + s.x, ry + s.y, w, h)
+  ' h = Settings["win_h", 64] 
+  fmain.Move(rx + s.x, ry + s.y, w)
 End
 
 Public Sub save_geometry()
@@ -492,7 +550,8 @@ Public Sub save_geometry()
   Settings["win_rx"] = xy_r[0]
   Settings["win_ry"] = xy_r[1]
   Settings["win_w"] = xy_r[2]
-  Settings["win_h"] = xy_r[3]
+  ' Settings["win_h"] = xy_r[3]
+  Settings.Save()
 End
 
 Private closing As Boolean = False
@@ -500,15 +559,39 @@ Public Sub TimerClose_Timer()
   closing = True
   save_geometry()
   fmain.close
+ Quit
 End
 
-Public Sub Form_Close()
+Public Sub myQuit()
   TimerClose_Timer()
 End
+
+Public Sub QuitMenu_Click()
+  myQuit()
+End
+
 
 Public Sub Form_KeyRelease()
   If Key.code = Key.esc Then TimerClose.trigger
 End
 
 
+Public Sub Form_Hide()
+  If fmain.tag = "minimized" Then Return
+  save_geometry()
+  fmain.visible = False
+  fmain.tag = "minimized"
+End
+
+
+Public Sub Form_Show()
+  fmain.visible = True
+  fmain.tag = ""
+  resize_form()
+   Wait
+End
+
+Public Sub Form_Close()
+  Form_Hide()
+End
 

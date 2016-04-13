@@ -2,8 +2,9 @@
 Count=0
 
 [DebugWindow]
-Count=1
-DebugWindow[1]="Picture[\"icon:/\" & rSize & \"/file\"]"
+Count=2
+DebugWindow[1]="Socket"
+DebugWindow[2]="MyCSock"
 
 [DebugWindow/$aApps]
 Geometry=[1407,332,224,280]
@@ -29,10 +30,16 @@ Geometry=[61,14,224,280]
 [DebugWindow/FileView1.Children[0]]
 Geometry=[425,184,224,280]
 
+[DebugWindow/MyCSock]
+Geometry=[1280,0,224,280]
+
 [DebugWindow/Picture["icon:|" & rSize & "|directory"]]
 Geometry=[1280,0,224,280]
 
 [DebugWindow/Picture["icon:|" & rSize & "|file"]]
+Geometry=[1280,0,224,280]
+
+[DebugWindow/Socket]
 Geometry=[1280,0,224,280]
 
 [DebugWindow/Split(File.Load(sAppPath), "\n")]
@@ -57,7 +64,7 @@ Geometry=[1280,307,224,280]
 Geometry=[1280,-3,361,555]
 
 [DebugWindow/locatep]
-Geometry=[1280,-3,254,449]
+Geometry=[1280,0,254,449]
 
 [DebugWindow/locatep.Lines]
 Geometry=[1294,11,254,449]

@@ -1,7 +1,8 @@
 # Gambas Form File 3.0
 
 { Form Form
-  MoveScaled(0,0,85,43)
+  MoveScaled(0,0,85,41)
+  PopupMenu = "MenuPopup"
   Text = ("GbLocate")
   Icon = Picture["icon:/small/find"]
   Stacking = Window.Above
@@ -10,8 +11,8 @@
   Arrangement = Arrange.Vertical
   Spacing = True
   Margin = True
-  { Popup1 Menu
-    Text = ("Popup1")
+  { MenuPopup Menu
+    Text = ("Menu1")
     Visible = False
     { MenuOpenFolder Menu
       Text = ("Open folder")
@@ -25,21 +26,25 @@
       Text = ("Copy to Clipboard")
       Picture = Picture["icon:/small/copy"]
     }
-  }
-  { TimerClose #Timer
-    #MoveScaled(77,0)
+    { QuitMenu Menu
+      Text = ("Quit")
+      Picture = Picture["icon:/huge/quit"]
+    }
   }
   { TextBox1 ButtonBox
     MoveScaled(2,2,80,5)
     Picture = Picture["icon:/small/find"]
     ClearButton = True
   }
+  { TimerClose #Timer
+    #MoveScaled(78,2)
+  }
   { ResultGrid GridView
-    MoveScaled(3,8,80,33)
+    MoveScaled(2,7,80,33)
     Visible = False
     Font = Font["+1"]
     Expand = True
-    PopupMenu = "Popup1"
+    PopupMenu = "MenuPopup"
     Grid = False
   }
 }

@@ -2,7 +2,7 @@
 # Compiled with Gambas 3.8.4
 Title=gbLocate
 Startup=FMain
-Version=0.0.27
+Version=0.0.30
 Component=gb.image
 Component=gb.qt4
 Component=gb.form
@@ -10,6 +10,7 @@ Component=gb.desktop.x11
 Component=gb.desktop
 Component=gb.eval
 Component=gb.settings
+Component=gb.net
 TabSize=2
 Language=it
 Packager=1

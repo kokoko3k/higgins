@@ -2,7 +2,7 @@ FMain
 gbLocate
 0
 0
-0.0.27
+0.0.30
 
 gb.image
 gb.qt4
@@ -11,4 +11,5 @@ gb.desktop.x11
 gb.desktop
 gb.eval
 gb.settings
+gb.net
 
