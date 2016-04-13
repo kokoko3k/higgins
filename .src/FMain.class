@@ -234,7 +234,9 @@ End
 Public Sub locate(term As String)
 Dim tmp As String
   If String.Len(term) < min_char_locate Then Return
-  locatep = Shell "nice -n -19 locate -l 1000 -i " & "'" & term & "'" For Input As "locatep"
+  'locatep = Shell "nice -n -19 locate -l 1000 -i " & "'" & term & "'" For Input As "locatep"
+  locatep = Shell "nice -n -19 locate -l 1000 -i " & "'*" & term & "*'" For Input As "locatep"
+  locatep.Blocking = True
   locatep.tag = term
   Debug "locate " & "'" & term & "'" 
   ' While locatep.state = Process.running
@@ -249,39 +251,51 @@ Public Sub locatep_read()
   Dim rResult As RItem
   Dim is_desktop_exec As Boolean = False
   Dim t As String
+  Dim stream_ok As Boolean 
 
-  While Not Eof(locatep)
-    Line Input #locatep, result
-    If (result = "") Or (locatep.tag <> TextBox1.text) Then 
-      Wait
-      Return
-    Endif
-    If Not Exist(result, True) Then Return
-    rResult = New RItem
-    'put executable desktop files at the top:
-    If result Ends ".desktop" Then 
-      MyDesktop.init()
-      MyDesktop.parse(result)
-      If MyDesktop.dExec <> "" Then is_desktop_exec = True
-    Endif
+  ' If locatep_still_reading Then 
+  '   Return
+  '     Else
+  '   locatep_still_reading = True
+  ' Endif
 
-    If is_desktop_exec Then
-      rResult.Category = "desktopexec"
-      rResult.Priority = DesktopExec_priority
-        Else
-      rResult.Category = "locate"
-      rResult.Priority = locate_priority
-    Endif
+  stream_ok = False
+  Try stream_ok = Not Eof(locatep)
+  If Not stream_ok Then Return
 
-    rResult.mExec = result
-    rResult.uri = result
+  Try Line Input #locatep, result
+  If Error Then Return
+  If (result = "") Or (locatep.tag <> TextBox1.text) Then 
+    Wait 
+    Return
+  Endif
+  If Not Exist(result, True) Then Return
+  rResult = New RItem
+  'put executable desktop files at the top:
+  If result Ends ".desktop" Then 
+    MyDesktop.init()
+    MyDesktop.parse(result)
+    If MyDesktop.dExec <> "" Then is_desktop_exec = True
+  Endif
+
+  If is_desktop_exec Then
+    rResult.Category = "desktopexec"
+    rResult.Priority = DesktopExec_priority
+      Else
+    rResult.Category = "locate"
+    rResult.Priority = locate_priority
+  Endif
+
+  rResult.mExec = result
+  rResult.uri = result
+
+  rResult.Text = File.Name(result) 
+  rResult.SubText = File.Dir(result)
   
-    rResult.Text = File.Name(result) 
-    rResult.SubText = File.Dir(result)
-    
-    results_list.Add(rResult)
-    ResultGrid.Rows.count += 1
-  Wend
+  results_list.Add(rResult)
+  ResultGrid.Rows.count += 1
+'  locatep_still_reading = False
+
 
 End
 
