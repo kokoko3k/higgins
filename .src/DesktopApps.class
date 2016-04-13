@@ -149,6 +149,10 @@ Public Function GetAppComment(sApp As String, Language As String) As String
   
 End
 
+Static Public stop_get As Boolean = False
+Static Public getting As Boolean = False
+
+
 Static Public Function _get(AppName As String) As DesktopApps 
   
   Dim sLine, sPath As String
@@ -169,6 +173,15 @@ Static Public Function _get(AppName As String) As DesktopApps
     'find section "desktop entry"
     sLines = Split(File.Load(sAppPath), "\n")
     For i = 0 To sLines.max
+      'hack to allow responsiviness
+        getting = True
+        Wait
+        If stop_get Then 
+          stop_get = False
+          getting = False
+          Return
+        Endif
+
       sLine = sLines[i]
       If LCase(sLine) = "[desktop entry]" Then
         sLines.Extract(0, i + 1)
@@ -194,7 +207,7 @@ Static Public Function _get(AppName As String) As DesktopApps
       If sLine Begins "NotShowIn" Then hDApps._$NotShowIn = CBool(Right(sLine, - InStr(sLine, "=")))
     Next
     $cApps[AppName] = hDApps
-
+    getting = False
     Return hDApps
     'Break
   Endif

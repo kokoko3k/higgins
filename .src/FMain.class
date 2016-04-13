@@ -43,20 +43,29 @@ Public Sub TextBox1_Change()
   Dim current_search As String
   Try current_search = TextBox1.text 
   If Error Then Return
+  Wait 0.01
   If current_search = "" Then 
     resize_form()
     reinit()
     Return
   Endif
   
+  kill_locate()
+  
+  DesktopApps.stop_get = True
+  While DesktopApps.getting
+    Wait
+  Wend
+  DesktopApps.stop_get = False
+  
   Try previous_search = TextBox1.text
   If Error Then Return
-  Wait 0.25
+  Wait 0.3
 
   Try current_search = TextBox1.text 
   If Error Then Return
   If previous_search <> current_search Then Return
-  'If String.Len(current_search) < 3 Then Return
+
   search(current_search)
 End
 
@@ -68,28 +77,30 @@ Public Sub initgrid()
 End
 
 Public Sub reinit()
-  Dim running As String
   Dim padding As Integer
   results_list.Clear()
   initgrid()
   MyDesktop.init()
-  If locatep <> Null Then
-    Repeat
-      Debug "kill  locate"
-      Try locatep.drop
-      Try locatep.close
-      Try locatep.kill
-      Wait
-      running = Exist("/proc/" & locatep.handle)
-    Until Not running
-    'Until (locatep.state <> locatep.Running) 
-
-  Endif
-
+  kill_locate()
   padding = (Desktop.scale * 2)
   resultgrid.Rows.h = resultgrid.Font.RichTextHeight("|j<br>|j") + padding
   rSize = ResultGrid.Rows.H - padding
 End
+
+Public Sub kill_locate()
+    Dim running As String
+    If locatep <> Null Then
+      While Exist("/proc/" & locatep.handle)
+        'Debug "kill  locate"
+        Try locatep.drop
+        Try locatep.close
+        Try locatep.kill
+        Wait
+      Wend
+      'Until (locatep.state <> locatep.Running) 
+    Endif
+End
+
 
 
 Public Sub search(term As String)
@@ -164,6 +175,7 @@ Public Sub find_apps_by_desc(term As String)
   If String.Len(term) < min_char_app_by_desc Then Return
   For Each app In DesktopApps
     happ = DesktopApps[app]
+    If happ = Null Then Return
     ismatched = InStr(Lower(happ._$Comment), Lower(term)) > 0 
     ismatched = ismatched Or InStr(Lower(happ._$Category), Lower(term)) > 0 
     ismatched = ismatched Or InStr(Lower(happ._$Keywords), Lower(term)) > 0 
@@ -222,7 +234,7 @@ End
 Public Sub locate(term As String)
 Dim tmp As String
   If String.Len(term) < min_char_locate Then Return
-  locatep = Shell "locate -l 1000 -i " & "'" & term & "'" For Input As "locatep"
+  locatep = Shell "nice -n -19 locate -l 1000 -i " & "'" & term & "'" For Input As "locatep"
   locatep.tag = term
   Debug "locate " & "'" & term & "'" 
   ' While locatep.state = Process.running
