@@ -1,9 +1,8 @@
 # Gambas Form File 3.0
 
 { Form Form
-  MoveScaled(0,0,85,41)
+  MoveScaled(0,0,83,41)
   PopupMenu = "MenuPopup"
-  Text = ("GbLocate")
   Icon = Picture["appicon.png"]
   Persistent = True
   Stacking = Window.Above
@@ -41,15 +40,14 @@
     }
   }
   { TextBox1 ButtonBox
-    MoveScaled(2,2,80,5)
-    Picture = Picture["icon:/small/find"]
-    ClearButton = True
+    MoveScaled(1,0,80,5)
+    Picture = Picture["icon:/medium/find"]
   }
   { TimerClose #Timer
-    #MoveScaled(78,2)
+    #MoveScaled(77,5)
   }
   { ResultGrid GridView
-    MoveScaled(2,7,80,33)
+    MoveScaled(2,6,78,32)
     Visible = False
     Font = Font["+1"]
     Expand = True

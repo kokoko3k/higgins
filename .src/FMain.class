@@ -241,7 +241,7 @@ Public Sub locate(term As String)
 Dim tmp As String
   If String.Len(term) < min_char_locate Then Return
   'locatep = Shell "nice -n -19 locate -l 1000 -i " & "'" & term & "'" For Input As "locatep"
-  locatep = Shell "nice -n -19 locate -l 1000 -i " & "'*" & term & "*'" For Input As "locatep"
+  locatep = Shell "nice -n -19 locate -l 100 -i " & "'*" & term & "*'" For Input As "locatep"
   locatep.Blocking = True
   locatep.tag = term
   Debug "locate " & "'" & term & "'" 
@@ -591,12 +591,9 @@ Public Sub myQuit()
   TimerClose_Timer()
 End
 
-
-
 Public Sub Form_KeyRelease()
-  If Key.code = Key.esc Then TimerClose.trigger
+  If Key.code = Key.esc Then Form_Hide()
 End
-
 
 Public Sub Form_Hide()
   If fmain.tag = "minimized" Then Return
@@ -604,7 +601,6 @@ Public Sub Form_Hide()
   fmain.visible = False
   fmain.tag = "minimized"
 End
-
 
 Public Sub Form_Show()
   fmain.visible = True
@@ -625,3 +621,34 @@ End
 Public Sub QuitMenu_Click()
   myQuit()
 End
+
+
+Public Sub TextBox1_GotFocus()
+  Dim o As Object
+  o = findSelectable(TextBox1)
+  Wait
+  If o <> Null Then 
+    o.selectall
+  Endif
+End
+
+
+Private Function findSelectable(o As Object) As Object
+  Dim c As Integer = 0
+  Dim child, selectable As Object
+  Try o.selectall
+  If Error Then
+    Try c = O.children.count
+    If c > 0 Then
+      For Each child In O.children
+        selectable = findSelectable(CHILD)
+        If selectable <> Null Then 
+          Return selectable
+        Endif
+      Next
+    Endif
+      Else
+    Return o
+  Endif
+End
+

@@ -115,7 +115,7 @@ Path="gbLocate.gambas"
 [OpenFile]
 File[1]=".src/FMain.form"
 Active=2
-File[2]=".src/FMain.class:0.156"
+File[2]=".src/FMain.class:6.552"
 Count=4
 File[3]=".src/MyDesktop.class:28.80"
 File[4]=".src/DesktopApps.class:0.176"
