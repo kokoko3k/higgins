@@ -5,6 +5,7 @@
   PopupMenu = "MenuPopup"
   Text = ("GbLocate")
   Icon = Picture["icon:/small/find"]
+  Persistent = True
   Stacking = Window.Above
   Sticky = True
   SkipTaskbar = True

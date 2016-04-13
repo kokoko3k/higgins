@@ -23,7 +23,6 @@ Public Const min_char_app_by_desc As Integer = 3
 Public Const min_char_calculate As Integer = 2
 Public Const min_char_locate As Integer = 3
 
-
 'no effect by now, may come handy to sort the results (?)
 Public Const calculate_priority As Integer = 100
 Public Const app_priority As Integer = 90
@@ -34,6 +33,8 @@ Public Const locate_priority As Integer = 60
 Public Const appname As String = "higgins"
 Public Socket_File As String = Settings.defaultdir & "/" & appname & ".socket"
 Public Lock_File As String = Settings.defaultdir & "/" & appname & ".lock"
+
+Public firstrun As Boolean = True
 
 'Public Socket_File As String = "/tmp/socket"
 'Public Lock_File As String = "/tmp/lock"
@@ -467,71 +468,76 @@ End
 
 '======================================== START SOCKET FUNCTIONS ========================================
 
-Public My_listening_socket As ServerSocket
-
-
-Public hLock As Stream
-
-Public Sub socket_init()
-  'TRY TO get a LOCK file:
-  Try hLock = Lock Lock_File
-  If Error Then 'alreadyrunning
-    show_other_instance()
-    Quit
-  Endif
-  'start to listen for remote commands, one connection is ok.
-  My_listening_socket = New ServerSocket As "My_listening_socket"
-  My_listening_socket.type = Net.Unix
-  My_listening_socket.path = Socket_File
-  My_listening_socket.Listen(1)
-End
-
-Public MyCSock As Socket
-Public Sub show_other_instance()
-  Dim sBuf As String
-  MyCSock = New Socket
-  MyCSock.path = Socket_File
-  MyCSock.Port = Net.Local
-  MyCSock.Connect()
-  While (MyCSock.Status <> 7) And (MyCSock.Status > 0)
-    Wait 0.1
-  Wend
-  If MyCSock.Status = 7 Then
-    sBuf = "show\n"
-    Write #MyCSock, sBuf, Len(sBuf)
-    Close #MycSock
-
-  Endif
-End
-
-Public Host As Object
-Public Sub My_listening_socket_connection(RemoteHostIP As String)
-  'just accept on localhost.
-  host = My_listening_socket.Accept()
-End
-
-Public Sub socket_Read()
-  Dim command As String = ""
-  Line Input #Last, command
-  If command = "show" Then
-    Repeat
-      fmain.visible = True
-      Wait
-    Until fmain.visible = True
-    Debug fmain.visible
-  Endif
-  My_listening_socket.close
-  My_listening_socket.Listen(1)
-End
+              Public My_listening_socket As ServerSocket
+              
+              
+              Public hLock As Stream
+              
+              Public Sub socket_init()
+                'TRY TO get a LOCK file:
+                Stop
+                Try hLock = Lock Lock_File
+                If Error Then 'alreadyrunning
+                  Debug "another instance already running"
+                  show_other_instance()
+                  Quit
+                Endif
+                'start to listen for remote commands, one connection is ok.
+                My_listening_socket = New ServerSocket As "My_listening_socket"
+                My_listening_socket.type = Net.Unix
+                My_listening_socket.path = Socket_File
+                My_listening_socket.Listen(1)
+              End
+              
+              Public MyCSock As Socket
+              Public Sub show_other_instance()
+                Dim sBuf As String
+                MyCSock = New Socket
+                MyCSock.path = Socket_File
+                MyCSock.Port = Net.Local
+                MyCSock.Connect()
+                While (MyCSock.Status <> 7) And (MyCSock.Status > 0)
+                  Wait 0.1
+                Wend
+                If MyCSock.Status = 7 Then
+                  sBuf = "show\n"
+                  Write #MyCSock, sBuf, Len(sBuf)
+                  Close #MycSock
+              
+                Endif
+              End
+              
+              Public Host As Object
+              Public Sub My_listening_socket_connection(RemoteHostIP As String)
+                'just accept on localhost.
+                host = My_listening_socket.Accept()
+              End
+              
+              Public Sub socket_Read()
+                Dim command As String = ""
+                'Stop
+                Line Input #Last, command
+                If command = "show" Then
+                  Repeat
+                    fmain.visible = True
+                    Wait
+                  Until fmain.visible = True
+                  Debug fmain.visible
+                Endif
+                My_listening_socket.close
+                My_listening_socket.Listen(1)
+              End
 
 '-- END SOCKET FUNCTIONS ---------------------------------------------------------------------
 
 
 Public Sub Form_Open()
+  If Not firstrun Then Return
   load_geometry()
   socket_init()
   'reinit()
   resize_form()
+  firstrun = False
 End
 
 Public Sub load_geometry()
@@ -593,7 +599,6 @@ Public Sub Form_Show()
 End
 
 Public Sub Form_Close()
-Stop
   Form_Hide()
 End
 
