@@ -7,9 +7,11 @@ gbLocate
 gb.image
 gb.qt4
 gb.form
+gb.dbus
 gb.desktop.x11
 gb.desktop
 gb.eval
 gb.settings
+gb.gui.trayicon
 gb.net
 

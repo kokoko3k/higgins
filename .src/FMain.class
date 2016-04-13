@@ -475,7 +475,6 @@ End
               
               Public Sub socket_init()
                 'TRY TO get a LOCK file:
-                Stop
                 Try hLock = Lock Lock_File
                 If Error Then 'alreadyrunning
                   Debug "another instance already running"
@@ -530,12 +529,31 @@ End
 
 '-- END SOCKET FUNCTIONS ---------------------------------------------------------------------
 
+Public TrayIcon2 As Trayicon 'fixme trayicon
+Public Sub InitTrayIcon()
+  'fixme trayicon
+
+  Dim SystemTray As Boolean = True
+  Try SystemTray = desktop.HasSystemTray
+  If Error Then
+    Debug "Couldn't check if your desktop has a system tray, assuming it has"
+  Endif
+
+  If Not SystemTray Then Return
+  Try TrayIcon2 = New Trayicon 
+  If Error Then Debug "Cannot Init Trayicon"
+  TrayIcon2.Picture = Picture["appicon.png"]
+  TrayIcon2.Visible = True
+  object.Attach(TrayIcon2, Me, "TrayIcon2")
+  TrayIcon2.PopupMenu = "TrayMenu"
+  If Error Then Debug "Cannot Init Trayicon"
+End
 
 Public Sub Form_Open()
   If Not firstrun Then Return
   load_geometry()
   socket_init()
-  'reinit()
+  InitTrayIcon()
   resize_form()
   firstrun = False
 End
@@ -573,9 +591,6 @@ Public Sub myQuit()
   TimerClose_Timer()
 End
 
-Public Sub QuitMenu_Click()
-  myQuit()
-End
 
 
 Public Sub Form_KeyRelease()
@@ -602,3 +617,11 @@ Public Sub Form_Close()
   Form_Hide()
 End
 
+
+Public Sub QuitMenuTray_Click()
+  myQuit()
+End
+
+Public Sub QuitMenu_Click()
+  myQuit()
+End

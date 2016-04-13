@@ -4,7 +4,7 @@
   MoveScaled(0,0,85,41)
   PopupMenu = "MenuPopup"
   Text = ("GbLocate")
-  Icon = Picture["icon:/small/find"]
+  Icon = Picture["appicon.png"]
   Persistent = True
   Stacking = Window.Above
   Sticky = True
@@ -12,6 +12,14 @@
   Arrangement = Arrange.Vertical
   Spacing = True
   Margin = True
+  { TrayMenu Menu
+    Text = ("TrayMenu")
+    Visible = False
+    { QuitMenuTray Menu
+      Text = ("Quit")
+      Picture = Picture["icon:/medium/quit"]
+    }
+  }
   { MenuPopup Menu
     Text = ("Menu1")
     Visible = False
