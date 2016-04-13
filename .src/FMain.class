@@ -160,7 +160,7 @@ Public Sub find_apps_by_desc(term As String)
   Dim app As String
   Dim ismatched As Boolean = False
   Dim result As RItem
-  'cerca anche in categories e keywords
+
   If String.Len(term) < min_char_app_by_desc Then Return
   For Each app In DesktopApps
     happ = DesktopApps[app]

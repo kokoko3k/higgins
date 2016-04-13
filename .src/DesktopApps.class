@@ -370,7 +370,8 @@ Public Sub GetIcon(Optional Size As Integer = 16) As Image
     Endif
     
   Else
-    If _$IconName Ends ".png" Then _$IconName = File.BaseName(_$IconName)
+    If ((_$IconName Ends ".png") Or (_$IconName Ends ".xpm")) Then _$IconName = File.BaseName(_$IconName)
+    'If _$IconName Ends ".png" Then _$IconName = File.BaseName(_$IconName)
     For Each sDir In [Desktop.DataDir &/ "icons", "/usr/share/icons"]
       'For Each sSize In [CStr(Size), "128", "64", "32"]      
       For Each sSize In [CStr(Size), "256", "128", "64", "48", "32" "22", "16", "8"]
@@ -379,15 +380,24 @@ Public Sub GetIcon(Optional Size As Integer = 16) As Image
           Try hImage = Image.Load(sPath)
           If hImage Then Break
         Endif
+        sPath = Subst(sDir &/ "hicolor/&1x&1/apps/&2.xpm", sSize, _$IconName)
+        If Exist(sPath) Then 
+          Try hImage = Image.Load(sPath)
+          If hImage Then Break
+        Endif
       Next
       If hImage Then Break
     Next
-    
     If Not hImage Then
       sPath = Subst("/usr/share/pixmaps/&1.png", _$IconName)
       If Exist(sPath) Then Try hImage = Image.Load(sPath)
     Endif
-    
+
+    If Not hImage Then
+      sPath = Subst("/usr/share/pixmaps/&1.xpm", _$IconName)
+      If Exist(sPath) Then Try hImage = Image.Load(sPath)
+    Endif
+
   Endif
   If Not hImage Then
     'For Each s In ["apps", "actions", "places", "devices"]
