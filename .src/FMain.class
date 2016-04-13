@@ -253,12 +253,6 @@ Public Sub locatep_read()
   Dim t As String
   Dim stream_ok As Boolean 
 
-  ' If locatep_still_reading Then 
-  '   Return
-  '     Else
-  '   locatep_still_reading = True
-  ' Endif
-
   stream_ok = False
   Try stream_ok = Not Eof(locatep)
   If Not stream_ok Then Return
@@ -288,14 +282,17 @@ Public Sub locatep_read()
 
   rResult.mExec = result
   rResult.uri = result
-
-  rResult.Text = File.Name(result) 
-  rResult.SubText = File.Dir(result)
   
+  If Stat(result, True).type = gb.directory Then 
+    rResult.Text = File.Name(result) & "/"
+      Else
+    rResult.Text = File.Name(result)
+  Endif
+  
+  rResult.SubText = File.Dir(result)
+
   results_list.Add(rResult)
   ResultGrid.Rows.count += 1
-'  locatep_still_reading = False
-
 
 End
 
@@ -327,12 +324,10 @@ Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
     Case "desktopexec"
       resultgrid.Data.Picture = DesktopMime.FromFile(rcResult.mExec).GetIcon(rSize).Picture
     Case "locate"
-      If Exist(rcResult.uri, True) Then
-        If Stat(rcResult.uri, True).type = gb.Directory Then
-          resultgrid.Data.Picture = Picture["icon:/" & rSize & "/directory"]
-            Else
-          resultgrid.Data.Picture = DesktopMime.FromFile(rcResult.uri).GetIcon(rSize).Picture
-        Endif
+      If rcResult.text Ends "/" Then
+        resultgrid.Data.Picture = Picture["icon:/" & rSize & "/directory"]
+          Else
+        resultgrid.Data.Picture = DesktopMime.FromFile(rcResult.uri).GetIcon(rSize).Picture
       Endif
     Case "calculate"
       resultgrid.Data.Picture = Picture["icon:/" & rSize & "/calculator"]
