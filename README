@@ -1,5 +1,7 @@
-gbLocate:
-Gambas frontend to locate
+Higgins:
+A gambas launcher
 
-* write anything to query locatedb
-* write =1+1 to get 2
+Currently it does:
+* Query installed applications
+* Query system locate database
+* Do expression evaluations (eg: write =1+1 to get 2)
