@@ -17,9 +17,9 @@ Public results_list As New RItem[]
 Public rSize As Integer
 
 'how many characters needs to be entered to start the following searches
-Public Const min_char_app As Integer = 1
+Public Const min_char_app As Integer = 2
 Public Const min_char_execute As Integer = 2
-Public Const min_char_app_by_desc As Integer = 4
+Public Const min_char_app_by_desc As Integer = 3
 Public Const min_char_calculate As Integer = 2
 Public Const min_char_locate As Integer = 3
 
