@@ -2,7 +2,7 @@
 # Compiled with Gambas 3.8.4
 Title=gbLocate
 Startup=FMain
-Version=0.0.30
+Version=0.0.31
 Component=gb.image
 Component=gb.qt4
 Component=gb.form

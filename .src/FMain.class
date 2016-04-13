@@ -31,8 +31,9 @@ Public Const execute_priority As Integer = 80
 Public Const DesktopExec_priority As Integer = 70
 Public Const locate_priority As Integer = 60
 
-Public Socket_File As String = Settings.defaultdir & "/" & Application.name & ".socket"
-Public Lock_File As String = Settings.defaultdir & "/" & Application.name & ".lock"
+Public Const appname As String = "higgins"
+Public Socket_File As String = Settings.defaultdir & "/" & appname & ".socket"
+Public Lock_File As String = Settings.defaultdir & "/" & appname & ".lock"
 
 'Public Socket_File As String = "/tmp/socket"
 'Public Lock_File As String = "/tmp/lock"
@@ -499,7 +500,7 @@ Public Sub show_other_instance()
     sBuf = "show\n"
     Write #MyCSock, sBuf, Len(sBuf)
     Close #MycSock
-    Stop
+
   Endif
 End
 
@@ -592,6 +593,7 @@ Public Sub Form_Show()
 End
 
 Public Sub Form_Close()
+Stop
   Form_Hide()
 End
 

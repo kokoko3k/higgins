@@ -2,9 +2,7 @@
 Count=0
 
 [DebugWindow]
-Count=2
-DebugWindow[1]="Socket"
-DebugWindow[2]="MyCSock"
+Count=0
 
 [DebugWindow/$aApps]
 Geometry=[1407,332,224,280]
@@ -53,6 +51,9 @@ Geometry=[1280,0,224,280]
 
 [DebugWindow/Stock[CStr(Size) &| "program"].Image]
 Geometry=[1280,-3,345,363]
+
+[DebugWindow/fmain]
+Geometry=[1280,0,224,280]
 
 [DebugWindow/global]
 Geometry=[47,0,224,280]
@@ -109,7 +110,7 @@ Geometry=[122,226,705,394]
 Geometry=[1280,307,224,280]
 
 [Executable]
-Path="prova.gambas"
+Path="gbLocate.gambas"
 
 [OpenFile]
 File[1]=".src/FMain.form"
