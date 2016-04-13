@@ -384,10 +384,10 @@ Public Sub TextBox1_KeyPress()
       Try resultgrid.Rows[1].Selected = True
     Case Key.enter
       Try start_item(0)
-      TimerClose.Trigger()
+      If Not Error Then timerClose.Trigger()
     Case Key.Return
       Try start_item(0)
-      TimerClose.Trigger()
+      If Not Error Then timerClose.Trigger()
   End Select
 End
 
@@ -548,6 +548,13 @@ Public Sub InitTrayIcon()
   TrayIcon2.PopupMenu = "TrayMenu"
   If Error Then Debug "Cannot Init Trayicon"
 End
+
+Public Sub TrayIcon2_click()
+  fmain.Show()
+End
+
+
+
 
 Public Sub Form_Open()
   If Not firstrun Then Return
