@@ -347,11 +347,12 @@ Public Sub start_item(i As Integer)
   Dim df As Desktopfile
   Dim xdg_terminal As String
   Dim cmdline As String
-  
+
   rcResult = results_list[i]
   Select Case rcResult.Category 'app,locate,calculate,desktopexec
 
     Case "locate"
+
       Desktop.Open(rcResult.mExec)
 
     Case "execute_terminal"
@@ -416,7 +417,7 @@ Public Sub MenuOpenFolder_Click()
 End
 
 Public Sub MenuOpenFile_Click()
-  Try Desktop.Open(resultgrid.Current.text)
+  start_item(resultgrid.row)
   TimerClose.Trigger
 End
 

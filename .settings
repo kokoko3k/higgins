@@ -40,6 +40,9 @@ Geometry=[425,184,224,280]
 [DebugWindow/MyCSock]
 Geometry=[1280,0,224,280]
 
+[DebugWindow/MyDesktop]
+Geometry=[1280,-3,314,537]
+
 [DebugWindow/O.children]
 Geometry=[1280,-3,224,280]
 
@@ -145,7 +148,7 @@ Path="gbLocate.gambas"
 [OpenFile]
 File[1]=".src/FMain.form"
 Active=2
-File[2]=".src/FMain.class:17.377"
+File[2]=".src/FMain.class:0.420"
 Count=4
 File[3]=".src/MyDesktop.class:28.80"
 File[4]=".src/DesktopApps.class:0.176"
