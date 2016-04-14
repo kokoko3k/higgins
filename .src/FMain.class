@@ -586,16 +586,14 @@ Public Sub save_geometry()
   Settings.Save()
 End
 
-Private closing As Boolean = False
 Public Sub TimerClose_Timer()
-  closing = True
   save_geometry()
   fmain.close
- Quit
+
 End
 
 Public Sub myQuit()
-  TimerClose_Timer()
+  Quit
 End
 
 Public Sub Form_KeyRelease()
