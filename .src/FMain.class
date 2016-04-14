@@ -324,7 +324,9 @@ Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
     Case "execute_terminal"
       resultgrid.Data.Picture = Picture["icon:/" & rSize & "/terminal"]
     Case "desktopexec"
-      resultgrid.Data.Picture = DesktopMime.FromFile(rcResult.mExec).GetIcon(rSize).Picture
+      MyDesktop.parse(rcResult.uri)
+      resultgrid.Data.Picture = MyDesktop.GetIcon(MyDesktop.dIconName, rsize).picture 
+      'DesktopMime.FromFile(rcResult.mExec).GetIcon(rSize).Picture
     Case "locate"
       If rcResult.text Ends "/" Then
         resultgrid.Data.Picture = Picture["icon:/" & rSize & "/directory"]
