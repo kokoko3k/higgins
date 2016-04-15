@@ -20,15 +20,18 @@ Public rSize As Integer
 Public Const min_char_app As Integer = 2
 Public Const min_char_execute As Integer = 2
 Public Const min_char_app_by_desc As Integer = 3
-Public Const min_char_calculate As Integer = 2
+Public Const min_char_calculate As Integer = 1
 Public Const min_char_locate As Integer = 3
+Public Const min_char_path As Integer = 1
 
 'no effect by now, may come handy to sort the results (?)
-Public Const calculate_priority As Integer = 100
-Public Const app_priority As Integer = 90
-Public Const execute_priority As Integer = 80
-Public Const DesktopExec_priority As Integer = 70
-Public Const locate_priority As Integer = 60
+Public Const searchpaths_priority As Integer = 100
+Public Const calculate_priority As Integer = 90
+Public Const app_priority As Integer = 80
+Public Const execute_priority As Integer = 70
+Public Const DesktopExec_priority As Integer = 60
+Public Const locate_priority As Integer = 50
+
 
 Public Const appname As String = "higgins"
 Public Socket_File As String = Settings.defaultdir & "/" & appname & ".socket"
@@ -66,14 +69,18 @@ Public Sub TextBox1_Change()
   
   Try previous_search = TextBox1.text
   If Error Then Return
+  
+  immediate_search(current_search)
+
   Wait 0.3
 
   Try current_search = TextBox1.text 
   If Error Then Return
   If previous_search <> current_search Then Return
 
-  search(current_search)
+  delayed_search(current_search)
 End
+
 
 Public Sub initgrid()
   ResultGrid.Rows.count = 0
@@ -107,17 +114,25 @@ Public Sub kill_locate()
     Endif
 End
 
-
-
-Public Sub search(term As String)
+Public Sub immediate_search(term As String)
   Dim results As String
   reinit()
   FMain.h = TextBox1.h + (Desktop.scale * 3) + resultgrid.h
   FMain.mouse = Mouse.wait
 
+  Calculate(term)
+  SearchPath(term)
+  
+End
+
+
+Public Sub delayed_search(term As String)
+  Dim results As String
+
+
   Select Left(term)
     Case "="
-      Calculate(Right(term, -1))
+      
     Case Else
       resultgrid.tag = "locate"
 
@@ -136,9 +151,45 @@ Public Sub search(term As String)
   FMain.mouse = Mouse.Default
 End
 
+
+Public Sub SearchPath(s_path As String)
+  Dim path, find_out As String
+  Dim result As Ritem
+
+  Shell "find " & s_path & " -maxdepth 1" To find_out
+
+  If find_out <> Null Then
+
+    For Each path In Split(find_out, "\n", "", True)
+      result = New RItem
+      result.Category = "locate"
+      result.Priority = searchpaths_priority
+      result.SubText = ""
+      If Exist(path) Then
+        If path <> "/" Then 
+          If Stat(path, True).type = gb.Directory Then path &= "/"
+        Endif
+      Endif
+      result.Text = path
+      result.SubText = "Open " & path
+      result.uri = path
+      result.mExec = path
+      results_list.Add(result)
+      resultgrid.Rows.Count += 1
+    Next
+  Endif
+  
+End
+
+
 Public Sub Calculate(term As String)
   Dim result As New RItem
+  Dim m_match As Boolean = False
+  
   If String.Len(term) < min_char_calculate Then Return
+  If term Begins "=" Then term = Right(term, -1)
+  If term Ends "=" Then term = Left(term, -1)
+
   Try result.Text = Eval(Term)
   If Error Then Return
   result.Category = "calculate"
