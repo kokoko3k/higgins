@@ -2,7 +2,7 @@
 
 Public Struct rItem
   Priority As Integer
-  Category As String 'app,locate,calculate,desktopexec,execute
+  Category As String 'app,locate,calculate,desktopexec,execute,fbookmark
   Text As String
   SubText As String
   Mexec As String
@@ -23,14 +23,17 @@ Public Const min_char_app_by_desc As Integer = 3
 Public Const min_char_calculate As Integer = 1
 Public Const min_char_locate As Integer = 3
 Public Const min_char_path As Integer = 1
+Public Const min_char_fBookmarks As Integer = 1
 
 'no effect by now, may come handy to sort the results (?)
-Public Const searchpaths_priority As Integer = 100
-Public Const calculate_priority As Integer = 90
-Public Const app_priority As Integer = 80
-Public Const execute_priority As Integer = 70
-Public Const DesktopExec_priority As Integer = 60
-Public Const locate_priority As Integer = 50
+Public Const calculate_priority As Integer = 100
+Public Const searchpaths_priority As Integer = 90
+Public Const fBookmarks_priority As Integer = 80
+Public Const app_priority As Integer = 70
+Public Const execute_priority As Integer = 60
+Public Const DesktopExec_priority As Integer = 50
+Public Const locate_priority As Integer = 40
+
 
 
 Public Const appname As String = "higgins"
@@ -98,6 +101,7 @@ Public Sub reinit()
   padding = (Desktop.scale * 2)
   resultgrid.Rows.h = resultgrid.Font.RichTextHeight("|j<br>|j") + padding
   rSize = ResultGrid.Rows.H - padding
+  fmain.mouse = Mouse.default
 End
 
 Public Sub kill_locate()
@@ -121,7 +125,8 @@ Public Sub immediate_search(term As String)
   FMain.mouse = Mouse.wait
 
   Calculate(term)
-  SearchPath(term)
+  search_fBookmarks(term)
+  search_paths(term)
   
 End
 
@@ -151,13 +156,94 @@ Public Sub delayed_search(term As String)
   FMain.mouse = Mouse.Default
 End
 
+Public Sub search_fBookmarks(term As String)
+  Dim b_file_split As New String[]
+  Dim b_files As New String[]
+  Dim bookmarks As New String[]
+  Dim b_file, aLine, path, fbookmark As String
+  Dim result As RItem
+  Dim match_str As String
+  'search for filedialogs bookmarks
+  
+  If String.Len(term) < min_char_fBookmarks Then Return
+  ' 
+  ' 'qt (or kde?): /home/root/.local/share/user-places.xbel
+  ' Try b_file_split = Split(File.load(User.home & "/" & ".local/share/user-places.xbel"), "\n")
+  ' If Not Error Then 'parseit
+  '   For Each aline In b_file
+  '     match_str = "* href=*//*" & term & "*" 
+  '     If aline Like match_str Then
+  '       Try path = Split(aline, "\"")[1]
+  '       If Not Error Then
+  '         If path Ends "/" Then path = Left(path, -1) 'this is necessary to eliminate dupes
+  '         If bookmarks.find(path) < 0 Then bookmarks.Add(path)
+  '       Endif
+  '     Endif
+  '   Next
+  ' Endif
 
-Public Sub SearchPath(s_path As String)
+
+  'gtk2,3,qt(kde?)
+  b_files.Add(User.home & "/" & ".gtk-bookmarks")
+  b_files.Add(User.home & "/" & ".config/gtk-3.0/bookmarks")
+  b_files.Add(User.home & "/" & ".local/share/user-places.xbel")
+
+  For Each b_file In b_files
+    Try b_file_split = Split(File.load(b_file), "\n")
+    If Not Error Then 'parseit
+       For Each aline In b_file_split
+         
+         If b_file Ends ".xbel" Then 
+           match_str = "* href=*//*" & term & "*"  'qt/kde
+             Else
+           match_str = "*://*" & term & "*" 'gtk2,3
+         Endif
+         
+         If aline Like match_str Then
+           
+           If b_file Ends ".xbel" Then 
+             Try path = Split(aline, "\"")[1]
+                Else
+              Try path = Split(aline, " ")[0]
+           Endif
+           
+           If Not Error Then
+             If Not (b_file Ends ".xbel") Then path = Replace(path, " ", "%20")
+             If path Ends "/" Then path = Left(path, -1) 'this is necessary to eliminate dupes
+
+             If bookmarks.find(path) < 0 Then 
+               bookmarks.Add(path)
+                result = New RItem
+                result.Category = "fbookmark"
+                result.Priority = fBookmarks_priority
+                result.SubText = ""
+                result.Text = path
+                result.SubText = "Local bookmark: " & path
+                result.uri = path
+                result.mExec = path
+                
+                results_list.Add(result)
+                resultgrid.Rows.Count += 1
+             Endif 
+
+           Endif 'not error
+           
+         Endif
+       Next 'aline
+    
+    Endif 
+  Next
+
+
+End
+
+
+Public Sub search_paths(s_path As String)
   Dim path, find_out As String
   Dim result As Ritem
 
   Shell "find " & s_path & " -maxdepth 1" To find_out
-
+  If String.Len(s_path) < min_char_path Then Return
   If find_out <> Null Then
 
     For Each path In Split(find_out, "\n", "", True)
@@ -171,7 +257,6 @@ Public Sub SearchPath(s_path As String)
         Endif
       Endif
       result.Text = path
-      result.SubText = "Open " & path
       result.uri = path
       result.mExec = path
       results_list.Add(result)
@@ -362,7 +447,7 @@ Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
   Endif
 
   'find pic
-  Select Case rcResult.Category  'app,locate,calculate,desktopexec
+  Select Case rcResult.Category  'app,locate,calculate,desktopexec,fbookmark
     Case "app"
       resultgrid.Data.Picture = rcResult.happ.GetIcon(rSize).Picture
     Case "execute"
@@ -377,10 +462,12 @@ Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
       If rcResult.text Ends "/" Then
         resultgrid.Data.Picture = Picture["icon:/" & rSize & "/directory"]
           Else
-        resultgrid.Data.Picture = DesktopMime.FromFile(rcResult.uri).GetIcon(rSize).Picture
+        Try resultgrid.Data.Picture = DesktopMime.FromFile(rcResult.uri).GetIcon(rSize).Picture
       Endif
     Case "calculate"
       resultgrid.Data.Picture = Picture["icon:/" & rSize & "/calculator"]
+    Case "fbookmark"
+      resultgrid.Data.Picture = Picture["icon:/" & rSize & "/bookmark"]
   End Select
   If resultgrid.Data.picture = Null Then
     resultgrid.Data.Picture = Picture["icon:/" & rSize & "/file"]
@@ -395,17 +482,20 @@ Public Sub start_item(i As Integer)
   Dim cmdline As String
 
   rcResult = results_list[i]
-  Select Case rcResult.Category 'app,locate,calculate,desktopexec
+  Select Case rcResult.Category 'app,locate,calculate,desktopexec,fbookmark
 
     Case "locate"
-
       Desktop.Open(rcResult.mExec)
+
+    Case "fbookmark"
+      Desktop.Open(rcResult.uri)
 
     Case "execute_terminal"
       xdg_terminal = Temp
       Copy "xdg-terminal.sh" To xdg_terminal
       Chmod xdg_terminal To "rwxr-x---" 
       Shell xdg_terminal & " \"" & "sh -c ' " & rcResult.mExec & "; echo; echo  Press enter to exit ; read ' \""
+
     Case "execute"
       Shell rcResult.mExec
 
@@ -414,6 +504,7 @@ Public Sub start_item(i As Integer)
 
     Case "desktopexec"
       Shell rcResult.mExec
+
   End Select
 End
 
