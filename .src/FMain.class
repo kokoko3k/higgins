@@ -251,11 +251,6 @@ Public Sub find_apps_by_desc(term As String)
   Next
 End
 
-Public Function Which(exe As String) As String
-  Dim exefound As String
-  Shell "which " & exe To exefound
-  Return Trim(exefound)
-End
 
 Public Sub find_executables(term As String)
   Dim exe, exe_found As String 
@@ -263,7 +258,7 @@ Public Sub find_executables(term As String)
   Try exe = Split(term, " ", "", True)[0]
   If exe = "" Then Return
   
-  exe_found = Which(exe)
+  exe_found = System.Find(term)
   If exe_found = "" Then Return
   result = New RItem
   result.Category = "execute"
