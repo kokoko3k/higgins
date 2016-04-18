@@ -115,6 +115,9 @@ Geometry=[1280,614,224,280]
 [DebugWindow/pic.image]
 Geometry=[1280,-3,224,280]
 
+[DebugWindow/picture_list]
+Geometry=[45,-3,224,280]
+
 [DebugWindow/rcResult]
 Geometry=[1280,-3,224,280]
 
@@ -156,10 +159,10 @@ Path="gbLocate.gambas"
 
 [OpenFile]
 File[1]=".src/FMain.form"
-Active=2
-File[2]=".src/FMain.class:34.215"
+Active=3
+File[2]=".src/FMain.class:0.709"
 Count=7
-File[3]=".src/MyDesktop.class:28.80"
+File[3]=".src/MyDesktop.class:41.72"
 File[4]=".src/DesktopApps.class:0.176"
 File[5]="appicon.png"
 File[6]="README:0.7"

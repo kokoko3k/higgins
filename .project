@@ -2,6 +2,7 @@
 # Compiled with Gambas 3.8.4
 Title=Higgins
 Startup=FMain
+Profiling=1
 Icon=appicon.png
 Version=0.0.32
 Component=gb.image

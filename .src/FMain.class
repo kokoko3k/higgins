@@ -452,11 +452,9 @@ Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
 
   If picture_list[row] <> Null Then
     resultgrid.Data.Picture = picture_list[row] 
-    Debug "HIT"
     Return
   Endif
   'no cache :(
-  Debug "MISS"
   Select Case rcResult.Category  'app,locate,calculate,desktopexec,fbookmark
     Case "app"
       resultgrid.Data.Picture = rcResult.happ.GetIcon(rSize).Picture
@@ -472,7 +470,7 @@ Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
       If rcResult.text Ends "/" Then
         resultgrid.Data.Picture = Picture["icon:/" & rSize & "/directory"]
           Else
-        Try resultgrid.Data.Picture = DesktopMime.FromFile(rcResult.uri).GetIcon(rSize).Picture
+        Try resultgrid.Data.Picture = MyDesktop.Get_mime_Icon(rcResult.uri, rSize).Picture
       Endif
     Case "calculate"
       resultgrid.Data.Picture = Picture["icon:/" & rSize & "/calculator"]
@@ -706,8 +704,6 @@ End
 Public Sub TrayIcon2_click()
   fmain.Show()
 End
-
-
 
 
 Public Sub Form_Open()

@@ -58,6 +58,28 @@ Public Function parse(desktopfile As String)
     Next
 End
 
+Static Private image_cache As New Collection
+
+Static Public Sub Get_mime_Icon(path As String, Optional rSize As Integer = 16) As Image
+  Dim mimetype As String
+  Dim aKey As String 
+
+  mimetype = DesktopMime.FromFile(path).type
+  aKey = mimetype & Chr(8) & rsize
+
+  If Not image_cache.Exist(aKey) Then 
+
+    image_cache[aKey] = DesktopMime.FromFile(path).GetIcon(rSize)
+    Debug DesktopMime.FromFile(path).type
+    Debug "MISS"
+      Else
+    Debug "HIT"
+  Endif
+  Return image_cache[aKey]
+
+End
+
+
 Static Public Sub GetIcon(dIconName As String, Optional Size As Integer = 16) As Image
   
   Dim sPath As String
