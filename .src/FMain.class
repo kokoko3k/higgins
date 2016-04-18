@@ -49,6 +49,11 @@ Public Sub TextBox1_Change()
   Try previous_search = TextBox1.text
   If Error Then Return
 
+  If Plugins.Calculate(current_search) Then 
+    mouse_normal
+    Goto returnLabel
+  Endif
+
   immediate_search(current_search)
   If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
   Wait 0.3
@@ -59,6 +64,7 @@ Public Sub TextBox1_Change()
 
   delayed_search(current_search)
 
+  returnlabel:
   If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
 End
 
@@ -89,7 +95,6 @@ Public Sub immediate_search(term As String)
   FMain.h = TextBox1.h + (Desktop.scale * 3) + resultgrid.h
   mouse_busy()
 
-  Plugins.Calculate(term)
   Plugins.search_fBookmarks(term)
   Plugins.search_paths(term)
 End
@@ -381,7 +386,6 @@ End
                     fmain.visible = True
                     Wait
                   Until fmain.visible = True
-                  Debug fmain.visible
                 Endif
                 My_listening_socket.close
                 My_listening_socket.Listen(1)

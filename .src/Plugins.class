@@ -34,7 +34,7 @@ End Struct
 
 
 
-Public Sub Calculate(term As String)
+Public Sub Calculate(term As String) As Boolean
   Dim result As New RItem
 
   If String.Len(term) < min_char_calculate Then Return
@@ -42,11 +42,12 @@ Public Sub Calculate(term As String)
   If term Ends "=" Then term = Left(term, -1)
 
   Try result.Text = Eval(Term)
-  If Error Then Return
+  If Error Then Return False
   result.Category = "calculate"
   result.Priority = calculate_priority
   FMain.resultgrid.Rows.count = 1
   FMain.results_list.Add(result)
+  Return True
 End
 
 
