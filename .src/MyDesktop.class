@@ -33,8 +33,7 @@ End
 
 
 Public Function parse(desktopfile As String)
-  Dim sLine, sPath As String
-  Dim sAppPath As String
+  Dim sLine As String
   Dim sSection As String
   If Not Exist(desktopfile, True) Then Return
     For Each sLine In Split(File.Load(desktopfile), "\n")
@@ -77,8 +76,6 @@ Static Public Sub GetIcon(dIconName As String, Optional Size As Integer = 16) As
   
   Dim sPath As String
   Dim hImage As Image
-  Dim sKey As String
-  
   Dim sDir As String
   Dim sSize As String
   Dim hSvg As SvgImage

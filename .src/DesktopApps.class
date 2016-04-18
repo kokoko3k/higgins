@@ -155,7 +155,7 @@ Static Public getting As Boolean = False
 
 Static Public Function _get(AppName As String) As DesktopApps 
   
-  Dim sLine, sPath As String
+  Dim sLine As String
   Dim sAppPath As String
   Dim hDApps As DesktopApps
   Dim sSection As String

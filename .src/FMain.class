@@ -1,5 +1,7 @@
 ' Gambas class file
 
+Public Const appname As String = "higgins"
+
 Public Struct rItem
   Priority As Integer
   Category As String 'app,locate,calculate,desktopexec,execute,fbookmark
@@ -11,18 +13,14 @@ Public Struct rItem
   uri As String
 End Struct
 
-
 Public results_file As String = Temp()
 Public results_list As New RItem[]
 Public picture_list As New Collection
 Public rSize As Integer
-
-
-Public Const appname As String = "higgins"
 Public Socket_File As String = Settings.defaultdir & "/" & appname & ".socket"
 Public Lock_File As String = Settings.defaultdir & "/" & appname & ".lock"
-
 Public firstrun As Boolean = True
+
 
 Public Sub resize_form()
   FMain.h = TextBox1.h + (Desktop.scale * 3)
@@ -87,7 +85,6 @@ End
 
 
 Public Sub immediate_search(term As String)
-  Dim results As String
   reinit()
   FMain.h = TextBox1.h + (Desktop.scale * 3) + resultgrid.h
   mouse_busy()
@@ -99,7 +96,6 @@ End
 
 
 Public Sub delayed_search(term As String)
-  Dim results As String
 
   Select Left(term)
     Case "="
@@ -133,9 +129,6 @@ Public Sub mouse_normal()
 End
 
 Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
-  Dim img As Image
-  Dim t As String
-  Dim i As Integer
   Dim rcResult As New RItem
   If results_list.count = 0 Then Return
   rcResult = results_list[Row]
@@ -187,9 +180,7 @@ End
 
 Public Sub start_item(i As Integer)
   Dim rcResult As New RItem
-  Dim df As Desktopfile
   Dim xdg_terminal As String
-  Dim cmdline As String
   Dim bout As String
 
   rcResult = results_list[i]
@@ -434,7 +425,7 @@ End
 
 Public Sub load_geometry()
   Dim s As Screen
-  Dim rx, ry, w, h As Integer
+  Dim rx, ry, w As Integer
   s = Screenbypos(Mouse.ScreenX, Mouse.ScreenY)
   rx = Settings["win_rx", 0] 
   ry = Settings["win_ry", 0] 

@@ -36,8 +36,7 @@ End Struct
 
 Public Sub Calculate(term As String)
   Dim result As New RItem
-  Dim m_match As Boolean = False
-  
+
   If String.Len(term) < min_char_calculate Then Return
   If term Begins "=" Then term = Right(term, -1)
   If term Ends "=" Then term = Left(term, -1)
@@ -56,7 +55,7 @@ Public Sub search_fBookmarks(term As String)
   Dim b_file_split As New String[]
   Dim b_files As New String[]
   Dim bookmarks As New String[]
-  Dim b_file, aLine, path, fbookmark As String
+  Dim b_file, aLine, path As String
   Dim result As RItem
   Dim match_str As String
   'search for filedialogs bookmarks
@@ -200,7 +199,7 @@ End
 Public locatep As Process
 
 Public Sub locate(term As String)
-Dim tmp As String
+
   If String.Len(term) < min_char_locate Then Return
   'locatep = Shell "nice -n -19 locate -l 1000 -i " & "'" & term & "'" For Input As "locatep"
   locatep = Shell "nice -n -19 locate -l 100 -i " & "'*" & term & "*'" For Input As "locatep"
@@ -240,10 +239,9 @@ Public Sub find_executables(term As String)
 End
 
 Public Sub locatep_read()
-  Dim results, result As String
+  Dim result As String
   Dim rResult As RItem
   Dim is_desktop_exec As Boolean = False
-  Dim t As String
   Dim stream_ok As Boolean 
   FMain.mouse_busy()
   stream_ok = False
@@ -290,7 +288,6 @@ Public Sub locatep_read()
 End
 
 Public Sub kill_locate()
-    Dim running As String
     If locatep <> Null Then
       While Exist("/proc/" & locatep.handle)
         Try locatep.drop

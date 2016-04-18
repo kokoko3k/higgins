@@ -47,7 +47,7 @@
     #MoveScaled(77,5)
   }
   { ResultGrid GridView
-    MoveScaled(3,6,78,32)
+    MoveScaled(2,6,80,32)
     Visible = False
     Font = Font["+1"]
     Expand = True
