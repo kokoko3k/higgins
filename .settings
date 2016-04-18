@@ -159,11 +159,11 @@ Path="gbLocate.gambas"
 
 [OpenFile]
 File[1]=".src/FMain.form"
-Active=3
-File[2]=".src/FMain.class:0.709"
+Active=2
+File[2]=".src/FMain.class:9.378"
 Count=7
-File[3]=".src/MyDesktop.class:41.72"
-File[4]=".src/DesktopApps.class:0.176"
+File[3]=".src/MyDesktop.class:7.129"
+File[4]=".src/DesktopApps.class:28.314"
 File[5]="appicon.png"
 File[6]="README:0.7"
 File[7]="xdg-terminal.sh:0.0"

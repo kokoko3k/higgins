@@ -62,18 +62,18 @@ Public Sub TextBox1_Change()
     reinit()
     Return
   Endif
-  
+
   kill_locate()
-  
+
   DesktopApps.stop_get = True
   While DesktopApps.getting
     Wait
   Wend
   DesktopApps.stop_get = False
-  
+
   Try previous_search = TextBox1.text
   If Error Then Return
-  
+
   immediate_search(current_search)
   If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
   Wait 0.3
@@ -81,7 +81,9 @@ Public Sub TextBox1_Change()
   Try current_search = TextBox1.text 
   If Error Then Return
   If previous_search <> current_search Then Return
+
   delayed_search(current_search)
+
   If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
 End
 
@@ -103,14 +105,13 @@ Public Sub reinit()
   padding = (Desktop.scale * 2)
   resultgrid.Rows.h = resultgrid.Font.RichTextHeight("|j<br>|j") + padding
   rSize = ResultGrid.Rows.H - padding
-  fmain.mouse = Mouse.default
+  mouse_normal()
 End
 
 Public Sub kill_locate()
     Dim running As String
     If locatep <> Null Then
       While Exist("/proc/" & locatep.handle)
-        'Debug "kill  locate"
         Try locatep.drop
         Try locatep.close
         Try locatep.kill
@@ -124,7 +125,7 @@ Public Sub immediate_search(term As String)
   Dim results As String
   reinit()
   FMain.h = TextBox1.h + (Desktop.scale * 3) + resultgrid.h
-  FMain.mouse = Mouse.wait
+  mouse_busy()
 
   Calculate(term)
   search_fBookmarks(term)
@@ -155,7 +156,7 @@ Public Sub delayed_search(term As String)
       'search for files
       locate(term)
   End Select
-  FMain.mouse = Mouse.Default
+
 End
 
 Public Sub search_fBookmarks(term As String)
@@ -377,7 +378,21 @@ Dim tmp As String
   locatep = Shell "nice -n -19 locate -l 100 -i " & "'*" & term & "*'" For Input As "locatep"
   locatep.Blocking = True
   locatep.tag = term
+  mouse_busy()
   Debug "locate " & "'" & term & "'" 
+End
+
+Public Sub locatep_kill()
+  mouse_normal()
+End
+
+Private Sub mouse_busy()
+  fmain.mouse = Mouse.Wait
+  TextBox1.mouse = Mouse.wait
+End
+Private Sub mouse_normal()
+  fmain.mouse = Mouse.Default
+  TextBox1.mouse = Mouse.default
 End
 
 
@@ -387,7 +402,7 @@ Public Sub locatep_read()
   Dim is_desktop_exec As Boolean = False
   Dim t As String
   Dim stream_ok As Boolean 
-
+  mouse_busy()
   stream_ok = False
   Try stream_ok = Not Eof(locatep)
   If Not stream_ok Then Return
@@ -491,12 +506,22 @@ Public Sub start_item(i As Integer)
   Dim df As Desktopfile
   Dim xdg_terminal As String
   Dim cmdline As String
+  Dim bout As String
 
   rcResult = results_list[i]
   Select Case rcResult.Category 'app,locate,calculate,desktopexec,fbookmark
 
     Case "locate"
-      Desktop.Open(rcResult.mExec)
+      Shell "bash -c \"[[ -x '" & rcResult.mExec & "' ]] && echo executable \"" To bout
+      If Trim(bout) = "" Then 
+        Desktop.Open(rcResult.mExec)
+          Else
+        If Message.Question(("Execute file?"), "Execute", "Open") = 1 Then 
+          Shell rcResult.mExec
+            Else
+          Desktop.Open(rcResult.mExec)
+        Endif
+      Endif
 
     Case "fbookmark"
       Desktop.Open(rcResult.uri)
