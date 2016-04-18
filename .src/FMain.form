@@ -2,6 +2,7 @@
 
 { Form Form
   MoveScaled(0,0,83,41)
+  Tracking = True
   PopupMenu = "MenuPopup"
   Icon = Picture["appicon.png"]
   Persistent = True

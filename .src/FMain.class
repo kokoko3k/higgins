@@ -469,7 +469,8 @@ Public Sub Form_Show()
   fmain.visible = True
   fmain.tag = ""
   resize_form()
-   Wait
+  Wait
+  TextBox1.SetFocus()
 End
 
 Public Sub Form_Close()

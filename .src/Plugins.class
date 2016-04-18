@@ -295,7 +295,6 @@ Public Sub kill_locate()
         Try locatep.kill
         Wait
       Wend
-      'Until (locatep.state <> locatep.Running) 
     Endif
 End
 
