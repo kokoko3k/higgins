@@ -16,4 +16,6 @@ Component=gb.gui.trayicon
 Component=gb.net
 TabSize=2
 Language=it
+ControlPublic=1
+ModulePublic=1
 Packager=1

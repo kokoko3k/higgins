@@ -1,0 +1,307 @@
+' Gambas class file
+
+Create Static
+
+'how many characters needs to be entered to start the following searches
+Public Const min_char_calculate As Integer = 1
+Public Const min_char_app As Integer = 2
+Public Const min_char_execute As Integer = 2
+Public Const min_char_app_by_desc As Integer = 3
+Public Const min_char_locate As Integer = 3
+Public Const min_char_path As Integer = 1
+Public Const min_char_fBookmarks As Integer = 1
+
+'no effect by now, may come handy to sort the results (?)
+Public Const calculate_priority As Integer = 100
+Public Const searchpaths_priority As Integer = 90
+Public Const fBookmarks_priority As Integer = 80
+Public Const app_priority As Integer = 70
+Public Const execute_priority As Integer = 60
+Public Const DesktopExec_priority As Integer = 50
+Public Const locate_priority As Integer = 40
+
+
+Public Struct rItem
+  Priority As Integer
+  Category As String 'app,locate,calculate,desktopexec,execute,fbookmark
+  Text As String
+  SubText As String
+  Mexec As String
+  'pic As Picture
+  happ As DesktopApps
+  uri As String
+End Struct
+
+
+
+Public Sub Calculate(term As String)
+  Dim result As New RItem
+  Dim m_match As Boolean = False
+  
+  If String.Len(term) < min_char_calculate Then Return
+  If term Begins "=" Then term = Right(term, -1)
+  If term Ends "=" Then term = Left(term, -1)
+
+  Try result.Text = Eval(Term)
+  If Error Then Return
+  result.Category = "calculate"
+  result.Priority = calculate_priority
+  FMain.resultgrid.Rows.count = 1
+  FMain.results_list.Add(result)
+End
+
+
+
+Public Sub search_fBookmarks(term As String)
+  Dim b_file_split As New String[]
+  Dim b_files As New String[]
+  Dim bookmarks As New String[]
+  Dim b_file, aLine, path, fbookmark As String
+  Dim result As RItem
+  Dim match_str As String
+  'search for filedialogs bookmarks
+  
+  If String.Len(term) < min_char_fBookmarks Then Return
+
+  'gtk2,3,qt(kde?)
+  b_files.Add(User.home & "/" & ".gtk-bookmarks")
+  b_files.Add(User.home & "/" & ".config/gtk-3.0/bookmarks")
+  b_files.Add(User.home & "/" & ".local/share/user-places.xbel")
+
+  For Each b_file In b_files
+    Try b_file_split = Split(File.load(b_file), "\n")
+    If Not Error Then 'parseit
+       For Each aline In b_file_split
+         
+         If b_file Ends ".xbel" Then 
+           match_str = "* href=*//*" & term & "*"  'qt/kde
+             Else
+           match_str = "*://*" & term & "*" 'gtk2,3
+         Endif
+         
+         If aline Like match_str Then
+           
+           If b_file Ends ".xbel" Then 
+             Try path = Split(aline, "\"")[1]
+                Else
+              Try path = Split(aline, " ")[0]
+           Endif
+           
+           If Not Error Then
+             If Not (b_file Ends ".xbel") Then path = Replace(path, " ", "%20")
+             If path Ends "/" Then path = Left(path, -1) 'this is necessary to eliminate dupes
+
+             If bookmarks.find(path) < 0 Then 
+               bookmarks.Add(path)
+                result = New RItem
+                result.Category = "fbookmark"
+                result.Priority = fBookmarks_priority
+                result.SubText = ""
+                result.Text = path
+                result.SubText = "Local bookmark: " & path
+                result.uri = path
+                result.mExec = path
+                
+                FMain.results_list.Add(result)
+                FMain.resultgrid.Rows.Count += 1
+             Endif 
+
+           Endif 'not error
+           
+         Endif
+       Next 'aline
+    
+    Endif 
+  Next
+End
+
+Public Sub search_paths(s_path As String)
+  Dim path, find_out As String
+  Dim result As Ritem
+
+  Shell "find " & s_path & " -maxdepth 1" To find_out
+  If String.Len(s_path) < min_char_path Then Return
+  If find_out <> Null Then
+
+    For Each path In Split(find_out, "\n", "", True)
+      result = New RItem
+      result.Category = "locate"
+      result.Priority = searchpaths_priority
+      result.SubText = ""
+      If Exist(path) Then
+        If path <> "/" Then 
+          If Stat(path, True).type = gb.Directory Then path &= "/"
+        Endif
+      Endif
+      result.Text = path
+      result.uri = path
+      result.mExec = path
+      FMain.results_list.Add(result)
+      FMain.resultgrid.Rows.Count += 1
+    Next
+  Endif
+  
+End
+
+
+
+Public Sub find_apps(term As String)
+  Dim happ As New DesktopApps
+  Dim app As String
+  Dim result As RItem
+  If String.Len(term) < min_char_app Then Return
+
+  For Each app In DesktopApps
+    If InStr(Lower(app), Lower(term)) Then
+      happ = DesktopApps[app]
+      result = New RItem
+      result.category = "app"
+      result.Priority = app_priority
+      result.Text = happ.name
+      result.subtext = happ.comment
+      result.mExec = happ.Exec_R_noargs
+      result.uri = happ.file_path
+      result.happ = happ
+      FMain.results_list.Add(result)
+      FMain.ResultGrid.Rows.count += 1
+      Wait
+    Endif
+  Next
+End
+
+Public Sub find_apps_by_desc(term As String)
+  Dim happ As New DesktopApps
+  Dim app As String
+  Dim ismatched As Boolean = False
+  Dim result As RItem
+
+  If String.Len(term) < min_char_app_by_desc Then Return
+  For Each app In DesktopApps
+    happ = DesktopApps[app]
+    If happ = Null Then Return
+    ismatched = InStr(Lower(happ._$Comment), Lower(term)) > 0 
+    ismatched = ismatched Or InStr(Lower(happ._$Category), Lower(term)) > 0 
+    ismatched = ismatched Or InStr(Lower(happ._$Keywords), Lower(term)) > 0 
+    If ismatched Then
+      result = New RItem
+      result.category = "app"
+      result.Priority = app_priority
+      result.Text = happ.name
+      result.subtext = happ.comment
+      result.mExec = happ.Exec_R_noargs
+      result.uri = happ.file_path
+      result.happ = happ
+      FMain.results_list.Add(result)
+      FMain.ResultGrid.Rows.count += 1
+    Endif
+  Next
+End
+
+Public locatep As Process
+
+Public Sub locate(term As String)
+Dim tmp As String
+  If String.Len(term) < min_char_locate Then Return
+  'locatep = Shell "nice -n -19 locate -l 1000 -i " & "'" & term & "'" For Input As "locatep"
+  locatep = Shell "nice -n -19 locate -l 100 -i " & "'*" & term & "*'" For Input As "locatep"
+  locatep.Blocking = True
+  locatep.tag = term
+  FMain.mouse_busy()
+  Debug "locate " & "'" & term & "'" 
+End
+
+Public Sub find_executables(term As String)
+  Dim exe, exe_found As String 
+  Dim result As RItem
+  Try exe = Split(term, " ", "", True)[0]
+  If exe = "" Then Return
+  
+  exe_found = System.Find(term)
+  If exe_found = "" Then Return
+  result = New RItem
+  result.Category = "execute"
+  result.Mexec = term
+  result.Priority = execute_priority
+  result.Text = "Run " & term
+  result.SubText = "From " & File.Dir(exe_found)
+  result.uri = exe_found
+  FMain.results_list.Add(result)
+  FMain.ResultGrid.Rows.count += 1
+  
+  result = New RItem
+  result.Category = "execute_terminal"
+  result.Mexec = term
+  result.Priority = execute_priority
+  result.Text = "Run " & term & " in the terminal emulator"
+  result.SubText = "From " & File.Dir(exe_found) 
+  result.uri = exe_found
+  FMain.results_list.Add(result)
+  FMain.ResultGrid.Rows.count += 1
+End
+
+Public Sub locatep_read()
+  Dim results, result As String
+  Dim rResult As RItem
+  Dim is_desktop_exec As Boolean = False
+  Dim t As String
+  Dim stream_ok As Boolean 
+  FMain.mouse_busy()
+  stream_ok = False
+  Try stream_ok = Not Eof(locatep)
+  If Not stream_ok Then Return
+
+  Try Line Input #locatep, result
+  If Error Then Return
+  If (result = "") Or (locatep.tag <> FMain.TextBox1.text) Then 
+    Wait 
+    Return
+  Endif
+  If Not Exist(result, True) Then Return
+  rResult = New RItem
+
+  If result Ends ".desktop" Then 
+    MyDesktop.init()
+    MyDesktop.parse(result)
+    If MyDesktop.dExec <> "" Then is_desktop_exec = True
+  Endif
+
+  If is_desktop_exec Then
+    rResult.Category = "desktopexec"
+    rResult.Priority = DesktopExec_priority
+      Else
+    rResult.Category = "locate"
+    rResult.Priority = locate_priority
+  Endif
+
+  rResult.mExec = result
+  rResult.uri = result
+  
+  If Stat(result, True).type = gb.directory Then 
+    rResult.Text = File.Name(result) & "/"
+      Else
+    rResult.Text = File.Name(result)
+  Endif
+  
+  rResult.SubText = File.Dir(result)
+
+  FMain.results_list.Add(rResult)
+  FMain.ResultGrid.Rows.count += 1
+
+End
+
+Public Sub kill_locate()
+    Dim running As String
+    If locatep <> Null Then
+      While Exist("/proc/" & locatep.handle)
+        Try locatep.drop
+        Try locatep.close
+        Try locatep.kill
+        Wait
+      Wend
+      'Until (locatep.state <> locatep.Running) 
+    Endif
+End
+
+Public Sub locatep_kill()
+  FMain.mouse_normal()
+End
