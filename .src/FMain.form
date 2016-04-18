@@ -47,11 +47,12 @@
     #MoveScaled(77,5)
   }
   { ResultGrid GridView
-    MoveScaled(2,6,78,32)
+    MoveScaled(3,6,78,32)
     Visible = False
     Font = Font["+1"]
     Expand = True
     PopupMenu = "MenuPopup"
+    Mode = Select.Single
     Grid = False
   }
 }

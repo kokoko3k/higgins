@@ -75,14 +75,14 @@ Public Sub TextBox1_Change()
   If Error Then Return
   
   immediate_search(current_search)
-
+  If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
   Wait 0.3
 
   Try current_search = TextBox1.text 
   If Error Then Return
   If previous_search <> current_search Then Return
-
   delayed_search(current_search)
+  If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
 End
 
 
@@ -440,7 +440,6 @@ Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
   Dim rcResult As New RItem
   If results_list.count = 0 Then Return
   rcResult = results_list[Row]
-  If resultgrid.current = Null Then resultgrid.Rows[0].Selected = True
 
   'two lines:
   resultgrid.data.RichText = "<b>" & rcResult.text & "</b>"
@@ -528,18 +527,31 @@ End
 
 Public Sub TextBox1_KeyPress()
   Select Key.Code
+    
     Case Key.down
       ResultGrid.SetFocus()
-      Try resultgrid.Rows[1].Selected = True
+      If resultgrid.current = Null Then 
+        Try resultgrid.Rows[0].Selected = True
+          Else
+        Try resultgrid.Rows[1].Selected = True
+      Endif
+      
     Case Key.PgDown
       ResultGrid.SetFocus()
-      Try resultgrid.Rows[1].Selected = True
+      If resultgrid.current = Null Then 
+        Try resultgrid.Rows[0].Selected = True
+          Else
+        Try resultgrid.Rows[1].Selected = True
+      Endif
+      
     Case Key.enter
       Try start_item(0)
       If Not Error Then timerClose.Trigger()
+      
     Case Key.Return
       Try start_item(0)
       If Not Error Then timerClose.Trigger()
+      
   End Select
 End
 
