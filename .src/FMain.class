@@ -14,6 +14,7 @@ End Struct
 Public locatep As Process
 Public results_file As String = Temp()
 Public results_list As New RItem[]
+Public picture_list As New Collection
 Public rSize As Integer
 
 'how many characters needs to be entered to start the following searches
@@ -95,6 +96,7 @@ End
 Public Sub reinit()
   Dim padding As Integer
   results_list.Clear()
+  picture_list.Clear()
   initgrid()
   MyDesktop.init()
   kill_locate()
@@ -446,7 +448,15 @@ Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
     resultgrid.data.RichText &= "<br><font size=-1>" & rcResult.subtext & "</font>"
   Endif
 
-  'find pic
+  'find pic from cache?
+
+  If picture_list[row] <> Null Then
+    resultgrid.Data.Picture = picture_list[row] 
+    Debug "HIT"
+    Return
+  Endif
+  'no cache :(
+  Debug "MISS"
   Select Case rcResult.Category  'app,locate,calculate,desktopexec,fbookmark
     Case "app"
       resultgrid.Data.Picture = rcResult.happ.GetIcon(rSize).Picture
@@ -469,9 +479,13 @@ Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
     Case "fbookmark"
       resultgrid.Data.Picture = Picture["icon:/" & rSize & "/bookmark"]
   End Select
+  
   If resultgrid.Data.picture = Null Then
     resultgrid.Data.Picture = Picture["icon:/" & rSize & "/file"]
   Endif
+  
+    'cache picture
+     If resultgrid.Data.picture <> Null Then picture_list[row] = resultgrid.Data.picture
   
 End
 
