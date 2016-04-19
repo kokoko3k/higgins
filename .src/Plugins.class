@@ -30,6 +30,7 @@ Public Struct rItem
   'pic As Picture
   happ As DesktopApps
   uri As String
+  clipboard As String
 End Struct
 
 
@@ -45,6 +46,7 @@ Public Sub Calculate(term As String) As Boolean
   If Error Then Return False
   result.Category = "calculate"
   result.Priority = calculate_priority
+  result.clipboard = result.Text
   FMain.resultgrid.Rows.count = 1
   FMain.results_list.Add(result)
   Return True
@@ -101,6 +103,7 @@ Public Sub search_fBookmarks(term As String)
                 result.SubText = "Local bookmark: " & path
                 result.uri = path
                 result.mExec = path
+                result.clipboard = result.uri 
                 
                 FMain.results_list.Add(result)
                 FMain.resultgrid.Rows.Count += 1
@@ -136,6 +139,7 @@ Public Sub search_paths(s_path As String)
       result.Text = path
       result.uri = path
       result.mExec = path
+      result.clipboard = path
       FMain.results_list.Add(result)
       FMain.resultgrid.Rows.Count += 1
     Next
@@ -161,6 +165,8 @@ Public Sub find_apps(term As String)
       result.subtext = happ.comment
       result.mExec = happ.Exec_R_noargs
       result.uri = happ.file_path
+      result.clipboard = result.uri
+      
       result.happ = happ
       FMain.results_list.Add(result)
       FMain.ResultGrid.Rows.count += 1
@@ -191,6 +197,8 @@ Public Sub find_apps_by_desc(term As String)
       result.mExec = happ.Exec_R_noargs
       result.uri = happ.file_path
       result.happ = happ
+      result.clipboard = result.uri 
+      
       FMain.results_list.Add(result)
       FMain.ResultGrid.Rows.count += 1
     Endif
@@ -235,6 +243,8 @@ Public Sub find_executables(term As String)
   result.Text = "Run " & term & " in the terminal emulator"
   result.SubText = "From " & File.Dir(exe_found) 
   result.uri = exe_found
+  result.clipboard = result.uri
+  
   FMain.results_list.Add(result)
   FMain.ResultGrid.Rows.count += 1
 End
@@ -282,6 +292,8 @@ Public Sub locatep_read()
   Endif
   
   rResult.SubText = File.Dir(result)
+  rResult.clipboard = result
+
 
   FMain.results_list.Add(rResult)
   FMain.ResultGrid.Rows.count += 1

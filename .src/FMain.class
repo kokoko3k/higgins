@@ -11,6 +11,7 @@ Public Struct rItem
   'pic As Picture
   happ As DesktopApps
   uri As String
+  clipboard As String
 End Struct
 
 Public results_file As String = Temp()
@@ -285,7 +286,7 @@ Public Sub MenuOpenFile_Click()
 End
 
 Public Sub MenuCopy_Click()
-  Try Clipboard.Copy(results_list[ResultGrid.row].uri)
+  Clipboard.Copy(results_list[ResultGrid.row].clipboard)
 End
 
 Private Function Screenbypos(x As Integer, y As Integer) As Screen
