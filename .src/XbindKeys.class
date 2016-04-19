@@ -1,0 +1,101 @@
+' Gambas class file
+
+Private xbindkeysp As Process
+Private conf_file As String
+Private hotkeys As Collection
+Private xbindkeys_alias As String
+
+Public Sub _new(conf As String, Optional alias As String = "")
+  If Not System.Exist("xbindkeys") Then
+    Debug "ERROR: xbindkeys not found in system path"
+    Quit
+  Endif
+  
+  If alias <> "" Then
+    Shell "mkdir -p " & File.Dir(alias)
+    Try Link System.Find("xbindkeys") To alias
+    xbindkeys_alias = alias
+      Else
+    xbindkeys_alias = "xbindkeys"
+  Endif
+  
+  conf_file = conf
+  hotkeys = parse_conf()
+  If hotkeys = Null Then hotkeys = New Collection
+  Reload_xbindkeys()
+End
+
+Private Function parse_conf() As Collection
+  Dim pHotKeys As New Collection
+  Dim aLine As String
+  Dim WhatToDo As String 'find_new,find_action,find_hotkey
+  Dim action, hotkey As String
+  'Syntax:
+  '#new
+  'Action
+  'hotkey
+  If Not Exist(conf_file, True) Then Return Null
+  WhatToDo = "find_new"
+  For Each aLine In Split(File.Load(conf_file), "\n", "", True)
+    Select WhatToDo
+      Case "find_new"
+        If aLine = "#new" Then WhatToDo = "find_action"
+      Case "find_action"
+        action = aLine
+        WhatToDo = "find_hotkey"
+      Case "find_hotkey"
+        hotkey = aLine
+        pHotkeys[hotkey] = action
+        WhatToDo = "find_new"
+    End Select
+  Next
+  Return pHotKeys
+End
+
+Private Sub write_conf()
+  Dim outfile As String
+  Dim action As String
+  Dim HotKey As String
+  For Each Action In hotkeys
+    hotkey = hotkeys.key
+    outfile &= "#new" & "\n"
+    outfile &= Action & "\n"
+    outfile &= Hotkey & "\n"
+  Next
+  File.Save(conf_file, outfile)
+End
+' 
+Public Sub register(action As String) As String
+  Dim tmp As String = Temp()
+  Dim out As String
+  Dim splitted As String[]
+  Dim hotkey As String
+  Shell "touch " & tmp Wait
+  xbindkeysp.kill
+  Shell xbindkeys_alias & " -k -f " & tmp To out
+  splitted = Split(out, "\n", "", True)
+  hotkey = Trim(splitted[splitted.count - 1])
+  hotkeys[hotkey] = "\"" & "echo " & action & "\""
+  write_conf()
+  Reload_xbindkeys()
+  Return hotkey
+End
+
+Public Sub close()
+  Try xbindkeysp.kill
+End
+
+Public Sub Reload_xbindkeys()
+  Try xbindkeysp.kill
+  xbindkeysp = Shell xbindkeys_alias & " -n -f " & conf_file For Read As "xbindkeysp"
+End
+
+Event HotkeyPressed(action As String)
+
+Public Sub xbindkeysp_read()
+  Dim out As String
+  Line Input #xbindkeysp, out
+  Raise Hotkeypressed(out)
+End
+
+

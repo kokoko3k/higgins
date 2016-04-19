@@ -1,8 +1,8 @@
 ' Gambas class file
 
 Public xb As XbindKeys
-
 Public Const appname As String = "higgins"
+Public Confpath As String = Settings.defaultdir & "/" & appname
 
 Public Struct rItem
   Priority As Integer
@@ -20,8 +20,8 @@ Public results_file As String = Temp()
 Public results_list As New RItem[]
 Public picture_list As New Collection
 Public rSize As Integer
-Public Socket_File As String = Settings.defaultdir & "/" & appname & ".socket"
-Public Lock_File As String = Settings.defaultdir & "/" & appname & ".lock"
+Public Socket_File As String = Confpath & "/socket"
+Public Lock_File As String = Confpath & "/lock"
 Public firstrun As Boolean = True
 
 
@@ -190,13 +190,14 @@ Public Sub start_item(i As Integer)
   Dim rcResult As New RItem
   Dim xdg_terminal As String
   Dim bout As String
-
+  Dim isdir As Boolean
   rcResult = results_list[i]
   Select Case rcResult.Category 'app,locate,calculate,desktopexec,fbookmark
-
     Case "locate"
+      application
       Shell "bash -c \"[[ -x '" & rcResult.mExec & "' ]] && echo executable \"" To bout
-      If Trim(bout) = "" Then 
+      Try isdir = Stat(rcResult.Mexec, True).type = gb.Directory 
+      If (Trim(bout) = "") Or (isdir) Then 
         Desktop.Open(rcResult.mExec)
           Else
         If Message.Question(("Execute file?"), "Execute", "Open") = 1 Then 
@@ -426,6 +427,9 @@ End
 
 Public Sub Form_Open()
   If Not firstrun Then Return
+  If Not Exist(Confpath, True) Then
+    Mkdir confpath
+  Endif
   setup_xbindkeys()
   load_geometry()
   socket_init()
@@ -435,8 +439,9 @@ Public Sub Form_Open()
 End
 
 Public Sub setup_xbindkeys()
-  Dim rcpath As String = File.Dir(Settings.path) & "/higgins.xb.rc"
-  xb = New XbindKeys(rcpath) As "xb"
+  Dim rcpath As String = confpath & "/higgins.xb.rc"
+  Shell "killall " & confpath & "/xbindkeys_higgins" Wait
+  xb = New XbindKeys(rcpath, confpath & "/xbindkeys_higgins") As "xb"
   If Not Exist(rcpath) Then 
     xb.register("show")
   Endif
@@ -472,6 +477,11 @@ End
 
 Public Sub myQuit()
   Try xb.close
+  Stop
+  Wait
+  TrayIcon2.Delete()
+  fmain.Delete()
+  fmain.Close()
   Quit
 End
 
@@ -537,3 +547,7 @@ Private Function findSelectable(o As Object) As Object
   Endif
 End
 
+
+Public Sub TextBox1_Click()
+  xb.register("show")
+End

@@ -42,7 +42,7 @@
   }
   { TextBox1 ButtonBox
     MoveScaled(1,0,80,5)
-    Picture = Picture["icon:/medium/find"]
+    Picture = Picture["icon:/medium/options"]
   }
   { TimerClose #Timer
     #MoveScaled(77,5)
