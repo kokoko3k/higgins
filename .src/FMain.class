@@ -148,7 +148,6 @@ Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
   Endif
 
   'find pic from cache?
-
   If picture_list[row] <> Null Then
     resultgrid.Data.Picture = picture_list[row] 
     Return

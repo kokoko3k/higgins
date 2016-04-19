@@ -45,7 +45,7 @@
     Picture = Picture["icon:/medium/options"]
   }
   { TimerClose #Timer
-    #MoveScaled(77,5)
+    #MoveScaled(63,1)
   }
   { ResultGrid GridView
     MoveScaled(2,6,80,32)

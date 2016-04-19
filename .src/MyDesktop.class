@@ -35,6 +35,7 @@ End
 Public Function parse(desktopfile As String)
   Dim sLine As String
   Dim sSection As String
+  init()
   If Not Exist(desktopfile, True) Then Return
     For Each sLine In Split(File.Load(desktopfile), "\n")
       sLine = Trim(sLine)
