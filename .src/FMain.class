@@ -1,5 +1,7 @@
 ' Gambas class file
 
+Public xb As XbindKeys
+
 Public Const appname As String = "higgins"
 
 Public Struct rItem
@@ -418,15 +420,28 @@ Public Sub TrayIcon2_click()
   fmain.Show()
 End
 
+Public Sub xb_HotkeyPressed(action As String)
+  If action = "show" Then Form_Show()
+End
 
 Public Sub Form_Open()
   If Not firstrun Then Return
+  setup_xbindkeys()
   load_geometry()
   socket_init()
   InitTrayIcon()
   resize_form()
   firstrun = False
 End
+
+Public Sub setup_xbindkeys()
+  Dim rcpath As String = File.Dir(Settings.path) & "/higgins.xb.rc"
+  xb = New XbindKeys(rcpath) As "xb"
+  If Not Exist(rcpath) Then 
+    xb.register("show")
+  Endif
+End
+
 
 Public Sub load_geometry()
   Dim s As Screen
@@ -456,6 +471,7 @@ Public Sub TimerClose_Timer()
 End
 
 Public Sub myQuit()
+  Try xb.close
   Quit
 End
 
@@ -486,7 +502,7 @@ End
 Public Sub QuitMenuTray_Click()
   myQuit()
 End
-
+   
 Public Sub QuitMenu_Click()
   myQuit()
 End
