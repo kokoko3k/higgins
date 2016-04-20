@@ -94,6 +94,7 @@ Event HotkeyPressed(action As String)
 
 Public Sub xbindkeysp_read()
   Dim out As String
+
   Line Input #xbindkeysp, out
   Raise Hotkeypressed(out)
 End

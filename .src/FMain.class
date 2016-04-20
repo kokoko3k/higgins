@@ -198,7 +198,6 @@ Public Sub start_item(i As Integer)
 
   Select Case rcResult.Category 'app,locate,calculate,desktopexec,fbookmark
     Case "locate"
-      Stop
       Shell "bash -c \"[[ -x '" & rcResult.mExec & "' ]] && echo executable \"" To bout
       Try isdir = Stat(rcResult.Mexec, True).type = gb.Directory 
       If (Trim(bout) = "") Or (isdir) Then 
@@ -387,7 +386,13 @@ Public Sub TrayIcon2_click()
 End
 
 Public Sub xb_HotkeyPressed(action As String)
-  If action = "show" Then Form_Show()
+  If action = "show" Then
+    If fmain.visible Then
+      fmain.Hide()
+        Else
+      fmain.Show()
+    Endif
+  Endif
 End
 
 Public Sub Form_Open()
@@ -400,7 +405,8 @@ Public Sub Form_Open()
   Endif
   If Newuser Then
     msg = ("Higgins is not configured") & "\n"
-    msg &= ("Please configure at least the hotkey")
+    msg &= ("Please configure at least the hotkey") & "\n"
+    msg &= ("to show the higgins window.") & "\n"
     Message.Info(msg)
   Endif
   setup_xbindkeys()
@@ -412,10 +418,7 @@ Public Sub Form_Open()
 
   indexer = New Plugin_indexer(hSettings.GridIndex, confpath & "/indexer.txt") As "indexer"
 
-  indexer.restart_timer(MySettings.plugin_indexer_last_index_time, hSettings.ValueBoxReindex.value)
-  firstrun = False
-
-  
+  indexer.restart_timer(MySettings.plugin_indexer_last_index_time, hSettings.ValueBoxReindex.value)  
 End
 
 
@@ -459,12 +462,19 @@ Public Sub Form_Hide()
 End
 
 Public Sub Form_Show()
+  If firstrun Then 
+    fmain.hide
+    firstrun = False
+    Return
+  Endif
   MySettings.load_geometry()
+
   fmain.visible = True
   fmain.tag = ""
   resize_form()
   Wait
   TextBox1.SetFocus()
+
 End
 
 Public Sub Form_Close()
