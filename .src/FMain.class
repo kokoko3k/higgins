@@ -194,9 +194,9 @@ Public Sub start_item(i As Integer)
   Dim bout As String
   Dim isdir As Boolean
   rcResult = results_list[i]
+
   Select Case rcResult.Category 'app,locate,calculate,desktopexec,fbookmark
     Case "locate"
-      application
       Shell "bash -c \"[[ -x '" & rcResult.mExec & "' ]] && echo executable \"" To bout
       Try isdir = Stat(rcResult.Mexec, True).type = gb.Directory 
       If (Trim(bout) = "") Or (isdir) Then 

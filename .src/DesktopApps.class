@@ -475,9 +475,13 @@ Private Function Exec_R_noargs_read() As String
   Dim nExec As String
   Dim field_codes As String[] = ["f", "F", "u", "U", "d", "D", "n", "N", "i", "c", "k", "v", "m"]
   Dim code As String
+
   nExec = _$Exec
   For Each code In field_codes
     nExec = Replace(nExec, " %" & code & " ", " ")
+    If nExec Ends " %" & code Then 
+      nexec = Left(nexec, -3)
+    Endif
   Next
   Return nExec  
 End

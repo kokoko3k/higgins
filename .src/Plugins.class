@@ -163,10 +163,11 @@ Public Sub find_apps(term As String)
       result.Priority = app_priority
       result.Text = happ.name
       result.subtext = happ.comment
+
       result.mExec = happ.Exec_R_noargs
       result.uri = happ.file_path
       result.clipboard = result.uri
-      
+
       result.happ = happ
       FMain.results_list.Add(result)
       FMain.ResultGrid.Rows.count += 1
