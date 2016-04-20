@@ -15,6 +15,10 @@
   { TrayMenu Menu
     Text = ("TrayMenu")
     Visible = False
+    { MenuTrayOptions Menu
+      Text = ("Options")
+      Picture = Picture["icon:/small/options"]
+    }
     { MenuTrayShow Menu
       Text = ("Show")
       Picture = Picture["icon:/small/new-window"]

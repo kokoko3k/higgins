@@ -461,6 +461,10 @@ Public Sub Form_Close()
   Form_Hide()
 End
 
+Public Sub MenuTrayOptions_Click()
+  hSettings.Show()
+End
+
 
 Public Sub QuitMenuTray_Click()
   myQuit()
