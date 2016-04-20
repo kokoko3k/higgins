@@ -1,0 +1,74 @@
+' Gambas module file
+
+Public Sub save()
+  save_geometry()
+
+End
+
+
+Public Sub load()
+  load_geometry()
+
+End
+
+
+Public Sub save_geometry()
+  Dim xy_r As Integer[]
+  xy_r = Relative_window_geom(fmain)
+  Settings["win_rx"] = xy_r[0]
+  Settings["win_ry"] = xy_r[1]
+  Settings["win_w"] = xy_r[2]
+  ' Settings["win_h"] = xy_r[3]
+  Settings.Save()
+End
+
+Public Sub load_geometry()
+  Dim s As Screen
+  Dim rx, ry, w As Integer
+  s = Screenbypos(Mouse.ScreenX, Mouse.ScreenY)
+  rx = Settings["win_rx", 0] 
+  ry = Settings["win_ry", 0] 
+  w = Settings["win_w", (s.w Div 2)] 
+  ' h = Settings["win_h", 64] 
+  fmain.Move(rx + s.x, ry + s.y, w)
+End
+
+
+Private Function Screenbypos(x As Integer, y As Integer) As Screen
+  Dim s As Screen
+  For Each s In Screens
+    If (x >= s.x) And x <= (s.x + s.W) Then
+      If (y >= s.y) And y <= (s.y + s.h) Then
+        Return s
+      Endif
+    Endif
+  Next
+  'no screen found !? repeat with more tolerance:
+  For Each s In Screens
+    If (x + 50 >= s.x) And x <= (s.x + s.W + 50) Then
+      If (y + 50 >= s.y) And y <= (s.y + s.h + 50) Then
+        Return s
+      Endif
+    Endif
+  Next
+  'still no screen found? return the first.
+  Debug "Couldn 't get the matching screen (!)"
+  Return Screens[0]
+End
+
+Public Function Relative_window_geom(o As Window) As Integer[]
+  'get the object position relative to the screen is on
+  Dim rx, ry, ox, oy As Integer
+  Dim cs As Screen
+  Dim out As New Integer[]
+  cs = Screenbypos(o.x, o.y)
+  ox = cs.X 'offset
+  oy = cs.Y 'offset
+  rx = o.x - ox
+  ry = o.y - oy
+  out.Add(rx)
+  out.Add(ry)
+  out.Add(o.w)
+  out.Add(o.h)
+  Return out
+End
