@@ -379,7 +379,11 @@ Public Sub InitTrayIcon()
 End
 
 Public Sub TrayIcon2_click()
-  fmain.Show()
+  If fmain.visible Then 
+    Form_Hide()
+      Else
+    Form_Show()
+  Endif
 End
 
 Public Sub xb_HotkeyPressed(action As String)
@@ -465,6 +469,11 @@ End
 Public Sub QuitMenu_Click()
   myQuit()
 End
+
+Public Sub MenuTrayShow_click()
+  Form_Show()
+End
+
 
 
 Public Sub TextBox1_GotFocus()

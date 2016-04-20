@@ -15,6 +15,10 @@
   { TrayMenu Menu
     Text = ("TrayMenu")
     Visible = False
+    { MenuTrayShow Menu
+      Text = ("Show")
+      Picture = Picture["icon:/small/new-window"]
+    }
     { QuitMenuTray Menu
       Text = ("Quit")
       Picture = Picture["icon:/medium/quit"]
