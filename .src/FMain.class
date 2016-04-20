@@ -100,7 +100,6 @@ Public Sub immediate_search(obj As Object)
   mouse_busy()
 
   Plugins.search_fBookmarks(obj.text)
-  Plugins.search_paths(obj.text)
 End
 
 
@@ -122,7 +121,9 @@ Public Sub delayed_search(obj As Object)
       'search for executables
       Plugins.find_executables(obj.text)
 
-       indexer.search(obj, ResultGrid, results_list)
+      indexer.search(obj, ResultGrid, results_list)
+
+      Plugins.search_paths(obj.text)
 
        mouse_normal()
   End Select
@@ -197,6 +198,7 @@ Public Sub start_item(i As Integer)
 
   Select Case rcResult.Category 'app,locate,calculate,desktopexec,fbookmark
     Case "locate"
+      Stop
       Shell "bash -c \"[[ -x '" & rcResult.mExec & "' ]] && echo executable \"" To bout
       Try isdir = Stat(rcResult.Mexec, True).type = gb.Directory 
       If (Trim(bout) = "") Or (isdir) Then 
@@ -505,4 +507,5 @@ Public Sub indexer_indexing_done(finish_time As Date)
   MySettings.plugin_indexer_last_index_time = finish_time
   
 End
+
 

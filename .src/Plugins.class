@@ -121,7 +121,7 @@ End
 Public Sub search_paths(s_path As String)
   Dim path, find_out As String
   Dim result As Ritem
-
+  If Not (s_path Begins "/") Then s_path = User.home & "/" & s_path
   Shell "find " & s_path & " -maxdepth 1" To find_out
   If String.Len(s_path) < min_char_path Then Return
   If find_out <> Null Then
@@ -131,7 +131,7 @@ Public Sub search_paths(s_path As String)
       result.Category = "locate"
       result.Priority = searchpaths_priority
       result.SubText = ""
-      If Exist(path) Then
+      If Exist(path, True) Then
         If path <> "/" Then 
           If Stat(path, True).type = gb.Directory Then path &= "/"
         Endif
