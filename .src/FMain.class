@@ -200,7 +200,8 @@ Public Sub start_item(i As Integer)
     Case "locate"
       Shell "bash -c \"[[ -x '" & rcResult.mExec & "' ]] && echo executable \"" To bout
       Try isdir = Stat(rcResult.Mexec, True).type = gb.Directory 
-      If (Trim(bout) = "") Or (isdir) Then 
+      
+      If ((Trim(bout) = "") Or (isdir)) Or (Not MyDesktop.mime_exe(rcResult.Mexec)) Then 
         Desktop.Open(rcResult.mExec)
           Else
         If Message.Question(("Execute file?"), "Execute", "Open") = 1 Then 
