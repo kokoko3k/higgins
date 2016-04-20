@@ -77,8 +77,6 @@ End
 
 
 
-
-
 Public Sub Button4_Click()
   FMain.indexer.reindex()
   Button4.enabled = False
@@ -93,3 +91,4 @@ Public Sub Form_Close()
   FMain.show
 
 End
+

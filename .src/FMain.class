@@ -391,13 +391,12 @@ Public Sub Form_Open()
     Mkdir confpath
   Endif
   setup_xbindkeys()
-  MySettings.load_geometry()
+  MySettings.load()
   socket_init()
   InitTrayIcon()
   resize_form()
   hSettings.init()
   indexer = New Plugin_indexer(hSettings.GridIndex, confpath & "/indexer.txt")
-  
   firstrun = False
 End
 
@@ -412,9 +411,6 @@ End
 
 
 
-
-
-
 Public Sub TimerClose_Timer()
   MySettings.save_geometry()
   fmain.close
@@ -423,7 +419,6 @@ End
 
 Public Sub myQuit()
   Try xb.close
-  Stop
   Wait
   TrayIcon2.Delete()
   fmain.Delete()
@@ -440,6 +435,7 @@ Public Sub Form_Hide()
   MySettings.save_geometry()
   fmain.visible = False
   fmain.tag = "minimized"
+  MySettings.save()
 End
 
 Public Sub Form_Show()

@@ -2,13 +2,13 @@
 
 Public Sub save()
   save_geometry()
-
+  Settings["reindex_time"] = hSettings.valueboxreindex.value
 End
 
 
 Public Sub load()
   load_geometry()
-
+  hSettings.valueboxreindex.value = Settings["reindex_time", "00:30"]
 End
 
 

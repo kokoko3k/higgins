@@ -45,10 +45,10 @@
     Picture = Picture["icon:/medium/options"]
   }
   { TimerClose #Timer
-    #MoveScaled(63,1)
+    #MoveScaled(74,6)
   }
   { ResultGrid GridView
-    MoveScaled(2,6,80,32)
+    MoveScaled(2,6,71,31)
     Visible = False
     Font = Font["+1"]
     Expand = True
