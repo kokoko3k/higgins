@@ -21,6 +21,7 @@ Public Sub Button3_Click()
   GridIndex[GridIndex.Rows.max, 1].text = Dialog.Path
   GridIndex[GridIndex.Rows.max, 0].text = 5
   GridIndex.Columns.w = -1
+  SaveGrid()
 End
 
 
@@ -39,16 +40,18 @@ End
 
 Public Sub Button2_Click()
  GridIndex.Rows.Remove(GridIndex.row)
+ SaveGrid()
 End
 
 Public Sub SaveGrid()
   Dim i As Integer
   Dim filedata As String
+  Stop
   For i = 0 To GridIndex.Rows.Max
     filedata &= GridIndex[i, 0].text & "\n"
     filedata &= GridIndex[i, 1].text & "\n"
   Next
-  File.Save(gridfile, filedata)
+  File.Save(gridfile, Trim(filedata))
 End
 
 Public Sub LoadGrid()

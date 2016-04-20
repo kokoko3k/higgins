@@ -396,9 +396,13 @@ Public Sub Form_Open()
   InitTrayIcon()
   resize_form()
   hSettings.init()
-  indexer = New Plugin_indexer(hSettings.GridIndex, confpath & "/indexer.txt")
+
+  indexer = New Plugin_indexer(hSettings.GridIndex, confpath & "/indexer.txt") As "indexer"
+
+  indexer.restart_timer(MySettings.plugin_indexer_last_index_time, hSettings.ValueBoxReindex.value)
   firstrun = False
 End
+
 
 Public Sub setup_xbindkeys()
   Dim rcpath As String = confpath & "/higgins.xb.rc"
@@ -435,6 +439,7 @@ Public Sub Form_Hide()
   MySettings.save_geometry()
   fmain.visible = False
   fmain.tag = "minimized"
+'  MySettings.plugin_indexer_last_index_time = indexer.last_index_time
   MySettings.save()
 End
 
@@ -494,3 +499,10 @@ Public Sub TextBox1_Click()
   Me.hide
   hSettings.show
 End
+
+Public Sub indexer_indexing_done(finish_time As Date)
+  
+  MySettings.plugin_indexer_last_index_time = finish_time
+  
+End
+
