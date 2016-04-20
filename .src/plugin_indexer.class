@@ -28,9 +28,10 @@ Public Sub restart_timer(last_index_time_local As Date, minutes_timeout As Date)
   If last_index_time = Null Then last_index_time = Date(1900, 1, 1)
 
   reindex_timer = New Timer As "reindex_timer"
-  reindex_timer.delay = 1000 '60000
+  reindex_timer.delay = 60000
   reindex_minutes_timeout = minutes_integer
   reindex_timer.start
+  reindex_timer.Trigger()
 End
 
 Public Sub reindex_timer_Timer()
