@@ -24,6 +24,7 @@ Public Socket_File As String = Confpath & "/socket"
 Public Lock_File As String = Confpath & "/lock"
 Public firstrun As Boolean = True
 
+Public indexer As Plugin_indexer
 
 Public Sub resize_form()
   FMain.h = TextBox1.h + (Desktop.scale * 3)
@@ -57,7 +58,7 @@ Public Sub TextBox1_Change()
     Goto returnLabel
   Endif
 
-  immediate_search(current_search)
+  immediate_search(textbox1)
   If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
   Wait 0.3
 
@@ -65,7 +66,7 @@ Public Sub TextBox1_Change()
   If Error Then Return
   If previous_search <> current_search Then Return
 
-  delayed_search(current_search)
+  delayed_search(textbox1)
 
   returnlabel:
   If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
@@ -93,35 +94,51 @@ Public Sub reinit()
 End
 
 
-Public Sub immediate_search(term As String)
+Public Sub immediate_search(obj As Object)
   reinit()
   FMain.h = TextBox1.h + (Desktop.scale * 3) + resultgrid.h
   mouse_busy()
 
-  Plugins.search_fBookmarks(term)
-  Plugins.search_paths(term)
+  Plugins.search_fBookmarks(obj.text)
+  Plugins.search_paths(obj.text)
 End
 
 
-Public Sub delayed_search(term As String)
+Public Sub delayed_search(obj As Object)
+  Dim indexer_out As String[]
 
-  Select Left(term)
+  Select Left(obj.text)
     Case "="
       
     Case Else
       resultgrid.tag = "locate"
 
       'search for apps
-      Plugins.find_apps(term)
+      Plugins.find_apps(obj.text)
       
       'search for apps by description
-      Plugins.find_apps_by_desc(term)
+      Plugins.find_apps_by_desc(obj.text)
 
       'search for executables
-      Plugins.find_executables(term)
+      Plugins.find_executables(obj.text)
 
       'search for files
-      Plugins.locate(term)
+      'Plugins.locate(term)
+      ' If indexer.running Then
+      '   Stop
+      '   indexer.stop()
+      ' Endif
+       
+       ' If indexer.running Then
+       '   Stop
+       '   Repeat
+       '     indexer.stopping = True
+       '     Wait
+       '    Until indexer.stopping = False
+       ' Endif
+       indexer.search(obj, ResultGrid, results_list)
+      
+       mouse_normal()
   End Select
 
 End
@@ -434,6 +451,9 @@ Public Sub Form_Open()
   socket_init()
   InitTrayIcon()
   resize_form()
+  hSettings.init()
+  indexer = New Plugin_indexer(hSettings.GridIndex, confpath & "/indexer.txt")
+  
   firstrun = False
 End
 
@@ -548,5 +568,6 @@ End
 
 
 Public Sub TextBox1_Click()
-  xb.register("show")
+  Me.hide
+  hSettings.show
 End
