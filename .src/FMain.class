@@ -391,10 +391,19 @@ Public Sub xb_HotkeyPressed(action As String)
 End
 
 Public Sub Form_Open()
+  Dim newuser As Boolean = False
+  Dim msg As String
   If Not firstrun Then Return
   If Not Exist(Confpath, True) Then
+    newuser = True
     Mkdir confpath
   Endif
+  If Newuser Then
+    msg = ("Higgins is not configured") & "\n"
+    msg &= ("Please configure at least the hotkey")
+    Message.Info(msg)
+  Endif
+  Stop
   setup_xbindkeys()
   MySettings.load()
   socket_init()
@@ -406,6 +415,8 @@ Public Sub Form_Open()
 
   indexer.restart_timer(MySettings.plugin_indexer_last_index_time, hSettings.ValueBoxReindex.value)
   firstrun = False
+
+  
 End
 
 
