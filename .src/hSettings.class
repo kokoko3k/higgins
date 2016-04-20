@@ -90,8 +90,13 @@ Public Sub Button4_Click()
 End
 
 Public Sub Form_Close()
-
   FMain.show
-
 End
 
+
+
+Public Sub ValueBoxReindex_Change()
+
+   Try FMain.indexer.restart_timer(MySettings.plugin_indexer_last_index_time, ValueBoxReindex.value)
+
+End

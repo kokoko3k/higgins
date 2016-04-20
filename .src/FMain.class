@@ -403,7 +403,6 @@ Public Sub Form_Open()
     msg &= ("Please configure at least the hotkey")
     Message.Info(msg)
   Endif
-  Stop
   setup_xbindkeys()
   MySettings.load()
   socket_init()
