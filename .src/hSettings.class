@@ -46,7 +46,7 @@ End
 Public Sub SaveGrid()
   Dim i As Integer
   Dim filedata As String
-  Stop
+  Stop 
   For i = 0 To GridIndex.Rows.Max
     filedata &= GridIndex[i, 0].text & "\n"
     filedata &= GridIndex[i, 1].text & "\n"
