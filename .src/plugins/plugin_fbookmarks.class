@@ -13,7 +13,7 @@ Public Struct rItemT
   image_file As String        'optional image displayed (fullpath or "DefferredMimeIcon")
 End Struct
 
-Private textcontrol As Object
+
 Private plugin As String
 Private priority As Integer
 Private iconsize As Integer
@@ -22,9 +22,8 @@ Private minchar As Integer    'exit if the search term is lower than that
 
 
 
-Public Sub _new(p_textcontrol As Object, p_plugin As String, p_priority As Integer, p_iconsize As Integer, Optional p_minchar As Integer = 0)
+Public Sub _new(p_plugin As String, p_priority As Integer, p_iconsize As Integer, Optional p_minchar As Integer = 0)
 
-  textcontrol = p_textcontrol
   plugin = p_plugin
   priority = p_priority
   iconsize = p_iconsize
@@ -32,14 +31,14 @@ Public Sub _new(p_textcontrol As Object, p_plugin As String, p_priority As Integ
   
 End
 
-Private Sub trigged() As Boolean
-  If Len(textcontrol.text) < minchar Then Return False
+Private Sub trigged(query As String) As Boolean
+  If Len(query) < minchar Then Return False
   'some more controls here (?)
   Return True
 End
 
 
-Public Sub find() As RItemT[]
+Public Sub find(textcontrol As Object) As RItemT[]
    'search for filedialogs bookmarks
   Dim aFile As String
   Dim rResults As New RItemT[]
@@ -53,7 +52,7 @@ Public Sub find() As RItemT[]
   Dim match_str As String
   Dim term As String
   
-  If Not trigged() Then Return
+  If Not trigged(textcontrol.text) Then Return
 
   term = current_search
   'gtk2,3,qt(kde?)

@@ -43,6 +43,9 @@ Geometry=[61,14,224,280]
 [DebugWindow/FileView1.Children[0]]
 Geometry=[425,184,224,280]
 
+[DebugWindow/Me]
+Geometry=[86,357,224,280]
+
 [DebugWindow/MyCSock]
 Geometry=[1280,0,224,280]
 
@@ -54,6 +57,9 @@ Geometry=[1280,0,224,280]
 
 [DebugWindow/O.children]
 Geometry=[1280,-3,224,280]
+
+[DebugWindow/Object]
+Geometry=[45,-3,224,280]
 
 [DebugWindow/Picture["icon:|" & rSize & "|directory"]]
 Geometry=[1280,0,224,280]
@@ -143,7 +149,7 @@ Geometry=[59,11,224,280]
 Geometry=[47,0,224,280]
 
 [DebugWindow/o]
-Geometry=[1280,0,224,280]
+Geometry=[931,542,224,280]
 
 [DebugWindow/pic]
 Geometry=[1280,614,224,280]
@@ -204,20 +210,26 @@ Path="gbLocate.gambas"
 
 [OpenFile]
 File[1]=".src/FMain.form"
-Active=2
-File[2]=".src/FMain.class:20.213"
-Count=13
-File[3]=".src/MyDesktop.class:17.88"
-File[4]=".src/DesktopApps.class:0.370"
+Active=16
+File[2]=".src/FMain.class:37.177"
+Count=19
+File[3]=".src/MyDesktop.class:7.100"
+File[4]=".src/DesktopApps.class:43.441"
 File[5]="appicon.png"
 File[6]="README:0.7"
-File[7]="xdg-terminal.sh:0.0"
-File[8]=".src/Plugins.class:13.136"
-File[9]=".src/XbindKeys.class:0.98"
-File[10]=".src/hSettings.form"
-File[11]=".src/hSettings.class:24.47"
-File[12]=".src/plugin_indexer.class:25.33"
-File[13]=".src/MySettings.module:3.38"
+File[7]=".src/Plugins.class:13.136"
+File[8]=".src/XbindKeys.class:0.98"
+File[9]=".src/hSettings.form"
+File[10]=".src/hSettings.class:24.47"
+File[11]=".src/plugin_indexer1.class:25.33"
+File[12]=".src/MySettings.module:3.38"
+File[13]=".src/plugins/plugin_apps.class:0.113"
+File[14]=".src/plugins/plugin_ls.class:0.106"
+File[15]=".src/plugins/plugin_calculator.class:18.31"
+File[16]=".src/plugins/plugin_template.class:0.24"
+File[17]=".src/plugins/plugin_executable.class:0.0"
+File[18]=".src/plugins/plugin_executable_gui.form"
+File[19]=".src/plugins/plugin_fbookmarks.class:0.0"
 
 [Watches]
 Count=0

@@ -37,7 +37,7 @@ Public Socket_File As String = Confpath & "/socket"
 Public Lock_File As String = Confpath & "/lock"
 Public firstrun As Boolean = True
 
-Public indexer As Plugin_indexer
+Public indexer As Plugin_indexer1
 
 Public Sub resize_form()
   FMain.h = TextBox1.h + (Desktop.scale * 3)
@@ -130,7 +130,7 @@ Public Sub reinit()
   picture_list.Clear()
   initgrid()
   MyDesktop.init()
-  Plugins.kill_locate()
+  old_Plugins.kill_locate()
   padding = (Desktop.scale * 2)
   resultgrid.Rows.h = resultgrid.Font.RichTextHeight("|j<br>|j") + padding
   rSize = ResultGrid.Rows.H - padding
@@ -145,6 +145,39 @@ End
 ' 
 '   Plugins.search_fBookmarks(obj.text)
 ' End
+Private plugins As New Collection 'a collection of plugin instances
+
+Private Sub load_plugins()
+  Dim plugin_name As String
+  Dim plugin_obj As Object
+  
+  plugin_name = "plugin_calculator"
+    plugin_obj = load_plugin(plugin_name, 3, 100)
+    plugins[plugin_name] = plugin_obj
+  
+  plugin_name = "plugin_executable"
+    plugin_obj = load_plugin(plugin_name, 3, 90)
+    plugins[plugin_name] = plugin_obj
+    
+  plugin_name = "plugin_fbookmarks"
+    plugin_obj = load_plugin(plugin_name, 3, 80)
+    plugins[plugin_name] = plugin_obj
+    
+  plugin_name = "plugin_apps"
+    plugin_obj = load_plugin(plugin_name, 3, 70)
+    plugins[plugin_name] = plugin_obj
+    
+  plugin_name = "plugin_ls"
+    plugin_obj = load_plugin(plugin_name, 4, 60)
+    plugins[plugin_name] = plugin_obj
+
+End
+
+Public Sub load_plugin(plugin_name As String, minchar As Integer, priority As Integer) As Object
+  Return Object.New(plugin_name, [plugin_name, priority, rSize, minchar])
+End
+
+
 
 Public Sub immediate_search(textcontrol As Object)
 
@@ -152,23 +185,24 @@ Public Sub immediate_search(textcontrol As Object)
   FMain.h = TextBox1.h + (Desktop.scale * 3) + resultgrid.h
   mouse_busy()
 
-  run_plugin("plugin_calculator", 3, 100)
-  run_plugin("plugin_executable", 3, 95)
-  run_plugin("plugin_fbookmarks", 3, 90)
-  run_plugin("plugin_apps", 3, 80)
-  run_plugin("plugin_ls", 4, 70)
+  run_plugin(plugins["plugin_calculator"], textbox1)
+  run_plugin(plugins["plugin_executable"], textbox1)
+  run_plugin(plugins["plugin_fbookmarks"], textbox1)
+  run_plugin(plugins["plugin_apps"], textbox1)
+  run_plugin(plugins["plugin_ls"], textbox1)
 
-  
   mouse_normal()
 End
 
-Public Sub run_plugin(plugin_name As String, minchar As Integer, priority As Integer)
-  Dim my_plugin As Object
+
+
+
+
+Public Sub run_plugin(my_plugin As Object, textcontrol As Object)
   Dim rResults As RItemT[]
   Dim rResult As RItemT[]
 
-  my_plugin = Object.New(plugin_name, [textbox1, plugin_name, priority, rSize, minchar])
-  rResults = Object.Call(my_plugin, "find")
+  rResults = Object.Call(my_plugin, "find", [textcontrol])
   If rResults = Null Then Return
 
   results_list.Insert(rResults)
@@ -208,7 +242,9 @@ Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
       'need a mimetype cache here or is slow
       Try resultgrid.Data.Picture = MyDesktop.Get_mime_Icon(Right(rcResult.image_file, -11), rSize)
     Endif
-    If resultgrid.Data.Picture = Null Then Try resultgrid.Data.Picture = Picture[rcResult.image_file]
+    If (resultgrid.Data.Picture = Null) Then 
+      Try resultgrid.Data.Picture = Picture[rcResult.image_file]
+    Endif
     If resultgrid.Data.Picture = Null Then Try resultgrid.Data.Picture = rcResult.hApp.GetIcon(rSize).Picture
 
   If resultgrid.Data.picture = Null Then
@@ -380,7 +416,7 @@ Public Function is_executable(fPath As String) As Boolean
   Dim singlecommand As Boolean = False
   Dim splitted As String[]
   Dim exe As String
-Stop
+
   splitted = Split(fPath, ";| &\n", "", True)
   singlecommand = splitted.count = 1
   If Not singlecommand Then singlecommand = singlecommand Or ((fpath Begins "\"") And (fpath Ends "\""))
@@ -465,19 +501,11 @@ Public Sub MenuOpenFolder_Click()
   TimerClose.Trigger
 End
 
-' Public Sub MenuOpenFolder_Click()
-'   Try Desktop.Open(File.Dir(results_list[resultgrid.row].uri))
-'   TimerClose.Trigger
-' End
 
 Public Sub MenuOpenFile_Click()
   start_item(resultgrid.row)
   TimerClose.Trigger
 End
-
-' Public Sub MenuCopy_Click()
-'   Clipboard.Copy(results_list[ResultGrid.row].clipboard)
-' End
 
 
 Public Sub MenuCopy_Click()
@@ -660,8 +688,8 @@ End
       InitTrayIcon()
       resize_form()
       hSettings.init()
-    
-      indexer = New Plugin_indexer(hSettings.GridIndex, confpath & "/indexer.txt") As "indexer"
+      load_plugins()
+      indexer = New Plugin_indexer1(hSettings.GridIndex, confpath & "/indexer.txt") As "indexer"
       indexer.restart_timer(MySettings.plugin_indexer_last_index_time, hSettings.ValueBoxReindex.value)  
     End
     
@@ -749,5 +777,3 @@ Public Sub indexer_indexing_done(finish_time As Date)
   MySettings.plugin_indexer_last_index_time = finish_time
   
 End
-
-
