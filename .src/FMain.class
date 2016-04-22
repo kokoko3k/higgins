@@ -147,31 +147,6 @@ End
 ' End
 Private plugins As New Collection 'a collection of plugin instances
 
-Private Sub load_plugins()
-  Dim plugin_name As String
-  Dim plugin_obj As Object
-  
-  plugin_name = "plugin_calculator"
-    plugin_obj = load_plugin(plugin_name, 3, 100)
-    plugins[plugin_name] = plugin_obj
-  
-  plugin_name = "plugin_executable"
-    plugin_obj = load_plugin(plugin_name, 3, 90)
-    plugins[plugin_name] = plugin_obj
-    
-  plugin_name = "plugin_fbookmarks"
-    plugin_obj = load_plugin(plugin_name, 3, 80)
-    plugins[plugin_name] = plugin_obj
-    
-  plugin_name = "plugin_apps"
-    plugin_obj = load_plugin(plugin_name, 3, 70)
-    plugins[plugin_name] = plugin_obj
-    
-  plugin_name = "plugin_ls"
-    plugin_obj = load_plugin(plugin_name, 4, 60)
-    plugins[plugin_name] = plugin_obj
-
-End
 
 Public Sub load_plugin(plugin_name As String, minchar As Integer, priority As Integer) As Object
   Return Object.New(plugin_name, [plugin_name, priority, rSize, minchar])
@@ -185,30 +160,50 @@ Public Sub immediate_search(textcontrol As Object)
   FMain.h = TextBox1.h + (Desktop.scale * 3) + resultgrid.h
   mouse_busy()
 
-  run_plugin(plugins["plugin_calculator"], textbox1)
-  run_plugin(plugins["plugin_executable"], textbox1)
-  run_plugin(plugins["plugin_fbookmarks"], textbox1)
-  run_plugin(plugins["plugin_apps"], textbox1)
-  run_plugin(plugins["plugin_ls"], textbox1)
+  run_plugin("plugin_calculator", 3, 100, textbox1)
+  run_plugin("plugin_executable", 3, 90, textbox1)
+  run_plugin("plugin_fbookmarks", 3, 80, textbox1)
+  run_plugin("plugin_apps", 3, 70, textbox1)
+  run_plugin("plugin_ls", 4, 60, textbox1)
 
   mouse_normal()
 End
 
 
-
-
-
-Public Sub run_plugin(my_plugin As Object, textcontrol As Object)
+Public Sub run_plugin(plugin_name As String, minchar As Integer, priority As Integer, textcontrol As Object)
   Dim rResults As RItemT[]
   Dim rResult As RItemT[]
+  Dim plugin_obj As Object
 
-  rResults = Object.Call(my_plugin, "find", [textcontrol])
+
+  If Not (plugins.Exist(plugin_name)) Then 'se il plugin non è mai stato caricato, instanzialo
+    plugin_obj = load_plugin(plugin_name, minchar, priority)
+    plugins[plugin_name] = plugin_obj
+  Endif
+
+  rResults = Object.Call(plugins[plugin_name], "find", [textcontrol]) 'chiama il metodo find()
   If rResults = Null Then Return
 
   results_list.Insert(rResults)
   ResultGrid.Rows.count += rResults.Count
 
 End
+
+
+
+' 
+' Public Sub run_plugin(my_plugin As Object, textcontrol As Object)
+'   Dim rResults As RItemT[]
+'   Dim rResult As RItemT[]
+' 
+' 
+'   rResults = Object.Call(my_plugin, "find", [textcontrol])
+'   If rResults = Null Then Return
+' 
+'   results_list.Insert(rResults)
+'   ResultGrid.Rows.count += rResults.Count
+' 
+' End
 
 
 Private Sub Parse_results(rResults As RItemT[])
@@ -688,8 +683,6 @@ End
       InitTrayIcon()
       resize_form()
       hSettings.init()
-      reinit()
-      load_plugins()
       indexer = New Plugin_indexer1(hSettings.GridIndex, confpath & "/indexer.txt") As "indexer"
       indexer.restart_timer(MySettings.plugin_indexer_last_index_time, hSettings.ValueBoxReindex.value)  
     End
