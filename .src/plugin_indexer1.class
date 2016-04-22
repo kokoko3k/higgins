@@ -1,0 +1,164 @@
+' Gambas class file
+
+Private index_db As New String[]
+Private index_file As String
+Private aGrid As TableView
+
+Private reindex_timer As Timer
+
+Public Struct rItem
+  Priority As Integer
+  Category As String 'app,locate,calculate,desktopexec,execute,fbookmark
+  Text As String
+  SubText As String
+  Mexec As String
+  'pic As Picture
+  happ As DesktopApps
+  uri As String
+  clipboard As String
+End Struct
+
+Private reindex_minutes_timeout As Integer
+Private last_index_time As Date
+
+Public Sub restart_timer(last_index_time_local As Date, minutes_timeout As Date)
+  Dim minutes_integer As Integer
+  minutes_integer = (Hour(minutes_timeout) * 60) + Minute(minutes_timeout)
+  last_index_time = last_index_time_local
+  If last_index_time = Null Then last_index_time = Date(1900, 1, 1)
+
+  reindex_timer = New Timer As "reindex_timer"
+  reindex_timer.delay = 60000
+  reindex_minutes_timeout = minutes_integer
+  reindex_timer.start
+  reindex_timer.Trigger()
+End
+
+Public Sub reindex_timer_Timer()
+  Dim time_diff As Integer
+  time_diff = DateDiff(last_index_time, Now(), gb.Minute)
+  Debug reindex_minutes_timeout - time_diff, "minutes to go"
+  If time_diff >= reindex_minutes_timeout Then
+    reindex_timer.stop
+    ReIndex()
+    Repeat
+      Wait 1
+    Until indexing = False
+    reindex_timer.start
+  Endif
+
+End
+
+
+Public Sub _new(TheGrid As TableView, indexfile As String)
+  Dim aLine As String
+  aGrid = TheGrid
+  index_file = indexfile
+  Try index_db = Split(File.Load(index_file))
+End
+
+
+
+Public indexing As Boolean = False
+Private indexprocess As Process
+Public Sub ReIndex()
+  Dim r As Integer
+  Dim db As String
+  Dim depth, dir As String
+  Dim cmdline As String
+  Dim tmp As String = Temp()
+  Try indexprocess.kill
+  index_db.clear
+  For r = 0 To aGrid.Rows.max
+    depth = aGrid[r, 0].text
+    dir = "'" & aGrid[r, 1].text & "'"
+    cmdline &= "; nice -n 19 ionice -c3 schedtool -B -e find " & dir & " -maxdepth " & depth 
+  Next
+  If cmdline Begins ";" Then cmdline = Right(cmdline, -1)
+  cmdline = "sh -c " & "\"" & cmdline & "\""
+  Debug "Indexing..."
+  Debug cmdline
+  indexprocess = Shell cmdline For Read As "indexprocess"
+  indexing = True
+End
+
+Public Sub indexprocess_Read()
+  Dim oLine As String
+  Line Input #indexprocess, oline
+  index_db.Add(oline)
+End
+
+Public Sub indexprocess_kill()
+  Debug "Finished indexing"
+  indexing = False
+  Raise indexing_done(Now())
+  File.Save(index_file, index_db.Join())
+  last_index_time = Now()
+End
+
+Event indexing_done(finish_time As Date)
+
+Public running As Boolean = False
+Public term As String = ""
+
+Public Sub search(obj As Object, ResultGrid As Gridview, results_list As RItem[])
+  Dim i As Integer
+  Dim result As String
+  Dim term As String
+  Dim rResult As RItem
+  Dim matches As New String[]
+  Dim is_desktop_exec As Boolean = False
+
+  Try term = obj.text
+  running = True
+  Debug "Compile matches array", "", "[start]"
+  For i = 0 To index_db.max
+    If index_db[i] Like "*" & term & "*" Then 
+      matches.Add(index_db[i])
+    Endif
+  Next
+  Debug "Compile matches array", matches.count, "[end]"
+
+  For i = 0 To matches.max
+    'do not go on if search term has changed!
+    If term <> obj.text Then
+      Return
+    Endif
+    rResult = New RItem
+    result = matches[i]
+    If Not (Exist(result, True)) Then Goto mynext
+
+    If result Ends ".desktop" Then 
+      MyDesktop.init()
+      MyDesktop.parse(result)
+      If MyDesktop.dExec <> "" Then is_desktop_exec = True
+    Endif
+    
+    If is_desktop_exec Then
+      rResult.Category = "desktopexec"
+      rResult.Priority = old_plugins.DesktopExec_priority
+        Else
+      rResult.Category = "locate"
+      rResult.Priority = old_plugins.locate_priority
+    Endif
+
+    rResult.mExec = result
+    rResult.uri = result
+     
+    If Stat(result, True).type = gb.directory Then 
+      rResult.Text = File.Name(result) & "/"
+        Else
+      rResult.Text = File.Name(result)
+    Endif
+    
+    rResult.SubText = File.Dir(result)
+    rResult.clipboard = result
+   
+    results_list.Add(rResult)
+    ResultGrid.Rows.count += 1
+    If (i Mod 100) = 0 Then Wait 0.1
+    mynext:
+  Next
+  returnlabel:
+  Return
+End
