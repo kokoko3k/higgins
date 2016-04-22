@@ -688,6 +688,7 @@ End
       InitTrayIcon()
       resize_form()
       hSettings.init()
+      reinit()
       load_plugins()
       indexer = New Plugin_indexer1(hSettings.GridIndex, confpath & "/indexer.txt") As "indexer"
       indexer.restart_timer(MySettings.plugin_indexer_last_index_time, hSettings.ValueBoxReindex.value)  
