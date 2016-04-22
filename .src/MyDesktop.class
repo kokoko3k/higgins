@@ -60,34 +60,59 @@ End
 
 Static Private image_cache As New Collection
 
-Static Public Sub Get_mime_Icon(path As String, Optional rSize As Integer = 16) As Image
+' Static Public Sub Get_mime_Icon(path As String, Optional rSize As Integer = 16) As Image
+'   Dim mimetype As String
+'   Dim aKey As String 
+'   Try mimetype = DesktopMime.FromFile(path).type
+'   If Error Then Return Null
+' 
+'   If mimetype = "text/plain" Then
+'     'search better...
+'     Shell "file -bi '" & path & "' |cut -d ';' -f 1" To mimetype
+'     mimetype = Trim(mimetype)
+'   Endif
+'   aKey = mimetype & Chr(8) & rsize
+'   If Not image_cache.Exist(aKey) Then 
+'     Debug "MISS"
+'     If mimetype = "application/x-executable" Then 
+'       image_cache[aKey] = Picture["icon:/" & rSize & "/exec"].Image
+'         Else
+'       image_cache[aKey] = DesktopMime.FromFile(path).GetIcon(rSize)
+'     Endif
+'       Else
+'     Debug "HIT"
+'   Endif
+'   Return image_cache[aKey]
+' End
+
+Static Public Sub Get_mime_Icon(path As String, Optional rSize As Integer = 16) As Picture
   Dim mimetype As String
   Dim aKey As String 
-  mimetype = DesktopMime.FromFile(path).type
-
-  If mimetype = "text/plain" Then
-    'search better...
-    Shell "file -bi '" & path & "' |cut -d ';' -f 1" To mimetype
-    mimetype = Trim(mimetype)
-  Endif
+  Try mimetype = DesktopMime.FromFile(path).type
+  If Error Then Return Null
   aKey = mimetype & Chr(8) & rsize
   If Not image_cache.Exist(aKey) Then 
     If mimetype = "application/x-executable" Then 
-      image_cache[aKey] = Picture["icon:/" & rSize & "/exec"].Image
+      image_cache[aKey] = Picture["icon:/" & rSize & "/exec"]
         Else
       image_cache[aKey] = DesktopMime.FromFile(path).GetIcon(rSize)
     Endif
+      Else
   Endif
   Return image_cache[aKey]
 End
 
+
 Static Public Sub Mime_exe(path As String) As String
   Dim mimetype As String
   If path = "" Then Return False
-  Shell "file -bi '" & path & "' |cut -d ';' -f 1" To mimetype
+  'Shell "file -biL '" & path & "' |cut -d ';' -f 1" To mimetype
+  Shell "file -biL '" & path & "'" To mimetype
   path = Trim(path)
+  mimetype = Trim(mimetype)
   If mimetype Like "*executable*" Then Return True
   If mimetype Like "*shellscript*" Then Return True
+  If mimetype = "application/octet-stream; charset=binary" Then Return True
   Return False
 End
 

@@ -1,0 +1,86 @@
+' Gambas class file
+
+Public Struct rItemT
+  Priority As Integer         '0-100, unused by now.
+  plugin As String            'the plugin name
+  Text As String              'text displayed in the clipboard
+  SubText As String           'text displayed under the main text
+  hApp As DesktopApps         '.desktop files
+  action_desktopopen As String   'the data passed to action desktop.open()
+  action_openfolder As String 'the data passed to the action openfolder
+  action_activate As String   'the data passed to the action activate
+  action_clipboard As String  'the text copied to the clipboard
+  image_file As String        'optional image displayed (fullpath or "DefferredMimeIcon")
+End Struct
+
+Private textcontrol As Object
+Private plugin As String
+Private priority As Integer
+Private iconsize As Integer
+Private minchar As Integer    'exit if the search term is lower than that
+
+
+
+
+Public Sub _new(p_textcontrol As Object, p_plugin As String, p_priority As Integer, p_iconsize As Integer, Optional p_minchar As Integer = 0)
+
+  textcontrol = p_textcontrol
+  plugin = p_plugin
+  priority = p_priority
+  iconsize = p_iconsize
+  minchar = p_minchar
+  Debug Me
+End
+
+Private Sub trigged() As Boolean
+  If Len(textcontrol.text) < minchar Then Return False
+  'some more controls here (?)
+  Return True
+End
+
+
+Public Sub find() As RItemT[]
+  'evualuate expressions
+  Dim aFile As String
+  Dim rResults As New RItemT[]
+  Dim rResult As RItemT
+  Dim current_search As String = textcontrol.text
+
+  If Not trigged() Then Return
+
+  rResult = create_item(current_search)
+  If rResult <> Null Then rResults.Add(rResult)
+
+  If textcontrol.text <> current_search Then Return
+  Wait 
+
+  Return rResults
+
+End
+
+' Editable part of the template follows:
+
+Private Function create_item(expr As String) As RItemT
+  Dim return_item As RItemT
+  Dim hApp As DesktopApps
+  Dim evalued As String
+
+    If expr Begins "=" Then expr = Right(expr, -1)
+    If expr Ends "=" Then expr = Left(expr, -1)
+      Try evalued = Eval(expr)
+      If Error Then Return
+
+      return_item = New RItemT
+      return_item.action_activate = ""
+      return_item.action_clipboard = evalued
+      return_item.action_desktopopen = ""
+      return_item.action_openfolder = ""
+      return_item.plugin = plugin
+      return_item.image_file = "icon:/" & iconsize & "/calculator"
+      return_item.Priority = priority
+      return_item.Text = evalued
+      return_item.SubText = "= " & expr
+      return_item.hApp = Null
+    Return return_item
+End
+

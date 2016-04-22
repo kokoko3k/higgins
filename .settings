@@ -1,3 +1,6 @@
+[Bookmarks]
+FMain=[438]
+
 [Breakpoints]
 Count=0
 
@@ -22,6 +25,9 @@ Geometry=[1297,307,224,458]
 [DebugWindow/DesktopIcon]
 Geometry=[1280,0,224,549]
 
+[DebugWindow/DesktopMime]
+Geometry=[1280,0,224,280]
+
 [DebugWindow/DrawingArea(TextBox1.Children[0]).Children]
 Geometry=[1322,39,224,280]
 
@@ -43,6 +49,9 @@ Geometry=[1280,0,224,280]
 [DebugWindow/MyDesktop]
 Geometry=[1280,-3,314,537]
 
+[DebugWindow/MySettings]
+Geometry=[1280,0,224,280]
+
 [DebugWindow/O.children]
 Geometry=[1280,-3,224,280]
 
@@ -52,11 +61,17 @@ Geometry=[1280,0,224,280]
 [DebugWindow/Picture["icon:|" & rSize & "|file"]]
 Geometry=[1280,0,224,280]
 
+[DebugWindow/ResultGrid]
+Geometry=[45,-3,224,280]
+
 [DebugWindow/Socket]
 Geometry=[1280,0,224,280]
 
 [DebugWindow/Split(File.Load(sAppPath), "\n")]
 Geometry=[1280,0,224,280]
+
+[DebugWindow/Split(fPath, ";| &\n")]
+Geometry=[45,-3,224,280]
 
 [DebugWindow/Split(ls_out, "\n", "", True)]
 Geometry=[45,-3,224,280]
@@ -86,7 +101,7 @@ Geometry=[45,-3,224,530]
 Geometry=[1280,0,224,280]
 
 [DebugWindow/fmain]
-Geometry=[1280,0,224,280]
+Geometry=[1280,0,224,542]
 
 [DebugWindow/global]
 Geometry=[47,0,224,280]
@@ -97,11 +112,32 @@ Geometry=[1280,307,224,280]
 [DebugWindow/happ]
 Geometry=[1280,-3,361,555]
 
+[DebugWindow/index_db]
+Geometry=[45,-3,595,923]
+
+[DebugWindow/indexer_out]
+Geometry=[-240,589,689,449]
+
+[DebugWindow/indexprocess]
+Geometry=[45,-3,224,280]
+
+[DebugWindow/item]
+Geometry=[45,-3,224,280]
+
 [DebugWindow/locatep]
 Geometry=[1280,0,254,449]
 
 [DebugWindow/locatep.Lines]
 Geometry=[1294,11,254,449]
+
+[DebugWindow/matches]
+Geometry=[-298,636,516,699]
+
+[DebugWindow/my_plugin]
+Geometry=[45,-3,224,280]
+
+[DebugWindow/my_plugin.Symbols]
+Geometry=[59,11,224,280]
 
 [DebugWindow/my_screen]
 Geometry=[47,0,224,280]
@@ -118,8 +154,14 @@ Geometry=[1280,-3,224,280]
 [DebugWindow/picture_list]
 Geometry=[45,-3,224,280]
 
+[DebugWindow/rResult]
+Geometry=[-170,332,443,280]
+
+[DebugWindow/rResults]
+Geometry=[45,-3,224,280]
+
 [DebugWindow/rcResult]
-Geometry=[1280,-3,224,280]
+Geometry=[1280,-3,464,335]
 
 [DebugWindow/result]
 Geometry=[1280,0,224,280]
@@ -128,7 +170,7 @@ Geometry=[1280,0,224,280]
 Geometry=[1280,-3,224,280]
 
 [DebugWindow/results_list]
-Geometry=[637,279,643,535]
+Geometry=[1493,204,643,535]
 
 [DebugWindow/results_list[0]]
 Geometry=[651,293,643,535]
@@ -141,6 +183,9 @@ Geometry=[651,293,643,535]
 
 [DebugWindow/results_list[ResultGrid.row]]
 Geometry=[1280,0,224,280]
+
+[DebugWindow/results_list[i]]
+Geometry=[45,-3,224,280]
 
 [DebugWindow/results_list[resultgrid.row]]
 Geometry=[122,226,705,394]
@@ -160,14 +205,19 @@ Path="gbLocate.gambas"
 [OpenFile]
 File[1]=".src/FMain.form"
 Active=2
-File[2]=".src/FMain.class:16.52"
-Count=8
-File[3]=".src/MyDesktop.class:0.78"
-File[4]=".src/DesktopApps.class:20.364"
+File[2]=".src/FMain.class:20.213"
+Count=13
+File[3]=".src/MyDesktop.class:17.88"
+File[4]=".src/DesktopApps.class:0.370"
 File[5]="appicon.png"
 File[6]="README:0.7"
 File[7]="xdg-terminal.sh:0.0"
-File[8]=".src/Plugins.class:13.48"
+File[8]=".src/Plugins.class:13.136"
+File[9]=".src/XbindKeys.class:0.98"
+File[10]=".src/hSettings.form"
+File[11]=".src/hSettings.class:24.47"
+File[12]=".src/plugin_indexer.class:25.33"
+File[13]=".src/MySettings.module:3.38"
 
 [Watches]
 Count=0

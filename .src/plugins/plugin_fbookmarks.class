@@ -1,0 +1,123 @@
+' Gambas class file
+
+Public Struct rItemT
+  Priority As Integer         '0-100, unused by now.
+  plugin As String            'the plugin name
+  Text As String              'text displayed in the clipboard
+  SubText As String           'text displayed under the main text
+  hApp As DesktopApps         '.desktop files
+  action_desktopopen As String   'the data passed to action desktop.open()
+  action_openfolder As String 'the data passed to the action openfolder
+  action_activate As String   'the data passed to the action activate
+  action_clipboard As String  'the text copied to the clipboard
+  image_file As String        'optional image displayed (fullpath or "DefferredMimeIcon")
+End Struct
+
+Private textcontrol As Object
+Private plugin As String
+Private priority As Integer
+Private iconsize As Integer
+Private minchar As Integer    'exit if the search term is lower than that
+
+
+
+
+Public Sub _new(p_textcontrol As Object, p_plugin As String, p_priority As Integer, p_iconsize As Integer, Optional p_minchar As Integer = 0)
+
+  textcontrol = p_textcontrol
+  plugin = p_plugin
+  priority = p_priority
+  iconsize = p_iconsize
+  minchar = p_minchar
+  
+End
+
+Private Sub trigged() As Boolean
+  If Len(textcontrol.text) < minchar Then Return False
+  'some more controls here (?)
+  Return True
+End
+
+
+Public Sub find() As RItemT[]
+   'search for filedialogs bookmarks
+  Dim aFile As String
+  Dim rResults As New RItemT[]
+  Dim rResult As RItemT
+  Dim current_search As String = textcontrol.text
+
+  Dim b_file_split As New String[]
+  Dim b_files As New String[]
+  Dim bookmarks As New String[]
+  Dim b_file, aLine, path As String
+  Dim match_str As String
+  Dim term As String
+  
+  If Not trigged() Then Return
+
+  term = current_search
+  'gtk2,3,qt(kde?)
+    b_files.Add(User.home & "/" & ".gtk-bookmarks")
+    b_files.Add(User.home & "/" & ".config/gtk-3.0/bookmarks")
+    b_files.Add(User.home & "/" & ".local/share/user-places.xbel")
+  
+    For Each b_file In b_files
+        Try b_file_split = Split(File.load(b_file), "\n")
+        If Not Error Then 'parseit
+           For Each aline In b_file_split
+
+             If b_file Ends ".xbel" Then 
+               match_str = "* href=*//*" & term & "*"  'qt/kde
+                 Else
+               match_str = "*://*" & term & "*" 'gtk2,3
+             Endif
+
+             If aline Like match_str Then
+
+               If b_file Ends ".xbel" Then 
+                 Try path = Split(aline, "\"")[1]
+                    Else
+                  Try path = Split(aline, " ")[0]
+               Endif
+
+               If Not Error Then
+                 If Not (b_file Ends ".xbel") Then path = Replace(path, " ", "%20")
+                 If path Ends "/" Then path = Left(path, -1) 'this is necessary to eliminate dupes
+
+                 If bookmarks.find(path) < 0 Then 
+                   bookmarks.Add(path)
+                   rResult = create_item(path)
+                   If rResult <> Null Then rResults.Add(rResult)
+
+                 Endif 
+
+               Endif 'not error
+
+             Endif
+           Next 'aline
+
+        Endif 
+      Next
+  Return rResults
+
+End
+
+' Editable part of the template follows:
+
+Private Function create_item(path As String) As RItemT
+  Dim return_item As RItemT
+  Dim hApp As DesktopApps
+    return_item = New RItemT
+    return_item.action_activate = path
+    return_item.action_clipboard = path
+    return_item.action_desktopopen = path
+    return_item.action_openfolder = path
+    return_item.plugin = plugin
+    return_item.image_file = "icon:/" & iconsize & "/bookmark"
+    return_item.Priority = priority
+    return_item.Text = path
+    return_item.SubText = "Local bookmark: " & path
+    hApp = Null
+    return_item.hApp = hApp
+    Return return_item
+End

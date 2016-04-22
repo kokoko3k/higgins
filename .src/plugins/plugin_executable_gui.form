@@ -1,0 +1,22 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,64,15)
+  Arrangement = Arrange.Fill
+  AutoResize = True
+  Spacing = True
+  Margin = True
+  { Panel1 Frame
+    MoveScaled(2,1,60,10)
+    Arrangement = Arrange.Horizontal
+    AutoResize = True
+    Spacing = True
+    Margin = True
+    Text = ("Preferred terminal emulator")
+    { ComboboxTerminalEmulator ComboBox
+      MoveScaled(4,4,54,4)
+      Expand = True
+      List = [("xterm"), ("lxterminal"), ("xfce4-terminal"), ("gnome-terminal"), ("konsole")]
+    }
+  }
+}

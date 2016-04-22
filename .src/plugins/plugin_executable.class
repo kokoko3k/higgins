@@ -1,0 +1,127 @@
+' Gambas class file
+
+Public Struct rItemT
+  Priority As Integer         '0-100, unused by now.
+  plugin As String            'the plugin name
+  Text As String              'text displayed in the clipboard
+  SubText As String           'text displayed under the main text
+  hApp As DesktopApps         '.desktop files
+  action_desktopopen As String   'the data passed to action desktop.open()
+  action_openfolder As String 'the data passed to the action openfolder
+  action_activate As String   'the data passed to the action activate
+  action_clipboard As String  'the text copied to the clipboard
+  image_file As String        'optional image displayed (fullpath or "DefferredMimeIcon")
+End Struct
+
+Private textcontrol As Object
+Private plugin As String
+Private priority As Integer
+Private iconsize As Integer
+Private minchar As Integer    'exit if the search term is lower than that
+
+Private terminal_emulator As String = ""
+
+
+Public Sub _new(p_textcontrol As Object, p_plugin As String, p_priority As Integer, p_iconsize As Integer, Optional p_minchar As Integer = 0)
+
+  textcontrol = p_textcontrol
+  plugin = p_plugin
+  priority = p_priority
+  iconsize = p_iconsize
+  minchar = p_minchar
+
+  terminal_emulator = Settings["plugin_executable/terminal_emulator"]
+
+End
+
+Private Sub trigged() As Boolean
+  If Len(textcontrol.text) < minchar Then Return False
+  'some more controls here (?)
+  Return True
+End
+
+' Editable part of the template follows:
+
+Public Sub find() As RItemT[]
+  'search for filedialogs bookmarks
+  Dim aFile As String
+  Dim rResults As New RItemT[]
+  Dim rResult As RItemT
+  Dim current_search As String = textcontrol.text
+  Dim exe_found As String = ""
+  
+  If Not trigged() Then Return
+  If (Not Exist(current_search)) Then Return
+  If Stat(current_search, True).type = gb.Directory Then Return
+  
+  exe_found = System.Find(current_search)
+  If exe_found = "" Then Return
+  
+  rResult = create_item(current_search, False)
+  If rResult <> Null Then rResults.Add(rResult)
+  
+  rResult = create_item(current_search, True)
+  If rResult <> Null Then rResults.Add(rResult)
+
+  Return rResults
+
+End
+
+
+Private Function create_item(result As String, Optional terminal As Boolean = False) As RItemT
+  Dim return_item As RItemT
+  Dim hApp As DesktopApps
+  Dim cmdterm As String
+  
+    return_item = New RItemT
+    return_item.action_clipboard = result
+    return_item.action_desktopopen = result
+    return_item.action_openfolder = File.Dir(result)
+    return_item.plugin = plugin
+    If terminal Then
+      If terminal_emulator <> "" Then terminal_emulator = System.Find(terminal_emulator)
+      If terminal_emulator = "" Then
+        Debug "No terminal emulator configured, guessing..."
+        terminal_emulator = find_term()
+        If terminal_emulator = "" Then
+          Debug "Sorry, could not find any terminal emulator"
+          Return
+        Endif
+      Endif
+      cmdterm = terminal_emulator & "\"" & "sh -c ' " & result & "; echo; echo  Press enter to exit ; read ' \""
+      return_item.action_activate = cmdterm
+      return_item.image_file = "icon:/" & iconsize & "/terminal"
+      return_item.Text = "Run " & result
+        Else
+      return_item.action_activate = result
+      return_item.image_file = "icon:/" & iconsize & "/exec"
+      return_item.Text = result
+    Endif
+    return_item.Priority = priority
+    return_item.SubText = "Run " & result & " in the terminal emulator"
+    hApp = Null
+    return_item.hApp = hApp
+    Return return_item
+End
+
+
+Private Function find_term() As String
+  Dim terms As String[] = ["konsole", "gnome-terminal", "xfce4-terminal", "lxterminal", "xterm"]
+  Dim term As String
+  For Each term In terms
+    Debug "checking for " & term & "..."
+    If System.Exist(term) Then 
+      Debug "found."
+      Return System.Find(term) & " -e "
+    Endif
+  Next
+  Return ""
+End
+
+
+
+Public Function configure()
+
+  plugin_executable_gui.show
+  
+End

@@ -32,7 +32,7 @@
     Text = ("Menu1")
     Visible = False
     { MenuOpenFolder Menu
-      Text = ("Open folder")
+      Text = ("Open containing folder")
       Picture = Picture["icon:/small/directory"]
     }
     { MenuOpenFile Menu

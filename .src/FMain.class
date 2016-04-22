@@ -4,6 +4,19 @@ Public xb As XbindKeys
 Public Const appname As String = "higgins"
 Public Confpath As String = Settings.defaultdir & "/" & appname
 
+Public Struct rItemT
+  Priority As Integer         '0-100, unused by now.
+  plugin As String            'the plugin name
+  Text As String              'text displayed in the clipboard
+  SubText As String           'text displayed under the main text
+  hApp As DesktopApps         '.desktop files
+  action_desktopopen As String   'the data passed to action desktop.open()
+  action_openfolder As String 'the data passed to the action openfolder
+  action_activate As String   'the data passed to the action activate
+  action_clipboard As String  'the text copied to the clipboard
+  image_file As String        'optional image displayed (fullpath or "DefferredMimeIcon")
+End Struct
+
 Public Struct rItem
   Priority As Integer
   Category As String 'app,locate,calculate,desktopexec,execute,fbookmark
@@ -17,7 +30,7 @@ Public Struct rItem
 End Struct
 
 Public results_file As String = Temp()
-Public results_list As New RItem[]
+Public results_list As New RItemT[]
 Public picture_list As New Collection
 Public rSize As Integer
 Public Socket_File As String = Confpath & "/socket"
@@ -29,6 +42,49 @@ Public indexer As Plugin_indexer
 Public Sub resize_form()
   FMain.h = TextBox1.h + (Desktop.scale * 3)
 End
+
+' Public Sub TextBox1_Change()
+'   Dim previous_search As String
+'   Dim current_search As String
+'   Try current_search = TextBox1.text 
+'   If Error Then Return
+'   Wait 0.01
+'   If current_search = "" Then 
+'     resize_form()
+'     reinit()
+'     Return
+'   Endif
+' 
+'   Plugins.kill_locate()
+' 
+'   DesktopApps.stop_get = True
+'   While DesktopApps.getting
+'     Wait
+'   Wend
+'   DesktopApps.stop_get = False
+' 
+'   Try previous_search = TextBox1.text
+'   If Error Then Return
+' 
+'   If Plugins.Calculate(current_search) Then 
+'     mouse_normal
+'     Goto returnLabel
+'   Endif
+' 
+'   immediate_search(textbox1)
+'   If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
+'   Wait 0.3
+' 
+'   Try current_search = TextBox1.text 
+'   If Error Then Return
+'   If previous_search <> current_search Then Return
+' 
+'   delayed_search(textbox1)
+' 
+'   returnlabel:
+'   If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
+' End
+
 
 Public Sub TextBox1_Change()
   Dim previous_search As String
@@ -42,21 +98,9 @@ Public Sub TextBox1_Change()
     Return
   Endif
 
-  Plugins.kill_locate()
-
-  DesktopApps.stop_get = True
-  While DesktopApps.getting
-    Wait
-  Wend
-  DesktopApps.stop_get = False
-
   Try previous_search = TextBox1.text
   If Error Then Return
 
-  If Plugins.Calculate(current_search) Then 
-    mouse_normal
-    Goto returnLabel
-  Endif
 
   immediate_search(textbox1)
   If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
@@ -66,7 +110,7 @@ Public Sub TextBox1_Change()
   If Error Then Return
   If previous_search <> current_search Then Return
 
-  delayed_search(textbox1)
+ 'delayed_search(textbox1)
 
   returnlabel:
   If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
@@ -94,13 +138,92 @@ Public Sub reinit()
 End
 
 
-Public Sub immediate_search(obj As Object)
+' Public Sub immediate_search(obj As Object)
+'   reinit()
+'   FMain.h = TextBox1.h + (Desktop.scale * 3) + resultgrid.h
+'   mouse_busy()
+' 
+'   Plugins.search_fBookmarks(obj.text)
+' End
+
+Public Sub immediate_search(textcontrol As Object)
+
   reinit()
   FMain.h = TextBox1.h + (Desktop.scale * 3) + resultgrid.h
   mouse_busy()
 
-  Plugins.search_fBookmarks(obj.text)
+  run_plugin("plugin_calculator", 3, 100)
+  run_plugin("plugin_executable", 3, 95)
+  run_plugin("plugin_fbookmarks", 3, 90)
+  run_plugin("plugin_apps", 3, 80)
+  run_plugin("plugin_ls", 4, 70)
+
+  
+  mouse_normal()
 End
+
+Public Sub run_plugin(plugin_name As String, minchar As Integer, priority As Integer)
+  Dim my_plugin As Object
+  Dim rResults As RItemT[]
+  Dim rResult As RItemT[]
+
+  my_plugin = Object.New(plugin_name, [textbox1, plugin_name, priority, rSize, minchar])
+  rResults = Object.Call(my_plugin, "find")
+  If rResults = Null Then Return
+
+  results_list.Insert(rResults)
+  ResultGrid.Rows.count += rResults.Count
+
+End
+
+
+Private Sub Parse_results(rResults As RItemT[])
+  Dim item As RItemT
+  If rResults = Null Then Return
+  For Each item In rResults
+    results_list.Add(item)
+    ResultGrid.Rows.Count += 1
+  Next
+End
+
+Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
+  Dim rcResult As New RItemT
+  If results_list.count = 0 Then Return
+  rcResult = results_list[Row]
+
+  'two lines:
+  resultgrid.data.RichText = "<b>" & rcResult.text & "</b>"
+  If rcResult.subtext <> "" Then 
+    resultgrid.data.RichText &= "<br><font size=-1>" & rcResult.subtext & "</font>"
+  Endif
+
+  'find pic from cache?
+  If picture_list[row] <> Null Then
+    resultgrid.Data.Picture = picture_list[row] 
+    Return
+  Endif
+
+  'no cache :(
+    If rcResult.image_file Like "mimetype://*" Then 
+      'need a mimetype cache here or is slow
+      Try resultgrid.Data.Picture = MyDesktop.Get_mime_Icon(Right(rcResult.image_file, -11), rSize)
+    Endif
+    If resultgrid.Data.Picture = Null Then Try resultgrid.Data.Picture = Picture[rcResult.image_file]
+    If resultgrid.Data.Picture = Null Then Try resultgrid.Data.Picture = rcResult.hApp.GetIcon(rSize).Picture
+
+  If resultgrid.Data.picture = Null Then
+    resultgrid.Data.Picture = Picture["icon:/" & rSize & "/file"]
+  Endif
+
+  'cache picture
+  If resultgrid.Data.picture <> Null Then picture_list[row] = resultgrid.Data.picture
+
+End
+
+
+
+
+
 
 
 Public Sub delayed_search(obj As Object)
@@ -140,97 +263,151 @@ Public Sub mouse_normal()
   TextBox1.mouse = Mouse.default
 End
 
-Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
-  Dim rcResult As New RItem
-  If results_list.count = 0 Then Return
-  rcResult = results_list[Row]
+' Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
+'   Dim rcResult As New RItem
+'   If results_list.count = 0 Then Return
+'   rcResult = results_list[Row]
+' 
+'   'two lines:
+'   resultgrid.data.RichText = "<b>" & rcResult.text & "</b>"
+'   If rcResult.subtext <> "" Then 
+'     resultgrid.data.RichText &= "<br><font size=-1>" & rcResult.subtext & "</font>"
+'   Endif
+' 
+'   'find pic from cache?
+'   If picture_list[row] <> Null Then
+'     resultgrid.Data.Picture = picture_list[row] 
+'     Return
+'   Endif
+'   'no cache :(
+'   Select Case rcResult.Category  'app,locate,calculate,desktopexec,fbookmark
+'     Case "app"
+'       resultgrid.Data.Picture = rcResult.happ.GetIcon(rSize).Picture
+'     Case "execute"
+'       resultgrid.Data.Picture = Picture["icon:/" & rSize & "/exec"]
+'     Case "execute_terminal"
+'       resultgrid.Data.Picture = Picture["icon:/" & rSize & "/terminal"]
+'     Case "desktopexec"
+'       MyDesktop.parse(rcResult.uri)
+'       resultgrid.Data.Picture = MyDesktop.GetIcon(MyDesktop.dIconName, rsize).picture 
+'       'DesktopMime.FromFile(rcResult.mExec).GetIcon(rSize).Picture
+'     Case "locate"
+'       If rcResult.text Ends "/" Then
+'         resultgrid.Data.Picture = Picture["icon:/" & rSize & "/directory"]
+'           Else
+'         Try resultgrid.Data.Picture = MyDesktop.Get_mime_Icon(rcResult.uri, rSize).Picture
+'       Endif
+'     Case "calculate"
+'       resultgrid.Data.Picture = Picture["icon:/" & rSize & "/calculator"]
+'     Case "fbookmark"
+'       resultgrid.Data.Picture = Picture["icon:/" & rSize & "/bookmark"]
+'   End Select
+'   
+'   If resultgrid.Data.picture = Null Then
+'     resultgrid.Data.Picture = Picture["icon:/" & rSize & "/file"]
+'   Endif
+'   
+'     'cache picture
+'      If resultgrid.Data.picture <> Null Then picture_list[row] = resultgrid.Data.picture
+'   
+' End
 
-  'two lines:
-  resultgrid.data.RichText = "<b>" & rcResult.text & "</b>"
-  If rcResult.subtext <> "" Then 
-    resultgrid.data.RichText &= "<br><font size=-1>" & rcResult.subtext & "</font>"
-  Endif
+' Public Sub start_item(i As Integer)
+'   Dim rcResult As New RItem
+'   Dim xdg_terminal As String
+'   Dim bout As String
+'   Dim isdir As Boolean
+'   rcResult = results_list[i]
+' 
+'   Select Case rcResult.Category 'app,locate,calculate,desktopexec,fbookmark
+'     Case "locate"
+'       Shell "bash -c \"[[ -x '" & rcResult.mExec & "' ]] && echo executable \"" To bout
+'       Try isdir = Stat(rcResult.Mexec, True).type = gb.Directory 
+'       
+'       If ((Trim(bout) = "") Or (isdir)) Or (Not MyDesktop.mime_exe(rcResult.Mexec)) Then 
+'         Desktop.Open(rcResult.mExec)
+'           Else
+'         If Message.Question(("Execute file?"), "Execute", "Open") = 1 Then 
+'           Shell rcResult.mExec
+'             Else
+'           Desktop.Open(rcResult.mExec)
+'         Endif
+'       Endif
+' 
+'     Case "fbookmark"
+'       Desktop.Open(rcResult.uri)
+' 
+'     Case "execute_terminal"
+'       xdg_terminal = Temp
+'       Copy "xdg-terminal.sh" To xdg_terminal
+'       Chmod xdg_terminal To "rwxr-x---" 
+'       Shell xdg_terminal & " \"" & "sh -c ' " & rcResult.mExec & "; echo; echo  Press enter to exit ; read ' \""
+' 
+'     Case "execute"
+'       Shell rcResult.mExec
+' 
+'     Case "app"
+'       Shell rcResult.mExec
+' 
+'     Case "desktopexec"
+'       Shell rcResult.mExec
+' 
+'   End Select
+' End
 
-  'find pic from cache?
-  If picture_list[row] <> Null Then
-    resultgrid.Data.Picture = picture_list[row] 
-    Return
-  Endif
-  'no cache :(
-  Select Case rcResult.Category  'app,locate,calculate,desktopexec,fbookmark
-    Case "app"
-      resultgrid.Data.Picture = rcResult.happ.GetIcon(rSize).Picture
-    Case "execute"
-      resultgrid.Data.Picture = Picture["icon:/" & rSize & "/exec"]
-    Case "execute_terminal"
-      resultgrid.Data.Picture = Picture["icon:/" & rSize & "/terminal"]
-    Case "desktopexec"
-      MyDesktop.parse(rcResult.uri)
-      resultgrid.Data.Picture = MyDesktop.GetIcon(MyDesktop.dIconName, rsize).picture 
-      'DesktopMime.FromFile(rcResult.mExec).GetIcon(rSize).Picture
-    Case "locate"
-      If rcResult.text Ends "/" Then
-        resultgrid.Data.Picture = Picture["icon:/" & rSize & "/directory"]
-          Else
-        Try resultgrid.Data.Picture = MyDesktop.Get_mime_Icon(rcResult.uri, rSize).Picture
-      Endif
-    Case "calculate"
-      resultgrid.Data.Picture = Picture["icon:/" & rSize & "/calculator"]
-    Case "fbookmark"
-      resultgrid.Data.Picture = Picture["icon:/" & rSize & "/bookmark"]
-  End Select
-  
-  If resultgrid.Data.picture = Null Then
-    resultgrid.Data.Picture = Picture["icon:/" & rSize & "/file"]
-  Endif
-  
-    'cache picture
-     If resultgrid.Data.picture <> Null Then picture_list[row] = resultgrid.Data.picture
-  
-End
+
+
 
 Public Sub start_item(i As Integer)
-  Dim rcResult As New RItem
-  Dim xdg_terminal As String
-  Dim bout As String
-  Dim isdir As Boolean
+  Dim rcResult As RItemT
+  Dim msgout As Integer = -1
+  If results_list.count = 0 Then Return
   rcResult = results_list[i]
+  If is_executable(rcResult.action_activate) Then
+    msgout = Message.Question(("Execute file?"), "Execute", "Open")
+    Select msgout
+      Case 1
+        Shell rcResult.action_activate
+      Case 2
+        Desktop.Open(rcResult.action_desktopopen)
+    End Select
+  Endif
 
-  Select Case rcResult.Category 'app,locate,calculate,desktopexec,fbookmark
-    Case "locate"
-      Shell "bash -c \"[[ -x '" & rcResult.mExec & "' ]] && echo executable \"" To bout
-      Try isdir = Stat(rcResult.Mexec, True).type = gb.Directory 
-      
-      If ((Trim(bout) = "") Or (isdir)) Or (Not MyDesktop.mime_exe(rcResult.Mexec)) Then 
-        Desktop.Open(rcResult.mExec)
-          Else
-        If Message.Question(("Execute file?"), "Execute", "Open") = 1 Then 
-          Shell rcResult.mExec
-            Else
-          Desktop.Open(rcResult.mExec)
-        Endif
-      Endif
-
-    Case "fbookmark"
-      Desktop.Open(rcResult.uri)
-
-    Case "execute_terminal"
-      xdg_terminal = Temp
-      Copy "xdg-terminal.sh" To xdg_terminal
-      Chmod xdg_terminal To "rwxr-x---" 
-      Shell xdg_terminal & " \"" & "sh -c ' " & rcResult.mExec & "; echo; echo  Press enter to exit ; read ' \""
-
-    Case "execute"
-      Shell rcResult.mExec
-
-    Case "app"
-      Shell rcResult.mExec
-
-    Case "desktopexec"
-      Shell rcResult.mExec
-
-  End Select
 End
+
+Public Function is_executable(fPath As String) As Boolean
+  Dim bout As String
+  Dim singlecommand As Boolean = False
+  Dim splitted As String[]
+  Dim exe As String
+Stop
+  splitted = Split(fPath, ";| &\n", "", True)
+  singlecommand = splitted.count = 1
+  If Not singlecommand Then singlecommand = singlecommand Or ((fpath Begins "\"") And (fpath Ends "\""))
+  If Not singlecommand Then singlecommand = ((fpath Begins "'") And (fpath Ends "'"))
+
+  If singlecommand Then 
+    exe = fPath 
+      Else 
+    exe = splitted[0]
+  Endif
+
+  'has to exist
+    If Not Exist(exe) Then Return False
+  'has to be a file
+    If Stat(exe, True).type <> gb.File Then Return False
+  'needs executable permissions
+    Shell "bash -c \"[[ -x '" & exe & "' ]] && echo executable \"" To bout
+    If (Trim(bout) = "") Then Return False
+  'needs to have the right mimetype
+    If Not MyDesktop.mime_exe(exe) Then Return False
+  'right then!
+    Return True
+End
+
+
+
+
 
 Public Sub ResultGrid_activate()
   start_item(resultgrid.row)
@@ -282,155 +459,167 @@ Public Sub ResultGrid_KeyPress()
   End Select
 End
 
+
 Public Sub MenuOpenFolder_Click()
-  Try Desktop.Open(File.Dir(results_list[resultgrid.row].uri))
+  Try Desktop.Open(results_list[resultgrid.row].action_openfolder)
   TimerClose.Trigger
 End
+
+' Public Sub MenuOpenFolder_Click()
+'   Try Desktop.Open(File.Dir(results_list[resultgrid.row].uri))
+'   TimerClose.Trigger
+' End
 
 Public Sub MenuOpenFile_Click()
   start_item(resultgrid.row)
   TimerClose.Trigger
 End
 
-Public Sub MenuCopy_Click()
-  Clipboard.Copy(results_list[ResultGrid.row].clipboard)
-End
+' Public Sub MenuCopy_Click()
+'   Clipboard.Copy(results_list[ResultGrid.row].clipboard)
+' End
 
+
+Public Sub MenuCopy_Click()
+  Clipboard.Copy(results_list[ResultGrid.row].action_clipboard)
+End
 
 '======================================== START SOCKET FUNCTIONS ========================================
 
-              Public My_listening_socket As ServerSocket
-              
-              
-              Public hLock As Stream
-              
-              Public Sub socket_init()
-                'TRY TO get a LOCK file:
-                Try hLock = Lock Lock_File
-                If Error Then 'alreadyrunning
-                  Debug "another instance already running"
-                  show_other_instance()
-                  Quit
-                Endif
-                'start to listen for remote commands, one connection is ok.
-                My_listening_socket = New ServerSocket As "My_listening_socket"
-                My_listening_socket.type = Net.Unix
-                My_listening_socket.path = Socket_File
-                My_listening_socket.Listen(1)
-              End
-              
-              Public MyCSock As Socket
-              Public Sub show_other_instance()
-                Dim sBuf As String
-                MyCSock = New Socket
-                MyCSock.path = Socket_File
-                MyCSock.Port = Net.Local
-                MyCSock.Connect()
-                While (MyCSock.Status <> 7) And (MyCSock.Status > 0)
-                  Wait 0.1
-                Wend
-                If MyCSock.Status = 7 Then
-                  sBuf = "show\n"
-                  Write #MyCSock, sBuf, Len(sBuf)
-                  Close #MycSock
-                Endif
-              End
-              
-              Public Host As Object
-              Public Sub My_listening_socket_connection(RemoteHostIP As String)
-                'just accept on localhost.
-                host = My_listening_socket.Accept()
-              End
-              
-              Public Sub socket_Read()
-                Dim command As String = ""
-                'Stop
-                Line Input #Last, command
-                If command = "show" Then
-                  Repeat
-                    fmain.visible = True
-                    Wait
-                  Until fmain.visible = True
-                Endif
-                My_listening_socket.close
-                My_listening_socket.Listen(1)
-              End
+    Public My_listening_socket As ServerSocket
+    
+    
+    Public hLock As Stream
+    
+    Public Sub socket_init()
+      'TRY TO get a LOCK file:
+      Try hLock = Lock Lock_File
+      If Error Then 'alreadyrunning
+        Debug "another instance already running"
+        show_other_instance()
+        Quit
+      Endif
+      'start to listen for remote commands, one connection is ok.
+      My_listening_socket = New ServerSocket As "My_listening_socket"
+      My_listening_socket.type = Net.Unix
+      My_listening_socket.path = Socket_File
+      My_listening_socket.Listen(1)
+    End
+    
+    Public MyCSock As Socket
+    Public Sub show_other_instance()
+      Dim sBuf As String
+      MyCSock = New Socket
+      MyCSock.path = Socket_File
+      MyCSock.Port = Net.Local
+      MyCSock.Connect()
+      While (MyCSock.Status <> 7) And (MyCSock.Status > 0)
+        Wait 0.1
+      Wend
+      If MyCSock.Status = 7 Then
+        sBuf = "show\n"
+        Write #MyCSock, sBuf, Len(sBuf)
+        Close #MycSock
+      Endif
+    End
+    
+    Public Host As Object
+    Public Sub My_listening_socket_connection(RemoteHostIP As String)
+      'just accept on localhost.
+      host = My_listening_socket.Accept()
+    End
+    
+    Public Sub socket_Read()
+      Dim command As String = ""
+      'Stop
+      Line Input #Last, command
+      If command = "show" Then
+        Repeat
+          fmain.visible = True
+          Wait
+        Until fmain.visible = True
+      Endif
+      My_listening_socket.close
+      My_listening_socket.Listen(1)
+    End
 
 '-- END SOCKET FUNCTIONS ---------------------------------------------------------------------
 
-Public TrayIcon2 As Trayicon 'fixme trayicon
-Public Sub InitTrayIcon()
-  'fixme trayicon
-
-  Dim SystemTray As Boolean = True
-  Try SystemTray = desktop.HasSystemTray
-  If Error Then
-    Debug "Couldn't check if your desktop has a system tray, assuming it has"
-  Endif
-
-  If Not SystemTray Then Return
-  Try TrayIcon2 = New Trayicon 
-  If Error Then Debug "Cannot Init Trayicon"
-  TrayIcon2.Picture = Picture["appicon.png"]
-  TrayIcon2.Visible = True
-  object.Attach(TrayIcon2, Me, "TrayIcon2")
-  TrayIcon2.PopupMenu = "TrayMenu"
-  If Error Then Debug "Cannot Init Trayicon"
-End
-
-Public Sub TrayIcon2_click()
-  If fmain.visible Then 
-    Form_Hide()
-      Else
-    Form_Show()
-  Endif
-End
-
-Public Sub xb_HotkeyPressed(action As String)
-  If action = "show" Then
-    If fmain.visible Then
-      fmain.Hide()
-        Else
-      fmain.Show()
-    Endif
-  Endif
-End
-
-Public Sub Form_Open()
-  Dim newuser As Boolean = False
-  Dim msg As String
-  If Not firstrun Then Return
-  If Not Exist(Confpath, True) Then
-    newuser = True
-    Mkdir confpath
-  Endif
-  If Newuser Then
-    msg = ("Higgins is not configured") & "\n"
-    msg &= ("Please configure at least the hotkey") & "\n"
-    msg &= ("to show the higgins window.") & "\n"
-    Message.Info(msg)
-  Endif
-  setup_xbindkeys()
-  MySettings.load()
-  socket_init()
-  InitTrayIcon()
-  resize_form()
-  hSettings.init()
-
-  indexer = New Plugin_indexer(hSettings.GridIndex, confpath & "/indexer.txt") As "indexer"
-
-  indexer.restart_timer(MySettings.plugin_indexer_last_index_time, hSettings.ValueBoxReindex.value)  
-End
+'--- TRYICON RELATED
+              
+    Public TrayIcon2 As Trayicon 'fixme trayicon
+    Public Sub InitTrayIcon()
+      'fixme trayicon
+    
+      Dim SystemTray As Boolean = True
+      Try SystemTray = desktop.HasSystemTray
+      If Error Then
+        Debug "Couldn't check if your desktop has a system tray, assuming it has"
+      Endif
+    
+      If Not SystemTray Then Return
+      Try TrayIcon2 = New Trayicon 
+      If Error Then Debug "Cannot Init Trayicon"
+      TrayIcon2.Picture = Picture["appicon.png"]
+      TrayIcon2.Visible = True
+      object.Attach(TrayIcon2, Me, "TrayIcon2")
+      TrayIcon2.PopupMenu = "TrayMenu"
+      If Error Then Debug "Cannot Init Trayicon"
+    End
+    
+    Public Sub TrayIcon2_click()
+      If fmain.visible Then 
+        Form_Hide()
+          Else
+        Form_Show()
+      Endif
+    End
+    
+    Public Sub MenuTrayOptions_Click()
+      hSettings.Show()
+    End
+    
+    
+    Public Sub QuitMenuTray_Click()
+      myQuit()
+    End
+    
+    Public Sub MenuTrayShow_click()
+      Form_Show()
+    End
 
 
-Public Sub setup_xbindkeys()
-  Dim rcpath As String = confpath & "/higgins.xb.rc"
-  Shell "killall " & confpath & "/xbindkeys_higgins" Wait
-  xb = New XbindKeys(rcpath, confpath & "/xbindkeys_higgins") As "xb"
-  If Not Exist(rcpath) Then 
-    xb.register("show")
-  Endif
-End
+'-- END TRAYICON FUNCTIONS ---------------------------------------------------------------------
+
+
+'-- XBINDKEYS ---------------------------------------------------------------------
+
+    Public Sub xb_HotkeyPressed(action As String)
+      If action = "show" Then
+        If fmain.visible Then
+          fmain.Hide()
+            Else
+          fmain.Show()
+        Endif
+      Endif
+    End
+    
+    Public Sub setup_xbindkeys()
+      Dim rcpath As String = confpath & "/higgins.xb.rc"
+      Shell "killall " & confpath & "/xbindkeys_higgins" Wait
+      xb = New XbindKeys(rcpath, confpath & "/xbindkeys_higgins") As "xb"
+      If Not Exist(rcpath) Then 
+        xb.register("show")
+      Endif
+    End
+
+'-- END XBINDKEYS ---------------------------------------------------------------------
+
+
+
+
+
+
 
 
 
@@ -449,55 +638,74 @@ Public Sub myQuit()
   Quit
 End
 
-Public Sub Form_KeyRelease()
-  If Key.code = Key.esc Then Form_Hide()
-End
+'-- FMAIN FUNCTIONS  ---------------------------------------------------------------------
 
-Public Sub Form_Hide()
-  If fmain.tag = "minimized" Then Return
-  MySettings.save_geometry()
-  fmain.visible = False
-  fmain.tag = "minimized"
-'  MySettings.plugin_indexer_last_index_time = indexer.last_index_time
-  MySettings.save()
-End
+    Public Sub Form_Open()
+      Dim newuser As Boolean = False
+      Dim msg As String
+      If Not firstrun Then Return
+      If Not Exist(Confpath, True) Then
+        newuser = True
+        Mkdir confpath
+      Endif
+      If Newuser Then
+        msg = ("Higgins is not configured") & "\n"
+        msg &= ("Please configure at least the hotkey") & "\n"
+        msg &= ("to show the higgins window.") & "\n"
+        Message.Info(msg)
+      Endif
+      setup_xbindkeys()
+      MySettings.load()
+      socket_init()
+      InitTrayIcon()
+      resize_form()
+      hSettings.init()
+    
+      indexer = New Plugin_indexer(hSettings.GridIndex, confpath & "/indexer.txt") As "indexer"
+      indexer.restart_timer(MySettings.plugin_indexer_last_index_time, hSettings.ValueBoxReindex.value)  
+    End
+    
+    Public Sub Form_KeyRelease()
+      If Key.code = Key.esc Then Form_Hide()
+    End
+    
+    Public Sub Form_Hide()
+      If fmain.tag = "minimized" Then Return
+      MySettings.save_geometry()
+      fmain.visible = False
+      fmain.tag = "minimized"
+    '  MySettings.plugin_indexer_last_index_time = indexer.last_index_time
+      MySettings.save()
+    End
+    
+    Public Sub Form_Show()
+      If firstrun Then 
+        fmain.hide
+        firstrun = False
+        Return
+      Endif
+      MySettings.load_geometry()
+    
+      fmain.visible = True
+      fmain.tag = ""
+      resize_form()
+      Wait
+      TextBox1.SetFocus()
+    
+    End
+    
+    Public Sub Form_Close()
+      Form_Hide()
+    End
 
-Public Sub Form_Show()
-  If firstrun Then 
-    fmain.hide
-    firstrun = False
-    Return
-  Endif
-  MySettings.load_geometry()
-
-  fmain.visible = True
-  fmain.tag = ""
-  resize_form()
-  Wait
-  TextBox1.SetFocus()
-
-End
-
-Public Sub Form_Close()
-  Form_Hide()
-End
-
-Public Sub MenuTrayOptions_Click()
-  hSettings.Show()
-End
+'-- END FMAIN FUNCTIONS  ---------------------------------------------------------------------
 
 
-Public Sub QuitMenuTray_Click()
-  myQuit()
-End
-   
 Public Sub QuitMenu_Click()
   myQuit()
 End
 
-Public Sub MenuTrayShow_click()
-  Form_Show()
-End
+
 
 
 

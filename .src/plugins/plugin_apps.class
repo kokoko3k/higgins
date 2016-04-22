@@ -1,0 +1,138 @@
+' Gambas class file
+
+Public Struct rItemT
+  Priority As Integer         '0-100, unused by now.
+  plugin As String            'the plugin name
+  Text As String              'text displayed in the clipboard
+  SubText As String           'text displayed under the main text
+  hApp As DesktopApps         '.desktop files
+  action_desktopopen As String   'the data passed to action desktop.open()
+  action_openfolder As String 'the data passed to the action openfolder
+  action_activate As String   'the data passed to the action activate
+  action_clipboard As String  'the text copied to the clipboard
+  image_file As String        'optional image displayed (fullpath or "DefferredMimeIcon")
+End Struct
+
+Private textcontrol As Object
+Private plugin As String
+Private priority As Integer
+Private iconsize As Integer
+Private minchar As Integer    'exit if the search term is lower than that
+
+
+
+Public Sub _new(p_textcontrol As Object, p_plugin As String, p_priority As Integer, p_iconsize As Integer, Optional p_minchar As Integer = 0)
+
+  textcontrol = p_textcontrol
+  plugin = p_plugin
+  priority = p_priority
+  iconsize = p_iconsize
+  minchar = p_minchar
+  
+End
+
+Private Sub trigged() As Boolean
+  If Len(textcontrol.text) < minchar Then Return False
+  'some more controls here (?)
+  Return True
+End
+
+' Editable part of the template follows:
+
+Public Sub find() As RItemT[]
+  'search for filedialogs bookmarks
+  Dim aFile As String
+  Dim rResults As New RItemT[]
+  Dim rResult As RItemT
+  Dim current_search As String = textcontrol.text
+
+  Dim happ As DesktopApps
+  Dim app As String
+  Dim ismatched As Boolean = False
+  Dim happs As New DesktopApps[]
+
+  If Not trigged() Then Return
+
+  For Each app In DesktopApps
+      happ = DesktopApps[app]
+      ismatched = InStr(Lower(happ._$Name), Lower(current_search)) > 0 
+    If Not ismatched Then 
+      If Not ismatched Then ismatched = InStr(Lower(happ._$Comment), Lower(current_search)) > 0 
+      If Not ismatched Then ismatched = ismatched Or InStr(Lower(happ._$Category), Lower(current_search)) > 0 
+      If Not ismatched Then ismatched = ismatched Or InStr(Lower(happ._$Keywords), Lower(current_search)) > 0 
+      If Not ismatched Then ismatched = ismatched Or InStr(Lower(happ._$Comment), Lower(current_search)) > 0 
+      If Not ismatched Then ismatched = ismatched Or InStr(Lower(happ._$GenericName), Lower(current_search)) > 0 
+    Endif
+    
+    If ismatched Then
+      add_no_dupe(happs, happ)
+      Wait 'if calculations are heavy a wait may be handy.
+      If textcontrol.text <> current_search Then Return
+    Endif
+    
+  Next 'happ
+
+    For Each happ In happs
+      rResult = create_item(happ)
+      If rResult <> Null Then rResults.Add(rResult)
+      Wait 'if calculations are heavy a wait may be handy.
+      If textcontrol.text <> current_search Then Return
+    Next 'happ
+
+
+
+  Return rResults
+
+End
+
+
+Private Sub add_no_dupe(happs As DesktopApps[], new_happ As DesktopApps)
+  Dim existing_happ As DesktopApps
+
+  For Each existing_happ In happs
+        If existing_happ.Exec_R = new_happ.Exec_R Then 'dupe found
+          'prefer the one with the comment
+          If existing_happ.comment <> "" Then 
+            Return
+              Else
+            If new_happ.comment <> "" Then 
+              happs.Find(existing_happ)
+              existing_happ = new_happ
+            Endif
+          Endif
+          Return  
+        Endif
+  Next
+  'no dupe found
+  happs.Add(new_happ)
+End
+
+
+
+
+
+Private Function create_item(happ As DesktopApps) As RItemT
+  Dim return_item As RItemT
+  Dim subtext As String
+    return_item = New RItemT
+    return_item.action_activate = happ.Exec_R_noargs
+    return_item.action_clipboard = happ.file_path
+    return_item.action_desktopopen = happ.Exec_R_noargs
+    return_item.action_openfolder = File.Dir(happ.file_path)
+    return_item.plugin = plugin
+    return_item.image_file = ""
+    return_item.Priority = priority
+    return_item.Text = happ.name
+    subtext = happ._$GenericName & ", " & happ._$comment
+    If subtext Begins ", " Then subtext = Right(subtext, -2)
+    If subtext Ends ", " Then subtext = Left(subtext, -2)
+    return_item.SubText = subtext 
+    return_item.hApp = hApp
+    Return return_item
+End
+
+Public Sub configure()
+  
+  'this starts the configuration window.
+  
+End

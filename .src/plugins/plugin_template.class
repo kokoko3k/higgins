@@ -1,0 +1,87 @@
+' Gambas class file
+
+Public Struct rItemT
+  Priority As Integer         '0-100, unused by now.
+  plugin As String            'the plugin name
+  Text As String              'text displayed in the clipboard
+  SubText As String           'text displayed under the main text
+  hApp As DesktopApps         '.desktop files
+  action_desktopopen As String   'the data passed to action desktop.open()
+  action_openfolder As String 'the data passed to the action openfolder
+  action_activate As String   'the data passed to the action activate
+  action_clipboard As String  'the text copied to the clipboard
+  image_file As String        'optional image displayed (fullpath or "DefferredMimeIcon")
+End Struct
+
+Private textcontrol As Object
+Private plugin As String
+Private priority As Integer
+Private iconsize As Integer
+Private minchar As Integer    'exit if the search term is lower than that
+
+
+
+Public Sub _new(p_textcontrol As Object, p_plugin As String, p_priority As Integer, p_iconsize As Integer, Optional p_minchar As Integer = 0)
+
+  textcontrol = p_textcontrol
+  plugin = p_plugin
+  priority = p_priority
+  iconsize = p_iconsize
+  minchar = p_minchar
+  
+End
+
+Private Sub trigged() As Boolean
+  If Len(textcontrol.text) < minchar Then Return False
+  'some more controls here (?)
+  Return True
+End
+
+' Editable part of the template follows:
+
+Public Sub find() As RItemT[]
+  'search for filedialogs bookmarks
+  Dim aFile As String
+  Dim rResults As New RItemT[]
+  Dim rResult As RItemT
+  Dim current_search As String = textcontrol.text
+  
+  If Not trigged() Then Return
+  
+  For Each aFile In Dir(User.home).sort()
+    
+    rResult = create_item(aFile)
+    If rResult <> Null Then rResults.Add(rResult)
+    'Wait 'if calculations are heavy a wait may be handy.
+    If textcontrol.text <> current_search Then Return
+
+
+  Next 'aFile
+  Return rResults
+
+End
+
+
+Private Function create_item(result As String) As RItemT
+  Dim return_item As RItemT
+  Dim hApp As DesktopApps
+    return_item = New RItemT
+    return_item.action_activate = "/usr/bin/gambas3"
+    return_item.action_clipboard = "Some data copied to the clipboard"
+    return_item.action_desktopopen = "/usr/bin/gambas3"
+    return_item.action_openfolder = User.home
+    return_item.plugin = plugin
+    return_item.image_file = "icon:/" & iconsize & "/bookmark"
+    return_item.Priority = priority
+    return_item.Text = result
+    return_item.SubText = "In: " & User.home
+    hApp = DesktopApps["Gambas3"]
+    return_item.hApp = hApp
+    Return return_item
+End
+
+Public Sub configure()
+  
+  'this starts the configuration window.
+  
+End
