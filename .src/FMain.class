@@ -138,33 +138,34 @@ Public Sub reinit()
 End
 
 
-' Public Sub immediate_search(obj As Object)
-'   reinit()
-'   FMain.h = TextBox1.h + (Desktop.scale * 3) + resultgrid.h
-'   mouse_busy()
-' 
-'   Plugins.search_fBookmarks(obj.text)
-' End
 Private plugins As New Collection 'a collection of plugin instances
-
 
 Public Sub load_plugin(plugin_name As String, minchar As Integer, priority As Integer) As Object
   Return Object.New(plugin_name, [plugin_name, priority, rSize, minchar])
 End
 
 
-
+Private previous_search As String
 Public Sub immediate_search(textcontrol As Object)
+
+  If previous_search = textcontrol.text Then Return 'don't know why this is important, but works.
+  previous_search = textcontrol.text                'don't know why this is important, but works.
 
   reinit()
   FMain.h = TextBox1.h + (Desktop.scale * 3) + resultgrid.h
   mouse_busy()
 
   run_plugin("plugin_calculator", 3, 100, textbox1)
+
   run_plugin("plugin_executable", 3, 90, textbox1)
+
   run_plugin("plugin_fbookmarks", 3, 80, textbox1)
+
   run_plugin("plugin_apps", 3, 70, textbox1)
+
   run_plugin("plugin_ls", 4, 60, textbox1)
+
+  run_plugin("plugin_indexer", 4, 60, textbox1)
 
   mouse_normal()
 End
@@ -175,11 +176,13 @@ Public Sub run_plugin(plugin_name As String, minchar As Integer, priority As Int
   Dim rResult As RItemT[]
   Dim plugin_obj As Object
 
-
+  
   If Not (plugins.Exist(plugin_name)) Then 'se il plugin non è mai stato caricato, instanzialo
     plugin_obj = load_plugin(plugin_name, minchar, priority)
     plugins[plugin_name] = plugin_obj
   Endif
+
+  Object.Attach(plugins[plugin_name], fmain, "plugin_event")
 
   rResults = Object.Call(plugins[plugin_name], "find", [textcontrol]) 'chiama il metodo find()
   If rResults = Null Then Return
@@ -189,6 +192,10 @@ Public Sub run_plugin(plugin_name As String, minchar As Integer, priority As Int
 
 End
 
+Public Sub plugin_event_new_results(rResults As RItemT[])
+  results_list.Insert(rResults)
+  ResultGrid.Rows.count += rResults.Count
+End
 
 
 ' 
@@ -206,17 +213,19 @@ End
 ' End
 
 
-Private Sub Parse_results(rResults As RItemT[])
-  Dim item As RItemT
-  If rResults = Null Then Return
-  For Each item In rResults
-    results_list.Add(item)
-    ResultGrid.Rows.Count += 1
-  Next
-End
+' Private Sub Parse_results(rResults As RItemT[])
+'   Dim item As RItemT
+'   Dim img As Image
+'   If rResults = Null Then Return
+'   For Each item In rResults
+'     results_list.Add(item)
+'     ResultGrid.Rows.Count += 1
+'   Next
+' End
 
 Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
   Dim rcResult As New RItemT
+  Dim img As Image
   If results_list.count = 0 Then Return
   rcResult = results_list[Row]
 
@@ -237,6 +246,17 @@ Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
       'need a mimetype cache here or is slow
       Try resultgrid.Data.Picture = MyDesktop.Get_mime_Icon(Right(rcResult.image_file, -11), rSize)
     Endif
+    
+    If rcResult.image_file Like "resize://*" Then 
+      'Stop
+      'need a mimetype cache here or is slow
+      Try img = Image.load(Right(rcResult.image_file, -9))
+      If Not Error Then
+        If img.w <> rSize Then img = img.stretch(rSize, rSize)
+        resultgrid.Data.Picture = img.picture
+      Endif
+    Endif
+    
     If (resultgrid.Data.Picture = Null) Then 
       Try resultgrid.Data.Picture = Picture[rcResult.image_file]
     Endif
@@ -666,6 +686,12 @@ End
     Public Sub Form_Open()
       Dim newuser As Boolean = False
       Dim msg As String
+      
+      Dim i As Integer
+      Dim img As Image
+      Dim img2 As Image
+      Dim t0 As Float
+      t0 = Timer()
       If Not firstrun Then Return
       If Not Exist(Confpath, True) Then
         newuser = True
