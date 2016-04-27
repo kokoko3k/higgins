@@ -103,6 +103,7 @@ End
 Private previous_search As String
 Public Sub immediate_search(textcontrol As Object)
   Dim aPlugin As Object
+  Dim t0 As Float
 
   If previous_search = textcontrol.text Then Return 'don't know why this is important, but works.
   previous_search = textcontrol.text                'don't know why this is important, but works.
@@ -112,7 +113,10 @@ Public Sub immediate_search(textcontrol As Object)
   mouse_busy()
 
   For Each aplugin In plugins
+    t0 = Timer()
+    Debug "[START]", plugins.key
     run_plugin(plugins.key, textbox1)
+    Debug "[END]", plugins.key, "time:", Timer() - t0, "[END]"
   Next
 
 
