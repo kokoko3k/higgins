@@ -636,9 +636,9 @@ End
     
     End
     
-    Public Sub Form_Close()
-      Form_Hide()
-    End
+    ' Public Sub Form_Close()
+    '   Form_Hide()
+    ' End
 
 '-- END FMAIN FUNCTIONS  ---------------------------------------------------------------------
 
@@ -682,6 +682,7 @@ End
 
 
 Public Sub TextBox1_Click()
+  Me.hide
   hSettings.show
 End
 
@@ -690,3 +691,5 @@ Public Sub indexer_indexing_done(finish_time As Date)
   MySettings.plugin_indexer_last_index_time = finish_time
   
 End
+
+

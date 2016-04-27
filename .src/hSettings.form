@@ -5,7 +5,6 @@
   Text = ("Higgins settings")
   Icon = Picture["icon:/medium/options"]
   Persistent = True
-  Stacking = Window.Above
   Arrangement = Arrange.Vertical
   Spacing = True
   Margin = True

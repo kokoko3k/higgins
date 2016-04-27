@@ -3,3 +3,9 @@
 Public Sub Button1_Click()
     FMain.xb.register("show")
 End
+
+Public Sub Form_Hide()
+
+  FMain.Show()
+
+End

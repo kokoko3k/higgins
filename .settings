@@ -1,5 +1,6 @@
 [Bookmarks]
 FMain=[438]
+plugin_indexer=[38]
 
 [Breakpoints]
 Count=0
@@ -15,6 +16,9 @@ Geometry=[1269,459,224,280]
 
 [DebugWindow/CHILD]
 Geometry=[1280,-3,226,280]
+
+[DebugWindow/Classes]
+Geometry=[45,-3,224,280]
 
 [DebugWindow/DesktopApps]
 Geometry=[1280,0,224,280]
@@ -34,6 +38,9 @@ Geometry=[1322,39,224,280]
 [DebugWindow/DrawingArea(TextBox1.Children[0]).Children[0]]
 Geometry=[1336,53,224,280]
 
+[DebugWindow/FMain]
+Geometry=[45,-3,224,280]
+
 [DebugWindow/FileView1]
 Geometry=[47,0,224,280]
 
@@ -42,6 +49,9 @@ Geometry=[61,14,224,280]
 
 [DebugWindow/FileView1.Children[0]]
 Geometry=[425,184,224,280]
+
+[DebugWindow/Label]
+Geometry=[45,-3,224,280]
 
 [DebugWindow/Me]
 Geometry=[86,357,224,280]
@@ -103,6 +113,9 @@ Geometry=[1308,25,224,280]
 [DebugWindow/bookmarks]
 Geometry=[45,-3,224,530]
 
+[DebugWindow/caller]
+Geometry=[45,-3,224,729]
+
 [DebugWindow/child]
 Geometry=[1280,0,224,280]
 
@@ -163,6 +176,12 @@ Geometry=[1280,-3,224,280]
 [DebugWindow/picture_list]
 Geometry=[45,-3,224,280]
 
+[DebugWindow/plugin_indexer_gui]
+Geometry=[45,-3,224,280]
+
+[DebugWindow/plugins]
+Geometry=[45,0,224,280]
+
 [DebugWindow/rResult]
 Geometry=[-170,332,443,280]
 
@@ -171,6 +190,9 @@ Geometry=[45,-3,224,280]
 
 [DebugWindow/rcResult]
 Geometry=[1280,-3,464,335]
+
+[DebugWindow/reindex_timer]
+Geometry=[45,-3,224,280]
 
 [DebugWindow/result]
 Geometry=[1280,0,224,280]
