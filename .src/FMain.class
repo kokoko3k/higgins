@@ -112,13 +112,14 @@ Public Sub immediate_search(textcontrol As Object)
   FMain.h = TextBox1.h + (Desktop.scale * 3) + resultgrid.h
   mouse_busy()
 
+  Debug "starting search..."
   For Each aplugin In plugins
     t0 = Timer()
     Debug "[START]", plugins.key
     run_plugin(plugins.key, textbox1)
     Debug "[END]", plugins.key, "time:", Timer() - t0, "[END]"
   Next
-
+  Debug "Search ends here."
 
   ' run_plugin("plugin_calculator", textbox1)
   ' 
