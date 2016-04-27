@@ -54,6 +54,8 @@ End
 
 Private Sub trigged(query As String) As Boolean
   If Len(query) < minchar Then Return False
+  If Left(query) = "=" Then Return
+  If Right(query) = "=" Then Return
   'some more controls here (?)
   Return True
 End
