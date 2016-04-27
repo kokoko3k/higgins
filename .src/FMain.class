@@ -485,7 +485,7 @@ Public Sub init_hSettings()
         o_checkbox.tag = plugin_name
         
         Object.Lock(o_checkbox)
-        If (plugins_enabled.find(plugin_name) > -1) Then
+        If ((plugins_enabled.find(plugin_name) > -1) Or plist = "") Then
           o_checkbox.value = CheckBox.True
 
           load_plugin(plugin_name, rsize)
