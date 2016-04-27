@@ -1,0 +1,72 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,79,51)
+  Text = ("indexer plugin config")
+  Icon = Picture["icon:/48/options"]
+  Persistent = True
+  Arrangement = Arrange.Vertical
+  Spacing = True
+  Margin = True
+  { Frame1 Panel
+    MoveScaled(0,0,77,49)
+    Expand = True
+    Arrangement = Arrange.Vertical
+    Margin = True
+    Border = Border.Raised
+    { Label3 Label
+      MoveScaled(2,0,35,5)
+      Text = ("Directories to index")
+    }
+    { HBox1 HBox
+      MoveScaled(2,5,72,42)
+      Expand = True
+      Spacing = True
+      { GridIndex TableView
+        MoveScaled(3,1,38,40)
+        Expand = True
+        Mode = Select.Single
+        Grid = False
+        ShowCursor = True
+        Header = GridView.Horizontal
+      }
+      { HBox3 VBox
+        MoveScaled(49,2,20,34)
+        AutoResize = True
+        Spacing = True
+        { ButtonAdd Button
+          MoveScaled(1,2,16,4)
+          AutoResize = True
+          Text = ("Add")
+          Picture = Picture["icon:/small/add"]
+        }
+        { ButtonDel Button
+          MoveScaled(1,7,16,4)
+          AutoResize = True
+          Text = ("Delete")
+          Picture = Picture["icon:/small/delete"]
+        }
+        { VBox1 VBox
+          MoveScaled(3,13,5,5)
+          Expand = True
+        }
+        { Label2 Label
+          MoveScaled(2,20,17,4)
+          AutoResize = True
+          Text = ("Update index every:")
+          Alignment = Align.Left
+        }
+        { ValueBoxReindex ValueBox
+          MoveScaled(3,24,17,4)
+          Text = ("00:30")
+          Type = ValueBox.Time
+        }
+        { ButtonReindex Button
+          MoveScaled(3,29,16,4)
+          Text = ("IndexNow")
+          Picture = Picture["icon:/small/find"]
+        }
+      }
+    }
+  }
+}

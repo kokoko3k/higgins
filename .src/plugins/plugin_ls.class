@@ -1,7 +1,6 @@
 ' Gambas class file
 
 Public Struct rItemT
-  Priority As Integer         '0-100, unused by now.
   plugin As String            'the plugin name
   Text As String              'text displayed in the clipboard
   SubText As String           'text displayed under the main text
@@ -14,22 +13,20 @@ Public Struct rItemT
 End Struct
 
 
+Private textcontrol As Object
 Private plugin As String
-Private priority As Integer
 Private iconsize As Integer
-Private minchar As Integer    'exit if the search term is lower than that
+Private minchar As Integer = 4   'exit if the search term is lower than that
 
 
 
-
-Public Sub _new(p_plugin As String, p_priority As Integer, p_iconsize As Integer, Optional p_minchar As Integer = 0)
+Public Sub _new(p_plugin As String, p_iconsize As Integer)
 
   plugin = p_plugin
-  priority = p_priority
   iconsize = p_iconsize
-  minchar = p_minchar
-  
+
 End
+
 
 Private Sub trigged(query As String) As Boolean
   If Len(query) < minchar Then Return False
@@ -88,7 +85,7 @@ Private Function create_item(path As String) As RItemT
     return_item.action_desktopopen = path
     return_item.action_openfolder = File.Dir(path)
     return_item.plugin = plugin
-    return_item.Priority = priority
+    
     'Stop
     If isdir Then 
       return_item.image_file = "icon:/" & iconsize & "/directory" 

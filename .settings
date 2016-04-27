@@ -118,6 +118,9 @@ Geometry=[1280,307,224,280]
 [DebugWindow/happ]
 Geometry=[1280,-3,361,555]
 
+[DebugWindow/img]
+Geometry=[45,-3,224,280]
+
 [DebugWindow/index_db]
 Geometry=[45,-3,595,923]
 
@@ -205,31 +208,35 @@ Geometry=[1280,307,224,280]
 [DebugWindow/selectable]
 Geometry=[1280,0,224,280]
 
+[DebugWindow/textcontrol]
+Geometry=[45,-3,224,280]
+
 [Executable]
 Path="gbLocate.gambas"
 
 [OpenFile]
 File[1]=".src/FMain.form"
-Active=16
-File[2]=".src/FMain.class:37.177"
-Count=19
-File[3]=".src/MyDesktop.class:7.100"
+Active=20
+File[2]=".src/FMain.class:57.194"
+Count=20
+File[3]=".src/MyDesktop.class:2.188"
 File[4]=".src/DesktopApps.class:43.441"
 File[5]="appicon.png"
 File[6]="README:0.7"
-File[7]=".src/Plugins.class:13.136"
+File[7]=".src/old_Plugins.class:13.136"
 File[8]=".src/XbindKeys.class:0.98"
 File[9]=".src/hSettings.form"
 File[10]=".src/hSettings.class:24.47"
-File[11]=".src/plugin_indexer1.class:25.33"
+File[11]=".src/plugin_indexer1.class:36.158"
 File[12]=".src/MySettings.module:3.38"
-File[13]=".src/plugins/plugin_apps.class:0.113"
-File[14]=".src/plugins/plugin_ls.class:0.106"
-File[15]=".src/plugins/plugin_calculator.class:18.31"
-File[16]=".src/plugins/plugin_template.class:0.24"
-File[17]=".src/plugins/plugin_executable.class:0.0"
+File[13]=".src/plugins/plugin_apps.class:46.52"
+File[14]=".src/plugins/plugin_ls.class:46.49"
+File[15]=".src/plugins/plugin_calculator.class:46.47"
+File[16]=".src/plugins/plugin_template.class:0.57"
+File[17]=".src/plugins/plugin_executable.class:46.51"
 File[18]=".src/plugins/plugin_executable_gui.form"
-File[19]=".src/plugins/plugin_fbookmarks.class:0.0"
+File[19]=".src/plugins/plugin_fbookmarks.class:46.54"
+File[20]=".src/plugins/plugin_indexer.class:8.59"
 
 [Watches]
 Count=0

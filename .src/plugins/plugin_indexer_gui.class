@@ -1,0 +1,124 @@
+' Gambas class file
+
+Public confdir As String
+Private gridfile As String 
+Public last_index_time As Date
+Public caller As Object
+
+Public Sub Form_Show()
+  init(caller)
+  LoadSettings()
+End
+
+Public Sub Form_Hide()
+
+  SaveSettings()
+
+End
+
+Public Sub Form_Close()
+
+  SaveSettings()
+
+End
+
+Public Sub SaveSettings()
+  Settings["plugin_indexer/interval"] = ValueBoxReindex.value
+  Settings["plugin_indexer/last_index_time"] = last_index_time
+  SaveGrid()
+  Settings.Save()
+End
+
+Public Sub LoadSettings()
+  last_index_time = Settings["plugin_indexer/last_index_time", Date(1900, 1, 1)]
+  ValueBoxReindex.value = Settings["plugin_indexer/interval", "00:31"] 
+  LoadGrid()
+  'fixme altro da fare?
+
+End
+
+
+Public Sub init(caller_p As Object)
+  caller = caller_p
+  GridIndex.Columns.count = 2
+  GridIndex.Columns[0].Title = ("Depth")
+  GridIndex.Columns[1].Title = ("Directory")
+  GridIndex.Columns.w = -1
+End
+
+
+Public Sub ButtonAdd_Click()
+  If Dialog.SelectDirectory() Then Return
+  GridIndex.Rows.count += 1
+  GridIndex[GridIndex.Rows.max, 1].text = Dialog.Path
+  GridIndex[GridIndex.Rows.max, 0].text = 5
+  GridIndex.Columns.w = -1
+  SaveSettings()
+End
+
+Public Sub GridIndex_Activate()
+    GridIndex.Edit
+End
+
+Public Sub GridIndex_Save(Row As Integer, Column As Integer, Value As String)
+  If column = 0 Then 
+    Try GridIndex[row, column].text = CInt(value)
+      Else
+    GridIndex[row, column].text = value
+  Endif
+  SaveSettings()
+End
+
+Public Sub ButtonDel_Click()
+ GridIndex.Rows.Remove(GridIndex.row)
+ SaveSettings()
+End
+
+Public Sub SaveGrid()
+  Dim i As Integer
+  Dim filedata As String
+  For i = 0 To GridIndex.Rows.Max
+    filedata &= GridIndex[i, 0].text & "\n"
+    filedata &= GridIndex[i, 1].text & "\n"
+  Next
+  Settings["plugin_indexer/grid"] = Left(filedata, -1)
+End
+
+Public Sub LoadGrid()
+  Dim i As Integer
+  Dim filedata, item, WhatToDo As String
+
+  GridIndex.Rows.count = 0
+  Try filedata = Settings["plugin_indexer/grid"]
+  If Error Then Return
+  WhatToDo = "getDepth"
+  For Each item In Split(filedata, "\n", "", False)
+    Select WhatToDo
+      Case "getDepth"
+        GridIndex.Rows.count += 1
+        GridIndex[GridIndex.Rows.max, 0].text = item
+        WhatToDo = "getDir"
+      Case "getDir"
+        GridIndex[GridIndex.Rows.max, 1].text = item
+        WhatToDo = "getDepth"
+    End Select
+  Next
+  
+  For i = 0 To GridIndex.Rows.Max
+    filedata &= GridIndex[i, 0].text & "\n"
+    filedata &= GridIndex[i, 1].text & "\n"
+  Next
+End
+
+Public Sub ButtonReindex_Click()
+  caller.reindex()
+  ButtonReindex.enabled = False
+  Repeat
+    Wait 0.1
+  Until caller.indexing = False
+  ButtonReindex.enabled = True
+  
+End
+
+
+

@@ -2,6 +2,8 @@
 
 { Form Form
   MoveScaled(0,0,64,15)
+  Text = ("executable plugin config")
+  Icon = Picture["icon:/48/options"]
   Arrangement = Arrange.Fill
   AutoResize = True
   Spacing = True

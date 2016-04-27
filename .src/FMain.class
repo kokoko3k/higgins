@@ -5,7 +5,6 @@ Public Const appname As String = "higgins"
 Public Confpath As String = Settings.defaultdir & "/" & appname
 
 Public Struct rItemT
-  Priority As Integer         '0-100, unused by now.
   plugin As String            'the plugin name
   Text As String              'text displayed in the clipboard
   SubText As String           'text displayed under the main text
@@ -17,17 +16,6 @@ Public Struct rItemT
   image_file As String        'optional image displayed (fullpath or "DefferredMimeIcon")
 End Struct
 
-Public Struct rItem
-  Priority As Integer
-  Category As String 'app,locate,calculate,desktopexec,execute,fbookmark
-  Text As String
-  SubText As String
-  Mexec As String
-  'pic As Picture
-  happ As DesktopApps
-  uri As String
-  clipboard As String
-End Struct
 
 Public results_file As String = Temp()
 Public results_list As New RItemT[]
@@ -37,53 +25,9 @@ Public Socket_File As String = Confpath & "/socket"
 Public Lock_File As String = Confpath & "/lock"
 Public firstrun As Boolean = True
 
-Public indexer As Plugin_indexer1
-
 Public Sub resize_form()
   FMain.h = TextBox1.h + (Desktop.scale * 3)
 End
-
-' Public Sub TextBox1_Change()
-'   Dim previous_search As String
-'   Dim current_search As String
-'   Try current_search = TextBox1.text 
-'   If Error Then Return
-'   Wait 0.01
-'   If current_search = "" Then 
-'     resize_form()
-'     reinit()
-'     Return
-'   Endif
-' 
-'   Plugins.kill_locate()
-' 
-'   DesktopApps.stop_get = True
-'   While DesktopApps.getting
-'     Wait
-'   Wend
-'   DesktopApps.stop_get = False
-' 
-'   Try previous_search = TextBox1.text
-'   If Error Then Return
-' 
-'   If Plugins.Calculate(current_search) Then 
-'     mouse_normal
-'     Goto returnLabel
-'   Endif
-' 
-'   immediate_search(textbox1)
-'   If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
-'   Wait 0.3
-' 
-'   Try current_search = TextBox1.text 
-'   If Error Then Return
-'   If previous_search <> current_search Then Return
-' 
-'   delayed_search(textbox1)
-' 
-'   returnlabel:
-'   If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
-' End
 
 
 Public Sub TextBox1_Change()
@@ -110,8 +54,6 @@ Public Sub TextBox1_Change()
   If Error Then Return
   If previous_search <> current_search Then Return
 
- 'delayed_search(textbox1)
-
   returnlabel:
   If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
 End
@@ -125,28 +67,40 @@ Public Sub initgrid()
 End
 
 Public Sub reinit()
-  Dim padding As Integer
   results_list.Clear()
   picture_list.Clear()
   initgrid()
   MyDesktop.init()
-  old_Plugins.kill_locate()
-  padding = (Desktop.scale * 2)
-  resultgrid.Rows.h = resultgrid.Font.RichTextHeight("|j<br>|j") + padding
-  rSize = ResultGrid.Rows.H - padding
   mouse_normal()
 End
 
 
 Private plugins As New Collection 'a collection of plugin instances
+'Private plugins_enabled As New String[]
 
-Public Sub load_plugin(plugin_name As String, minchar As Integer, priority As Integer) As Object
-  Return Object.New(plugin_name, [plugin_name, priority, rSize, minchar])
+Public Sub load_plugin(plugin_name As String, iconsize As Integer)
+  Dim myplugin As Object
+  myplugin = Object.New(plugin_name, [plugin_name, iconsize])
+  Debug plugin_name
+  plugins[plugin_name] = myplugin
+  Object.Attach(myplugin, fmain, "plugin_event")
+End
+
+
+Public Sub unload_plugin(plugin_name As String)
+  Dim my_plugin As Object
+  Try my_plugin = plugins[plugin_name]
+  If Error Then Return
+  
+  plugins.Remove(plugin_name)
+  Try Object.Call(my_plugin, "stop")
+  my_plugin = Null
 End
 
 
 Private previous_search As String
 Public Sub immediate_search(textcontrol As Object)
+  Dim aPlugin As Object
 
   If previous_search = textcontrol.text Then Return 'don't know why this is important, but works.
   previous_search = textcontrol.text                'don't know why this is important, but works.
@@ -155,34 +109,30 @@ Public Sub immediate_search(textcontrol As Object)
   FMain.h = TextBox1.h + (Desktop.scale * 3) + resultgrid.h
   mouse_busy()
 
-  run_plugin("plugin_calculator", 3, 100, textbox1)
+  For Each aplugin In plugins
+    run_plugin(plugins.key, textbox1)
+  Next
 
-  run_plugin("plugin_executable", 3, 90, textbox1)
 
-  run_plugin("plugin_fbookmarks", 3, 80, textbox1)
-
-  run_plugin("plugin_apps", 3, 70, textbox1)
-
-  run_plugin("plugin_ls", 4, 60, textbox1)
-
-  run_plugin("plugin_indexer", 4, 60, textbox1)
+  ' run_plugin("plugin_calculator", textbox1)
+  ' 
+  ' run_plugin("plugin_executable", textbox1)
+  ' 
+  ' run_plugin("plugin_fbookmarks", textbox1)
+  ' 
+  ' run_plugin("plugin_apps", textbox1)
+  ' 
+  ' run_plugin("plugin_ls", textbox1)
+  ' 
+  ' run_plugin("plugin_indexer", textbox1)
 
   mouse_normal()
 End
 
 
-Public Sub run_plugin(plugin_name As String, minchar As Integer, priority As Integer, textcontrol As Object)
+Public Sub run_plugin(plugin_name As String, textcontrol As Object)
   Dim rResults As RItemT[]
   Dim rResult As RItemT[]
-  Dim plugin_obj As Object
-
-  
-  If Not (plugins.Exist(plugin_name)) Then 'se il plugin non è mai stato caricato, instanzialo
-    plugin_obj = load_plugin(plugin_name, minchar, priority)
-    plugins[plugin_name] = plugin_obj
-  Endif
-
-  Object.Attach(plugins[plugin_name], fmain, "plugin_event")
 
   rResults = Object.Call(plugins[plugin_name], "find", [textcontrol]) 'chiama il metodo find()
   If rResults = Null Then Return
@@ -197,31 +147,6 @@ Public Sub plugin_event_new_results(rResults As RItemT[])
   ResultGrid.Rows.count += rResults.Count
 End
 
-
-' 
-' Public Sub run_plugin(my_plugin As Object, textcontrol As Object)
-'   Dim rResults As RItemT[]
-'   Dim rResult As RItemT[]
-' 
-' 
-'   rResults = Object.Call(my_plugin, "find", [textcontrol])
-'   If rResults = Null Then Return
-' 
-'   results_list.Insert(rResults)
-'   ResultGrid.Rows.count += rResults.Count
-' 
-' End
-
-
-' Private Sub Parse_results(rResults As RItemT[])
-'   Dim item As RItemT
-'   Dim img As Image
-'   If rResults = Null Then Return
-'   For Each item In rResults
-'     results_list.Add(item)
-'     ResultGrid.Rows.Count += 1
-'   Next
-' End
 
 Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
   Dim rcResult As New RItemT
@@ -274,36 +199,6 @@ End
 
 
 
-
-
-
-Public Sub delayed_search(obj As Object)
-  Dim indexer_out As String[]
-
-  Select Left(obj.text)
-    Case "="
-      
-    Case Else
-      resultgrid.tag = "locate"
-
-      'search for apps
-      Plugins.find_apps(obj.text)
-
-      'search for apps by description
-      Plugins.find_apps_by_desc(obj.text)
-
-      'search for executables
-      Plugins.find_executables(obj.text)
-
-      indexer.search(obj, ResultGrid, results_list)
-
-      Plugins.search_paths(obj.text)
-
-       mouse_normal()
-  End Select
-
-End
-
 Public Sub mouse_busy()
   fmain.mouse = Mouse.Wait
   TextBox1.mouse = Mouse.wait
@@ -313,100 +208,6 @@ Public Sub mouse_normal()
   fmain.mouse = Mouse.Default
   TextBox1.mouse = Mouse.default
 End
-
-' Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
-'   Dim rcResult As New RItem
-'   If results_list.count = 0 Then Return
-'   rcResult = results_list[Row]
-' 
-'   'two lines:
-'   resultgrid.data.RichText = "<b>" & rcResult.text & "</b>"
-'   If rcResult.subtext <> "" Then 
-'     resultgrid.data.RichText &= "<br><font size=-1>" & rcResult.subtext & "</font>"
-'   Endif
-' 
-'   'find pic from cache?
-'   If picture_list[row] <> Null Then
-'     resultgrid.Data.Picture = picture_list[row] 
-'     Return
-'   Endif
-'   'no cache :(
-'   Select Case rcResult.Category  'app,locate,calculate,desktopexec,fbookmark
-'     Case "app"
-'       resultgrid.Data.Picture = rcResult.happ.GetIcon(rSize).Picture
-'     Case "execute"
-'       resultgrid.Data.Picture = Picture["icon:/" & rSize & "/exec"]
-'     Case "execute_terminal"
-'       resultgrid.Data.Picture = Picture["icon:/" & rSize & "/terminal"]
-'     Case "desktopexec"
-'       MyDesktop.parse(rcResult.uri)
-'       resultgrid.Data.Picture = MyDesktop.GetIcon(MyDesktop.dIconName, rsize).picture 
-'       'DesktopMime.FromFile(rcResult.mExec).GetIcon(rSize).Picture
-'     Case "locate"
-'       If rcResult.text Ends "/" Then
-'         resultgrid.Data.Picture = Picture["icon:/" & rSize & "/directory"]
-'           Else
-'         Try resultgrid.Data.Picture = MyDesktop.Get_mime_Icon(rcResult.uri, rSize).Picture
-'       Endif
-'     Case "calculate"
-'       resultgrid.Data.Picture = Picture["icon:/" & rSize & "/calculator"]
-'     Case "fbookmark"
-'       resultgrid.Data.Picture = Picture["icon:/" & rSize & "/bookmark"]
-'   End Select
-'   
-'   If resultgrid.Data.picture = Null Then
-'     resultgrid.Data.Picture = Picture["icon:/" & rSize & "/file"]
-'   Endif
-'   
-'     'cache picture
-'      If resultgrid.Data.picture <> Null Then picture_list[row] = resultgrid.Data.picture
-'   
-' End
-
-' Public Sub start_item(i As Integer)
-'   Dim rcResult As New RItem
-'   Dim xdg_terminal As String
-'   Dim bout As String
-'   Dim isdir As Boolean
-'   rcResult = results_list[i]
-' 
-'   Select Case rcResult.Category 'app,locate,calculate,desktopexec,fbookmark
-'     Case "locate"
-'       Shell "bash -c \"[[ -x '" & rcResult.mExec & "' ]] && echo executable \"" To bout
-'       Try isdir = Stat(rcResult.Mexec, True).type = gb.Directory 
-'       
-'       If ((Trim(bout) = "") Or (isdir)) Or (Not MyDesktop.mime_exe(rcResult.Mexec)) Then 
-'         Desktop.Open(rcResult.mExec)
-'           Else
-'         If Message.Question(("Execute file?"), "Execute", "Open") = 1 Then 
-'           Shell rcResult.mExec
-'             Else
-'           Desktop.Open(rcResult.mExec)
-'         Endif
-'       Endif
-' 
-'     Case "fbookmark"
-'       Desktop.Open(rcResult.uri)
-' 
-'     Case "execute_terminal"
-'       xdg_terminal = Temp
-'       Copy "xdg-terminal.sh" To xdg_terminal
-'       Chmod xdg_terminal To "rwxr-x---" 
-'       Shell xdg_terminal & " \"" & "sh -c ' " & rcResult.mExec & "; echo; echo  Press enter to exit ; read ' \""
-' 
-'     Case "execute"
-'       Shell rcResult.mExec
-' 
-'     Case "app"
-'       Shell rcResult.mExec
-' 
-'     Case "desktopexec"
-'       Shell rcResult.mExec
-' 
-'   End Select
-' End
-
-
 
 
 Public Sub start_item(i As Integer)
@@ -590,9 +391,8 @@ End
 
 '--- TRYICON RELATED
               
-    Public TrayIcon2 As Trayicon 'fixme trayicon
+    Public TrayIcon2 As Trayicon
     Public Sub InitTrayIcon()
-      'fixme trayicon
     
       Dim SystemTray As Boolean = True
       Try SystemTray = desktop.HasSystemTray
@@ -659,10 +459,100 @@ End
 '-- END XBINDKEYS ---------------------------------------------------------------------
 
 
+Public Sub init_hSettings()
+  Dim plugin_name As String
+  Dim o_hbox As Hbox
+  Dim o_checkbox As Checkbox
+  Dim o_spacer As Panel
+  Dim o_button As Button
+  Dim o_separator As Separator
+  Dim plist As String 
+  Dim plugins_enabled As New String[]
+  
+  Try plist = Settings["hsettings/plist"]
+  plugins_enabled = Split(plist)
+  
+  For Each plugin_name In Dir(".gambas")
+    If (Upper(plugin_name) Begins "PLUGIN_") Then
+      If Not (Upper(plugin_name) Ends "_GUI") Then
+
+        o_hbox = New HBox(hSettings.frame1)
+        o_hbox.h = hSettings.Font.TextHeight("|") * 1.5
+
+        o_checkbox = New Checkbox(o_hbox) As "plugin_checkbox"
+        o_checkbox.text = plugin_name
+        o_checkbox.AutoResize = True
+        o_checkbox.tag = plugin_name
+        
+        Object.Lock(o_checkbox)
+        If (plugins_enabled.find(plugin_name) > -1) Then
+          o_checkbox.value = CheckBox.True
+
+          load_plugin(plugin_name, rsize)
+            Else
+          o_checkbox.value = CheckBox.false
+        Endif
+        Object.unLock(o_checkbox)
+
+        o_spacer = New Panel(o_hbox)
+        o_spacer.border = Border.None
+        o_spacer.expand = True
+
+        o_button = New Button(o_hbox) As "plugin_button"
+        o_button.tag = plugin_name
+
+        o_button.w = hSettings.Font.TextHeight("|") * 1.5
+        o_button.Picture = Picture["icon:/medium/options"]
+
+        o_separator = New Separator(hSettings.frame1)
+
+      Endif
+    Endif
+  Next
+  
+End
 
 
 
+Public Sub plugin_checkbox_Click()
 
+  If Last.value = CheckBox.True Then
+    'If plugins_enabled.Find(Last.tag) = -1 Then
+    If Not (plugins.Exist(Lower(Last.tag))) Then
+      'plugins_enabled.Add(Last.tag)
+      load_plugin(Last.tag, rsize)
+    Endif
+        Else
+    unload_plugin(Last.tag)
+    'plugins_enabled.Delete(plugins_enabled.Find(Last.tag))
+  Endif
+
+  save_plugin_list()
+
+End
+
+Public Sub plugin_button_Click()
+  Dim myplugin As Object
+  Try myplugin = plugins[Last.tag]
+  If Error Then Return
+  Try Object.Call(myplugin, "configure")
+  
+End
+
+
+Public Sub save_plugin_list()
+  Dim p As New String[]
+  Dim o As Object
+  For Each o In hSettings.Controls
+    If o Is CheckBox Then
+      If o.tag Begins "PLUGIN" Then
+        If o.value = CheckBox.True Then p.Add(o.tag)
+      Endif
+    Endif
+  Next
+  Settings["hsettings/plist"] = p.Join()
+  Settings.save
+End
 
 
 
@@ -684,13 +574,14 @@ End
 '-- FMAIN FUNCTIONS  ---------------------------------------------------------------------
 
     Public Sub Form_Open()
+      Dim padding As Integer = (Desktop.scale * 2)
       Dim newuser As Boolean = False
       Dim msg As String
-      
       Dim i As Integer
       Dim img As Image
       Dim img2 As Image
       Dim t0 As Float
+
       t0 = Timer()
       If Not firstrun Then Return
       If Not Exist(Confpath, True) Then
@@ -704,13 +595,16 @@ End
         Message.Info(msg)
       Endif
       setup_xbindkeys()
+      resultgrid.Rows.h = resultgrid.Font.RichTextHeight("|j<br>|j") + padding
+      rSize = ResultGrid.Rows.H - padding
       MySettings.load()
       socket_init()
       InitTrayIcon()
+      
       resize_form()
-      hSettings.init()
-      indexer = New Plugin_indexer1(hSettings.GridIndex, confpath & "/indexer.txt") As "indexer"
-      indexer.restart_timer(MySettings.plugin_indexer_last_index_time, hSettings.ValueBoxReindex.value)  
+      
+      init_hSettings()
+
     End
     
     Public Sub Form_KeyRelease()
@@ -788,7 +682,6 @@ End
 
 
 Public Sub TextBox1_Click()
-  Me.hide
   hSettings.show
 End
 

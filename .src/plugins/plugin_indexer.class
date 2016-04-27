@@ -1,7 +1,6 @@
 ' Gambas class file
 
 Public Struct rItemT
-  Priority As Integer           '0-100, unused by now.
   plugin As String              'the plugin name
   Text As String                'text displayed in the clipboard
   SubText As String             'text displayed under the main text
@@ -14,24 +13,43 @@ Public Struct rItemT
 End Struct
 
 
+Private textcontrol As Object
 Private plugin As String
-Private priority As Integer
 Private iconsize As Integer
-Private minchar As Integer      'exit if the search term is lower than that
+Private minchar As Integer = 3   'exit if the search term is lower than that
 
 Private index_db As New String[]
-Private index_file As String = "/tmp/indexfile.txt" 'fixme non costante
+Private index_file As String
 
+Private caller As Object
 
-Public Sub _new(p_plugin As String, p_priority As Integer, p_iconsize As Integer, Optional p_minchar As Integer = 0)
+Public Sub _new(p_plugin As String, p_iconsize As Integer)
+
+  caller = Last
+  index_file = fmain.Confpath & "/indexer.txt"
 
   plugin = p_plugin
-  priority = p_priority
   iconsize = p_iconsize
-  minchar = p_minchar
   
   Try index_db = Split(File.Load(index_file))
+  plugin_indexer_gui.init(Me)
+  plugin_indexer_gui.LoadSettings()
+  restart_timer()  
+
+End
+
+
+Public Sub Stop()
   
+  'not sure if this is the right way, but this should be called when the plugin has to be unloaded
+  reindex_timer.stop
+  
+End
+
+Public Sub _free()
+
+  Debug
+
 End
 
 Private Sub trigged(query As String) As Boolean
@@ -40,7 +58,6 @@ Private Sub trigged(query As String) As Boolean
   Return True
 End
 
-' Editable part of the template follows:
 
 Public Sub find(textcontrol As Object) As RItemT[]
   'search for filedialogs bookmarks
@@ -103,7 +120,7 @@ Private Function create_item(path As String) As RItemT
   return_item.action_desktopopen = path
   return_item.action_openfolder = File.Dir(path)
   return_item.plugin = plugin
-  return_item.Priority = priority
+  
   return_item.Text = File.Name(path)
   return_item.SubText = "In: " & File.Dir(path)
   hApp = Null
@@ -112,9 +129,85 @@ Private Function create_item(path As String) As RItemT
 End
 
 Public Sub configure()
-  
   'this starts the configuration window.
-  
+  plugin_indexer_gui.Show()
 End
 
 Event new_results(rResults As RItemT[])
+
+Public reindex_timer As Timer
+Private reindex_minutes_timeout As Integer 
+
+Public Sub restart_timer()
+  Dim minutes_integer As Integer
+  Dim minutes_timeout As Date = plugin_indexer_gui.ValueBoxReindex.value
+  Dim gui As Form = plugin_indexer_gui
+
+  minutes_integer = (Hour(minutes_timeout) * 60) + Minute(minutes_timeout)
+  If gui.last_index_time = Null Then gui.last_index_time = Date(1900, 1, 1)
+
+  reindex_timer = New Timer As "reindex_timer"
+  reindex_timer.delay = 1000
+  reindex_minutes_timeout = minutes_integer
+  reindex_timer.start
+  reindex_timer.Trigger()
+End
+
+
+
+Public Sub reindex_timer_Timer()
+  Dim time_diff As Integer
+  time_diff = DateDiff(plugin_indexer_gui.last_index_time, Now(), gb.Minute)
+  Debug reindex_minutes_timeout - time_diff, "minutes to go"
+  If time_diff >= reindex_minutes_timeout Then
+    reindex_timer.stop
+    ReIndex()
+  Endif
+
+End
+
+
+Public indexing As Boolean = False
+Private indexprocess As Process
+Public Sub ReIndex()
+  Dim r As Integer
+  Dim db As String
+  Dim depth, dir As String
+  Dim cmdline As String
+  Dim tmp As String = Temp()
+  Dim agrid As Tableview = plugin_indexer_gui.GridIndex
+  Dim sPath As String
+  Try indexprocess.kill
+  index_db.clear
+  For r = 0 To aGrid.Rows.max
+    sPath = aGrid[r, 1].text
+    If Not (sPath Ends "/") Then sPath &= "/"
+    depth = aGrid[r, 0].text
+    dir = "'" & sPath & "'"
+    cmdline &= "; nice -n 19 ionice -c3 schedtool -B -e find " & dir & " -maxdepth " & depth 
+  Next
+  If cmdline Begins ";" Then cmdline = Right(cmdline, -1)
+  cmdline = "sh -c " & "\"" & cmdline & "\""
+  Debug "Indexing..."
+  Debug cmdline
+  indexprocess = Shell cmdline For Read As "indexprocess"
+  indexing = True
+End
+
+Public Sub indexprocess_Read()
+  Dim oLine As String
+  Line Input #indexprocess, oline
+  index_db.Add(oline)
+End
+
+Public Sub indexprocess_kill()
+  Debug "Finished indexing"
+  indexing = False
+  'Raise indexing_done(Now())
+  File.Save(index_file, index_db.Join())
+  plugin_indexer_gui.last_index_time = Now()
+  Try index_db = Split(File.Load(index_file))
+  plugin_indexer_gui.SaveSettings()
+  reindex_timer.start
+End
+

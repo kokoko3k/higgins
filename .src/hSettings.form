@@ -5,76 +5,22 @@
   Text = ("Higgins settings")
   Icon = Picture["icon:/medium/options"]
   Persistent = True
+  Stacking = Window.Above
   Arrangement = Arrange.Vertical
   Spacing = True
   Margin = True
-  { Frame1 Panel
-    MoveScaled(2,2,80,49)
-    Expand = True
-    Arrangement = Arrange.Vertical
-    Margin = True
-    Border = Border.Raised
-    { Label3 Label
-      MoveScaled(2,0,35,5)
-      Text = ("Directories to index")
-    }
-    { HBox1 HBox
-      MoveScaled(2,5,72,42)
-      Expand = True
-      Spacing = True
-      { GridIndex TableView
-        MoveScaled(3,1,38,40)
-        Expand = True
-        Mode = Select.Single
-        Grid = False
-        ShowCursor = True
-        Header = GridView.Horizontal
-      }
-      { HBox3 VBox
-        MoveScaled(49,2,20,34)
-        AutoResize = True
-        Spacing = True
-        { Button3 Button
-          MoveScaled(1,2,16,4)
-          AutoResize = True
-          Text = ("Add")
-          Picture = Picture["icon:/small/add"]
-        }
-        { Button2 Button
-          MoveScaled(1,7,16,4)
-          AutoResize = True
-          Text = ("Delete")
-          Picture = Picture["icon:/small/delete"]
-        }
-        { VBox1 VBox
-          MoveScaled(3,13,5,5)
-          Expand = True
-        }
-        { Label2 Label
-          MoveScaled(2,20,17,4)
-          AutoResize = True
-          Text = ("Update index every:")
-          Alignment = Align.Left
-        }
-        { ValueBoxReindex ValueBox
-          MoveScaled(3,24,17,4)
-          Text = ("00:30")
-          Type = ValueBox.Time
-        }
-        { Button4 Button
-          MoveScaled(3,29,16,4)
-          Text = ("IndexNow")
-          Picture = Picture["icon:/small/find"]
-        }
-      }
-    }
-  }
   { Panel1 HBox
-    MoveScaled(2,56,77,7)
+    MoveScaled(2,1,77,7)
+    Spacing = True
     Margin = True
     { VBox2 VBox
       MoveScaled(1,1,5,4)
       Expand = True
+    }
+    { LabelHotkey Label
+      MoveScaled(9,1,24,4)
+      Text = ("Default Hotkey")
+      Alignment = Align.Right
     }
     { Button1 Button
       MoveScaled(46,1,30,4)
@@ -82,5 +28,13 @@
       Text = ("Change default hotkey")
       Picture = Picture["icon:/small/shortcut"]
     }
+  }
+  { Frame1 ScrollView
+    MoveScaled(3,10,77,56)
+    Background = Color.TextBackground
+    Expand = True
+    Arrangement = Arrange.Vertical
+    Spacing = True
+    Margin = True
   }
 }

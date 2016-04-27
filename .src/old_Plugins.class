@@ -1,176 +1,164 @@
 ' Gambas class file
 
-Create Static
-
-'how many characters needs to be entered to start the following searches
-Public Const min_char_calculate As Integer = 1
-Public Const min_char_app As Integer = 2
-Public Const min_char_execute As Integer = 2
-Public Const min_char_app_by_desc As Integer = 3
-Public Const min_char_locate As Integer = 3
-Public Const min_char_path As Integer = 1
-Public Const min_char_fBookmarks As Integer = 1
-
-'no effect by now, may come handy to sort the results (?)
-Public Const calculate_priority As Integer = 100
-Public Const searchpaths_priority As Integer = 90
-Public Const fBookmarks_priority As Integer = 80
-Public Const app_priority As Integer = 70
-Public Const execute_priority As Integer = 60
-Public Const DesktopExec_priority As Integer = 50
-Public Const locate_priority As Integer = 40
-
-
-Public Struct rItem
-  Priority As Integer
-  Category As String 'app,locate,calculate,desktopexec,execute,fbookmark
-  Text As String
-  SubText As String
-  Mexec As String
-  'pic As Picture
-  happ As DesktopApps
-  uri As String
-  clipboard As String
-End Struct
-
-
-
-Public Sub find_apps_by_desc(term As String)
-  Dim happ As New DesktopApps
-  Dim app As String
-  Dim ismatched As Boolean = False
-  Dim result As RItem
-
-  If String.Len(term) < min_char_app_by_desc Then Return
-  For Each app In DesktopApps
-    happ = DesktopApps[app]
-    If happ = Null Then Return
-    ismatched = InStr(Lower(happ._$Comment), Lower(term)) > 0 
-    ismatched = ismatched Or InStr(Lower(happ._$Category), Lower(term)) > 0 
-    ismatched = ismatched Or InStr(Lower(happ._$Keywords), Lower(term)) > 0 
-    If ismatched Then
-      result = New RItem
-      result.category = "app"
-      result.Priority = app_priority
-      result.Text = happ.name
-      result.subtext = happ.comment
-      result.mExec = happ.Exec_R_noargs
-      result.uri = happ.file_path
-      result.happ = happ
-      result.clipboard = result.uri 
-      
-      FMain.results_list.Add(result)
-      FMain.ResultGrid.Rows.count += 1
-    Endif
-  Next
-End
-
-Public locatep As Process
-
-Public Sub locate(term As String)
-
-  If String.Len(term) < min_char_locate Then Return
-  'locatep = Shell "nice -n -19 locate -l 1000 -i " & "'" & term & "'" For Input As "locatep"
-  locatep = Shell "nice -n -19 locate -l 100 -i " & "'*" & term & "*'" For Input As "locatep"
-  locatep.Blocking = True
-  locatep.tag = term
-  FMain.mouse_busy()
-  Debug "locate " & "'" & term & "'" 
-End
-
-Public Sub find_executables(term As String)
-  Dim exe, exe_found As String 
-  Dim result As RItem
-  Try exe = Split(term, " ", "", True)[0]
-  If exe = "" Then Return
-  
-  exe_found = System.Find(term)
-  If exe_found = "" Then Return
-  result = New RItem
-  result.Category = "execute"
-  result.Mexec = term
-  result.Priority = execute_priority
-  result.Text = "Run " & term
-  result.SubText = "From " & File.Dir(exe_found)
-  result.uri = exe_found
-  FMain.results_list.Add(result)
-  FMain.ResultGrid.Rows.count += 1
-  
-  result = New RItem
-  result.Category = "execute_terminal"
-  result.Mexec = term
-  result.Priority = execute_priority
-  result.Text = "Run " & term & " in the terminal emulator"
-  result.SubText = "From " & File.Dir(exe_found) 
-  result.uri = exe_found
-  result.clipboard = result.uri
-  
-  FMain.results_list.Add(result)
-  FMain.ResultGrid.Rows.count += 1
-End
-
-Public Sub locatep_read()
-  Dim result As String
-  Dim rResult As RItem
-  Dim is_desktop_exec As Boolean = False
-  Dim stream_ok As Boolean 
-  FMain.mouse_busy()
-  stream_ok = False
-  Try stream_ok = Not Eof(locatep)
-  If Not stream_ok Then Return
-
-  Try Line Input #locatep, result
-  If Error Then Return
-  If (result = "") Or (locatep.tag <> FMain.TextBox1.text) Then 
-    Wait 
-    Return
-  Endif
-  If Not Exist(result, True) Then Return
-  rResult = New RItem
-
-  If result Ends ".desktop" Then 
-    MyDesktop.init()
-    MyDesktop.parse(result)
-    If MyDesktop.dExec <> "" Then is_desktop_exec = True
-  Endif
-
-  If is_desktop_exec Then
-    rResult.Category = "desktopexec"
-    rResult.Priority = DesktopExec_priority
-      Else
-    rResult.Category = "locate"
-    rResult.Priority = locate_priority
-  Endif
-
-  rResult.mExec = result
-  rResult.uri = result
-  
-  If Stat(result, True).type = gb.directory Then 
-    rResult.Text = File.Name(result) & "/"
-      Else
-    rResult.Text = File.Name(result)
-  Endif
-  
-  rResult.SubText = File.Dir(result)
-  rResult.clipboard = result
-
-
-  FMain.results_list.Add(rResult)
-  FMain.ResultGrid.Rows.count += 1
-
-End
-
-Public Sub kill_locate()
-    If locatep <> Null Then
-      While Exist("/proc/" & locatep.handle)
-        Try locatep.drop
-        Try locatep.close
-        Try locatep.kill
-        Wait
-      Wend
-    Endif
-End
-
-Public Sub locatep_kill()
-  FMain.mouse_normal()
-End
+' ' Gambas class file
+' 
+' Create Static
+' 
+' 'how many characters needs to be entered to start the following searches
+' Public Const min_char_calculate As Integer = 1
+' Public Const min_char_app As Integer = 2
+' Public Const min_char_execute As Integer = 2
+' Public Const min_char_app_by_desc As Integer = 3
+' Public Const min_char_locate As Integer = 3
+' Public Const min_char_path As Integer = 1
+' Public Const min_char_fBookmarks As Integer = 1
+' 
+' 
+' Public Struct rItem
+'   Priority As Integer
+'   Category As String 'app,locate,calculate,desktopexec,execute,fbookmark
+'   Text As String
+'   SubText As String
+'   Mexec As String
+'   'pic As Picture
+'   happ As DesktopApps
+'   uri As String
+'   clipboard As String
+' End Struct
+' 
+' 
+' 
+' Public Sub find_apps_by_desc(term As String)
+'   Dim happ As New DesktopApps
+'   Dim app As String
+'   Dim ismatched As Boolean = False
+'   Dim result As RItem
+' 
+'   If String.Len(term) < min_char_app_by_desc Then Return
+'   For Each app In DesktopApps
+'     happ = DesktopApps[app]
+'     If happ = Null Then Return
+'     ismatched = InStr(Lower(happ._$Comment), Lower(term)) > 0 
+'     ismatched = ismatched Or InStr(Lower(happ._$Category), Lower(term)) > 0 
+'     ismatched = ismatched Or InStr(Lower(happ._$Keywords), Lower(term)) > 0 
+'     If ismatched Then
+'       result = New RItem
+'       result.category = "app"
+'       result.Text = happ.name
+'       result.subtext = happ.comment
+'       result.mExec = happ.Exec_R_noargs
+'       result.uri = happ.file_path
+'       result.happ = happ
+'       result.clipboard = result.uri 
+'       
+'       FMain.results_list.Add(result)
+'       FMain.ResultGrid.Rows.count += 1
+'     Endif
+'   Next
+' End
+' 
+' Public locatep As Process
+' 
+' Public Sub locate(term As String)
+' 
+'   If String.Len(term) < min_char_locate Then Return
+'   'locatep = Shell "nice -n -19 locate -l 1000 -i " & "'" & term & "'" For Input As "locatep"
+'   locatep = Shell "nice -n -19 locate -l 100 -i " & "'*" & term & "*'" For Input As "locatep"
+'   locatep.Blocking = True
+'   locatep.tag = term
+'   FMain.mouse_busy()
+'   Debug "locate " & "'" & term & "'" 
+' End
+' 
+' Public Sub find_executables(term As String)
+'   Dim exe, exe_found As String 
+'   Dim result As RItem
+'   Try exe = Split(term, " ", "", True)[0]
+'   If exe = "" Then Return
+'   
+'   exe_found = System.Find(term)
+'   If exe_found = "" Then Return
+'   result = New RItem
+'   result.Category = "execute"
+'   result.Mexec = term
+'   result.Text = "Run " & term
+'   result.SubText = "From " & File.Dir(exe_found)
+'   result.uri = exe_found
+'   FMain.results_list.Add(result)
+'   FMain.ResultGrid.Rows.count += 1
+'   
+'   result = New RItem
+'   result.Category = "execute_terminal"
+'   result.Mexec = term
+'   result.Text = "Run " & term & " in the terminal emulator"
+'   result.SubText = "From " & File.Dir(exe_found) 
+'   result.uri = exe_found
+'   result.clipboard = result.uri
+'   
+'   FMain.results_list.Add(result)
+'   FMain.ResultGrid.Rows.count += 1
+' End
+' 
+' Public Sub locatep_read()
+'   Dim result As String
+'   Dim rResult As RItem
+'   Dim is_desktop_exec As Boolean = False
+'   Dim stream_ok As Boolean 
+'   FMain.mouse_busy()
+'   stream_ok = False
+'   Try stream_ok = Not Eof(locatep)
+'   If Not stream_ok Then Return
+' 
+'   Try Line Input #locatep, result
+'   If Error Then Return
+'   If (result = "") Or (locatep.tag <> FMain.TextBox1.text) Then 
+'     Wait 
+'     Return
+'   Endif
+'   If Not Exist(result, True) Then Return
+'   rResult = New RItem
+' 
+'   If result Ends ".desktop" Then 
+'     MyDesktop.init()
+'     MyDesktop.parse(result)
+'     If MyDesktop.dExec <> "" Then is_desktop_exec = True
+'   Endif
+' 
+'   If is_desktop_exec Then
+'     rResult.Category = "desktopexec"
+'       Else
+'     rResult.Category = "locate"
+'   Endif
+' 
+'   rResult.mExec = result
+'   rResult.uri = result
+'   
+'   If Stat(result, True).type = gb.directory Then 
+'     rResult.Text = File.Name(result) & "/"
+'       Else
+'     rResult.Text = File.Name(result)
+'   Endif
+'   
+'   rResult.SubText = File.Dir(result)
+'   rResult.clipboard = result
+' 
+' 
+'   FMain.results_list.Add(rResult)
+'   FMain.ResultGrid.Rows.count += 1
+' 
+' End
+' 
+' Public Sub kill_locate()
+'     If locatep <> Null Then
+'       While Exist("/proc/" & locatep.handle)
+'         Try locatep.drop
+'         Try locatep.close
+'         Try locatep.kill
+'         Wait
+'       Wend
+'     Endif
+' End
+' 
+' Public Sub locatep_kill()
+'   FMain.mouse_normal()
+' End
