@@ -177,6 +177,7 @@ Public Sub ReIndex()
   Dim tmp As String = Temp()
   Dim agrid As Tableview = plugin_indexer_gui.GridIndex
   Dim sPath As String
+  reindex_timer.stop
   Try indexprocess.kill
   index_db.clear
   For r = 0 To aGrid.Rows.max
