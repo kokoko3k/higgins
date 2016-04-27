@@ -122,3 +122,9 @@ End
 
 
 
+
+Public Sub ValueBoxReindex_Change()
+
+  caller.restart_timer()
+
+End
