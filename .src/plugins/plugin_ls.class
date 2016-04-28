@@ -1,8 +1,8 @@
 ' Gambas class file
 
 Create Static
-Static Public Description As String = "Template plugin"
-Static Public Friendly_name As String = "Template plugin"
+Static Public Description As String = "List files from a folder"
+Static Public Friendly_name As String = "list plugin"
 Static Public configurable As Boolean = False
 
 Public Struct rItemT
