@@ -1,7 +1,7 @@
 # Gambas Form File 3.0
 
 { Form Form
-  MoveScaled(0,0,79,51)
+  MoveScaled(0,0,79,53)
   Text = ("indexer plugin config")
   Icon = Picture["icon:/48/options"]
   Persistent = True
@@ -9,7 +9,7 @@
   Spacing = True
   Margin = True
   { Frame1 Panel
-    MoveScaled(0,0,77,49)
+    MoveScaled(0,0,77,51)
     Expand = True
     Arrangement = Arrange.Vertical
     Margin = True
@@ -31,38 +31,51 @@
         Header = GridView.Horizontal
       }
       { HBox3 VBox
-        MoveScaled(49,2,20,34)
+        MoveScaled(49,1,20,40)
         AutoResize = True
         Spacing = True
         { ButtonAdd Button
-          MoveScaled(1,2,16,4)
+          MoveScaled(1,1,16,4)
           AutoResize = True
           Text = ("Add")
           Picture = Picture["icon:/small/add"]
         }
         { ButtonDel Button
-          MoveScaled(1,7,16,4)
+          MoveScaled(1,6,16,4)
           AutoResize = True
           Text = ("Delete")
           Picture = Picture["icon:/small/delete"]
         }
         { VBox1 VBox
-          MoveScaled(3,13,5,5)
+          MoveScaled(1,11,16,3)
+          Expand = True
+        }
+        { LabelLimit Label
+          MoveScaled(1,15,14,3)
+          AutoResize = True
+          Text = ("Limit results to:")
+        }
+        { SpinMaxResults SpinBox
+          MoveScaled(1,18,16,4)
+          Value = 50
+        }
+        { VBox2 VBox
+          MoveScaled(1,23,16,3)
           Expand = True
         }
         { Label2 Label
-          MoveScaled(2,20,17,4)
+          MoveScaled(1,27,17,4)
           AutoResize = True
           Text = ("Update index every:")
           Alignment = Align.Left
         }
         { ValueBoxReindex ValueBox
-          MoveScaled(3,24,17,4)
+          MoveScaled(1,31,17,4)
           Text = ("00:30")
           Type = ValueBox.Time
         }
         { ButtonReindex Button
-          MoveScaled(3,29,16,4)
+          MoveScaled(2,35,16,4)
           Text = ("IndexNow")
           Picture = Picture["icon:/small/find"]
         }

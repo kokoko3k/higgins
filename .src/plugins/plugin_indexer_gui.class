@@ -25,6 +25,7 @@ End
 Public Sub SaveSettings()
   Settings["plugin_indexer/interval"] = ValueBoxReindex.value
   Settings["plugin_indexer/last_index_time"] = last_index_time
+  Settings["plugin_indexer/maxresults"] = SpinMaxResults.value
   SaveGrid()
   Settings.Save()
 End
@@ -32,6 +33,7 @@ End
 Public Sub LoadSettings()
   last_index_time = Settings["plugin_indexer/last_index_time", Date(1900, 1, 1)]
   ValueBoxReindex.value = Settings["plugin_indexer/interval", "00:31"] 
+  SpinMaxResults.value = Settings["plugin_indexer/maxresults", 50]
   LoadGrid()
   'fixme altro da fare?
 
@@ -125,6 +127,6 @@ End
 
 Public Sub ValueBoxReindex_Change()
 
-  caller.restart_timer()
+Try caller.restart_timer()
 
 End
