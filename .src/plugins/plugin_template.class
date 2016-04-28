@@ -1,5 +1,10 @@
 ' Gambas class file
 
+Create Static
+Static Public Description As String = "Template plugin"
+Static Public Friendly_name As String = "Template plugin"
+Static Public configurable As Boolean = False 'does this plugin provides a configure() method?
+
 Public Sub _free()
 
 End

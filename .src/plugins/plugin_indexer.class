@@ -1,5 +1,10 @@
 ' Gambas class file
 
+Create Static
+Static Public Description As String = "Index filenames from user-defined folders."
+Static Public Friendly_name As String = "Indexer"
+Static Public configurable As Boolean = True
+
 Public Struct rItemT
   plugin As String              'the plugin name
   Text As String                'text displayed in the clipboard
@@ -48,8 +53,7 @@ End
 
 Public Sub _free()
 
-  Debug
-
+  Debug 
 End
 
 Private Sub trigged(query As String) As Boolean
@@ -156,7 +160,7 @@ Public Sub restart_timer()
   If gui.last_index_time = Null Then gui.last_index_time = Date(1900, 1, 1)
 
   reindex_timer = New Timer As "reindex_timer"
-  reindex_timer.delay = 6000
+  reindex_timer.delay = 60000
   reindex_minutes_timeout = minutes_integer
   reindex_timer.start
   reindex_timer.Trigger()

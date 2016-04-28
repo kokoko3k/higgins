@@ -1,5 +1,10 @@
 ' Gambas class file
 
+Create Static
+Static Public Description As String = "Template plugin"
+Static Public Friendly_name As String = "Template plugin"
+Static Public configurable As Boolean = False
+
 Public Struct rItemT
   plugin As String            'the plugin name
   Text As String              'text displayed in the clipboard

@@ -1,5 +1,10 @@
 ' Gambas class file
 
+Create Static
+Static Public Description As String = "Executables launcher"
+Static Public Friendly_name As String = "Executables"
+Static Public configurable As Boolean = True
+
 Public Struct rItemT
 
   plugin As String            'the plugin name
@@ -48,8 +53,10 @@ Public Sub find(textcontrol As Object) As RItemT[]
   Dim exe_found As String = ""
   
   If Not trigged(textcontrol.text) Then Return
-  If (Not Exist(current_search)) Then Return
-  If Stat(current_search, True).type = gb.Directory Then Return
+  'If (Not Exist(current_search)) Then Return
+  If Exist(current_search) Then
+    If Stat(current_search, True).type = gb.Directory Then Return
+  Endif
   
   exe_found = System.Find(current_search)
   If exe_found = "" Then Return

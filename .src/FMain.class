@@ -221,6 +221,7 @@ Public Sub start_item(i As Integer)
   Dim rcResult As RItemT
   Dim msgout As Integer = -1
   If results_list.count = 0 Then Return
+  Stop
   rcResult = results_list[i]
   If is_executable(rcResult.action_activate) Then
     msgout = Message.Question(("Execute file?"), "Execute", "Open")
@@ -230,6 +231,8 @@ Public Sub start_item(i As Integer)
       Case 2
         Desktop.Open(rcResult.action_desktopopen)
     End Select
+      Else
+    Desktop.Open(rcResult.action_desktopopen)
   Endif
 
 End
@@ -473,8 +476,12 @@ Public Sub init_hSettings()
   Dim o_spacer As Panel
   Dim o_button As Button
   Dim o_separator As Separator
+  Dim o_label As Textlabel
   Dim plist As String 
   Dim plugins_enabled As New String[]
+  Dim friendly_name, description As String
+  Dim plugin_class As Class
+  Dim configurable As Boolean = False
   
   Try plist = Settings["hsettings/plist"]
   plugins_enabled = Split(plist)
@@ -483,14 +490,26 @@ Public Sub init_hSettings()
     If (Upper(plugin_name) Begins "PLUGIN_") Then
       If Not (Upper(plugin_name) Ends "_GUI") Then
 
+        'object.getproperty(class.load("plugin_template"),"prova")
+        Try plugin_class = Class.Load(plugin_name)
+        If Not Error Then
+          description = Object.GetProperty(plugin_class, "Description")
+          friendly_name = Object.GetProperty(plugin_class, "Friendly_name")
+          configurable = False
+          Try configurable = Object.GetProperty(plugin_class, "Configurable")
+            Else
+          friendly_name = plugin_name
+        Endif
+
         o_hbox = New HBox(hSettings.frame1)
         o_hbox.h = hSettings.Font.TextHeight("|") * 1.5
 
         o_checkbox = New Checkbox(o_hbox) As "plugin_checkbox"
-        o_checkbox.text = plugin_name
+        o_checkbox.text = friendly_name
         o_checkbox.AutoResize = True
         o_checkbox.tag = plugin_name
-        
+        o_checkbox.Font.Bold = True
+
         Object.Lock(o_checkbox)
         If ((plugins_enabled.find(plugin_name) > -1) Or plist = "") Then
           o_checkbox.value = CheckBox.True
@@ -501,15 +520,21 @@ Public Sub init_hSettings()
         Endif
         Object.unLock(o_checkbox)
 
+        o_label = New TextLabel(hSettings.frame1)
+        '<font size=-1>" & rcResult.subtext & "</font>
+        o_label.text = "<font size=-1>" & description & "</font>"
+        o_label.AutoResize = True
+
         o_spacer = New Panel(o_hbox)
         o_spacer.border = Border.None
         o_spacer.expand = True
 
-        o_button = New Button(o_hbox) As "plugin_button"
-        o_button.tag = plugin_name
-
-        o_button.w = hSettings.Font.TextHeight("|") * 1.5
-        o_button.Picture = Picture["icon:/medium/options"]
+        If configurable Then
+          o_button = New Button(o_hbox) As "plugin_configure"
+          o_button.tag = plugin_name
+          o_button.w = hSettings.Font.TextHeight("|") * 1.5
+          o_button.Picture = Picture["icon:/medium/options"]
+        Endif
 
         o_separator = New Separator(hSettings.frame1)
 
@@ -538,7 +563,7 @@ Public Sub plugin_checkbox_Click()
 
 End
 
-Public Sub plugin_button_Click()
+Public Sub plugin_configure_Click()
   Dim myplugin As Object
   Try myplugin = plugins[Last.tag]
   If Error Then Return
