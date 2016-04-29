@@ -133,18 +133,6 @@ Public Sub immediate_search(textcontrol As Object)
   Next
   Debug "Search ends here."
 
-  ' run_plugin("plugin_calculator", textbox1)
-  ' 
-  ' run_plugin("plugin_executable", textbox1)
-  ' 
-  ' run_plugin("plugin_fbookmarks", textbox1)
-  ' 
-  ' run_plugin("plugin_apps", textbox1)
-  ' 
-  ' run_plugin("plugin_ls", textbox1)
-  ' 
-  ' run_plugin("plugin_indexer", textbox1)
-
   mouse_normal()
 End
 
@@ -368,17 +356,26 @@ Public Sub ResultGrid_activate()
 End
 
 Public Sub TextBox1_KeyPress()
-  Object.Lock(textbox1)
-  Select Key.Code
 
-    Case Key.end
+    Select Key.Code
+
+    Case Key.end 'fill complete
+      Object.Lock(textbox1)
       If textbox1.pos = textbox1.Length Then
-        If textbox2.text <> "" Then textbox1.text = textbox2.text
+        If textbox2.text <> "" Then 
+          textbox1.text = textbox2.text
+          TextBox1_Change()
+        Endif
       Endif
-    Case Key.right
+      Object.unLock(textbox1)
+
+    Case Key.right 'fill complete
+      Object.Lock(textbox1)
       If textbox1.pos = textbox1.Length Then
-        textbox1.text &= Mid$(textbox2.text, Len(textbox1.text) + 1, 1)
+         textbox1.text &= Mid$(textbox2.text, Len(textbox1.text) + 1, 1)
+         If textbox1.text = textbox2.text Then TextBox1_Change()
       Endif
+      Object.unLock(textbox1)
 
     Case Key.down
       showgrid()
@@ -419,7 +416,7 @@ Public Sub TextBox1_KeyPress()
       Endif
 
   End Select
-  Object.unLock(textbox1)
+
 End
 
 Public Sub ResultGrid_KeyPress()
@@ -859,26 +856,25 @@ End
 
 Public Function Complete(s As String) As String
   Dim r As New String[]
-  Dim d, f, t, p As String
+  Dim d, f, t, p, out As String
+
   d = File.Dir(s)
   
-  If Trim(s) = "" Then Return ""
+  If Trim(s) = "" Then Return ""  'dont complete nulls
+  If InStr(s, " ") Then Return    'dont complete if spaces in search
   
-  If InStr(s, " ") Then Return
-  
-  If Left(s) = "/" Then 'complete full path
-  
+  If Left(s) = "/" Then 'search in full path
+
     If Right(d) <> "/" Then d &= "/"
 
     f = File.Name(s)
     Try r = Dir(d, f & "*")
 
     If Not Error Then
-      'If r.Count = 1 Then 
       If r.count > 0 Then
         If IsDir(d & r[0]) Then r[0] &= "/"
-
-        Return d & r[0]
+        out = d & r[0]
+        Goto returnlabel
       Endif
     Endif
   
@@ -886,16 +882,20 @@ Public Function Complete(s As String) As String
 
     For Each d In Split(Application.Env["PATH"], ":")
       Try r = r.Insert(Dir(d, s & "*"))
-      Try Debug Dir(d, s & "*")[0]
     Next
     
     If r.Count > 0 Then 
-      Return r[0]
+      out = r[0]
+      Goto returnlabel
     Endif
 
   Endif
-
+  
+  returnlabel:
+  If out Begins s Then Return out
+  
   Return ""
+
 End
 
 
