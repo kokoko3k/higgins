@@ -9,12 +9,10 @@ Public Struct rItemT
   plugin As String            'the plugin name
   Text As String              'text displayed in the clipboard
   SubText As String           'text displayed under the main text
-  hApp As DesktopApps         '.desktop files
-  action_desktopopen As String   'the data passed to action desktop.open()
-  action_openfolder As String 'the data passed to the action openfolder
-  action_activate As String   'the data passed to the action activate
-  action_clipboard As String  'the text copied to the clipboard
-  image_file As String        'optional image displayed (fullpath or "DefferredMimeIcon")
+  Image_file As String        'optional image displayed (fullpath or "DefferredMimeIcon")
+  Clipboard_data As String    'the data copied to the clipboard
+  Action As String            'string that indicates an action
+  Action_p As Variant          'the parameter for Action
 End Struct
 
 Private textcontrol As Object
@@ -115,19 +113,18 @@ Private Function create_item(happ As DesktopApps) As RItemT
   Dim return_item As RItemT
   Dim subtext As String
     return_item = New RItemT
-    return_item.action_activate = happ.Exec_R_noargs
-    return_item.action_clipboard = happ.file_path
-    return_item.action_desktopopen = happ.Exec_R_noargs
-    return_item.action_openfolder = File.Dir(happ.file_path)
     return_item.plugin = plugin
-    return_item.image_file = ""
-    
+    return_item.Action = "DESKTOPOPEN"
+    return_item.Action_p = happ.file_path
+    return_item.Clipboard_data = happ.file_path
+    return_item.image_file = "desktopfile://" & happ.file_path
+
+
     return_item.Text = happ.name
     subtext = happ._$GenericName & ", " & happ._$comment
     If subtext Begins ", " Then subtext = Right(subtext, -2)
     If subtext Ends ", " Then subtext = Left(subtext, -2)
     return_item.SubText = subtext 
-    return_item.hApp = hApp
     Return return_item
 End
 

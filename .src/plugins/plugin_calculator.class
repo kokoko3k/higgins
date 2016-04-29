@@ -10,12 +10,10 @@ Public Struct rItemT
   plugin As String            'the plugin name
   Text As String              'text displayed in the clipboard
   SubText As String           'text displayed under the main text
-  hApp As DesktopApps         '.desktop files
-  action_desktopopen As String   'the data passed to action desktop.open()
-  action_openfolder As String 'the data passed to the action openfolder
-  action_activate As String   'the data passed to the action activate
-  action_clipboard As String  'the text copied to the clipboard
-  image_file As String        'optional image displayed (fullpath or "DefferredMimeIcon")
+  Image_file As String        'optional image displayed (fullpath or "DefferredMimeIcon")
+  Clipboard_data As String    'the data copied to the clipboard
+  Action As String            'string that indicates an action
+  Action_p As Variant          'the parameter for Action
 End Struct
 
 Private textcontrol As Object
@@ -72,16 +70,16 @@ Private Function create_item(expr As String) As RItemT
       If Error Then Return
 
       return_item = New RItemT
-      return_item.action_activate = ""
-      return_item.action_clipboard = evalued
-      return_item.action_desktopopen = ""
-      return_item.action_openfolder = ""
       return_item.plugin = plugin
+      return_item.Action = "NULL"
+      return_item.Action_p = ""
+      return_item.Clipboard_data = evalued
+
       return_item.image_file = "icon:/" & iconsize & "/calculator"
-      
+
       return_item.Text = evalued
       return_item.SubText = "= " & expr
-      return_item.hApp = Null
+
     Return return_item
 End
 

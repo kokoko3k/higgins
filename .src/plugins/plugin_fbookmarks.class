@@ -9,12 +9,10 @@ Public Struct rItemT
   plugin As String            'the plugin name
   Text As String              'text displayed in the clipboard
   SubText As String           'text displayed under the main text
-  hApp As DesktopApps         '.desktop files
-  action_desktopopen As String   'the data passed to action desktop.open()
-  action_openfolder As String 'the data passed to the action openfolder
-  action_activate As String   'the data passed to the action activate
-  action_clipboard As String  'the text copied to the clipboard
-  image_file As String        'optional image displayed (fullpath or "DefferredMimeIcon")
+  Image_file As String        'optional image displayed (fullpath or "DefferredMimeIcon")
+  Clipboard_data As String    'the data copied to the clipboard
+  Action As String            'string that indicates an action
+  Action_p As Variant          'the parameter for Action
 End Struct
 
 
@@ -109,16 +107,12 @@ Private Function create_item(path As String) As RItemT
   Dim return_item As RItemT
   Dim hApp As DesktopApps
     return_item = New RItemT
-    return_item.action_activate = path
-    return_item.action_clipboard = path
-    return_item.action_desktopopen = path
-    return_item.action_openfolder = path
     return_item.plugin = plugin
+    return_item.Action = "DESKTOPOPEN"
+    return_item.Action_p = path
+    return_item.Clipboard_data = path
     return_item.image_file = "icon:/" & iconsize & "/bookmark"
-    
     return_item.Text = path
     return_item.SubText = "Local bookmark: " & path
-    hApp = Null
-    return_item.hApp = hApp
     Return return_item
 End

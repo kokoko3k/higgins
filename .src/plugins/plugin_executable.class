@@ -6,16 +6,13 @@ Static Public Friendly_name As String = "Executables"
 Static Public configurable As Boolean = True
 
 Public Struct rItemT
-
   plugin As String            'the plugin name
   Text As String              'text displayed in the clipboard
   SubText As String           'text displayed under the main text
-  hApp As DesktopApps         '.desktop files
-  action_desktopopen As String   'the data passed to action desktop.open()
-  action_openfolder As String 'the data passed to the action openfolder
-  action_activate As String   'the data passed to the action activate
-  action_clipboard As String  'the text copied to the clipboard
-  image_file As String        'optional image displayed (fullpath or "DefferredMimeIcon")
+  Image_file As String        'optional image displayed (fullpath or "DefferredMimeIcon")
+  Clipboard_data As String    'the data copied to the clipboard
+  Action As String            'string that indicates an action
+  Action_p As Variant          'the parameter for Action
 End Struct
 
 
@@ -78,10 +75,10 @@ Private Function create_item(result As String, Optional terminal As Boolean = Fa
   Dim cmdterm As String
   
     return_item = New RItemT
-    return_item.action_clipboard = result
-    return_item.action_desktopopen = result
-    return_item.action_openfolder = File.Dir(result)
     return_item.plugin = plugin
+    return_item.Clipboard_data = System.Find(result)
+    return_item.action = "EXEC"
+
     If terminal Then
       If terminal_emulator <> "" Then terminal_emulator = System.Find(terminal_emulator)
       If terminal_emulator = "" Then
@@ -92,19 +89,18 @@ Private Function create_item(result As String, Optional terminal As Boolean = Fa
           Return
         Endif
       Endif
-      cmdterm = terminal_emulator & "\"" & "sh -c ' " & result & "; echo; echo  Press enter to exit ; read ' \""
-      return_item.action_activate = cmdterm
+      cmdterm = terminal_emulator & " -e " & "\"" & "sh -c ' " & result & "; echo; echo  Press enter to exit ; read ' \""
+      return_item.Action_p = cmdterm
       return_item.image_file = "icon:/" & iconsize & "/terminal"
       return_item.Text = "Run " & result
-        Else
-      return_item.action_activate = result
+      return_item.SubText = "Run " & result & " in the terminal emulator"
+      
+        Else ' no terminal
+
+      return_item.Action_p = System.Find(result)
       return_item.image_file = "icon:/" & iconsize & "/exec"
       return_item.Text = result
     Endif
-    
-    return_item.SubText = "Run " & result & " in the terminal emulator"
-    hApp = Null
-    return_item.hApp = hApp
     Return return_item
 End
 

@@ -14,12 +14,10 @@ Public Struct rItemT
   plugin As String            'the plugin name
   Text As String              'text displayed in the clipboard
   SubText As String           'text displayed under the main text
-  hApp As DesktopApps         '.desktop files
-  action_desktopopen As String   'the data passed to action desktop.open()
-  action_openfolder As String 'the data passed to the action openfolder
-  action_activate As String   'the data passed to the action activate
-  action_clipboard As String  'the text copied to the clipboard
-  image_file As String        'optional image displayed (fullpath or "DefferredMimeIcon")
+  Image_file As String        'optional image displayed (fullpath or "DefferredMimeIcon")
+  Clipboard_data As String    'the data copied to the clipboard
+  Action As String            'string that indicates an action
+  Action_p As Variant          'the parameter for Action
 End Struct
 
 
@@ -79,19 +77,15 @@ End
 Private Function create_item(result As String) As RItemT
   Dim return_item As RItemT
   Dim hApp As DesktopApps
-    return_item = New RItemT
-    return_item.action_activate = "/usr/bin/gambas3"
-    return_item.action_clipboard = "Some data copied to the clipboard"
-    return_item.action_desktopopen = "/usr/bin/gambas3"
-    return_item.action_openfolder = User.home
-    return_item.plugin = plugin
-    return_item.image_file = "icon:/" & iconsize & "/bookmark"
-    
-    return_item.Text = result
-    return_item.SubText = "In: " & User.home
-    hApp = DesktopApps["Gambas3"]
-    return_item.hApp = hApp
-    Return return_item
+  return_item = New RItemT
+  return_item.plugin = plugin
+  return_item.Action = "DESKTOPOPEN" ' DESKTOPOPEN,EXEC,GUESS,NULL... MORE?
+  return_item.Action_p = "/usr/bin/gambas3"
+  return_item.Clipboard_data = "Some data copied to the clipboard"
+  return_item.image_file = "icon:/" & iconsize & "/bookmark"
+  return_item.Text = result
+  return_item.SubText = "In: " & User.home
+  Return return_item
 End
 
 Public Sub configure()

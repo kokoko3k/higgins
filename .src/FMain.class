@@ -8,12 +8,10 @@ Public Struct rItemT
   plugin As String            'the plugin name
   Text As String              'text displayed in the clipboard
   SubText As String           'text displayed under the main text
-  hApp As DesktopApps         '.desktop files
-  action_desktopopen As String   'the data passed to action desktop.open()
-  action_openfolder As String 'the data passed to the action openfolder
-  action_activate As String   'the data passed to the action activate
-  action_clipboard As String  'the text copied to the clipboard
-  image_file As String        'optional image displayed (fullpath or "DefferredMimeIcon")
+  Image_file As String        'optional image displayed (fullpath or "DefferredMimeIcon")
+  Clipboard_data As String    'the data copied to the clipboard
+  Action As String            'string that indicates an action
+  Action_p As Variant          'the parameter for Action
 End Struct
 
 
@@ -101,6 +99,12 @@ End
 
 
 Private previous_search As String
+
+Private Sub showgrid()
+    FMain.h = TextBox1.h + (Desktop.scale * 3) + resultgrid.h
+End
+
+
 Public Sub immediate_search(textcontrol As Object)
   Dim aPlugin As Object
   Dim t0 As Float
@@ -109,7 +113,7 @@ Public Sub immediate_search(textcontrol As Object)
   previous_search = textcontrol.text                'don't know why this is important, but works.
 
   reinit()
-  FMain.h = TextBox1.h + (Desktop.scale * 3) + resultgrid.h
+  showgrid()
   mouse_busy()
 
   Debug "starting search..."
@@ -158,6 +162,7 @@ End
 Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
   Dim rcResult As New RItemT
   Dim img As Image
+  Dim d As Desktopfile
   If results_list.count = 0 Then Return
   rcResult = results_list[Row]
 
@@ -177,6 +182,14 @@ Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
     If rcResult.image_file Like "mimetype://*" Then 
       'need a mimetype cache here or is slow
       Try resultgrid.Data.Picture = MyDesktop.Get_mime_Icon(Right(rcResult.image_file, -11), rSize)
+      Goto fallback
+    Endif
+    
+    If rcResult.image_file Like "desktopfile://*" Then 
+      'need a mimetype cache here or is slow
+      d = New DesktopFile(Right(rcResult.image_file, -14))
+      resultgrid.Data.Picture = d.GetIcon(rSize).Picture
+      Goto fallback
     Endif
     
     If rcResult.image_file Like "resize://*" Then 
@@ -187,17 +200,22 @@ Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
         If img.w <> rSize Then img = img.stretch(rSize, rSize)
         resultgrid.Data.Picture = img.picture
       Endif
+      Goto fallback
     Endif
-    
-    If (resultgrid.Data.Picture = Null) Then 
-      Try resultgrid.Data.Picture = Picture[rcResult.image_file]
-    Endif
-    If resultgrid.Data.Picture = Null Then Try resultgrid.Data.Picture = rcResult.hApp.GetIcon(rSize).Picture
+
+  fallback:
+  If (resultgrid.Data.Picture = Null) Then 
+    Try resultgrid.Data.Picture = Picture[rcResult.image_file]
+  Endif
+  If resultgrid.Data.Picture = Null Then 
+    Try resultgrid.Data.Picture = rcResult.hApp.GetIcon(rSize).Picture
+  Endif
 
   If resultgrid.Data.picture = Null Then
     resultgrid.Data.Picture = Picture["icon:/" & rSize & "/file"]
   Endif
 
+ 
   'cache picture
   If resultgrid.Data.picture <> Null Then picture_list[row] = resultgrid.Data.picture
 
@@ -219,23 +237,89 @@ End
 
 Public Sub start_item(i As Integer)
   Dim rcResult As RItemT
-  Dim msgout As Integer = -1
+  Dim p As String  
   If results_list.count = 0 Then Return
-  Stop
-  rcResult = results_list[i]
-  If is_executable(rcResult.action_activate) Then
-    msgout = Message.Question(("Execute file?"), "Execute", "Open")
-    Select msgout
-      Case 1
-        Shell rcResult.action_activate
-      Case 2
-        Desktop.Open(rcResult.action_desktopopen)
-    End Select
-      Else
-    Desktop.Open(rcResult.action_desktopopen)
-  Endif
+  rcResult = results_list[i]  
+  p = rcResult.Action_p
+
+  Select Case rcResult.Action
+    Case "DESKTOPOPEN"
+      If Lower(p) Ends ".desktop" Then 
+        start_dot_desktop(p)
+          Else
+        Desktop.Open(p)
+      Endif
+    Case "EXEC"
+      Shell p 
+    Case "GUESS"
+      
+      If Exist(p) Then
+
+        'desktop files with full path
+        If Lower(p) Ends ".desktop" Then
+          start_dot_desktop(p)
+          Return
+        Endif
+
+        'directory
+        If Stat(p, True).type = gb.Directory Then
+          Desktop.Open(p)
+          Return
+        Endif
+      
+        'executables
+          If is_executable(p) Then 
+            start_executable(p)
+            Return
+          Endif
+
+        'all of the others
+        Desktop.Open(p)
+        Return
+
+      Endif
+      
+    Case "NULL"
+      Return
+      
+    Case Else
+      
+  End Select
+  
+End
+
+Private Function strip_desktop_args(e As String) As String
+  Dim field_codes As String[] = ["f", "F", "u", "U", "d", "D", "n", "N", "i", "c", "k", "v", "m"]
+  Dim code As String
+
+  For Each code In field_codes
+    e = Replace(e, " %" & code & " ", " ")
+    If e Ends " %" & code Then e = Left(e, -3)
+  Next
+  Return e
+End
+
+
+Public Sub start_dot_desktop(dPath As String)
+  Dim d As New DesktopFile(dPath)
+
+  Shell strip_desktop_args(d.Exec)
+End
+
+
+Public Sub start_executable(ePath As String)
+  Dim msgout As String
+  msgout = Message.Question(("Execute file?"), "Execute", "Cancel")
+
+  Select msgout
+    Case 1
+      Shell ePath
+    Case 2
+      Return
+  End Select
 
 End
+
 
 Public Function is_executable(fPath As String) As Boolean
   Dim bout As String
@@ -269,17 +353,18 @@ End
 
 
 
-
-
 Public Sub ResultGrid_activate()
+  If results_list[resultgrid.row].Action_p = Null Then Return
   start_item(resultgrid.row)
   TimerClose.Trigger
 End
 
 Public Sub TextBox1_KeyPress()
+ 
   Select Key.Code
     
     Case Key.down
+      showgrid()
       ResultGrid.SetFocus()
       If resultgrid.current = Null Then 
         Try resultgrid.Rows[0].Selected = True
@@ -288,6 +373,7 @@ Public Sub TextBox1_KeyPress()
       Endif
       
     Case Key.PgDown
+      showgrid()
       ResultGrid.SetFocus()
       If resultgrid.current = Null Then 
         Try resultgrid.Rows[0].Selected = True
@@ -296,22 +382,39 @@ Public Sub TextBox1_KeyPress()
       Endif
       
     Case Key.enter
-      Try start_item(0)
-      If Not Error Then timerClose.Trigger()
+      If ResultGrid.row >= 0 Then  
+        If results_list[resultgrid.row].Action_p = Null Then Return
+        Try start_item(resultgrid.row)
+        If Not Error Then timerClose.Trigger()
+          Else
+        showgrid()
+        Try resultgrid.row = 0
+      Endif
       
     Case Key.Return
-      Try start_item(0)
-      If Not Error Then timerClose.Trigger()
+      If ResultGrid.row >= 0 Then  
+        If results_list[resultgrid.row].Action_p = Null Then Return
+        Try start_item(resultgrid.row)
+        If Not Error Then timerClose.Trigger()
+          Else
+        showgrid()
+        Try resultgrid.row = 0
+      Endif
+
       
   End Select
 End
 
 Public Sub ResultGrid_KeyPress()
+  If ResultGrid.row < 0 Then Return
+  
   Select Key.Code
     Case Key.Enter
+      If results_list[resultgrid.row].Action_p = Null Then Return
       start_item(resultgrid.row)
       TimerClose.trigger
     Case Key.Return
+      If results_list[resultgrid.row].Action_p = Null Then Return
       start_item(resultgrid.row)
       TimerClose.trigger
     Case Key.up
@@ -323,19 +426,21 @@ End
 
 
 Public Sub MenuOpenFolder_Click()
-  Try Desktop.Open(results_list[resultgrid.row].action_openfolder)
+  If results_list[resultgrid.row].Action_p = Null Then Return
+  Try Desktop.Open(File.Dir(results_list[resultgrid.row].Action_p))
   TimerClose.Trigger
 End
 
 
 Public Sub MenuOpenFile_Click()
+  If results_list[resultgrid.row].Action_p = Null Then Return
   start_item(resultgrid.row)
   TimerClose.Trigger
 End
 
 
 Public Sub MenuCopy_Click()
-  Clipboard.Copy(results_list[ResultGrid.row].action_clipboard)
+  Clipboard.Copy(results_list[ResultGrid.row].Clipboard_data)
 End
 
 '======================================== START SOCKET FUNCTIONS ========================================
@@ -644,6 +749,8 @@ End
     End
     
     Public Sub Form_Hide()
+      ResultGrid.UnSelectAll()
+      resultgrid.row = -1
       If fmain.tag = "minimized" Then Return
       MySettings.save_geometry()
       fmain.visible = False

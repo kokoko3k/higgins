@@ -6,15 +6,13 @@ Static Public Friendly_name As String = "Indexer"
 Static Public configurable As Boolean = True
 
 Public Struct rItemT
-  plugin As String              'the plugin name
-  Text As String                'text displayed in the clipboard
-  SubText As String             'text displayed under the main text
-  hApp As DesktopApps           '.desktop files
-  action_desktopopen As String  'the data passed to action desktop.open()
-  action_openfolder As String   'the data passed to the action openfolder
-  action_activate As String     'the data passed to the action activate
-  action_clipboard As String    'the text copied to the clipboard
-  image_file As String          'optional image displayed (fullpath or "DefferredMimeIcon")
+  plugin As String            'the plugin name
+  Text As String              'text displayed in the clipboard
+  SubText As String           'text displayed under the main text
+  Image_file As String        'optional image displayed (fullpath or "DefferredMimeIcon")
+  Clipboard_data As String    'the data copied to the clipboard
+  Action As String            'string that indicates an action
+  Action_p As Variant          'the parameter for Action
 End Struct
 
 
@@ -133,16 +131,14 @@ Private Function create_item(path As String) As RItemT
     Endif
   Endif
   
-  return_item.action_activate = path
-  return_item.action_clipboard = path
-  return_item.action_desktopopen = path
-  return_item.action_openfolder = File.Dir(path)
   return_item.plugin = plugin
+  return_item.Action = "GUESS"
+  return_item.Action_p = path
+  return_item.Clipboard_data = path
   
   return_item.Text = File.Name(path)
   return_item.SubText = "In: " & File.Dir(path)
-  hApp = Null
-  return_item.hApp = hApp
+
   Return return_item
 End
 
