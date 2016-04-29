@@ -119,6 +119,12 @@ Geometry=[45,-3,224,729]
 [DebugWindow/child]
 Geometry=[1280,0,224,280]
 
+[DebugWindow/class.load("plugin_template")]
+Geometry=[45,0,224,280]
+
+[DebugWindow/d]
+Geometry=[45,0,291,403]
+
 [DebugWindow/fmain]
 Geometry=[1280,0,224,542]
 
@@ -189,13 +195,16 @@ Geometry=[-170,332,443,280]
 Geometry=[45,-3,224,280]
 
 [DebugWindow/rcResult]
-Geometry=[1280,-3,464,335]
+Geometry=[1280,0,464,335]
 
 [DebugWindow/reindex_timer]
 Geometry=[45,-3,224,280]
 
 [DebugWindow/result]
 Geometry=[1280,0,224,280]
+
+[DebugWindow/resultgrid.Data.Picture]
+Geometry=[45,0,224,280]
 
 [DebugWindow/resultgrid[ResultGrid.Rows.max, 0]]
 Geometry=[1280,-3,224,280]
@@ -238,27 +247,28 @@ Path="gbLocate.gambas"
 
 [OpenFile]
 File[1]=".src/FMain.form"
-Active=20
-File[2]=".src/FMain.class:57.194"
-Count=20
-File[3]=".src/MyDesktop.class:2.188"
-File[4]=".src/DesktopApps.class:43.441"
+Active=2
+File[2]=".src/FMain.class:0.901"
+Count=21
+File[3]=".src/MyDesktop.class:0.253"
+File[4]=".src/DesktopApps.class:0.473"
 File[5]="appicon.png"
 File[6]="README:0.7"
-File[7]=".src/old_Plugins.class:13.136"
+File[7]=".src/old_Plugins.class:41.48"
 File[8]=".src/XbindKeys.class:0.98"
 File[9]=".src/hSettings.form"
-File[10]=".src/hSettings.class:24.47"
-File[11]=".src/plugin_indexer1.class:36.158"
-File[12]=".src/MySettings.module:3.38"
-File[13]=".src/plugins/plugin_apps.class:46.52"
-File[14]=".src/plugins/plugin_ls.class:46.49"
-File[15]=".src/plugins/plugin_calculator.class:46.47"
-File[16]=".src/plugins/plugin_template.class:0.57"
-File[17]=".src/plugins/plugin_executable.class:46.51"
-File[18]=".src/plugins/plugin_executable_gui.form"
-File[19]=".src/plugins/plugin_fbookmarks.class:46.54"
-File[20]=".src/plugins/plugin_indexer.class:8.59"
+File[10]=".src/hSettings.class:0.5"
+File[11]=".src/MySettings.module:3.38"
+File[12]=".src/plugins/plugin_apps.class:18.113"
+File[13]=".src/plugins/plugin_ls.class:8.67"
+File[14]=".src/plugins/plugin_calculator.class:0.65"
+File[15]=".src/plugins/plugin_template.class:58.81"
+File[16]=".src/plugins/plugin_executable.class:3.104"
+File[17]=".src/plugins/plugin_executable_gui.form"
+File[18]=".src/plugins/plugin_fbookmarks.class:51.115"
+File[19]=".src/plugins/plugin_indexer.class:0.137"
+File[20]=".src/plugins/plugin_indexer_gui.form"
+File[21]=".src/plugins/plugin_indexer_gui.class:64.34"
 
 [Watches]
 Count=0
