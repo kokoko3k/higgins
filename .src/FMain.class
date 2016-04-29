@@ -605,7 +605,7 @@ Public Sub init_hSettings()
   Try plist = Settings["hsettings/plist"]
   plugins_enabled = Split(plist)
   
-  For Each plugin_name In Dir(".gambas")
+  For Each plugin_name In Dir(".gambas").Sort()
     If (Upper(plugin_name) Begins "PLUGIN_") Then
       If Not (Upper(plugin_name) Ends "_GUI") Then
 

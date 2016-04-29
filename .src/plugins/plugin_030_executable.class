@@ -121,7 +121,7 @@ End
 
 
 Public Function configure()
-
+  
   plugin_executable_gui.show
   
 End
