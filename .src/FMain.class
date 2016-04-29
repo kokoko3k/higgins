@@ -24,15 +24,23 @@ Public Lock_File As String = Confpath & "/lock"
 Public firstrun As Boolean = True
 
 Public Sub resize_form()
-  FMain.h = TextBox1.h + (Desktop.scale * 3)
+  FMain.h = TextBox1.h + (Desktop.scale * 2)
 End
 
 
 Public Sub TextBox1_Change()
   Dim previous_search As String
   Dim current_search As String
+  Dim c As String
+
+  Object.Lock(TextBox1)
+  c = Complete(TextBox1.text)
+  TextBox2.text = c
+  Object.unLock(TextBox1)
+
   Try current_search = TextBox1.text 
   If Error Then Return
+
   Wait 0.01
   If current_search = "" Then 
     resize_form()
@@ -360,9 +368,18 @@ Public Sub ResultGrid_activate()
 End
 
 Public Sub TextBox1_KeyPress()
- 
+  Object.Lock(textbox1)
   Select Key.Code
-    
+
+    Case Key.end
+      If textbox1.pos = textbox1.Length Then
+        If textbox2.text <> "" Then textbox1.text = textbox2.text
+      Endif
+    Case Key.right
+      If textbox1.pos = textbox1.Length Then
+        textbox1.text &= Mid$(textbox2.text, Len(textbox1.text) + 1, 1)
+      Endif
+
     Case Key.down
       showgrid()
       ResultGrid.SetFocus()
@@ -401,8 +418,8 @@ Public Sub TextBox1_KeyPress()
         Try resultgrid.row = 0
       Endif
 
-      
   End Select
+  Object.unLock(textbox1)
 End
 
 Public Sub ResultGrid_KeyPress()
@@ -820,7 +837,7 @@ Private Function findSelectable(o As Object) As Object
 End
 
 
-Public Sub TextBox1_Click()
+Public Sub ButtonConfigure_Click()
   Me.hide
   hSettings.show
 End
@@ -829,6 +846,56 @@ Public Sub indexer_indexing_done(finish_time As Date)
   
   MySettings.plugin_indexer_last_index_time = finish_time
   
+End
+
+
+
+Public Sub Panel1_Arrange()
+  With TextBox1
+    TextBox2.Move(.x, .y, .w, .h)
+    TextBox2.Lower
+  End With
+End
+
+Public Function Complete(s As String) As String
+  Dim r As New String[]
+  Dim d, f, t, p As String
+  d = File.Dir(s)
+  
+  If Trim(s) = "" Then Return ""
+  
+  If InStr(s, " ") Then Return
+  
+  If Left(s) = "/" Then 'complete full path
+  
+    If Right(d) <> "/" Then d &= "/"
+
+    f = File.Name(s)
+    Try r = Dir(d, f & "*")
+
+    If Not Error Then
+      'If r.Count = 1 Then 
+      If r.count > 0 Then
+        If IsDir(d & r[0]) Then r[0] &= "/"
+
+        Return d & r[0]
+      Endif
+    Endif
+  
+      Else 'search in $PATH
+
+    For Each d In Split(Application.Env["PATH"], ":")
+      Try r = r.Insert(Dir(d, s & "*"))
+      Try Debug Dir(d, s & "*")[0]
+    Next
+    
+    If r.Count > 0 Then 
+      Return r[0]
+    Endif
+
+  Endif
+
+  Return ""
 End
 
 

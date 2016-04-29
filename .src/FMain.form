@@ -1,7 +1,7 @@
 # Gambas Form File 3.0
 
 { Form Form
-  MoveScaled(0,0,83,41)
+  MoveScaled(0,0,83,50)
   Tracking = True
   PopupMenu = "MenuPopup"
   Icon = Picture["appicon.png"]
@@ -48,15 +48,33 @@
       Picture = Picture["icon:/huge/quit"]
     }
   }
-  { TextBox1 ButtonBox
-    MoveScaled(1,0,80,5)
-    Picture = Picture["icon:/medium/options"]
+  { Panel1 Panel
+    MoveScaled(3,3,79,4.5714)
+    Arrangement = Arrange.Horizontal
+    { TextBox1 TextBox
+      MoveScaled(23,0,24,4.5714)
+      Background = &HFF000000&
+      Foreground = Color.TextForeground
+      Expand = True
+    }
+    { ButtonConfigure Button
+      MoveScaled(69,0,4.5714,4)
+      Picture = Picture["icon:/medium/options"]
+    }
+    { TextBox2 TextBox
+      MoveScaled(0,0,20,4.5714)
+      Background = Color.TextBackground
+      Foreground = Color.LightForeground
+      NoTabFocus = True
+      Ignore = True
+      ReadOnly = True
+    }
   }
   { TimerClose #Timer
     #MoveScaled(74,6)
   }
   { ResultGrid GridView
-    MoveScaled(2,6,71,31)
+    MoveScaled(2,12,71,31)
     Visible = False
     Font = Font["+1"]
     Expand = True
