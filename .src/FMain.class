@@ -33,13 +33,20 @@ Public Sub TextBox1_Change()
   Dim current_search As String
   Dim c As String
 
+
+Debug
+
   Object.Lock(TextBox1)
   c = Complete(TextBox1.text)
   TextBox2.text = c
   Object.unLock(TextBox1)
 
+Debug
+
   Try current_search = TextBox1.text 
   If Error Then Return
+
+Debug
 
   Wait 0.01
   If current_search = "" Then 
@@ -48,20 +55,30 @@ Public Sub TextBox1_Change()
     Return
   Endif
 
+Debug
+
   Try previous_search = TextBox1.text
   If Error Then Return
 
+Debug
+
   Wait 0.3
   If previous_search <> textbox1.text Then Return
+
+Debug
 
   immediate_search(textbox1)
   If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
   Wait 0.3
 
+Debug
+
   Try current_search = TextBox1.text 
   If Error Then Return
   If previous_search <> current_search Then Return
 
+Debug
+  If resultgrid.Rows.count > 0 Then showgrid
   returnlabel:
   If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
 End
@@ -301,7 +318,7 @@ End
 Public Sub start_dot_desktop(dPath As String)
   Dim d As New DesktopFile(dPath)
 
-  Shell strip_desktop_args(d.Exec)
+  Shell "sh -c " & strip_desktop_args(d.Exec)
 End
 
 
