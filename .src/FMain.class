@@ -733,10 +733,14 @@ End
 
 Public Sub myQuit()
   Try xb.close
-  Wait
+  fmain.persistent = False
   TrayIcon2.Delete()
   fmain.Delete()
   fmain.Close()
+  plugins.clear
+  
+  Wait
+
   Quit
 End
 
@@ -915,5 +919,6 @@ Public Function Complete(s As String) As String
   Return ""
 
 End
+
 
 

@@ -51,7 +51,6 @@ End
 
 Public Sub _free()
 
-  Debug 
 End
 
 Private Sub trigged(query As String) As Boolean
