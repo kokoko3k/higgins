@@ -733,6 +733,9 @@ End
 
 Public Sub myQuit()
   Try xb.close
+  Try My_listening_socket.Close
+  Try MyCSock.Close
+  Try hLock.close
   fmain.persistent = False
   TrayIcon2.Delete()
   fmain.Delete()
@@ -741,7 +744,7 @@ Public Sub myQuit()
   
   Wait
 
-  Quit
+  'Quit
 End
 
 '-- FMAIN FUNCTIONS  ---------------------------------------------------------------------
