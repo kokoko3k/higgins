@@ -44,7 +44,7 @@ End Struct
 Private textcontrol As Object
 Private plugin As String
 Private iconsize As Integer
-Private minchar As Integer = 3 'The plugin will not operate on searches smaller than that
+Private minchar As Integer = 3 'The plugin will not operate on query text smaller than that
 
 
 Public Sub _new(p_plugin As String, p_iconsize As Integer)

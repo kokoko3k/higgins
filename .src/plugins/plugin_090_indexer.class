@@ -19,7 +19,7 @@ End Struct
 Private textcontrol As Object
 Private plugin As String
 Private iconsize As Integer
-Private minchar As Integer = 3   'exit if the search term is lower than that
+Private minchar As Integer = 4   'exit if the search term is lower than that
 
 Private index_db As New String[]
 Private index_file As String
