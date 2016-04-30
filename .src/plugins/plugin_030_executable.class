@@ -101,7 +101,7 @@ Private Function create_item(result As String, Optional terminal As Boolean = Fa
       return_item.image_file = "icon:/" & iconsize & "/terminal"
       return_item.Text = "Run " & result
       return_item.SubText = "Run " & result & " in the terminal emulator"
-      Stop
+
         Else ' no terminal
 
       return_item.Action_p = System.Find(result)
