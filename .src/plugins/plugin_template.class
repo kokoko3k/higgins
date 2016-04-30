@@ -104,8 +104,8 @@ Private Function create_item(result As String) As RItemT
   return_item.Action_p = "/usr/bin/gambas3"
   return_item.Clipboard_data = "Some data copied to the clipboard"
   return_item.image_file = "icon:/" & iconsize & "/bookmark"
-  return_item.Text = result
-  return_item.SubText = "In: " & User.home
+  return_item.Text = "EXAMPLE PLUGIN " & result
+  return_item.SubText = "EXAMPLE PLUGIN " & "In: " & User.home
   Return return_item
 End
 
