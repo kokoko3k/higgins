@@ -182,9 +182,9 @@ Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
     Endif
     
     If rcResult.image_file Like "desktopfile://*" Then 
-      'need a mimetype cache here or is slow
-      d = New DesktopFile(Right(rcResult.image_file, -14))
-      resultgrid.Data.Picture = d.GetIcon(rSize).Picture
+      MyDesktop.init()
+      MyDesktop.parse(Right(rcResult.image_file, -14))
+      Try resultgrid.Data.Picture = MyDesktop.GetIcon(MyDesktop.dIconName, rSize).picture
       Goto fallback
     Endif
     
@@ -214,6 +214,8 @@ Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
  
   'cache picture
   If resultgrid.Data.picture <> Null Then picture_list[row] = resultgrid.Data.picture
+
+
 
 End
 
