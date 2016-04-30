@@ -158,7 +158,7 @@ Static Public Function _get(AppName As String) As DesktopApps
   Dim sLine As String
   Dim sAppPath As String
   Dim hDApps As DesktopApps
-  Dim sSection As String
+
   Dim sLines As New String[]
   Dim i As Integer
 
@@ -362,7 +362,6 @@ Public Sub GetIcon(Optional Size As Integer = 16) As Image
   
   Dim sPath As String
   Dim hImage As Image
-  Dim sKey As String
   
   Dim sDir As String
   Dim sSize As String

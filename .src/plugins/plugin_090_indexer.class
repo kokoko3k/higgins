@@ -16,7 +16,6 @@ Public Struct rItemT
 End Struct
 
 
-Private textcontrol As Object
 Private plugin As String
 Private iconsize As Integer
 Private minchar As Integer = 4   'exit if the search term is lower than that
@@ -64,7 +63,6 @@ End
 
 Public Sub find(textcontrol As Object) As RItemT[]
   'search for filedialogs bookmarks
-  Dim aFile As String
   Dim rResults As New RItemT[]
   Dim rResult As RItemT
   Dim current_search As String = textcontrol.text
@@ -111,7 +109,6 @@ End
 
 Private Function create_item(path As String) As RItemT
   Dim return_item As RItemT
-  Dim hApp As DesktopApps
   
   If Not (Exist(path, True)) Then Return Null
   return_item = New RItemT  
@@ -184,10 +181,8 @@ Public indexing As Boolean = False
 Private indexprocess As Process
 Public Sub ReIndex()
   Dim r As Integer
-  Dim db As String
   Dim depth, dir As String
   Dim cmdline As String
-  Dim tmp As String = Temp()
   Dim agrid As Tableview = plugin_indexer_gui.GridIndex
   Dim sPath As String
   reindex_timer.stop

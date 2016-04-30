@@ -16,7 +16,6 @@ Public Struct rItemT
 End Struct
 
 
-Private textcontrol As Object
 Private plugin As String
 Private iconsize As Integer
 Private minchar As Integer = 4   'exit if the search term is lower than that
@@ -41,11 +40,10 @@ End
 
 Public Sub find(textcontrol As Object) As RItemT[]
   'search for files under the current directory
-  Dim aFile As String
   Dim rResults As New RItemT[]
   Dim rResult As RItemT
   Dim current_search As String = textcontrol.text
-  Dim s_path, path, find_out As String
+  Dim s_path, path As String
 
   If Not trigged(textcontrol.text) Then Return
   
@@ -73,7 +71,6 @@ End
 
 Private Function create_item(path As String) As RItemT
   Dim return_item As RItemT
-  Dim hApp As DesktopApps
   Dim isdir As Boolean
     If Exist(path, True) Then
       If Not (path Ends "/") Then 

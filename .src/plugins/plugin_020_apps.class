@@ -15,7 +15,6 @@ Public Struct rItemT
   Action_p As Variant          'the parameter for Action
 End Struct
 
-Private textcontrol As Object
 Private plugin As String
 Private iconsize As Integer
 Private minchar As Integer = 3  'exit if the search term is lower than that
@@ -39,7 +38,6 @@ End
 
 Public Sub find(textcontrol As Object) As RItemT[]
   'search for filedialogs bookmarks
-  Dim aFile As String
   Dim rResults As New RItemT[]
   Dim rResult As RItemT
   Dim current_search As String = textcontrol.text

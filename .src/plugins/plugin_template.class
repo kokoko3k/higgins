@@ -41,7 +41,6 @@ Public Struct rItemT
 End Struct
 
 
-Private textcontrol As Object
 Private plugin As String
 Private iconsize As Integer
 Private minchar As Integer = 3 'The plugin will not operate on query text smaller than that

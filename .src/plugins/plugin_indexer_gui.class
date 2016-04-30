@@ -1,7 +1,6 @@
 ' Gambas class file
 
 Public confdir As String
-Private gridfile As String 
 Public last_index_time As Date
 Public caller As Object
 

@@ -156,7 +156,6 @@ End
 
 Public Sub run_plugin(plugin_name As String, textcontrol As Object)
   Dim rResults As RItemT[]
-  Dim rResult As RItemT[]
 
   rResults = Object.Call(plugins[plugin_name], "find", [textcontrol]) 'chiama il metodo find()
   If rResults = Null Then Return
@@ -175,7 +174,6 @@ End
 Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
   Dim rcResult As New RItemT
   Dim img As Image
-  Dim d As Desktopfile
   If results_list.count = 0 Then Return
   rcResult = results_list[Row]
 
@@ -753,9 +751,6 @@ End
       Dim padding As Integer = (Desktop.scale * 2)
       Dim newuser As Boolean = False
       Dim msg As String
-      Dim i As Integer
-      Dim img As Image
-      Dim img2 As Image
       Dim t0 As Float
 
       t0 = Timer()
@@ -881,7 +876,7 @@ End
 
 Public Function Complete(s As String) As String
   Dim r As New String[]
-  Dim d, f, t, p, out As String
+  Dim d, f, out As String
 
   d = File.Dir(s)
   
