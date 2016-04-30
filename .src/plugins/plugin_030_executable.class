@@ -47,15 +47,18 @@ Public Sub find(textcontrol As Object) As RItemT[]
   Dim rResults As New RItemT[]
   Dim rResult As RItemT
   Dim current_search As String = textcontrol.text
-  Dim exe_found As String = ""
+  Dim exe_found, cmd As String
   
+
   If Not trigged(textcontrol.text) Then Return
   'If (Not Exist(current_search)) Then Return
   If Exist(current_search) Then
     If Stat(current_search, True).type = gb.Directory Then Return
   Endif
   
-  exe_found = System.Find(current_search)
+  cmd = Split(current_search, " ")[0]
+  
+  Try exe_found = System.Find(cmd)
   If exe_found = "" Then Return
   
   rResult = create_item(current_search, False)
@@ -73,10 +76,14 @@ Private Function create_item(result As String, Optional terminal As Boolean = Fa
   Dim return_item As RItemT
   Dim hApp As DesktopApps
   Dim cmdterm As String
+  Dim cmd, params As String
+  
+  cmd = Split(result, " ")[0]
+  params = Right(result, - Len(cmd))
   
     return_item = New RItemT
     return_item.plugin = plugin
-    return_item.Clipboard_data = System.Find(result)
+    return_item.Clipboard_data = System.Find(cmd) & " " & params
     return_item.action = "EXEC"
 
     If terminal Then
@@ -94,7 +101,7 @@ Private Function create_item(result As String, Optional terminal As Boolean = Fa
       return_item.image_file = "icon:/" & iconsize & "/terminal"
       return_item.Text = "Run " & result
       return_item.SubText = "Run " & result & " in the terminal emulator"
-      
+      Stop
         Else ' no terminal
 
       return_item.Action_p = System.Find(result)
@@ -112,7 +119,7 @@ Private Function find_term() As String
     Debug "checking for " & term & "..."
     If System.Exist(term) Then 
       Debug "found."
-      Return System.Find(term) & " -e "
+      Return System.Find(term)
     Endif
   Next
   Return ""
