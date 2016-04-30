@@ -265,7 +265,7 @@ Public Sub start_item(i As Integer)
         Desktop.Open(p)
       Endif
     Case "EXEC"
-      Shell p 
+      Shell p For Input Output
     Case "GUESS"
       
       If Exist(p) Then
@@ -317,8 +317,7 @@ End
 
 Public Sub start_dot_desktop(dPath As String)
   Dim d As New DesktopFile(dPath)
-
-  Shell "sh -c " & strip_desktop_args(d.Exec)
+  Shell strip_desktop_args(d.Exec) For Input Output
 End
 
 
@@ -328,7 +327,7 @@ Public Sub start_executable(ePath As String)
 
   Select msgout
     Case 1
-      Shell ePath
+      Shell ePath For Input Output
     Case 2
       Return
   End Select
