@@ -372,7 +372,7 @@ Public Sub GetIcon(Optional Size As Integer = 16) As Image
   If Exist(_$IconName) Then 
     If _$IconName Ends ".svg" Then
       hSvg = SvgImage.Load(_$IconName)
-      hImage = New Image(Size, Size)
+      hImage = New Image(Size, Size, Color.Transparent)
       Paint.Begin(hImage)
       hSvg.Resize(size, Size)
       hSvg.Paint

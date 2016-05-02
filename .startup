@@ -14,6 +14,5 @@ gb.eval
 gb.settings
 gb.gui.trayicon
 gb.net
-gb.qt4.ext
 gb.util
 
