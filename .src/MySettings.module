@@ -14,6 +14,7 @@ End
 
 Public Sub save_geometry()
   Dim xy_r As Integer[]
+  Stop  
   xy_r = Relative_window_geom(fmain)
   Settings["win_rx"] = xy_r[0]
   Settings["win_ry"] = xy_r[1]

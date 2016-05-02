@@ -5,7 +5,6 @@ Public Sub Button1_Click()
 End
 
 Public Sub Form_Hide()
-
+  MySettings.save()
   FMain.Show()
-
 End

@@ -376,6 +376,7 @@ Public Sub TextBox1_KeyPress()
     Select Key.Code
 
     Case Key.end 'fill complete
+      If textbox1.pos = Len(textbox2.Text) Then Return
       Object.Lock(textbox1)
       If textbox1.pos = textbox1.Length Then
         If textbox2.text <> "" Then 
@@ -736,7 +737,7 @@ Public Sub myQuit()
   Try hLock.close
   fmain.persistent = False
   TrayIcon2.Delete()
-  fmain.Delete()
+  'fmain.Delete()
   fmain.Close()
   plugins.clear
   
@@ -753,6 +754,7 @@ End
       Dim msg As String
       Dim t0 As Float
 
+      Me.visible = False
       t0 = Timer()
       If Not firstrun Then Return
       If Not Exist(Confpath, True) Then
@@ -786,21 +788,19 @@ End
       ResultGrid.UnSelectAll()
       resultgrid.row = -1
       If fmain.tag = "minimized" Then Return
-      MySettings.save_geometry()
       fmain.visible = False
       fmain.tag = "minimized"
-    '  MySettings.plugin_indexer_last_index_time = indexer.last_index_time
-      MySettings.save()
     End
     
     Public Sub Form_Show()
       If firstrun Then 
-        fmain.hide
+        MySettings.load_geometry()
+        fmain.visible = False
+        Wait
         firstrun = False
         Return
       Endif
-      MySettings.load_geometry()
-    
+
       fmain.visible = True
       fmain.tag = ""
       resize_form()
@@ -817,6 +817,7 @@ End
 
 
 Public Sub QuitMenu_Click()
+  MySettings.save()
   myQuit()
 End
 
