@@ -558,6 +558,7 @@ End
     
     Public Sub TrayIcon2_click()
       If fmain.visible Then 
+        MySettings.save()
         Form_Hide()
           Else
         Form_Show()
@@ -567,7 +568,7 @@ End
     Public Sub MenuTrayOptions_Click()
       hSettings.Show()
     End
-    
+     
     
     Public Sub QuitMenuTray_Click()
       myQuit()
@@ -586,6 +587,7 @@ End
     Public Sub xb_HotkeyPressed(action As String)
       If action = "show" Then
         If fmain.visible Then
+          MySettings.save()  
           fmain.Hide()
             Else
           fmain.Show()
@@ -723,7 +725,6 @@ Public Sub save_plugin_list()
 End
 
 
-
 Public Sub TimerClose_Timer()
   MySettings.save_geometry()
   fmain.close
@@ -731,18 +732,17 @@ Public Sub TimerClose_Timer()
 End
 
 Public Sub myQuit()
+
   Try xb.close
   Try My_listening_socket.Close
   Try MyCSock.Close
   Try hLock.close
+  plugins.clear
   fmain.persistent = False
   TrayIcon2.Delete()
-  'fmain.Delete()
   fmain.Close()
-  plugins.clear
+  'fmain.Delete()
   
-  Wait
-
   'Quit
 End
 
@@ -781,7 +781,10 @@ End
     End
     
     Public Sub Form_KeyRelease()
-      If Key.code = Key.esc Then Form_Hide()
+      If Key.code = Key.esc Then 
+        MySettings.save()
+        Form_Hide()
+      Endif
     End
     
     Public Sub Form_Hide()
@@ -809,9 +812,6 @@ End
     
     End
     
-    ' Public Sub Form_Close()
-    '   Form_Hide()
-    ' End
 
 '-- END FMAIN FUNCTIONS  ---------------------------------------------------------------------
 
@@ -920,4 +920,8 @@ Public Function Complete(s As String) As String
 End
 
 
+Public Sub Form_Leave()
 
+  MySettings.save()
+Stop
+End

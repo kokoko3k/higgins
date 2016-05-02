@@ -195,7 +195,7 @@ Geometry=[-170,332,443,280]
 Geometry=[45,-3,224,280]
 
 [DebugWindow/rcResult]
-Geometry=[1280,0,464,335]
+Geometry=[141,168,464,335]
 
 [DebugWindow/reindex_timer]
 Geometry=[45,-3,224,280]
@@ -248,27 +248,22 @@ Path="gbLocate.gambas"
 [OpenFile]
 File[1]=".src/FMain.form"
 Active=2
-File[2]=".src/FMain.class:0.901"
-Count=21
-File[3]=".src/MyDesktop.class:0.253"
+File[2]=".src/FMain.class:13.727"
+Count=16
+File[3]=".src/MyDesktop.class:0.202"
 File[4]=".src/DesktopApps.class:0.473"
 File[5]="appicon.png"
 File[6]="README:0.7"
 File[7]=".src/old_Plugins.class:41.48"
 File[8]=".src/XbindKeys.class:0.98"
 File[9]=".src/hSettings.form"
-File[10]=".src/hSettings.class:0.5"
-File[11]=".src/MySettings.module:3.38"
-File[12]=".src/plugins/plugin_apps.class:18.113"
-File[13]=".src/plugins/plugin_ls.class:8.67"
-File[14]=".src/plugins/plugin_calculator.class:0.65"
-File[15]=".src/plugins/plugin_template.class:58.81"
-File[16]=".src/plugins/plugin_executable.class:3.104"
-File[17]=".src/plugins/plugin_executable_gui.form"
-File[18]=".src/plugins/plugin_fbookmarks.class:51.115"
-File[19]=".src/plugins/plugin_indexer.class:0.137"
-File[20]=".src/plugins/plugin_indexer_gui.form"
-File[21]=".src/plugins/plugin_indexer_gui.class:64.34"
+File[10]=".src/hSettings.class:17.7"
+File[11]=".src/MySettings.module:16.18"
+File[12]=".src/plugins/plugin_template.class:46.81"
+File[13]=".src/plugins/plugin_executable_gui.form"
+File[14]=".src/plugins/plugin_indexer_gui.form"
+File[15]=".src/plugins/plugin_indexer_gui.class:64.34"
+File[16]=".src/plugins/plugin_090_indexer.class:9.124"
 
 [Watches]
 Count=0
