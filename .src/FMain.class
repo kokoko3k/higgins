@@ -206,11 +206,7 @@ Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
     If rcResult.image_file Like "resize://*" Then 
       'Stop
       'need a mimetype cache here or is slow
-      Try img = Image.load(Right(rcResult.image_file, -9))
-      If Not Error Then
-        If img.w <> rSize Then img = img.stretch(rSize, rSize)
-        resultgrid.Data.Picture = img.picture
-      Endif
+       Try resultgrid.Data.Picture = Global.Load_image(Right(rcResult.image_file, -9), rSize).Picture
       Goto fallback
     Endif
 
@@ -923,3 +919,4 @@ End
 Public Sub Form_Leave()
   MySettings.save()
 End
+
