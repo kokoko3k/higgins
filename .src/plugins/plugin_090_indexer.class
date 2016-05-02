@@ -120,7 +120,7 @@ Private Function create_item(path As String) As RItemT
       return_item.image_file = "resize://" & MyDesktop.Get_file_Icon(MyDesktop.dIconName, iconsize)
     Endif
       Else
-    If Stat(path).type = gb.Directory Then
+    If Stat(path, True).type = gb.Directory Then
       return_item.image_file = "icon:/" & iconsize & "/directory"
         Else
       return_item.image_file = "mimetype://" & path

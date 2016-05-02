@@ -921,7 +921,5 @@ End
 
 
 Public Sub Form_Leave()
-
   MySettings.save()
-Stop
 End
