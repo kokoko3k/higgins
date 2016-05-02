@@ -30,7 +30,7 @@ Public Function Load_image(img_file As String, Optional rSize As Integer = -1) A
   Return Image.Load(img_file)
 End
 
-Private Function find_term() As String
+Public Function find_term() As String
   Dim terms As String[] = ["konsole", "gnome-terminal", "xfce4-terminal", "lxterminal", "xterm"]
   Dim term As String
   For Each term In terms
@@ -41,4 +41,8 @@ Private Function find_term() As String
     Endif
   Next
   Return ""
+End
+
+Public Function terminal_cmdline(terminal_emulator As String, cmdline As String) As String
+  Return terminal_emulator & " -e " & "\"" & "sh -c ' " & cmdline & "; echo; echo  Press enter to exit ; read ' \""
 End

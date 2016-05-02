@@ -92,7 +92,7 @@ Private Function create_item(result As String, Optional terminal As Boolean = Fa
           Return
         Endif
       Endif
-      cmdterm = terminal_emulator & " -e " & "\"" & "sh -c ' " & result & "; echo; echo  Press enter to exit ; read ' \""
+      cmdterm = Global.terminal_cmdline(terminal_emulator, result)
       return_item.Action_p = cmdterm
       return_item.image_file = "icon:/" & iconsize & "/terminal"
       return_item.Text = "Run " & result

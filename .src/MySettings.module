@@ -8,7 +8,7 @@ End
 Public plugin_indexer_last_index_time As Date
 
 Public Sub load()
-  hSettings.ComboboxTerminalEmulator.text = Settings["terminal_emulator"]
+  hSettings.ComboboxTerminalEmulator.text = Settings["terminal_emulator", Global.find_term()]
   load_geometry()
 End
 
