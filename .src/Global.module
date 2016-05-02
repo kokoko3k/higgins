@@ -1,0 +1,44 @@
+' Gambas module file
+
+Public Function image_from_svg(svg_file As String, rSize As String) As Image
+  Dim hSvg As SvgImage
+  Dim hImage As Image
+  If Not Exist(svg_file, True) Then Return Null
+  hSvg = SvgImage.Load(svg_file)
+  hImage = New Image(rSize, rSize, Color.Transparent)
+  Paint.Begin(hImage)
+    hSvg.Resize(rSize, rSize)
+    hSvg.Paint
+  Paint.End
+  Return hImage
+End
+
+Public Function Load_image(img_file As String, Optional rSize As Integer = -1) As Image
+  Dim w As Integer
+  Dim i As New Image
+
+  If Not Exist(img_file, True) Then Return Null
+  
+  If Lower(img_file) Ends ".svg" Then Return image_from_svg(img_file, rSize)
+  
+  If rSize <> -1 Then 
+    i = Image.Load(img_file)
+    If i.w <> rSize Then i = i.Stretch(rSize, rSize)
+    Return i
+  Endif  
+
+  Return Image.Load(img_file)
+End
+
+Private Function find_term() As String
+  Dim terms As String[] = ["konsole", "gnome-terminal", "xfce4-terminal", "lxterminal", "xterm"]
+  Dim term As String
+  For Each term In terms
+    Debug "checking for " & term & "..."
+    If System.Exist(term) Then 
+      Debug "found."
+      Return System.Find(term)
+    Endif
+  Next
+  Return ""
+End
