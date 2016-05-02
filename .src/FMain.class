@@ -859,8 +859,9 @@ End
 
 
 Public Sub ButtonConfigure_Click()
-  Me.hide
   hSettings.show
+  Wait
+  Me.hide
 End
 
 Public Sub indexer_indexing_done(finish_time As Date)
