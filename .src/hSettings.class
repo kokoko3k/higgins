@@ -8,3 +8,8 @@ Public Sub Form_Hide()
   MySettings.save()
   FMain.Show()
 End
+
+Public Sub ComboboxTerminalEmulator_Change()
+  Settings["terminal_emulator"] = ComboboxTerminalEmulator.text
+  Settings.Save()
+End

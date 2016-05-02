@@ -3,7 +3,7 @@
 Create Static
 Static Public Description As String = "Executables launcher"
 Static Public Friendly_name As String = "Executables"
-Static Public configurable As Boolean = True
+Static Public configurable As Boolean = False
 
 Public Struct rItemT
   plugin As String            'the plugin name
@@ -28,8 +28,6 @@ Public Sub _new(p_plugin As String, p_iconsize As Integer)
   plugin = p_plugin
   iconsize = p_iconsize
 
-  terminal_emulator = Settings["plugin_executable/terminal_emulator"]
-
 End
 
 Private Sub trigged(query As String) As Boolean
@@ -47,7 +45,8 @@ Public Sub find(textcontrol As Object) As RItemT[]
   Dim current_search As String = textcontrol.text
   Dim exe_found, cmd As String
   
-
+  terminal_emulator = Settings["terminal_emulator"]
+  
   If Not trigged(textcontrol.text) Then Return
   'If (Not Exist(current_search)) Then Return
   If Exist(current_search) Then
@@ -110,8 +109,8 @@ End
 
 
 
-Public Function configure()
-  
-  plugin_executable_gui.show
-  
-End
+' Public Function configure()
+'   
+'  '
+'   
+' End
