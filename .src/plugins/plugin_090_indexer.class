@@ -116,9 +116,7 @@ Private Function create_item(path As String) As RItemT
   If path Ends ".desktop" Then 
     MyDesktop.init()
     MyDesktop.parse(path)
-    If MyDesktop.dExec <> "" Then 'is_desktop_exec = True
-      return_item.image_file = "resize://" & MyDesktop.Get_file_Icon(MyDesktop.dIconName, iconsize)
-    Endif
+    return_item.image_file = "resize://" & MyDesktop.Get_file_Icon(MyDesktop.dIconName, iconsize)
       Else
     If Stat(path, True).type = gb.Directory Then
       return_item.image_file = "icon:/" & iconsize & "/directory"
