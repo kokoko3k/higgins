@@ -27,26 +27,26 @@ Public Sub resize_form()
   FMain.h = TextBox1.h + (Desktop.scale * 2)
 End
 
+Public textbox1_change_delay As Timer 
+
+
+Public Sub textbox1_change_delay_timer()
+  TextBox1_Change()
+End
+
 
 Public Sub TextBox1_Change()
   Dim previous_search As String
   Dim current_search As String
   Dim c As String
 
-
-Debug
-
   Object.Lock(TextBox1)
   c = Complete(TextBox1.text)
   TextBox2.text = c
   Object.unLock(TextBox1)
 
-Debug
-
   Try current_search = TextBox1.text 
   If Error Then Return
-
-Debug
 
   Wait 0.01
   If current_search = "" Then 
@@ -55,29 +55,23 @@ Debug
     Return
   Endif
 
-Debug
-
   Try previous_search = TextBox1.text
   If Error Then Return
 
-Debug
-
   Wait 0.3
-  If previous_search <> textbox1.text Then Return
-
-Debug
+  If previous_search <> textbox1.text Then 
+    Debug "control changed"
+    Return
+  Endif
 
   immediate_search(textbox1)
   If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
   Wait 0.3
 
-Debug
-
   Try current_search = TextBox1.text 
   If Error Then Return
   If previous_search <> current_search Then Return
 
-Debug
   If resultgrid.Rows.count > 0 Then showgrid
   returnlabel:
   If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
@@ -379,24 +373,25 @@ Public Sub TextBox1_KeyPress()
     Select Key.Code
 
     Case Key.end 'fill complete
-      If textbox1.pos = Len(textbox2.Text) Then Return
       Object.Lock(textbox1)
+      If textbox1.pos = Len(textbox2.Text) Then Return
       If textbox1.pos = textbox1.Length Then
         If textbox2.text <> "" Then 
           textbox1.text = textbox2.text
-          TextBox1_Change()
+          textbox1_change_delay.Trigger()
         Endif
       Endif
       Object.unLock(textbox1)
-
+      
     Case Key.right 'fill complete
       Object.Lock(textbox1)
       If textbox1.pos = textbox1.Length Then
          textbox1.text &= Mid$(textbox2.text, Len(textbox1.text) + 1, 1)
-         If textbox1.text = textbox2.text Then TextBox1_Change() '<<<- fixme
+         'If textbox1.text = textbox2.text Then 
+         textbox1_change_delay.Trigger()
       Endif
       Object.unLock(textbox1)
-
+      
     Case Key.down
       showgrid()
       ResultGrid.SetFocus()
@@ -780,6 +775,9 @@ End
       resize_form()
       
       init_hSettings()
+
+      textbox1_change_delay = New Timer As "textbox1_change_delay"
+      textbox1_change_delay.enabled = False
 
     End
     
