@@ -3,8 +3,11 @@
 Public Sub Button1_Click()
   If (FMain.xb = Null) Then FMain.setup_xbindkeys()
   If FMain.xb.init_error Then
-    FMain.xb_show_init_error()
-    Return
+    Try FMain.setup_xbindkeys()
+    If FMain.xb.init_error Then 
+      FMain.xb_show_init_error(True)
+      Return
+    Endif
   Endif
   Me.mouse = Mouse.wait
   Wait 0.1

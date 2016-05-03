@@ -3,6 +3,7 @@
 Public xb As XbindKeys
 Public Const appname As String = "higgins"
 Public Confpath As String = Settings.defaultdir & "/" & appname
+Public xb_rcpath As String = confpath & "/higgins.xb.rc"
 
 Public Struct rItemT
   plugin As String            'the plugin name
@@ -630,16 +631,18 @@ Public Sub xb_HotkeyPressed(action As String)
 
 End
 
-Public Sub xb_show_init_error()
-   Message.Error("Could not initialize xbindkeys.\nIs it installed?\n\nShortcuts will not work.\n")
+Public Sub xb_show_init_error(Optional force As Boolean = False)
+  Message.optional("Could not initialize xbindkeys, Is it installed?,Shortcuts will not work!", "Ok", "hide_xbindkeys_not_installed", "error", force)
+  Settings.Save()
 End
 
 
 Public Sub setup_xbindkeys()
   Dim msg As String
-  Dim rcpath As String = confpath & "/higgins.xb.rc"
-  Shell "killall " & confpath & "/xbindkeys_higgins" Wait
-  xb = New XbindKeys(rcpath, confpath & "/xbindkeys_higgins") As "xb"
+  Shell "killall xbindkeys_higgins" Wait
+  Wait 0.1
+  Shell "killall -9 xbindkeys_higgins" Wait
+  xb = New XbindKeys(xb_rcpath, confpath & "/xbindkeys_higgins") As "xb"
   If xb.init_error Then
     xb_show_init_error()
     Return
@@ -808,15 +811,14 @@ Public Sub Form_Open()
     msg = ("Higgins is not configured") & "\n"
     msg &= ("Please configure at least the hotkey") & "\n"
     msg &= ("to show the higgins window.") & "\n\n"
-    msg &= ("A blank window will open shortly,\nPlease press the desidered shortcut there.")
     Message.Info(msg)
-    setup_xbindkeys()
   Endif
 
   resultgrid.Rows.h = resultgrid.Font.RichTextHeight("|j<br>|j") + padding
   rSize = ResultGrid.Rows.H - padding
   MySettings.load()
-  If Settings["dontshow_message_xbindKeys", False] = False Then
+  
+  If Not Exist(xb_rcpath) Then
     msg = "No shortcut defined to hide/show the main window,"
     msg &= "it is advised to define one in the options window."
     Message.Optional(msg, "Ok", "dontshow_message_xbindKeys", "warning")
@@ -833,6 +835,9 @@ Public Sub Form_Open()
   textbox1_change_delay = New Timer As "textbox1_change_delay"
   textbox1_change_delay.enabled = False
   
+  If Newuser Then hSettings.Show()
+  
+  setup_xbindkeys()
 End
 
 Public Sub Form_KeyRelease()
