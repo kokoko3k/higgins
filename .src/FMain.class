@@ -97,7 +97,7 @@ Public Sub reinit()
 End
 
 Private plugins As New Collection 'a collection of plugin instances
-'Private plugins_enabled As New String[]
+
 
 Public Sub load_plugin(plugin_name As String, iconsize As Integer)
 
@@ -114,7 +114,6 @@ Public Sub unload_plugin(plugin_name As String)
   Dim my_plugin As Object
   Try my_plugin = plugins[plugin_name]
   If Error Then Return
-  
   plugins.Remove(plugin_name)
   Try Object.Call(my_plugin, "stop")
   my_plugin = Null
@@ -645,11 +644,6 @@ Public Sub setup_xbindkeys()
     xb_show_init_error()
     Return
   Endif
-
-  If Not Exist(rcpath) Then 
-    xb.register("show")
-  Endif
-
 End
 
 '-- END XBINDKEYS ---------------------------------------------------------------------
@@ -828,10 +822,7 @@ Public Sub Form_Open()
     Message.Optional(msg, "Ok", "dontshow_message_xbindKeys", "warning")
     Settings.Save()
   Endif
-  
-  
-  
-  
+
   socket_init()
   InitTrayIcon()
   
