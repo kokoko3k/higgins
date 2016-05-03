@@ -12,7 +12,7 @@ Public Struct rItemT
   Image_file As String        'optional image displayed (fullpath or "DefferredMimeIcon")
   Clipboard_data As String    'the data copied to the clipboard
   Action As String            'string that indicates an action
-  Action_p As Variant          'the parameter for Action
+  Action_p As Variant         'the parameter for Action
 End Struct
 
 

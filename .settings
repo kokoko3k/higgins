@@ -50,6 +50,9 @@ Geometry=[61,14,224,280]
 [DebugWindow/FileView1.Children[0]]
 Geometry=[425,184,224,280]
 
+[DebugWindow/Global]
+Geometry=[122,314,224,280]
+
 [DebugWindow/Label]
 Geometry=[45,-3,224,280]
 
@@ -137,8 +140,17 @@ Geometry=[1280,307,224,280]
 [DebugWindow/happ]
 Geometry=[1280,-3,361,555]
 
+[DebugWindow/i]
+Geometry=[86,450,224,280]
+
+[DebugWindow/i.Picture]
+Geometry=[59,14,224,280]
+
 [DebugWindow/img]
 Geometry=[45,-3,224,280]
+
+[DebugWindow/img.picture]
+Geometry=[45,299,224,280]
 
 [DebugWindow/index_db]
 Geometry=[45,-3,595,923]
@@ -247,23 +259,25 @@ Path="gbLocate.gambas"
 
 [OpenFile]
 File[1]=".src/FMain.form"
-Active=2
-File[2]=".src/FMain.class:13.727"
-Count=16
-File[3]=".src/MyDesktop.class:0.202"
-File[4]=".src/DesktopApps.class:0.473"
+Active=18
+File[2]=".src/FMain.class:0.49"
+Count=18
+File[3]=".src/MyDesktop.class:3.58"
+File[4]=".src/DesktopApps.class:58.385"
 File[5]="appicon.png"
 File[6]="README:0.7"
 File[7]=".src/old_Plugins.class:41.48"
 File[8]=".src/XbindKeys.class:0.98"
 File[9]=".src/hSettings.form"
-File[10]=".src/hSettings.class:17.7"
-File[11]=".src/MySettings.module:16.18"
+File[10]=".src/hSettings.class:32.12"
+File[11]=".src/MySettings.module:90.10"
 File[12]=".src/plugins/plugin_template.class:46.81"
-File[13]=".src/plugins/plugin_executable_gui.form"
-File[14]=".src/plugins/plugin_indexer_gui.form"
-File[15]=".src/plugins/plugin_indexer_gui.class:64.34"
-File[16]=".src/plugins/plugin_090_indexer.class:9.124"
+File[13]=".src/plugins/plugin_indexer_gui.form"
+File[14]=".src/plugins/plugin_indexer_gui.class:23.36"
+File[15]=".src/plugins/plugin_090_indexer.class:39.118"
+File[16]=".src/Global.module:6.32"
+File[17]=".src/plugins/plugin_030_executable.class:44.88"
+File[18]=".src/plugins/plugin_050_ls.class:0.25"
 
 [Watches]
 Count=0

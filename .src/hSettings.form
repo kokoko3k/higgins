@@ -17,13 +17,13 @@
     }
     { LabelHotkey Label
       MoveScaled(9,1,24,4)
-      Text = ("Default Hotkey")
+      Text = ("Default Shortcut")
       Alignment = Align.Right
     }
     { Button1 Button
       MoveScaled(46,1,30,4)
       AutoResize = True
-      Text = ("Change default hotkey")
+      Text = ("Change default shortcut")
       Picture = Picture["icon:/small/shortcut"]
     }
   }

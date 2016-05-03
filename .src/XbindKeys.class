@@ -4,11 +4,13 @@ Private xbindkeysp As Process
 Private conf_file As String
 Private hotkeys As Collection
 Private xbindkeys_alias As String
+Public init_error As Boolean = False
 
-Public Sub _new(conf As String, Optional alias As String = "")
+Public Sub _new(conf As String, Optional alias As String = "") 
   If Not System.Exist("xbindkeys") Then
     Debug "ERROR: xbindkeys not found in system path"
-    Quit
+    init_error = True
+    Return
   Endif
   
   If alias <> "" Then

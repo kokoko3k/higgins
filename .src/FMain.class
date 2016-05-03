@@ -14,7 +14,6 @@ Public Struct rItemT
   Action_p As Variant         'the parameter for Action
 End Struct
 
-
 Public results_file As String = Temp()
 Public results_list As New RItemT[]
 Public picture_list As New Collection
@@ -24,89 +23,94 @@ Public Lock_File As String = Confpath & "/lock"
 Public firstrun As Boolean = True
 
 Public Sub resize_form()
+
   FMain.h = TextBox1.h + (Desktop.scale * 2)
+
 End
 
 Public textbox1_change_delay As Timer 
 
-
 Public Sub textbox1_change_delay_timer()
+
   TextBox1_Change()
+
 End
 
-
 Public Sub TextBox1_Change()
+
   Dim previous_search As String
   Dim current_search As String
   Dim c As String
-
+  
   Object.Lock(TextBox1)
   c = Complete(TextBox1.text)
   TextBox2.text = c
   Object.unLock(TextBox1)
-
+  
   Try current_search = TextBox1.text 
   If Error Then Return
-
+  
   Wait 0.01
   If current_search = "" Then 
     resize_form()
     reinit()
     Return
   Endif
-
+  
   Try previous_search = TextBox1.text
   If Error Then Return
-
+  
   Wait 0.3
-  If previous_search <> textbox1.text Then 
-    Debug "control changed"
-    Return
-  Endif
-
+  If previous_search <> textbox1.text Then Return 'user is typing
+  
   immediate_search(textbox1)
   If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
   Wait 0.3
-
+  
   Try current_search = TextBox1.text 
   If Error Then Return
   If previous_search <> current_search Then Return
-
+  
   If resultgrid.Rows.count > 0 Then showgrid
-  returnlabel:
+returnlabel:
   If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
+
 End
 
-
 Public Sub initgrid()
+
   ResultGrid.Rows.count = 0
   ResultGrid.columns.count = 1
   ResultGrid.mode = Select.Single
   ResultGrid.Show()
+
 End
 
 Public Sub reinit()
+
   results_list.Clear()
   picture_list.Clear()
   initgrid()
   MyDesktop.init()
   mouse_normal()
-End
 
+End
 
 Private plugins As New Collection 'a collection of plugin instances
 'Private plugins_enabled As New String[]
 
 Public Sub load_plugin(plugin_name As String, iconsize As Integer)
+
   Dim myplugin As Object
   myplugin = Object.New(plugin_name, [plugin_name, iconsize])
   Debug plugin_name
   plugins[plugin_name] = myplugin
   Object.Attach(myplugin, fmain, "plugin_event")
+
 End
 
-
 Public Sub unload_plugin(plugin_name As String)
+
   Dim my_plugin As Object
   Try my_plugin = plugins[plugin_name]
   If Error Then Return
@@ -114,27 +118,29 @@ Public Sub unload_plugin(plugin_name As String)
   plugins.Remove(plugin_name)
   Try Object.Call(my_plugin, "stop")
   my_plugin = Null
-End
 
+End
 
 Private previous_search As String
 
 Private Sub showgrid()
-    FMain.h = TextBox1.h + (Desktop.scale * 3) + resultgrid.h
+
+  FMain.h = TextBox1.h + (Desktop.scale * 3) + resultgrid.h
+
 End
 
-
 Public Sub immediate_search(textcontrol As Object)
+
   Dim aPlugin As Object
   Dim t0 As Float
-
+  
   If previous_search = textcontrol.text Then Return 'don't know why this is important, but works.
   previous_search = textcontrol.text                'don't know why this is important, but works.
-
+  
   reinit()
   showgrid()
   mouse_busy()
-
+  
   Debug "starting search..."
   For Each aplugin In plugins
     t0 = Timer()
@@ -143,113 +149,116 @@ Public Sub immediate_search(textcontrol As Object)
     Debug "[END]", plugins.key, "time:", Timer() - t0, "[END]"
   Next
   Debug "Search ends here."
-
+  
   mouse_normal()
+
 End
 
-
 Public Sub run_plugin(plugin_name As String, textcontrol As Object)
-  Dim rResults As RItemT[]
 
+  Dim rResults As RItemT[]
+  
   rResults = Object.Call(plugins[plugin_name], "find", [textcontrol]) 'chiama il metodo find()
   If rResults = Null Then Return
-
+  
   results_list.Insert(rResults)
   ResultGrid.Rows.count += rResults.Count
-
+  
 End
 
 Public Sub plugin_event_new_results(rResults As RItemT[])
+
   results_list.Insert(rResults)
   ResultGrid.Rows.count += rResults.Count
+
 End
 
-
 Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
+
   Dim rcResult As New RItemT
   Dim img As Image
+
   If results_list.count = 0 Then Return
   rcResult = results_list[Row]
-
+  
   'two lines:
   resultgrid.data.RichText = "<b>" & rcResult.text & "</b>"
   If rcResult.subtext <> "" Then 
     resultgrid.data.RichText &= "<br><font size=-1>" & rcResult.subtext & "</font>"
   Endif
-
+  
   'find pic from cache?
   If picture_list[row] <> Null Then
     resultgrid.Data.Picture = picture_list[row] 
     Return
   Endif
-
+  
   'no cache :(
-    If rcResult.image_file Like "mimetype://*" Then 
-      'need a mimetype cache here or is slow
-      Try resultgrid.Data.Picture = MyDesktop.Get_mime_Icon(Right(rcResult.image_file, -11), rSize)
-      Goto fallback
-    Endif
-    
-    If rcResult.image_file Like "desktopfile://*" Then 
-      MyDesktop.init()
-      MyDesktop.parse(Right(rcResult.image_file, -14))
-      Try resultgrid.Data.Picture = MyDesktop.GetIcon(MyDesktop.dIconName, rSize).picture
-      Goto fallback
-    Endif
-    
-    If rcResult.image_file Like "resize://*" Then 
-      'Stop
-      'need a mimetype cache here or is slow
-       Try resultgrid.Data.Picture = Global.Load_image(Right(rcResult.image_file, -9), rSize).Picture
-      Goto fallback
-    Endif
-
-  fallback:
+  If rcResult.image_file Like "mimetype://*" Then 
+    'need a mimetype cache here or is slow
+    Try resultgrid.Data.Picture = MyDesktop.Get_mime_Icon(Right(rcResult.image_file, -11), rSize)
+    Goto fallback
+  Endif
+  
+  If rcResult.image_file Like "desktopfile://*" Then 
+    MyDesktop.init()
+    MyDesktop.parse(Right(rcResult.image_file, -14))
+    Try resultgrid.Data.Picture = MyDesktop.GetIcon(MyDesktop.dIconName, rSize).picture
+    Goto fallback
+  Endif
+  
+  If rcResult.image_file Like "resize://*" Then 
+    'Stop
+    'need a mimetype cache here or is slow
+    Try resultgrid.Data.Picture = Global.Load_image(Right(rcResult.image_file, -9), rSize).Picture
+    Goto fallback
+  Endif
+  
+fallback:
   If (resultgrid.Data.Picture = Null) Then 
     Try resultgrid.Data.Picture = Picture[rcResult.image_file]
   Endif
   If resultgrid.Data.Picture = Null Then 
     Try resultgrid.Data.Picture = rcResult.hApp.GetIcon(rSize).Picture
   Endif
-
+  
   If resultgrid.Data.picture = Null Then
     resultgrid.Data.Picture = Picture["icon:/" & rSize & "/file"]
   Endif
-
- 
+  
   'cache picture
   If resultgrid.Data.picture <> Null Then picture_list[row] = resultgrid.Data.picture
-
-
-
+  
 End
 
-
-
-
 Public Sub mouse_busy()
+
   fmain.mouse = Mouse.Wait
   TextBox1.mouse = Mouse.wait
+
 End
 
 Public Sub mouse_normal()
+
   fmain.mouse = Mouse.Default
   TextBox1.mouse = Mouse.default
+
 End
 
-
 Public Sub start_item(i As Integer)
+
   Dim rcResult As RItemT
   Dim p As String  
+
   If results_list.count = 0 Then Return
   rcResult = results_list[i]  
   p = rcResult.Action_p
-
+  
   Select Case rcResult.Action
     Case "DESKTOPOPEN"
       If Lower(p) Ends ".desktop" Then 
         start_dot_desktop(p)
-          Else
+      Else
         Desktop.Open(p)
       Endif
     Case "EXEC"
@@ -257,29 +266,29 @@ Public Sub start_item(i As Integer)
     Case "GUESS"
       
       If Exist(p) Then
-
+        
         'desktop files with full path
         If Lower(p) Ends ".desktop" Then
           start_dot_desktop(p)
           Return
         Endif
-
+        
         'directory
         If Stat(p, True).type = gb.Directory Then
           Desktop.Open(p)
           Return
         Endif
-      
+        
         'executables
-          If is_executable(p) Then 
-            start_executable(p)
-            Return
-          Endif
-
+        If is_executable(p) Then 
+          start_executable(p)
+          Return
+        Endif
+        
         'all of the others
         Desktop.Open(p)
         Return
-
+        
       Endif
       
     Case "NULL"
@@ -292,86 +301,91 @@ Public Sub start_item(i As Integer)
 End
 
 Private Function strip_desktop_args(e As String) As String
+
   Dim field_codes As String[] = ["f", "F", "u", "U", "d", "D", "n", "N", "i", "c", "k", "v", "m"]
   Dim code As String
-
+  
   For Each code In field_codes
     e = Replace(e, " %" & code & " ", " ")
     If e Ends " %" & code Then e = Left(e, -3)
   Next
   Return e
+
 End
 
-
 Public Sub start_dot_desktop(dPath As String)
+
   Dim d As New DesktopFile(dPath)
   Dim exe_no_args As String = strip_desktop_args(d.Exec)
   Dim terminal_emulator As String
+
   If d.terminal Then 
     terminal_emulator = settings["terminal_emulator", Global.find_term()]
     Shell Global.terminal_cmdline(terminal_emulator, exe_no_args)
-      Else
+  Else
     Shell exe_no_args For Input Output
   Endif
+
 End
 
-
 Public Sub start_executable(ePath As String)
+
   Dim msgout As String
   msgout = Message.Question(("Execute file?"), "Execute", "Cancel")
-
+  
   Select msgout
     Case 1
       Shell ePath For Input Output
     Case 2
       Return
   End Select
-
+  
 End
 
-
 Public Function is_executable(fPath As String) As Boolean
+
   Dim bout As String
   Dim singlecommand As Boolean = False
   Dim splitted As String[]
   Dim exe As String
-
+  
   splitted = Split(fPath, ";| &\n", "", True)
   singlecommand = splitted.count = 1
   If Not singlecommand Then singlecommand = singlecommand Or ((fpath Begins "\"") And (fpath Ends "\""))
   If Not singlecommand Then singlecommand = ((fpath Begins "'") And (fpath Ends "'"))
-
+  
   If singlecommand Then 
     exe = fPath 
-      Else 
+  Else 
     exe = splitted[0]
   Endif
-
+  
   'has to exist
-    If Not Exist(exe) Then Return False
+  If Not Exist(exe) Then Return False
   'has to be a file
-    If Stat(exe, True).type <> gb.File Then Return False
+  If Stat(exe, True).type <> gb.File Then Return False
   'needs executable permissions
-    Shell "bash -c \"[[ -x '" & exe & "' ]] && echo executable \"" To bout
-    If (Trim(bout) = "") Then Return False
+  Shell "bash -c \"[[ -x '" & exe & "' ]] && echo executable \"" To bout
+  If (Trim(bout) = "") Then Return False
   'needs to have the right mimetype
-    If Not MyDesktop.mime_exe(exe) Then Return False
+  If Not MyDesktop.mime_exe(exe) Then Return False
   'right then!
-    Return True
+  Return True
+
 End
 
-
-
 Public Sub ResultGrid_activate()
+
   If results_list[resultgrid.row].Action_p = Null Then Return
   start_item(resultgrid.row)
   TimerClose.Trigger
+
 End
 
 Public Sub TextBox1_KeyPress()
-
-    Select Key.Code
-
+  
+  Select Key.Code
+      
     Case Key.end 'fill complete
       Object.Lock(textbox1)
       If textbox1.pos = Len(textbox2.Text) Then Return
@@ -386,9 +400,9 @@ Public Sub TextBox1_KeyPress()
     Case Key.right 'fill complete
       Object.Lock(textbox1)
       If textbox1.pos = textbox1.Length Then
-         textbox1.text &= Mid$(textbox2.text, Len(textbox1.text) + 1, 1)
-         'If textbox1.text = textbox2.text Then 
-         textbox1_change_delay.Trigger()
+        textbox1.text &= Mid$(textbox2.text, Len(textbox1.text) + 1, 1)
+        'If textbox1.text = textbox2.text Then 
+        textbox1_change_delay.Trigger()
       Endif
       Object.unLock(textbox1)
       
@@ -397,7 +411,7 @@ Public Sub TextBox1_KeyPress()
       ResultGrid.SetFocus()
       If resultgrid.current = Null Then 
         Try resultgrid.Rows[0].Selected = True
-          Else
+      Else
         Try resultgrid.Rows[1].Selected = True
       Endif
       
@@ -406,7 +420,7 @@ Public Sub TextBox1_KeyPress()
       ResultGrid.SetFocus()
       If resultgrid.current = Null Then 
         Try resultgrid.Rows[0].Selected = True
-          Else
+      Else
         Try resultgrid.Rows[1].Selected = True
       Endif
       
@@ -415,7 +429,7 @@ Public Sub TextBox1_KeyPress()
         If results_list[resultgrid.row].Action_p = Null Then Return
         Try start_item(resultgrid.row)
         If Not Error Then timerClose.Trigger()
-          Else
+      Else
         showgrid()
         Try resultgrid.row = 0
       Endif
@@ -425,16 +439,17 @@ Public Sub TextBox1_KeyPress()
         If results_list[resultgrid.row].Action_p = Null Then Return
         Try start_item(resultgrid.row)
         If Not Error Then timerClose.Trigger()
-          Else
+      Else
         showgrid()
         Try resultgrid.row = 0
       Endif
-
+      
   End Select
-
+  
 End
 
 Public Sub ResultGrid_KeyPress()
+
   If ResultGrid.row < 0 Then Return
   
   Select Key.Code
@@ -451,161 +466,195 @@ Public Sub ResultGrid_KeyPress()
     Case Key.PageUp
       If ResultGrid.Rows[0].Selected Then TextBox1.SetFocus()
   End Select
+
 End
 
-
 Public Sub MenuOpenFolder_Click()
+
   If results_list[resultgrid.row].Action_p = Null Then Return
   Try Desktop.Open(File.Dir(results_list[resultgrid.row].Action_p))
   TimerClose.Trigger
+
 End
 
-
 Public Sub MenuOpenFile_Click()
+
   If results_list[resultgrid.row].Action_p = Null Then Return
   start_item(resultgrid.row)
   TimerClose.Trigger
+
 End
 
-
 Public Sub MenuCopy_Click()
+
   Clipboard.Copy(results_list[ResultGrid.row].Clipboard_data)
+
 End
 
 '======================================== START SOCKET FUNCTIONS ========================================
 
-    Public My_listening_socket As ServerSocket
-    
-    
-    Public hLock As Stream
-    
-    Public Sub socket_init()
-      'TRY TO get a LOCK file:
-      Try hLock = Lock Lock_File
-      If Error Then 'alreadyrunning
-        Debug "another instance already running"
-        show_other_instance()
-        Quit
-      Endif
-      'start to listen for remote commands, one connection is ok.
-      My_listening_socket = New ServerSocket As "My_listening_socket"
-      My_listening_socket.type = Net.Unix
-      My_listening_socket.path = Socket_File
-      My_listening_socket.Listen(1)
-    End
-    
-    Public MyCSock As Socket
-    Public Sub show_other_instance()
-      Dim sBuf As String
-      MyCSock = New Socket
-      MyCSock.path = Socket_File
-      MyCSock.Port = Net.Local
-      MyCSock.Connect()
-      While (MyCSock.Status <> 7) And (MyCSock.Status > 0)
-        Wait 0.1
-      Wend
-      If MyCSock.Status = 7 Then
-        sBuf = "show\n"
-        Write #MyCSock, sBuf, Len(sBuf)
-        Close #MycSock
-      Endif
-    End
-    
-    Public Host As Object
-    Public Sub My_listening_socket_connection(RemoteHostIP As String)
-      'just accept on localhost.
-      host = My_listening_socket.Accept()
-    End
-    
-    Public Sub socket_Read()
-      Dim command As String = ""
-      'Stop
-      Line Input #Last, command
-      If command = "show" Then
-        Repeat
-          fmain.visible = True
-          Wait
-        Until fmain.visible = True
-      Endif
-      My_listening_socket.close
-      My_listening_socket.Listen(1)
-    End
+Public My_listening_socket As ServerSocket
+
+Public hLock As Stream
+
+Public Sub socket_init()
+  'TRY TO get a LOCK file:
+
+  Try hLock = Lock Lock_File
+  If Error Then 'alreadyrunning
+    Debug "another instance already running"
+    show_other_instance()
+    Quit
+  Endif
+  'start to listen for remote commands, one connection is ok.
+  My_listening_socket = New ServerSocket As "My_listening_socket"
+  My_listening_socket.type = Net.Unix
+  My_listening_socket.path = Socket_File
+  My_listening_socket.Listen(1)
+
+End
+
+Public MyCSock As Socket
+
+Public Sub show_other_instance()
+
+  Dim sBuf As String
+  MyCSock = New Socket
+  MyCSock.path = Socket_File
+  MyCSock.Port = Net.Local
+  MyCSock.Connect()
+  While (MyCSock.Status <> 7) And (MyCSock.Status > 0)
+    Wait 0.1
+  Wend
+  If MyCSock.Status = 7 Then
+    sBuf = "show\n"
+    Write #MyCSock, sBuf, Len(sBuf)
+    Close #MycSock
+  Endif
+
+End
+
+Public Host As Object
+
+Public Sub My_listening_socket_connection(RemoteHostIP As String)
+  'just accept on localhost.
+
+  host = My_listening_socket.Accept()
+
+End
+
+Public Sub socket_Read()
+
+  Dim command As String = ""
+  'Stop
+  Line Input #Last, command
+  If command = "show" Then
+    Repeat
+      fmain.visible = True
+      Wait
+    Until fmain.visible = True
+  Endif
+  My_listening_socket.close
+  My_listening_socket.Listen(1)
+
+End
 
 '-- END SOCKET FUNCTIONS ---------------------------------------------------------------------
 
 '--- TRYICON RELATED
-              
-    Public TrayIcon2 As Trayicon
-    Public Sub InitTrayIcon()
-    
-      Dim SystemTray As Boolean = True
-      Try SystemTray = desktop.HasSystemTray
-      If Error Then
-        Debug "Couldn't check if your desktop has a system tray, assuming it has"
-      Endif
-    
-      If Not SystemTray Then Return
-      Try TrayIcon2 = New Trayicon 
-      If Error Then Debug "Cannot Init Trayicon"
-      TrayIcon2.Picture = Picture["appicon.png"]
-      TrayIcon2.Visible = True
-      object.Attach(TrayIcon2, Me, "TrayIcon2")
-      TrayIcon2.PopupMenu = "TrayMenu"
-      If Error Then Debug "Cannot Init Trayicon"
-    End
-    
-    Public Sub TrayIcon2_click()
-      If fmain.visible Then 
-        MySettings.save()
-        Form_Hide()
-          Else
-        Form_Show()
-      Endif
-    End
-    
-    Public Sub MenuTrayOptions_Click()
-      hSettings.Show()
-    End
-     
-    
-    Public Sub QuitMenuTray_Click()
-      myQuit()
-    End
-    
-    Public Sub MenuTrayShow_click()
-      Form_Show()
-    End
 
+Public TrayIcon2 As Trayicon
+
+Public Sub InitTrayIcon()
+  
+  Dim SystemTray As Boolean = True
+
+  Try SystemTray = desktop.HasSystemTray
+  If Error Then
+    Debug "Couldn't check if your desktop has a system tray, assuming it has"
+  Endif
+  
+  If Not SystemTray Then Return
+  Try TrayIcon2 = New Trayicon 
+  If Error Then Debug "Cannot Init Trayicon"
+  TrayIcon2.Picture = Picture["appicon.png"]
+  TrayIcon2.Visible = True
+  object.Attach(TrayIcon2, Me, "TrayIcon2")
+  TrayIcon2.PopupMenu = "TrayMenu"
+  If Error Then Debug "Cannot Init Trayicon"
+
+End
+
+Public Sub TrayIcon2_click()
+
+  If fmain.visible Then 
+    MySettings.save()
+    Form_Hide()
+  Else
+    Form_Show()
+  Endif
+
+End
+
+Public Sub MenuTrayOptions_Click()
+
+  hSettings.Show()
+
+End
+
+Public Sub QuitMenuTray_Click()
+
+  myQuit()
+
+End
+
+Public Sub MenuTrayShow_click()
+
+  Form_Show()
+
+End
 
 '-- END TRAYICON FUNCTIONS ---------------------------------------------------------------------
 
-
 '-- XBINDKEYS ---------------------------------------------------------------------
 
-    Public Sub xb_HotkeyPressed(action As String)
-      If action = "show" Then
-        If fmain.visible Then
-          MySettings.save()  
-          fmain.Hide()
-            Else
-          fmain.Show()
-        Endif
-      Endif
-    End
-    
-    Public Sub setup_xbindkeys()
-      Dim rcpath As String = confpath & "/higgins.xb.rc"
-      Shell "killall " & confpath & "/xbindkeys_higgins" Wait
-      xb = New XbindKeys(rcpath, confpath & "/xbindkeys_higgins") As "xb"
-      If Not Exist(rcpath) Then 
-        xb.register("show")
-      Endif
-    End
+Public Sub xb_HotkeyPressed(action As String)
+
+  If action = "show" Then
+    If fmain.visible Then
+      MySettings.save()  
+      fmain.Hide()
+    Else
+      fmain.Show()
+    Endif
+  Endif
+
+End
+
+Public Sub xb_show_init_error()
+   Message.Error("Could not initialize xbindkeys.\nIs it installed?\n\nShortcuts will not work.\n")
+End
+
+
+Public Sub setup_xbindkeys()
+
+  Dim rcpath As String = confpath & "/higgins.xb.rc"
+  Shell "killall " & confpath & "/xbindkeys_higgins" Wait
+  xb = New XbindKeys(rcpath, confpath & "/xbindkeys_higgins") As "xb"
+  If xb.init_error Then
+    xb_show_init_error()
+    Return
+  Endif
+  If Not Exist(rcpath) Then 
+    xb.register("show")
+  Endif
+
+End
 
 '-- END XBINDKEYS ---------------------------------------------------------------------
 
-
 Public Sub init_hSettings()
+
   Dim plugin_name As String
   Dim o_hbox As Hbox
   Dim o_checkbox As Checkbox
@@ -625,7 +674,7 @@ Public Sub init_hSettings()
   For Each plugin_name In Dir(".gambas").Sort()
     If (Upper(plugin_name) Begins "PLUGIN_") Then
       If Not (Upper(plugin_name) Ends "_GUI") Then
-
+        
         'object.getproperty(class.load("plugin_template"),"prova")
         Try plugin_class = Class.Load(plugin_name)
         If Not Error Then
@@ -633,73 +682,72 @@ Public Sub init_hSettings()
           friendly_name = Object.GetProperty(plugin_class, "Friendly_name")
           configurable = False
           Try configurable = Object.GetProperty(plugin_class, "Configurable")
-            Else
+        Else
           friendly_name = plugin_name
         Endif
-
+        
         o_hbox = New HBox(hSettings.frame1)
         o_hbox.h = hSettings.Font.TextHeight("|") * 1.5
-
+        
         o_checkbox = New Checkbox(o_hbox) As "plugin_checkbox"
         o_checkbox.text = friendly_name
         o_checkbox.AutoResize = True
         o_checkbox.tag = plugin_name
         o_checkbox.Font.Bold = True
-
+        
         Object.Lock(o_checkbox)
         If ((plugins_enabled.find(plugin_name) > -1) Or plist = "") Then
           o_checkbox.value = CheckBox.True
-
+          
           load_plugin(plugin_name, rsize)
-            Else
+        Else
           o_checkbox.value = CheckBox.false
         Endif
         Object.unLock(o_checkbox)
-
+        
         o_label = New TextLabel(hSettings.frame1)
         '<font size=-1>" & rcResult.subtext & "</font>
         o_label.text = "<font size=-1>" & description & "</font>"
         o_label.AutoResize = True
-
+        
         o_spacer = New Panel(o_hbox)
         o_spacer.border = Border.None
         o_spacer.expand = True
-
+        
         If configurable Then
           o_button = New Button(o_hbox) As "plugin_configure"
           o_button.tag = plugin_name
           o_button.w = hSettings.Font.TextHeight("|") * 1.5
           o_button.Picture = Picture["icon:/medium/options"]
         Endif
-
+        
         o_separator = New Separator(hSettings.frame1)
-
+        
       Endif
     Endif
   Next
   
 End
 
-
-
 Public Sub plugin_checkbox_Click()
-
+  
   If Last.value = CheckBox.True Then
     'If plugins_enabled.Find(Last.tag) = -1 Then
     If Not (plugins.Exist(Lower(Last.tag))) Then
       'plugins_enabled.Add(Last.tag)
       load_plugin(Last.tag, rsize)
     Endif
-        Else
+  Else
     unload_plugin(Last.tag)
     'plugins_enabled.Delete(plugins_enabled.Find(Last.tag))
   Endif
-
+  
   save_plugin_list()
-
+  
 End
 
 Public Sub plugin_configure_Click()
+
   Dim myplugin As Object
   Try myplugin = plugins[Last.tag]
   If Error Then Return
@@ -707,10 +755,11 @@ Public Sub plugin_configure_Click()
   
 End
 
-
 Public Sub save_plugin_list()
+
   Dim p As New String[]
   Dim o As Object
+
   For Each o In hSettings.Controls
     If o Is CheckBox Then
       If o.tag Begins "PLUGIN" Then
@@ -720,17 +769,18 @@ Public Sub save_plugin_list()
   Next
   Settings["hsettings/plist"] = p.Join()
   Settings.save
+
 End
 
-
 Public Sub TimerClose_Timer()
+
   MySettings.save_geometry()
   fmain.close
-
+  
 End
 
 Public Sub myQuit()
-
+  
   Try xb.close
   Try My_listening_socket.Close
   Try MyCSock.Close
@@ -746,99 +796,105 @@ End
 
 '-- FMAIN FUNCTIONS  ---------------------------------------------------------------------
 
-    Public Sub Form_Open()
-      Dim padding As Integer = (Desktop.scale * 2)
-      Dim newuser As Boolean = False
-      Dim msg As String
-      Dim t0 As Float
+Public Sub Form_Open()
 
-      Me.visible = False
-      t0 = Timer()
-      If Not firstrun Then Return
-      If Not Exist(Confpath, True) Then
-        newuser = True
-        Mkdir confpath
-      Endif
-      If Newuser Then
-        msg = ("Higgins is not configured") & "\n"
-        msg &= ("Please configure at least the hotkey") & "\n"
-        msg &= ("to show the higgins window.") & "\n"
-        Message.Info(msg)
-      Endif
-      setup_xbindkeys()
-      resultgrid.Rows.h = resultgrid.Font.RichTextHeight("|j<br>|j") + padding
-      rSize = ResultGrid.Rows.H - padding
-      MySettings.load()
-      socket_init()
-      InitTrayIcon()
-      
-      resize_form()
-      
-      init_hSettings()
+  Dim padding As Integer = (Desktop.scale * 2)
+  Dim newuser As Boolean = False
+  Dim msg As String
+  Dim t0 As Float
+  
+  Me.visible = False
+  t0 = Timer()
+  If Not firstrun Then Return
+  If Not Exist(Confpath, True) Then
+    newuser = True
+    Mkdir confpath
+  Endif
+  If Newuser Then
+    msg = ("Higgins is not configured") & "\n"
+    msg &= ("Please configure at least the hotkey") & "\n"
+    msg &= ("to show the higgins window.") & "\n\n"
+    msg &= ("A blank window will open shortly,\nPlease press the desidered shortcut there.")
+    Message.Info(msg)
+  Endif
+  setup_xbindkeys()
+  resultgrid.Rows.h = resultgrid.Font.RichTextHeight("|j<br>|j") + padding
+  rSize = ResultGrid.Rows.H - padding
+  MySettings.load()
+  socket_init()
+  InitTrayIcon()
+  
+  resize_form()
+  
+  init_hSettings()
+  
+  textbox1_change_delay = New Timer As "textbox1_change_delay"
+  textbox1_change_delay.enabled = False
+  
+End
 
-      textbox1_change_delay = New Timer As "textbox1_change_delay"
-      textbox1_change_delay.enabled = False
+Public Sub Form_KeyRelease()
 
-    End
-    
-    Public Sub Form_KeyRelease()
-      If Key.code = Key.esc Then 
-        MySettings.save()
-        Form_Hide()
-      Endif
-    End
-    
-    Public Sub Form_Hide()
-      ResultGrid.UnSelectAll()
-      resultgrid.row = -1
-      If fmain.tag = "minimized" Then Return
-      fmain.visible = False
-      fmain.tag = "minimized"
-    End
-    
-    Public Sub Form_Show()
-      If firstrun Then 
-        MySettings.load_geometry()
-        fmain.visible = False
-        Wait
-        firstrun = False
-        Return
-      Endif
+  If Key.code = Key.esc Then 
+    MySettings.save()
+    Form_Hide()
+  Endif
 
-      fmain.visible = True
-      fmain.tag = ""
-      resize_form()
-      Wait
-      TextBox1.SetFocus()
-    
-    End
-    
+End
+
+Public Sub Form_Hide()
+
+  ResultGrid.UnSelectAll()
+  resultgrid.row = -1
+  If fmain.tag = "minimized" Then Return
+  fmain.visible = False
+  fmain.tag = "minimized"
+
+End
+
+Public Sub Form_Show()
+
+  If firstrun Then 
+    MySettings.load_geometry()
+    fmain.visible = False
+    Wait
+    firstrun = False
+    Return
+  Endif
+  
+  fmain.visible = True
+  fmain.tag = ""
+  resize_form()
+  Wait
+  TextBox1.SetFocus()
+  
+End
 
 '-- END FMAIN FUNCTIONS  ---------------------------------------------------------------------
 
-
 Public Sub QuitMenu_Click()
+
   MySettings.save()
   myQuit()
+
 End
 
-
-
-
-
 Public Sub TextBox1_GotFocus()
+
   Dim o As Object
   o = findSelectable(TextBox1)
   Wait
   If o <> Null Then 
     o.selectall
   Endif
+
 End
 
-
 Private Function findSelectable(o As Object) As Object
+
   Dim c As Integer = 0
   Dim child, selectable As Object
+
   Try o.selectall
   If Error Then
     Try c = O.children.count
@@ -850,16 +906,18 @@ Private Function findSelectable(o As Object) As Object
         Endif
       Next
     Endif
-      Else
+  Else
     Return o
   Endif
+
 End
 
-
 Public Sub ButtonConfigure_Click()
+
   hSettings.show
   Wait
   Me.hide
+
 End
 
 Public Sub indexer_indexing_done(finish_time As Date)
@@ -868,31 +926,32 @@ Public Sub indexer_indexing_done(finish_time As Date)
   
 End
 
-
-
 Public Sub Panel1_Arrange()
+
   With TextBox1
     TextBox2.Move(.x, .y, .w, .h)
     TextBox2.Lower
   End With
+
 End
 
 Public Function Complete(s As String) As String
+
   Dim r As New String[]
   Dim d, f, out As String
-
+  
   d = File.Dir(s)
   
   If Trim(s) = "" Then Return ""  'dont complete nulls
   If InStr(s, " ") Then Return    'dont complete if spaces in search
   
   If Left(s) = "/" Then 'search in full path
-
+    
     If Right(d) <> "/" Then d &= "/"
-
+    
     f = File.Name(s)
     Try r = Dir(d, f & "*")
-
+    
     If Not Error Then
       If r.count > 0 Then
         If IsDir(d & r[0]) Then r[0] &= "/"
@@ -900,9 +959,9 @@ Public Function Complete(s As String) As String
         Goto returnlabel
       Endif
     Endif
-  
-      Else 'search in $PATH
-
+    
+  Else 'search in $PATH
+    
     For Each d In Split(Application.Env["PATH"], ":")
       Try r = r.Insert(Dir(d, s & "*"))
     Next
@@ -911,18 +970,18 @@ Public Function Complete(s As String) As String
       out = r[0]
       Goto returnlabel
     Endif
-
+    
   Endif
   
-  returnlabel:
+returnlabel:
   If out Begins s Then Return out
   
   Return ""
-
+  
 End
-
 
 Public Sub Form_Leave()
-  MySettings.save()
-End
 
+  MySettings.save()
+
+End

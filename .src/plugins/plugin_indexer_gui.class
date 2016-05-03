@@ -35,7 +35,6 @@ Public Sub LoadSettings()
   SpinMaxResults.value = Settings["plugin_indexer/maxresults", 50]
   LoadGrid()
   'fixme altro da fare?
-
 End
 
 

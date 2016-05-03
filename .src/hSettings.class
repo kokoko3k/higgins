@@ -1,7 +1,18 @@
 ' Gambas class file
 
 Public Sub Button1_Click()
-    FMain.xb.register("show")
+  If FMain.xb.init_error Then
+    FMain.xb_show_init_error()
+    Return
+  Endif
+  Me.mouse = Mouse.wait
+  Wait 0.1
+  Me.enabled = False
+  Wait
+  Message.Info("A blank window will open shortly,\nPlease press the desidered shortcut there.")
+  FMain.xb.register("show")
+  Me.enabled = True
+  Me.mouse = Mouse.normal
 End
 
 Public Sub Form_Hide()
