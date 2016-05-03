@@ -637,7 +637,7 @@ End
 
 
 Public Sub setup_xbindkeys()
-
+  Dim msg As String
   Dim rcpath As String = confpath & "/higgins.xb.rc"
   Shell "killall " & confpath & "/xbindkeys_higgins" Wait
   xb = New XbindKeys(rcpath, confpath & "/xbindkeys_higgins") As "xb"
@@ -645,6 +645,7 @@ Public Sub setup_xbindkeys()
     xb_show_init_error()
     Return
   Endif
+
   If Not Exist(rcpath) Then 
     xb.register("show")
   Endif
@@ -802,7 +803,6 @@ Public Sub Form_Open()
   Dim newuser As Boolean = False
   Dim msg As String
   Dim t0 As Float
-  
   Me.visible = False
   t0 = Timer()
   If Not firstrun Then Return
@@ -816,11 +816,22 @@ Public Sub Form_Open()
     msg &= ("to show the higgins window.") & "\n\n"
     msg &= ("A blank window will open shortly,\nPlease press the desidered shortcut there.")
     Message.Info(msg)
+    setup_xbindkeys()
   Endif
-  setup_xbindkeys()
+
   resultgrid.Rows.h = resultgrid.Font.RichTextHeight("|j<br>|j") + padding
   rSize = ResultGrid.Rows.H - padding
   MySettings.load()
+  If Settings["dontshow_message_xbindKeys", False] = False Then
+    msg = "No shortcut defined to hide/show the main window,"
+    msg &= "it is advised to define one in the options window."
+    Message.Optional(msg, "Ok", "dontshow_message_xbindKeys", "warning")
+    Settings.Save()
+  Endif
+  
+  
+  
+  
   socket_init()
   InitTrayIcon()
   
