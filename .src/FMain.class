@@ -52,7 +52,7 @@ Public Sub TextBox1_Change()
   If Error Then Return
   
   Wait 0.01
-  If current_search = "" Then 
+  If Len(current_search) < 2 Then 
     resize_form()
     reinit()
     Return
@@ -79,12 +79,12 @@ returnlabel:
 End
 
 Public Sub initgrid()
-
+Debug ResultGrid.Rows[0].text
   ResultGrid.Rows.count = 0
   ResultGrid.columns.count = 1
   ResultGrid.mode = Select.Single
   ResultGrid.Show()
-
+  Wait
 End
 
 Public Sub reinit()
@@ -141,12 +141,12 @@ Public Sub immediate_search(textcontrol As Object)
   showgrid()
   mouse_busy()
   
-  Debug "starting search..."
+  Debug "starting search...", textcontrol.text
   For Each aplugin In plugins
     t0 = Timer()
-    Debug "[START]", plugins.key
+    'Debug "[START]", plugins.key
     run_plugin(plugins.key, textbox1)
-    Debug "[END]", plugins.key, "time:", Timer() - t0, "[END]"
+    'Debug "[END]", plugins.key, "time:", Timer() - t0, "[END]"
   Next
   Debug "Search ends here."
   
