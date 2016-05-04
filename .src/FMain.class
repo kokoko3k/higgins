@@ -691,8 +691,8 @@ End
 Public Sub Draw_plugin(plugin_name As String, enabled As Boolean)
   Dim o_hbox As Hbox
   Dim o_checkbox As Checkbox
-  Dim o_spacer As Panel
-  Dim o_button As Button
+  Dim o_spacer, o_spacer2 As Panel
+  Dim o_button, o_buttonup, o_buttondown As Button
   Dim o_separator As Separator
   Dim o_label As Textlabel
   Dim friendly_name, description As String
@@ -711,12 +711,13 @@ Public Sub Draw_plugin(plugin_name As String, enabled As Boolean)
     
     o_hbox = New HBox(hSettings.frame1)
     o_hbox.h = hSettings.Font.TextHeight("|") * 1.5
-    
+        
     o_checkbox = New Checkbox(o_hbox) As "plugin_checkbox"
     o_checkbox.text = friendly_name
     o_checkbox.AutoResize = True
     o_checkbox.tag = plugin_name
     o_checkbox.Font.Bold = True
+    o_checkbox.Expand = True
     
     Object.Lock(o_checkbox)
       If enabled Then
@@ -728,21 +729,29 @@ Public Sub Draw_plugin(plugin_name As String, enabled As Boolean)
       Endif
     Object.unLock(o_checkbox)
     
-    o_label = New TextLabel(hSettings.frame1)
-    '<font size=-1>" & rcResult.subtext & "</font>
-    o_label.text = "<font size=-1>" & description & "</font>"
-    o_label.AutoResize = True
-    
-    o_spacer = New Panel(o_hbox)
-    o_spacer.border = Border.None
-    o_spacer.expand = True
-    
     If configurable Then
       o_button = New Button(o_hbox) As "plugin_configure"
       o_button.tag = plugin_name
       o_button.w = hSettings.Font.TextHeight("|") * 1.5
       o_button.Picture = Picture["icon:/medium/options"]
     Endif
+    
+    o_buttonup = New Button(o_hbox) As "o_buttonup"
+    o_buttonup.w = o_hbox.H
+    o_buttonup.picture = Picture["icon:/medium/up"]
+    o_buttonup.tag = plugin_name
+
+    o_buttondown = New Button(o_hbox) As "o_buttondown"
+    o_buttondown.w = o_hbox.H
+    o_buttondown.picture = Picture["icon:/medium/down"]
+    o_buttondown.tag = plugin_name
+    
+    o_label = New TextLabel(hSettings.frame1)
+    o_label.text = "<div width=100> <font size=-1>" & description & "</font>"
+    o_label.AutoResize = True
+    
+    
+
     
     o_separator = New Separator(hSettings.frame1)
   
@@ -799,14 +808,13 @@ Public Sub TimerClose_Timer()
 End
 
 Public Sub myQuit()
-  Try hSettings.close
-
   Try save_plugin_list()
   Try MySettings.save()
   Try xb.close
   Try My_listening_socket.Close
   Try MyCSock.Close
   Try hLock.close
+  Try hSettings.close
   plugins.clear
   fmain.persistent = False
   TrayIcon2.Delete()
