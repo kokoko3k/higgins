@@ -262,8 +262,8 @@ Path="gbLocate.gambas"
 
 [OpenFile]
 File[1]=".src/FMain.form"
-Active=2
-File[2]=".src/FMain.class:10.431"
+Active=17
+File[2]=".src/FMain.class:0.263"
 Count=18
 File[3]=".src/MyDesktop.class:3.58"
 File[4]=".src/DesktopApps.class:58.385"
@@ -279,7 +279,7 @@ File[13]=".src/plugins/plugin_indexer_gui.form"
 File[14]=".src/plugins/plugin_indexer_gui.class:23.36"
 File[15]=".src/plugins/plugin_090_indexer.class:39.118"
 File[16]=".src/Global.module:3.30"
-File[17]=".src/plugins/plugin_030_executable.class:44.88"
+File[17]=".src/plugins/plugin_030_executable.class:34.57"
 File[18]=".src/plugins/plugin_050_ls.class:25.81"
 
 [Watches]

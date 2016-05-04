@@ -45,10 +45,8 @@ Public Sub find(textcontrol As Object) As RItemT[]
   Dim current_search As String = textcontrol.text
   Dim exe_found, cmd As String
   
-  terminal_emulator = Settings["terminal_emulator"]
-  
   If Not trigged(textcontrol.text) Then Return
-  'If (Not Exist(current_search)) Then Return
+
   If Exist(current_search) Then
     If Stat(current_search, True).type = gb.Directory Then Return
   Endif
@@ -57,7 +55,9 @@ Public Sub find(textcontrol As Object) As RItemT[]
   
   Try exe_found = System.Find(cmd)
   If exe_found = "" Then Return
-  
+
+  terminal_emulator = Settings["terminal_emulator"]
+    
   rResult = create_item(current_search, False)
   If rResult <> Null Then rResults.Add(rResult)
   
