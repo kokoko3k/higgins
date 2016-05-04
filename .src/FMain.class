@@ -666,7 +666,7 @@ Private Function plugins_ordered_array() As String[]
   Next
   
   'sort them according to user preference.
-  'where do we store the user preference? in plist.
+  'where do we store the user preference? in plist_all
   
   
   'return valid plugins
@@ -751,14 +751,11 @@ End
 Public Sub plugin_checkbox_Click()
   
   If Last.value = CheckBox.True Then
-    'If plugins_enabled.Find(Last.tag) = -1 Then
     If Not (plugins.Exist(Lower(Last.tag))) Then
-      'plugins_enabled.Add(Last.tag)
       load_plugin(Last.tag, rsize)
     Endif
   Else
     unload_plugin(Last.tag)
-    'plugins_enabled.Delete(plugins_enabled.Find(Last.tag))
   Endif
   
   save_plugin_list()
@@ -776,18 +773,21 @@ End
 
 Public Sub save_plugin_list()
 
-  Dim p As New String[]
+  Dim plugins_enabled As New String[]
+  Dim plugins_all As New String[]
+  
   Dim o As Object
 
   For Each o In hSettings.Controls
     If o Is CheckBox Then
       If o.tag Begins "PLUGIN" Then
-        If o.value = CheckBox.True Then p.Add(o.tag)
+        If o.value = CheckBox.True Then plugins_enabled.Add(o.tag)
+        plugins_all.Add(o.tag)
       Endif
     Endif
   Next
-  Settings["hsettings/plist"] = p.Join()
-  Settings.save
+  Settings["hsettings/plist"] = plugins_enabled.Join()
+  Settings["hsettings/plist_all"] = plugins_all.Join()
 
 End
 
@@ -799,7 +799,10 @@ Public Sub TimerClose_Timer()
 End
 
 Public Sub myQuit()
-  
+  Try hSettings.close
+
+  Try save_plugin_list()
+  Try MySettings.save()
   Try xb.close
   Try My_listening_socket.Close
   Try MyCSock.Close
@@ -901,10 +904,7 @@ End
 '-- END FMAIN FUNCTIONS  ---------------------------------------------------------------------
 
 Public Sub QuitMenu_Click()
-
-  MySettings.save()
   myQuit()
-
 End
 
 Public Sub TextBox1_GotFocus()
