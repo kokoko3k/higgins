@@ -654,8 +654,14 @@ End
 Private Function plugins_ordered_array() As String[]
   Dim tmp As String[]
   Dim i As Integer
+  Dim plist_all As String[]
   
-  'search  for valid plugins:
+  
+  Try plist_all = Split(Settings["hsettings/plist_all"])
+  If plist_all.count > 0 Then Return plist_all
+    
+   
+  ' else search  for valid plugins:
   tmp = Dir(".gambas").Sort()
   For i = tmp.max DownTo 0
     If Not (tmp[i] Begins "PLUGIN_") Then  
@@ -683,21 +689,40 @@ Public Sub init_hSettings()
   Try plist = Settings["hsettings/plist"]
   plugins_enabled = Split(plist)
 
+  clear_children(hsettings.frame1)
+  Debug hsettings.frame1.ContentsHeight 
+
   For Each plugin_name In plugins_ordered_array()
     Draw_plugin(plugin_name, ((plugins_enabled.find(plugin_name) > -1) Or plist = ""))
   Next
 End
+
+Public Sub clear_children(parent As Object)
+  Dim child As Object
+  Dim children_count As Integer = 0
+  
+  For Each child In parent.children
+      Try children_count = parent.children
+      If children_count > 0 Then 
+        clear_children(child)
+          Else
+        child.Delete
+      Endif
+  Next
+  
+End
+
 
 Public Sub Draw_plugin(plugin_name As String, enabled As Boolean)
   Dim o_hbox As Hbox
   Dim o_checkbox As Checkbox
   Dim o_spacer, o_spacer2 As Panel
   Dim o_button, o_buttonup, o_buttondown As Button
-  Dim o_separator As Separator
-  Dim o_label As Textlabel
+  Dim o_label As Label
   Dim friendly_name, description As String
   Dim plugin_class As Class
   Dim configurable As Boolean = False
+  Dim o_separator As Separator
   
     Try plugin_class = Class.Load(plugin_name)
     If Not Error Then
@@ -711,6 +736,7 @@ Public Sub Draw_plugin(plugin_name As String, enabled As Boolean)
     
     o_hbox = New HBox(hSettings.frame1)
     o_hbox.h = hSettings.Font.TextHeight("|") * 1.5
+
         
     o_checkbox = New Checkbox(o_hbox) As "plugin_checkbox"
     o_checkbox.text = friendly_name
@@ -736,26 +762,86 @@ Public Sub Draw_plugin(plugin_name As String, enabled As Boolean)
       o_button.Picture = Picture["icon:/medium/options"]
     Endif
     
-    o_buttonup = New Button(o_hbox) As "o_buttonup"
-    o_buttonup.w = o_hbox.H
-    o_buttonup.picture = Picture["icon:/medium/up"]
-    o_buttonup.tag = plugin_name
-
     o_buttondown = New Button(o_hbox) As "o_buttondown"
     o_buttondown.w = o_hbox.H
     o_buttondown.picture = Picture["icon:/medium/down"]
     o_buttondown.tag = plugin_name
     
-    o_label = New TextLabel(hSettings.frame1)
-    o_label.text = "<div width=100> <font size=-1>" & description & "</font>"
+    o_buttonup = New Button(o_hbox) As "o_buttonup"
+    o_buttonup.w = o_hbox.H
+    o_buttonup.picture = Picture["icon:/medium/up"]
+    o_buttonup.tag = plugin_name
+    
+    
+    o_label = New Label(hSettings.frame1)
+    o_label.Font.size -= 1
+    o_label.text = description
     o_label.AutoResize = True
     
+    o_separator = New Separator(hsettings.Frame1)
+    o_separator.h = Desktop.Scale
     
-
-    
-    o_separator = New Separator(hSettings.frame1)
-  
 End
+
+Public Sub o_buttondown_Click()
+  Dim plugins_all As String[]
+  Dim i As Integer
+  Dim t As String
+  Dim current_plugin As String = Last.tag
+ 
+  save_plugin_list() 'ensure we will find hsettings/plist_all:
+  Try plugins_all = Split(Settings["hsettings/plist_all"])
+  If Error Then 
+    Stop
+    Return
+  Endif
+
+  i = plugins_all.Find(current_plugin)
+  If i < 0 Then Return 'not found
+  If i >= plugins.count Then Return 'already at the bottom.
+  
+  'swap plugin items representation in the array
+  t = plugins_all[i + 1]
+  plugins_all[i + 1] = current_plugin
+  plugins_all[i] = t
+
+  'save the new ordered array
+  Settings["hsettings/plist_all"] = plugins_all.Join()
+  Settings.Save()
+
+  'redraw the plugins
+  init_hSettings()
+End
+
+Public Sub o_buttonup_Click()
+  Dim plugins_all As String[]
+  Dim i As Integer
+  Dim t As String
+  Dim current_plugin As String = Last.tag
+ 
+  save_plugin_list() 'ensure we will find hsettings/plist_all:
+  Try plugins_all = Split(Settings["hsettings/plist_all"])
+  If Error Then 
+    Stop
+    Return
+  Endif
+
+  i = plugins_all.Find(current_plugin)
+  If i <= 0 Then Return 'not found or already at the bottom.
+
+  'swap plugin items representation in the array
+  t = plugins_all[i - 1]
+  plugins_all[i - 1] = current_plugin
+  plugins_all[i] = t
+
+  'save the new ordered array
+  Settings["hsettings/plist_all"] = plugins_all.Join()
+  Settings.Save()
+
+  'redraw the plugins
+  init_hSettings()
+End
+
 
 Public Sub plugin_checkbox_Click()
   

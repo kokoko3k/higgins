@@ -45,18 +45,18 @@
       List = [("xterm"), ("lxterminal"), ("xfce4-terminal"), ("gnome-terminal"), ("konsole")]
     }
   }
+  { LabelPlugins Label
+    MoveScaled(20,16,34,4)
+    Font = Font["Bold"]
+    Text = ("Available plugins")
+    Alignment = Align.Center
+  }
   { Frame1 ScrollView
-    MoveScaled(3,21,77,45)
+    MoveScaled(2,20,77,45)
     Background = Color.TextBackground
     Expand = True
     Arrangement = Arrange.Vertical
     Spacing = True
     Margin = True
-    { LabelPlugins Label
-      MoveScaled(0,0,34,4)
-      Font = Font["Bold"]
-      Text = ("Available plugins")
-      Alignment = Align.Center
-    }
   }
 }
