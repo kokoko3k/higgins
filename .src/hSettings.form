@@ -46,11 +46,17 @@
     }
   }
   { Frame1 ScrollView
-    MoveScaled(3,15,77,51)
+    MoveScaled(3,21,77,45)
     Background = Color.TextBackground
     Expand = True
     Arrangement = Arrange.Vertical
     Spacing = True
     Margin = True
+    { LabelPlugins Label
+      MoveScaled(0,0,34,4)
+      Font = Font["Bold"]
+      Text = ("Available plugins")
+      Alignment = Align.Center
+    }
   }
 }
