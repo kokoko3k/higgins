@@ -100,7 +100,7 @@ Private Function create_item(result As String, Optional terminal As Boolean = Fa
 
         Else ' no terminal
 
-      return_item.Action_p = System.Find(result)
+      return_item.Action_p = result
       return_item.image_file = "icon:/" & iconsize & "/exec"
       return_item.Text = result
     Endif
