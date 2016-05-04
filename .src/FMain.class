@@ -651,79 +651,100 @@ End
 
 '-- END XBINDKEYS ---------------------------------------------------------------------
 
-Public Sub init_hSettings()
+Private Function plugins_ordered_array() As String[]
+  Dim tmp As String[]
+  Dim i As Integer
+  
+  'search  for valid plugins:
+  tmp = Dir(".gambas").Sort()
+  For i = tmp.max DownTo 0
+    If Not (tmp[i] Begins "PLUGIN_") Then  
+      tmp.Delete(i)
+        Else If (tmp[i] Ends "_GUI") Then 
+       tmp.Delete(i)
+    Endif
+  Next
+  
+  'sort them according to user preference.
+  'where do we store the user preference? in plist.
+  
+  
+  'return valid plugins
+  Return tmp
+ 
+End
 
-  Dim plugin_name As String
+
+Public Sub init_hSettings()
+  Dim plugin_name As String  
+  Dim plist As String 
+  Dim plugins_enabled As New String[]
+  
+  Try plist = Settings["hsettings/plist"]
+  plugins_enabled = Split(plist)
+
+  For Each plugin_name In plugins_ordered_array()
+    Draw_plugin(plugin_name, ((plugins_enabled.find(plugin_name) > -1) Or plist = ""))
+  Next
+End
+
+Public Sub Draw_plugin(plugin_name As String, enabled As Boolean)
   Dim o_hbox As Hbox
   Dim o_checkbox As Checkbox
   Dim o_spacer As Panel
   Dim o_button As Button
   Dim o_separator As Separator
   Dim o_label As Textlabel
-  Dim plist As String 
-  Dim plugins_enabled As New String[]
   Dim friendly_name, description As String
   Dim plugin_class As Class
   Dim configurable As Boolean = False
   
-  Try plist = Settings["hsettings/plist"]
-  plugins_enabled = Split(plist)
-  
-  For Each plugin_name In Dir(".gambas").Sort()
-    If (Upper(plugin_name) Begins "PLUGIN_") Then
-      If Not (Upper(plugin_name) Ends "_GUI") Then
-        
-        'object.getproperty(class.load("plugin_template"),"prova")
-        Try plugin_class = Class.Load(plugin_name)
-        If Not Error Then
-          description = Object.GetProperty(plugin_class, "Description")
-          friendly_name = Object.GetProperty(plugin_class, "Friendly_name")
-          configurable = False
-          Try configurable = Object.GetProperty(plugin_class, "Configurable")
-        Else
-          friendly_name = plugin_name
-        Endif
-        
-        o_hbox = New HBox(hSettings.frame1)
-        o_hbox.h = hSettings.Font.TextHeight("|") * 1.5
-        
-        o_checkbox = New Checkbox(o_hbox) As "plugin_checkbox"
-        o_checkbox.text = friendly_name
-        o_checkbox.AutoResize = True
-        o_checkbox.tag = plugin_name
-        o_checkbox.Font.Bold = True
-        
-        Object.Lock(o_checkbox)
-        If ((plugins_enabled.find(plugin_name) > -1) Or plist = "") Then
-          o_checkbox.value = CheckBox.True
-          
-          load_plugin(plugin_name, rsize)
-        Else
-          o_checkbox.value = CheckBox.false
-        Endif
-        Object.unLock(o_checkbox)
-        
-        o_label = New TextLabel(hSettings.frame1)
-        '<font size=-1>" & rcResult.subtext & "</font>
-        o_label.text = "<font size=-1>" & description & "</font>"
-        o_label.AutoResize = True
-        
-        o_spacer = New Panel(o_hbox)
-        o_spacer.border = Border.None
-        o_spacer.expand = True
-        
-        If configurable Then
-          o_button = New Button(o_hbox) As "plugin_configure"
-          o_button.tag = plugin_name
-          o_button.w = hSettings.Font.TextHeight("|") * 1.5
-          o_button.Picture = Picture["icon:/medium/options"]
-        Endif
-        
-        o_separator = New Separator(hSettings.frame1)
-        
-      Endif
+    Try plugin_class = Class.Load(plugin_name)
+    If Not Error Then
+      description = Object.GetProperty(plugin_class, "Description")
+      friendly_name = Object.GetProperty(plugin_class, "Friendly_name")
+      configurable = False
+      Try configurable = Object.GetProperty(plugin_class, "Configurable")
+    Else
+      friendly_name = plugin_name
     Endif
-  Next
+    
+    o_hbox = New HBox(hSettings.frame1)
+    o_hbox.h = hSettings.Font.TextHeight("|") * 1.5
+    
+    o_checkbox = New Checkbox(o_hbox) As "plugin_checkbox"
+    o_checkbox.text = friendly_name
+    o_checkbox.AutoResize = True
+    o_checkbox.tag = plugin_name
+    o_checkbox.Font.Bold = True
+    
+    Object.Lock(o_checkbox)
+      If enabled Then
+        o_checkbox.value = CheckBox.True
+        
+        load_plugin(plugin_name, rsize)
+      Else
+        o_checkbox.value = CheckBox.false
+      Endif
+    Object.unLock(o_checkbox)
+    
+    o_label = New TextLabel(hSettings.frame1)
+    '<font size=-1>" & rcResult.subtext & "</font>
+    o_label.text = "<font size=-1>" & description & "</font>"
+    o_label.AutoResize = True
+    
+    o_spacer = New Panel(o_hbox)
+    o_spacer.border = Border.None
+    o_spacer.expand = True
+    
+    If configurable Then
+      o_button = New Button(o_hbox) As "plugin_configure"
+      o_button.tag = plugin_name
+      o_button.w = hSettings.Font.TextHeight("|") * 1.5
+      o_button.Picture = Picture["icon:/medium/options"]
+    Endif
+    
+    o_separator = New Separator(hSettings.frame1)
   
 End
 
