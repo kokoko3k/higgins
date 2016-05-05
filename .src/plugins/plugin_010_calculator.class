@@ -4,7 +4,7 @@ Create Static
 Static Public Description As String = "Expression evaluator"
 Static Public Friendly_name As String = "Calculator"
 Static Public configurable As Boolean = False
-
+Static Public Default_enabled As Boolean = True
 
 Public Struct rItemT
   plugin As String            'the plugin name

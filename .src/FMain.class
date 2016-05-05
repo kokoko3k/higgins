@@ -23,6 +23,7 @@ Public Socket_File As String = Confpath & "/socket"
 Public Lock_File As String = Confpath & "/lock"
 Public firstrun As Boolean = True
 Private plugins_enabled As String[]
+Private plugins_all As String[]
 
 Public Sub resize_form()
 
@@ -691,16 +692,30 @@ End
 Public Sub init_hSettings()
   Dim plugin_name As String  
   Dim plist As String 
+  Dim plugin_class As Class
+  Dim plugin_is_enabled As Boolean
+  Dim plist_all As New String[]
+
   plugins_enabled = New String[]
   
   Try plist = Settings["hsettings/plist"]
   If Not Error Then plugins_enabled = Split(plist)
 
   hsettings.Frame1.Children.clear
-  Debug hsettings.frame1.ContentsHeight 
 
   For Each plugin_name In plugins_ordered_array()
-    Draw_plugin(plugin_name, ((plugins_enabled.find(plugin_name) > -1) Or plist = ""))
+    plugin_is_enabled = (plugins_enabled.find(plugin_name) > -1)
+    If Not plugin_is_enabled Then 'check if this is a newcomers and wants to be enabled by default
+      plist_all = Split(Settings["hsettings/plist_all"])
+      If plist_all.Find(plugin_name) < 0 Then 'newcomers!
+        Try plugin_class = Class.Load(plugin_name)
+        If Not Error Then
+          Try plugin_is_enabled = Object.GetProperty(plugin_class, "Default_enabled")
+        Endif
+      Endif
+    Endif
+    
+    Draw_plugin(plugin_name, plugin_is_enabled)
   Next
   save_plugin_list() 
 End
@@ -778,11 +793,11 @@ Public Sub Draw_plugin(plugin_name As String, enabled As Boolean)
 End
 
 Public Sub o_buttondown_Click()
-  Dim plugins_all As String[]
   Dim i As Integer
   Dim t As String
   Dim current_plugin As String = Last.tag
-
+  
+  plugins_all = New String[]
   save_plugin_list() 'ensure we will find hsettings/plist_all:
   Try plugins_all = Split(Settings["hsettings/plist_all"])
   If Error Then 
@@ -808,11 +823,11 @@ Public Sub o_buttondown_Click()
 End
 
 Public Sub o_buttonup_Click()
-  Dim plugins_all As String[]
   Dim i As Integer
   Dim t As String
   Dim current_plugin As String = Last.tag
- 
+  
+  plugins_all = New String[]
   save_plugin_list() 'ensure we will find hsettings/plist_all:
   Try plugins_all = Split(Settings["hsettings/plist_all"])
   If Error Then 
@@ -861,9 +876,10 @@ Public Sub plugin_configure_Click()
 End
 
 Public Sub save_plugin_list()
-  Dim plugins_all As New String[]
+  
   Dim o As Object  
 
+  plugins_all = New String[]
   plugins_enabled.clear
   plugins_enabled = New String[]
 
