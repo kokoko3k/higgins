@@ -701,6 +701,7 @@ Public Sub init_hSettings()
   Try plist = Settings["hsettings/plist"]
   If Not Error Then plugins_enabled = Split(plist)
 
+Stop
   hsettings.Frame1.Children.clear
 
   For Each plugin_name In plugins_ordered_array()
@@ -718,6 +719,7 @@ Public Sub init_hSettings()
     Draw_plugin(plugin_name, plugin_is_enabled)
   Next
   save_plugin_list() 
+  Stop
 End
 
 
@@ -789,7 +791,7 @@ Public Sub Draw_plugin(plugin_name As String, enabled As Boolean)
     
     o_separator = New Separator(hsettings.Frame1)
     o_separator.h = Desktop.Scale
-    
+
 End
 
 Public Sub o_buttondown_Click()
@@ -839,7 +841,9 @@ Public Sub o_buttonup_Click()
  
   plugins_all = New String[]
   save_plugin_list() 'ensure we will find hsettings/plist_all:
+  Stop
   Try plugins_all = Split(Settings["hsettings/plist_all"])
+  Stop
   If Error Then 
     Stop
     Return
@@ -892,19 +896,21 @@ End
 Public Sub save_plugin_list()
   
   Dim o As Object  
-
+Stop
   plugins_all = New String[]
   plugins_enabled.clear
   plugins_enabled = New String[]
-
+Stop
   For Each o In hSettings.Controls
     If o Is CheckBox Then
       If o.tag Begins "PLUGIN" Then
+        Debug "saving " & o.handle
         If o.value = CheckBox.True Then plugins_enabled.Add(o.tag)
         plugins_all.Add(o.tag)
       Endif
     Endif
   Next
+Stop
   Settings["hsettings/plist"] = plugins_enabled.Join()
   Settings["hsettings/plist_all"] = plugins_all.Join()
 
