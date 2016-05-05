@@ -796,6 +796,9 @@ Public Sub o_buttondown_Click()
   Dim i As Integer
   Dim t As String
   Dim current_plugin As String = Last.tag
+  Dim scroll_y As Integer 
+
+  scroll_y = Hsettings.Frame1.scrolly
   
   plugins_all = New String[]
   save_plugin_list() 'ensure we will find hsettings/plist_all:
@@ -807,7 +810,7 @@ Public Sub o_buttondown_Click()
 
   i = plugins_all.Find(current_plugin)
   If i < 0 Then Return 'not found
-  If i >= plugins.count - 1 Then Return 'already at the bottom.
+  If i >= plugins.count Then Return 'already at the bottom.
   
   'swap plugin items representation in the array
   t = plugins_all[i + 1]
@@ -820,13 +823,20 @@ Public Sub o_buttondown_Click()
 
   'redraw the plugins
   init_hSettings()
+  
+  Wait
+  'adjust scroll:
+    Hsettings.Frame1.scrolly = scroll_y
+  
 End
+
 
 Public Sub o_buttonup_Click()
   Dim i As Integer
   Dim t As String
   Dim current_plugin As String = Last.tag
-  
+  Dim sy As Integer = Hsettings.Frame1.scrolly
+ 
   plugins_all = New String[]
   save_plugin_list() 'ensure we will find hsettings/plist_all:
   Try plugins_all = Split(Settings["hsettings/plist_all"])
@@ -849,6 +859,10 @@ Public Sub o_buttonup_Click()
 
   'redraw the plugins
   init_hSettings()
+  
+  Wait
+  Hsettings.Frame1.scrolly = sy
+  
 End
 
 
