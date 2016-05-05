@@ -104,7 +104,11 @@ Private plugins As New Collection 'a collection of plugin instances
 Public Sub load_plugin(plugin_name As String, iconsize As Integer)
 
   Dim myplugin As Object
-  myplugin = Object.New(plugin_name, [plugin_name, iconsize])
+  Try myplugin = Object.New(plugin_name, [plugin_name, iconsize])
+  If Error Then
+    Debug "Plugin " & plugin_name & " Is missing"
+    Return
+  Endif
   Debug plugin_name
   plugins[plugin_name] = myplugin
   Object.Attach(myplugin, fmain, "plugin_event")

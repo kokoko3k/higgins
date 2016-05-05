@@ -4,6 +4,7 @@ Create Static
 Static Public Description As String = "Executables launcher"
 Static Public Friendly_name As String = "Executables"
 Static Public configurable As Boolean = False
+Static Public Default_enabled As Boolean = True
 
 Public Struct rItemT
   plugin As String            'the plugin name

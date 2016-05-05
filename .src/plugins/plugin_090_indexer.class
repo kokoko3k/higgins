@@ -4,6 +4,7 @@ Create Static
 Static Public Description As String = "Index filenames from user-defined folders."
 Static Public Friendly_name As String = "Indexer"
 Static Public configurable As Boolean = True
+Static Public Default_enabled As Boolean = True
 
 Public Struct rItemT
   plugin As String            'the plugin name
