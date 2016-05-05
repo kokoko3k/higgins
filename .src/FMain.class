@@ -659,34 +659,34 @@ End
 '-- END XBINDKEYS ---------------------------------------------------------------------
 
 Private Function plugins_ordered_array() As String[]
-  Dim tmp As String[]
   Dim i As Integer
-  Dim plist_all As String[]
   
-  
-  Try plist_all = Split(Settings["hsettings/plist_all"])
-  If plist_all.count > 0 Then Return plist_all
-    
-   
-  ' else search  for valid plugins:
-  tmp = Dir(".gambas").Sort()
-  For i = tmp.max DownTo 0
-    If Not (tmp[i] Begins "PLUGIN_") Then  
-      tmp.Delete(i)
-        Else If (tmp[i] Ends "_GUI") Then 
-       tmp.Delete(i)
-    Endif
+  Dim plugins_saved As New String[]
+  Dim plugins_available As New String[]
+
+  'pick a list from already saved plugins
+  Try plugins_saved = Split(Settings["hsettings/plist_all"])
+
+  'pick a list of all available plugins and 
+  plugins_available = Dir(".gambas", "PLUGIN_*").Sort()
+  For i = plugins_available.max DownTo 0
+    If (plugins_available[i] Ends "_GUI") Then plugins_available.Delete(i)
+  Next  
+
+  'delete from saved plugins every plugin not available
+  For i = plugins_saved.max DownTo 0
+    If plugins_available.Find(plugins_saved[i]) < 0 Then plugins_saved.Delete(i)
   Next
-  
-  'sort them according to user preference.
-  'where do we store the user preference? in plist_all
-  
-  
+ 
+  'append to the plugins the ones missing from saved plugins
+  For i = 0 To plugins_available.max
+    If plugins_saved.Find(plugins_available[i]) < 0 Then plugins_saved.Add(plugins_available[i])
+  Next
+
   'return valid plugins
-  Return tmp
+  Return plugins_saved
  
 End
-
 
 Public Sub init_hSettings()
   Dim plugin_name As String  
