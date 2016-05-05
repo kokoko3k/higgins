@@ -6,7 +6,8 @@ plugin_indexer=[38]
 Count=0
 
 [DebugWindow]
-Count=0
+Count=1
+DebugWindow[1]="hsettings.frame1"
 
 [DebugWindow/$aApps]
 Geometry=[1407,332,224,280]
@@ -140,6 +141,12 @@ Geometry=[1280,307,224,280]
 [DebugWindow/happ]
 Geometry=[1280,-3,361,555]
 
+[DebugWindow/hsettings.frame1]
+Geometry=[941,119,224,767]
+
+[DebugWindow/hsettings.frame1.Children]
+Geometry=[1294,11,224,280]
+
 [DebugWindow/i]
 Geometry=[86,450,224,280]
 
@@ -200,6 +207,9 @@ Geometry=[45,-3,224,280]
 [DebugWindow/plugins]
 Geometry=[45,0,224,280]
 
+[DebugWindow/plugins_all]
+Geometry=[1280,-3,224,280]
+
 [DebugWindow/rResult]
 Geometry=[-170,332,443,280]
 
@@ -254,6 +264,9 @@ Geometry=[1280,0,224,280]
 [DebugWindow/textcontrol]
 Geometry=[45,-3,224,280]
 
+[DebugWindow/tmp]
+Geometry=[1280,-3,224,280]
+
 [DebugWindow/xb]
 Geometry=[1280,-3,224,280]
 
@@ -262,8 +275,8 @@ Path="gbLocate.gambas"
 
 [OpenFile]
 File[1]=".src/FMain.form"
-Active=17
-File[2]=".src/FMain.class:0.263"
+Active=2
+File[2]=".src/FMain.class:0.797"
 Count=18
 File[3]=".src/MyDesktop.class:3.58"
 File[4]=".src/DesktopApps.class:58.385"
@@ -277,9 +290,9 @@ File[11]=".src/MySettings.module:53.10"
 File[12]=".src/plugins/plugin_template.class:46.81"
 File[13]=".src/plugins/plugin_indexer_gui.form"
 File[14]=".src/plugins/plugin_indexer_gui.class:23.36"
-File[15]=".src/plugins/plugin_090_indexer.class:39.118"
+File[15]=".src/plugins/plugin_090_indexer.class:3.174"
 File[16]=".src/Global.module:3.30"
-File[17]=".src/plugins/plugin_030_executable.class:34.57"
+File[17]=".src/plugins/plugin_030_executable.class:2.59"
 File[18]=".src/plugins/plugin_050_ls.class:25.81"
 
 [Watches]

@@ -22,6 +22,7 @@ Public rSize As Integer
 Public Socket_File As String = Confpath & "/socket"
 Public Lock_File As String = Confpath & "/lock"
 Public firstrun As Boolean = True
+Private plugins_enabled As String[]
 
 Public Sub resize_form()
 
@@ -131,7 +132,7 @@ End
 
 Public Sub immediate_search(textcontrol As Object)
 
-  Dim aPlugin As Object
+  Dim aPlugin As String
   Dim t0 As Float
   
   If previous_search = textcontrol.text Then Return 'don't know why this is important, but works.
@@ -142,10 +143,12 @@ Public Sub immediate_search(textcontrol As Object)
   mouse_busy()
   
   Debug "starting search...", textcontrol.text
-  For Each aplugin In plugins
+  'For Each aplugin In plugins
+
+  For Each aplugin In plugins_enabled
     t0 = Timer()
     'Debug "[START]", plugins.key
-    run_plugin(plugins.key, textbox1)
+    run_plugin(aPlugin, textbox1)
     'Debug "[END]", plugins.key, "time:", Timer() - t0, "[END]"
   Next
   Debug "Search ends here."
@@ -684,33 +687,20 @@ End
 Public Sub init_hSettings()
   Dim plugin_name As String  
   Dim plist As String 
-  Dim plugins_enabled As New String[]
+  plugins_enabled = New String[]
   
   Try plist = Settings["hsettings/plist"]
-  plugins_enabled = Split(plist)
+  If Not Error Then plugins_enabled = Split(plist)
 
-  clear_children(hsettings.frame1)
+  hsettings.Frame1.Children.clear
   Debug hsettings.frame1.ContentsHeight 
 
   For Each plugin_name In plugins_ordered_array()
     Draw_plugin(plugin_name, ((plugins_enabled.find(plugin_name) > -1) Or plist = ""))
   Next
+  save_plugin_list() 
 End
 
-Public Sub clear_children(parent As Object)
-  Dim child As Object
-  Dim children_count As Integer = 0
-  
-  For Each child In parent.children
-      Try children_count = parent.children
-      If children_count > 0 Then 
-        clear_children(child)
-          Else
-        child.Delete
-      Endif
-  Next
-  
-End
 
 
 Public Sub Draw_plugin(plugin_name As String, enabled As Boolean)
@@ -788,7 +778,7 @@ Public Sub o_buttondown_Click()
   Dim i As Integer
   Dim t As String
   Dim current_plugin As String = Last.tag
- 
+
   save_plugin_list() 'ensure we will find hsettings/plist_all:
   Try plugins_all = Split(Settings["hsettings/plist_all"])
   If Error Then 
@@ -798,7 +788,7 @@ Public Sub o_buttondown_Click()
 
   i = plugins_all.Find(current_plugin)
   If i < 0 Then Return 'not found
-  If i >= plugins.count Then Return 'already at the bottom.
+  If i >= plugins.count - 1 Then Return 'already at the bottom.
   
   'swap plugin items representation in the array
   t = plugins_all[i + 1]
@@ -867,11 +857,11 @@ Public Sub plugin_configure_Click()
 End
 
 Public Sub save_plugin_list()
-
-  Dim plugins_enabled As New String[]
   Dim plugins_all As New String[]
-  
-  Dim o As Object
+  Dim o As Object  
+
+  plugins_enabled.clear
+  plugins_enabled = New String[]
 
   For Each o In hSettings.Controls
     If o Is CheckBox Then
