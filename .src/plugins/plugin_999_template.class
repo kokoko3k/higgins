@@ -1,0 +1,116 @@
+' Gambas class file
+
+Create Static
+Static Public Description As String = "Example plugin"    'A description for this plugin
+Static Public Friendly_name As String = "Example plugin"  'A friendly name for this plugin
+Static Public configurable As Boolean = False             'Does this plugin provides a configure() method?
+Static Public Default_enabled As Boolean = False          'Does this plugin have to be enabled by default?
+
+Public Sub _free()
+
+End
+
+
+Public Struct rItemT
+  plugin As String            'The plugin name
+  Text As String              'Text displayed in the clipboard
+  SubText As String           'Text displayed under the main text
+  Image_file As String        'Optional image displayed: possible values:
+                              '  "mimetype://fullpath/to/filename/to/identify"
+                              '     get picture from mime icon
+                              '   "desktopfile://fullpath/to/.desktop/file"
+                              '     Get the picture from .desktop file
+                              '   "resize://fullpath/to/image/file"
+                              '     Load the image from disk and resize it automatically
+                              '   "/fullpath/to/image/file"
+                              '     Load the image from disk
+  
+  Clipboard_data As String    'The data copied to the clipboard
+  Action As String            'String that indicates what to do when activating a result:
+                              '"DESKTOPOPEN"
+                              '       Open folders and starts .desktop files
+                              '"EXEC"
+                              '       Executes executables files
+                              '"GUESS"
+                              '       Choose an action based on filetype
+                              '"NULL"
+                              '       Does nothing
+
+  Action_p As Variant         'the parameter for Action
+  
+End Struct
+
+
+Private plugin As String
+Private iconsize As Integer
+Private minchar As Integer = 3 'The plugin will not operate on query text smaller than that
+
+
+Public Sub _new(p_plugin As String, p_iconsize As Integer)
+
+  plugin = p_plugin
+  iconsize = p_iconsize
+
+End
+
+
+Public Sub Stop()
+  
+  'not sure if this is the right way, but this should be called when the plugin has to be unloaded
+  
+End
+
+
+Private Sub trigged(query As String) As Boolean
+  'this function will decide if the plugin will be search for "query" or not.
+  If Len(query) < minchar Then Return False
+  'some more controls here (?)
+  Return True
+End
+
+
+Public Sub find(textcontrol As Object) As RItemT[]
+  'this is the main function, textcontrol is an object that exposes a "text" property.
+  'We need to pass an entire object reference instead of a simple string so that
+  'we can stop a (slow) plugin as soon as textcontrol.text changes (ie: the user is still typing...)
+
+  Dim anItem As String
+  Dim rResults As New RItemT[]
+  Dim rResult As RItemT
+  Dim current_search As String = textcontrol.text
+  
+  If Not trigged(textcontrol.text) Then Return
+  
+  For Each anItem In Dir(User.home).sort()
+    
+    rResult = create_item(anItem)
+    If rResult <> Null Then rResults.Add(rResult)
+    'Wait 'if calculations are heavy a wait may be handy.
+    If textcontrol.text <> current_search Then Return
+
+
+  Next 'anItem
+  Return rResults
+
+End
+
+
+Private Function create_item(result As String) As RItemT
+  'this function creates an item that will be pushed into the result list.
+  Dim return_item As RItemT
+  return_item = New RItemT
+  return_item.plugin = plugin
+  return_item.Action = "EXEC" ' DESKTOPOPEN,EXEC,GUESS,NULL... MORE?
+  return_item.Action_p = "/usr/bin/gambas3"
+  return_item.Clipboard_data = "Some data copied to the clipboard"
+  return_item.image_file = "icon:/" & iconsize & "/bookmark"
+  return_item.Text = "EXAMPLE PLUGIN " & result
+  return_item.SubText = "EXAMPLE PLUGIN " & "In: " & User.home
+  Return return_item
+End
+
+Public Sub configure()
+  
+  'this starts the configuration window.
+  
+End
