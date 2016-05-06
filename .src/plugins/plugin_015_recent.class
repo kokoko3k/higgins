@@ -1,0 +1,171 @@
+' Gambas class file
+
+Create Static
+Static Public Description As String = "Search for Recent Documents"
+Static Public Friendly_name As String = "Recent Documents"
+Static Public configurable As Boolean = False
+Static Public Default_enabled As Boolean = True
+
+Public Struct rItemT
+  plugin As String            'the plugin name
+  Text As String              'text displayed in the clipboard
+  SubText As String           'text displayed under the main text
+  Image_file As String        'optional image displayed (fullpath or "DefferredMimeIcon")
+  Clipboard_data As String    'the data copied to the clipboard
+  Action As String            'string that indicates an action
+  Action_p As Variant          'the parameter for Action
+End Struct
+
+
+Private plugin As String
+Private iconsize As Integer
+Private minchar As Integer = 3   'exit if the search term is lower than that
+
+
+
+Public Sub _new(p_plugin As String, p_iconsize As Integer)
+
+  plugin = p_plugin
+  iconsize = p_iconsize
+
+End
+
+
+Private Sub trigged(query As String) As Boolean
+  If Len(query) < minchar Then Return False
+  'some more controls here (?)
+  Return True
+End
+
+
+Public Sub find(textcontrol As Object) As RItemT[]
+   'search for filedialogs bookmarks
+  Dim rResults As New RItemT[]
+  Dim rResult As RItemT
+  Dim current_search As String = textcontrol.text
+
+  Dim b_file_split As New String[]
+  Dim b_files As New String[]
+  Dim bookmarks As New String[]
+  Dim b_file, aLine, path As String
+  Dim match_str As String
+  Dim term As String
+  
+  Dim KDE4HOME As String = ""
+  Dim kde_paths As New String[]
+  Dim kde_path As String
+  Dim k_recent As String
+  Dim gtk_path, gtk_file As String
+  
+  If Not trigged(textcontrol.text) Then Return
+
+  term = current_search
+
+  'kde5
+    kde_paths.Add(User.home & "/.local/share/RecentDocuments")
+
+  'kde4
+    Try KDE4HOME = Application.Env("KDEHOME")
+    If KDE4HOME = "" Then
+      kde_paths.Add(User.home & "/.kde4/share/apps/RecentDocuments/")
+      kde_paths.Add(User.home & "/.kde/share/apps/RecentDocuments/")
+        Else
+      kde_paths.Add(KDE4HOME)
+    Endif
+  
+    For Each kde_path In kde_paths
+      If Exist(kde_path, True) Then
+        For Each k_recent In Dir(kde_path, "*.desktop")
+          If InStr(Lower(k_recent), Lower(term)) > 0 Then
+            rResult = create_item_k(kde_path & "/" & k_recent)
+            If rResult <> Null Then rResults.Add(rResult)
+          Endif
+        Next
+      Endif
+    Next
+
+  
+  'gtk
+  gtk_path = user.home & "/.local/share/recently-used.xbel"
+
+  Try b_file_split = Split(File.load(gtk_path), "\n")
+  match_str = "*://*" & term & "*" 'gtk2,3
+  
+  If Not Error Then 'parseit
+    For Each aline In b_file_split
+      If aline Like match_str Then 
+        Try path = Split(aline, "\"")[1]
+        If Not Error Then
+          path = URL.Decode(path)
+          rResult = create_item_g(path)
+          If rResult <> Null Then rResults.Add(rResult)
+        Endif
+      Endif
+    Next 'aline
+  Endif 
+
+
+  'deDupe
+  For Each rResult In rResults
+    If rResults.Find(rResult) Then 
+      rResults.Delete(rResults.Find(rResult))
+    Endif
+  Next
+
+  Return rResults
+
+End
+
+' Editable part of the template follows:
+
+Private Function create_item_g(path As String) As RItemT 'a lot of code duplication here
+  Dim return_item As RItemT
+  Dim url As String
+
+  return_item = New RItemT
+  
+  url = Right(path, - InStr(path, "://") - 2) 'strip protocol
+  url = Replace(url, "$HOME", User.home)
+  
+  If Lower(path) Begins "file://" Then 
+      If Not Exist(url, True) Then Return Null
+  Endif
+  
+  return_item.plugin = plugin
+  return_item.Action = "XDGOPEN"
+  return_item.Action_p = url
+  return_item.Clipboard_data = url
+  return_item.image_file = "mimetype://" & url
+  return_item.Text = File.Name(url)
+  return_item.SubText = "Recent Document (GTK)"
+  Return return_item
+End
+
+ 
+
+Private Function create_item_k(path As String) As RItemT 'a lot of code duplication here
+  Dim return_item As RItemT
+  Dim i As Integer
+  Dim url As String
+    
+    return_item = New RItemT
+    return_item.plugin = plugin
+    return_item.Action = "XDGOPEN"
+ 
+    MyDesktop.init()
+    MyDesktop.parse(path)
+
+    url = Right(mydesktop.durl, - InStr(mydesktop.durl, "://") - 2) 'strip protocol
+    url = Replace(url, "$HOME", User.home)
+
+    If mydesktop.dURL Begins "file://" Then 
+      If Not Exist(url, True) Then Return Null
+    Endif
+
+    return_item.Action_p = url
+    return_item.Clipboard_data = url
+    return_item.image_file = "mimetype://" & url
+    return_item.Text = MyDesktop.dName
+    return_item.SubText = "Recent Document (KDE)"
+    Return return_item
+End
