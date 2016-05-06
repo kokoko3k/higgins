@@ -15,6 +15,7 @@ Component=gb.settings
 Component=gb.gui.trayicon
 Component=gb.net
 Component=gb.util
+Component=gb.web
 TabSize=2
 Language=it
 ControlPublic=1

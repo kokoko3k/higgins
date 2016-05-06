@@ -203,7 +203,6 @@ Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
   
   'no cache :(
   If rcResult.image_file Like "mimetype://*" Then 
-    'need a mimetype cache here or is slow
     Try resultgrid.Data.Picture = MyDesktop.Get_mime_Icon(Right(rcResult.image_file, -11), rSize)
     Goto fallback
   Endif
@@ -271,6 +270,8 @@ Public Sub start_item(i As Integer)
       Endif
     Case "EXEC"
       Shell p For Input Output
+    Case "XDGOPEN"
+      Desktop.Open(p)
     Case "GUESS"
       
       If Exist(p) Then

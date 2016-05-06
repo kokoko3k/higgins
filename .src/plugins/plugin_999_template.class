@@ -28,7 +28,9 @@ Public Struct rItemT
   Clipboard_data As String    'The data copied to the clipboard
   Action As String            'String that indicates what to do when activating a result:
                               '"DESKTOPOPEN"
-                              '       Open folders and starts .desktop files
+                              '       Open folders and starts .desktop files from "exec" field
+                              '"XDGOPEN"
+                              '       Open files using xdg desktop routines
                               '"EXEC"
                               '       Executes executables files
                               '"GUESS"

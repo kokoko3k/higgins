@@ -14,6 +14,7 @@ Public dComment_ES As String
 Public dNoDisplay As String
 Public dDisplayOnlyIn As String
 Public dNotShowIn As String
+Public dURL As String
 
 
 Public Sub init()
@@ -29,6 +30,7 @@ Public Sub init()
  dNoDisplay = ""
  dDisplayOnlyIn = ""
  dNotShowIn = ""
+ dURL = ""
 End
 
 
@@ -48,6 +50,7 @@ Public Function parse(desktopfile As String)
       If sLine Begins "Terminal" Then dTerminal = CBool(Right(sLine, - InStr(sLine, "=")))
       If sLine Begins "Type" Then dType = Right(sLine, - InStr(sLine, "="))
       If sLine Begins "Icon" Then dIconName = Right(sLine, - InStr(sLine, "="))
+      If sLine Begins "URL" Then dURL = Right(sLine, - InStr(sLine, "="))
       If sLine Begins "Categories" Then dCategory = Right(sLine, - InStr(sLine, "="))
       If sLine Begins "GenericName=" Then dGenericName = Right(sLine, - InStr(sLine, "="))
       If sLine Begins "Comment=" Then dComment = Right(sLine, - InStr(sLine, "="))

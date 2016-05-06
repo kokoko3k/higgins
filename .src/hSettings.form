@@ -44,7 +44,7 @@
       Alignment = Align.Right
     }
     { ComboboxTerminalEmulator ComboBox
-      MoveScaled(43,2,29,4)
+      MoveScaled(46,0,29,4)
       Expand = True
       List = [("xterm"), ("lxterminal"), ("xfce4-terminal"), ("gnome-terminal"), ("konsole")]
     }
