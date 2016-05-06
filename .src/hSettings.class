@@ -20,7 +20,6 @@ Public Sub Button1_Click()
 End
 
 Public Sub Form_Hide()
-Stop
   MySettings.save()
   FMain.Show()
 End

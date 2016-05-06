@@ -6,8 +6,7 @@ plugin_indexer=[38]
 Count=0
 
 [DebugWindow]
-Count=1
-DebugWindow[1]="hsettings.frame1"
+Count=0
 
 [DebugWindow/$aApps]
 Geometry=[1407,332,224,280]
@@ -121,7 +120,7 @@ Geometry=[45,-3,224,530]
 Geometry=[45,-3,224,729]
 
 [DebugWindow/child]
-Geometry=[1280,0,224,280]
+Geometry=[0,612,242,448]
 
 [DebugWindow/class.load("plugin_template")]
 Geometry=[45,0,224,280]
@@ -192,6 +191,9 @@ Geometry=[47,0,224,280]
 [DebugWindow/o]
 Geometry=[931,542,224,280]
 
+[DebugWindow/parent.children]
+Geometry=[-2,-1,224,280]
+
 [DebugWindow/pic]
 Geometry=[1280,614,224,280]
 
@@ -209,6 +211,9 @@ Geometry=[45,0,224,280]
 
 [DebugWindow/plugins_all]
 Geometry=[1280,-3,224,280]
+
+[DebugWindow/preserve]
+Geometry=[0,306,224,280]
 
 [DebugWindow/rResult]
 Geometry=[-170,332,443,280]
@@ -275,9 +280,9 @@ Path="gbLocate.gambas"
 
 [OpenFile]
 File[1]=".src/FMain.form"
-Active=2
-File[2]=".src/FMain.class:0.797"
-Count=18
+Active=9
+File[2]=".src/FMain.class:0.861"
+Count=17
 File[3]=".src/MyDesktop.class:3.58"
 File[4]=".src/DesktopApps.class:58.385"
 File[5]="appicon.png"
@@ -285,15 +290,14 @@ File[6]="README:0.7"
 File[7]=".src/old_Plugins.class:41.48"
 File[8]=".src/XbindKeys.class:32.69"
 File[9]=".src/hSettings.form"
-File[10]=".src/hSettings.class:49.3"
-File[11]=".src/MySettings.module:53.10"
-File[12]=".src/plugins/plugin_template.class:46.81"
-File[13]=".src/plugins/plugin_indexer_gui.form"
-File[14]=".src/plugins/plugin_indexer_gui.class:23.36"
-File[15]=".src/plugins/plugin_090_indexer.class:3.174"
-File[16]=".src/Global.module:3.30"
-File[17]=".src/plugins/plugin_030_executable.class:2.59"
-File[18]=".src/plugins/plugin_050_ls.class:25.81"
+File[10]=".src/hSettings.class:0.22"
+File[11]=".src/MySettings.module:17.10"
+File[12]=".src/plugins/plugin_indexer_gui.form"
+File[13]=".src/plugins/plugin_indexer_gui.class:23.36"
+File[14]=".src/plugins/plugin_090_indexer.class:0.174"
+File[15]=".src/Global.module:3.30"
+File[16]=".src/plugins/plugin_030_executable.class:2.59"
+File[17]=".src/plugins/plugin_050_ls.class:25.81"
 
 [Watches]
 Count=0
