@@ -9,7 +9,7 @@
   Spacing = True
   Margin = True
   { Panel1 HBox
-    MoveScaled(2,1,77,4.5714)
+    MoveScaled(2,0,77,4.5714)
     AutoResize = True
     Spacing = True
     { VBox2 VBox
@@ -30,7 +30,7 @@
     }
   }
   { Panel2 HBox
-    MoveScaled(2,8,77,4.5714)
+    MoveScaled(2,5,77,4.5714)
     AutoResize = True
     Spacing = True
     { VBox1 VBox
@@ -50,13 +50,14 @@
     }
   }
   { LabelPlugins Label
-    MoveScaled(20,16,34,4)
+    MoveScaled(22,13,34,4)
     Font = Font["Bold"]
+    AutoResize = True
     Text = ("Available plugins")
     Alignment = Align.Center
   }
   { Frame1 ScrollView
-    MoveScaled(2,20,77,45)
+    MoveScaled(2,17,77,45)
     Background = Color.TextBackground
     Expand = True
     Arrangement = Arrange.Vertical

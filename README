@@ -1,7 +1,13 @@
 Higgins:
-A gambas launcher
+Application launcher,
+starts applications and search for things.
 
-Currently it does:
-* Query installed applications
-* Query system locate database
-* Do expression evaluations (eg: write =1+1 to get 2)
+Currently it:
+Evaluate expressions (calculator)
+Find recently opened documents
+Find desktop applications
+Find executables
+Find local bookmarks
+Lists the content of folders
+Find files by indexing user-specified folders
+ 
