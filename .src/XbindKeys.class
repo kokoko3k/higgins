@@ -85,7 +85,13 @@ End
 
 Public Sub close()
   Try xbindkeysp.kill
+  clear_hotkeys()
 End
+
+Public Sub clear_hotkeys()
+  hotkeys.Clear()
+End
+
 
 Public Sub Reload_xbindkeys()
   Try xbindkeysp.kill

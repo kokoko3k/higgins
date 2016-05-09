@@ -17,15 +17,15 @@
       Expand = True
     }
     { LabelHotkey Label
-      MoveScaled(9,1,24,4)
+      MoveScaled(6,0,26,4)
       AutoResize = True
-      Text = ("Default Shortcut")
+      Text = ("Hide/show shortcut:")
       Alignment = Align.Right
     }
     { Button1 Button
-      MoveScaled(46,1,30,4)
+      MoveScaled(55,1,21,4)
       AutoResize = True
-      Text = ("Change default shortcut")
+      Text = ("Change")
       Picture = Picture["icon:/small/shortcut"]
     }
   }
