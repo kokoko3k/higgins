@@ -705,7 +705,7 @@ Public Sub Delete_childs(parent As Object, Optional preserve As Object)
 End
 
 
-Public Sub init_hSettings()
+Public Sub init_hSettings(Optional redraw As Boolean = False)
   Dim plugin_name As String  
   Dim plist As String 
   Dim plugin_class As Class
@@ -733,7 +733,7 @@ Public Sub init_hSettings()
       Endif
     Endif
     
-    Draw_plugin(plugin_name, plugin_is_enabled)
+    Draw_plugin(plugin_name, plugin_is_enabled, redraw)
   Next
   save_plugin_list() 
 
@@ -741,7 +741,7 @@ End
 
 
 
-Public Sub Draw_plugin(plugin_name As String, enabled As Boolean)
+Public Sub Draw_plugin(plugin_name As String, enabled As Boolean, Optional redraw As Boolean = False)
   Dim o_hbox As Hbox
   Dim o_checkbox As Checkbox
   Dim o_spacer, o_spacer2 As Panel
@@ -776,8 +776,7 @@ Public Sub Draw_plugin(plugin_name As String, enabled As Boolean)
     Object.Lock(o_checkbox)
       If enabled Then
         o_checkbox.value = CheckBox.True
-        
-        load_plugin(plugin_name, rsize)
+        If (Not redraw) Then load_plugin(plugin_name, rsize)
       Else
         o_checkbox.value = CheckBox.false
       Endif
@@ -841,7 +840,7 @@ Public Sub o_buttondown_Click()
   Settings.Save()
 
   'redraw the plugins
-  init_hSettings()
+  init_hSettings(True)
   
   Wait
   'adjust scroll:
@@ -879,7 +878,7 @@ Public Sub o_buttonup_Click()
   Settings.Save()
 
   'redraw the plugins
-  init_hSettings()
+  init_hSettings(True)
   
   Wait
   Hsettings.Frame1.scrolly = sy
