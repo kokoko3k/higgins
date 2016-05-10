@@ -82,7 +82,6 @@ returnlabel:
 End
 
 Public Sub initgrid()
-Debug ResultGrid.Rows[0].text
   ResultGrid.Rows.count = 0
   ResultGrid.columns.count = 1
   ResultGrid.mode = Select.Single

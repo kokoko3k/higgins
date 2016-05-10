@@ -92,6 +92,9 @@ Geometry=[45,-3,224,280]
 [DebugWindow/Socket]
 Geometry=[1280,0,224,280]
 
+[DebugWindow/Split(File.Load(FMain.xb_rcpath), "\n", "", True)]
+Geometry=[45,0,224,280]
+
 [DebugWindow/Split(File.Load(sAppPath), "\n")]
 Geometry=[1280,0,224,280]
 
@@ -102,6 +105,9 @@ Geometry=[45,-3,224,280]
 Geometry=[45,-3,224,280]
 
 [DebugWindow/Split(ls_out, "\n", "", True)]
+Geometry=[45,-3,224,280]
+
+[DebugWindow/Split(out, "\n", "", True)]
 Geometry=[45,-3,224,280]
 
 [DebugWindow/Split(path, "\n")]
@@ -146,11 +152,23 @@ Geometry=[1280,0,224,542]
 [DebugWindow/global]
 Geometry=[47,0,224,280]
 
+[DebugWindow/hDApps]
+Geometry=[45,-3,224,280]
+
+[DebugWindow/hDApps.property]
+Geometry=[45,-3,224,280]
+
 [DebugWindow/hImage]
 Geometry=[1280,307,224,280]
 
 [DebugWindow/happ]
 Geometry=[1280,-3,361,555]
+
+[DebugWindow/happ.property]
+Geometry=[1294,11,361,555]
+
+[DebugWindow/hotkeys]
+Geometry=[45,-3,224,280]
 
 [DebugWindow/hsettings.frame1]
 Geometry=[941,119,224,767]
@@ -278,11 +296,17 @@ Geometry=[1280,307,224,280]
 [DebugWindow/selectable]
 Geometry=[1280,0,224,280]
 
+[DebugWindow/textbox1]
+Geometry=[45,-3,224,280]
+
 [DebugWindow/textcontrol]
 Geometry=[45,-3,224,280]
 
 [DebugWindow/tmp]
 Geometry=[1280,-3,224,280]
+
+[DebugWindow/update_apps_timer]
+Geometry=[45,-3,224,280]
 
 [DebugWindow/xb]
 Geometry=[1280,-3,224,280]

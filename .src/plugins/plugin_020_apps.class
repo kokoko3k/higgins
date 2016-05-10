@@ -57,11 +57,10 @@ Public Sub find(textcontrol As Object) As RItemT[]
       happ = DesktopApps[app]
       ismatched = InStr(Lower(happ._$Name), Lower(current_search)) > 0 
     If Not ismatched Then 
-      If Not ismatched Then ismatched = InStr(Lower(happ._$Comment), Lower(current_search)) > 0 
-      If Not ismatched Then ismatched = ismatched Or InStr(Lower(happ._$Category), Lower(current_search)) > 0 
-      If Not ismatched Then ismatched = ismatched Or InStr(Lower(happ._$Keywords), Lower(current_search)) > 0 
-      If Not ismatched Then ismatched = ismatched Or InStr(Lower(happ._$Comment), Lower(current_search)) > 0 
-      If Not ismatched Then ismatched = ismatched Or InStr(Lower(happ._$GenericName), Lower(current_search)) > 0 
+      If Not ismatched Then ismatched = InStr(Lower(happ.Get("Comment")), Lower(current_search)) > 0 
+      If Not ismatched Then ismatched = ismatched Or InStr(Lower(happ.Get("Category")), Lower(current_search)) > 0 
+      If Not ismatched Then ismatched = ismatched Or InStr(Lower(happ.Get("Keywords")), Lower(current_search)) > 0 
+      If Not ismatched Then ismatched = ismatched Or InStr(Lower(happ.Get("GenericName")), Lower(current_search)) > 0 
     Endif
     
     If ismatched Then
@@ -90,16 +89,13 @@ Public Sub update_apps_timer()
 End
 
 
-
-
-
 Private Sub add_no_dupe(happs As DesktopApps[], new_happ As DesktopApps)
   Dim existing_happ As DesktopApps
 
   For Each existing_happ In happs
-        If existing_happ.Exec_R = new_happ.Exec_R Then 'dupe found
+        If existing_happ.Get("Exec") = new_happ.Get("Exec") Then 'dupe found
           'prefer the one with the comment
-          If existing_happ.comment <> "" Then 
+          If existing_happ.Get("Comment") <> "" Then 
             Return
               Else
             If new_happ.comment <> "" Then 
@@ -128,9 +124,9 @@ Private Function create_item(happ As DesktopApps) As RItemT
     return_item.Clipboard_data = happ.file_path
     return_item.image_file = "desktopfile://" & happ.file_path
 
+    return_item.Text = happ.Get("Name")
 
-    return_item.Text = happ.name
-    subtext = happ._$GenericName & ", " & happ._$comment
+    subtext = happ.Get("GenericName") & ", " & happ.Get("Comment")
     If subtext Begins ", " Then subtext = Right(subtext, -2)
     If subtext Ends ", " Then subtext = Left(subtext, -2)
     return_item.SubText = subtext 

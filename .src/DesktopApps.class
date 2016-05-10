@@ -29,9 +29,7 @@ Property Read IconName As String
 Property Read Category As String[]
 Property Read GenericName As String
 Property Read Comment As String
-Property Read Comment_ES As String
 Property Read Exec_R As String
-Property Read Exec_R_noargs As String
 
 Property Read NoDisplay As Boolean
 Property Read DisplayOnlyIn As Boolean
@@ -42,8 +40,9 @@ Property Read file_path As String
 
 Private $sLastGenericName As String
 Private $sLastComment As String
-Private $sLastComment_ES As String
 Private $sLastName As String
+
+
 Public _$Name As String
 Public _$IconName As String
 Public _$Category As String
@@ -52,13 +51,15 @@ Public _$Exec As String
 Public _$Type As String
 Public _$Keywords As String
 Public _$Comment As String
-Public _$Comment_ES As String
 Public _$GenericName As String
 Public _$Terminal As Boolean
 Public _$NoDisplay As Boolean
 Public _$DisplayOnlyIn As String
 Public _$NotShowIn As String
 Public Language As String = ((Left(System.Language, 2)))
+
+Public PropertyValue As New Collection
+
 Private $hImage As Image
 Static Private $aDataDir As String[]
 Static Private $cApps As New Collection
@@ -69,6 +70,8 @@ Static Private anotherdir As String
 Static Public Sub _init()
 
 End
+
+Static Private sLanguage As String[] = Split(System.Language, "_", "", True, False)
 
 Static Public Sub MakeAppList()
   
@@ -159,6 +162,8 @@ Static Public Function _get(AppName As String) As DesktopApps
   Dim sLines As New String[]
   Dim i As Integer
 
+  Dim f, v As String
+
   If IsNull($aApps) Then MakeAppList
   If $cApps.Exist(AppName) Then Return $cApps[AppName]
   'For Each sPath In GetDataDir()
@@ -189,55 +194,41 @@ Static Public Function _get(AppName As String) As DesktopApps
     For Each sLine In sLines
       If sLine Begins "[" Then Break
       sLine = Trim(sLine)
-      ' If sLine Begins "Name=" Then hDApps._$Name = Right(sLine, - InStr(sLine, "="))
-      ' If sLine Begins "Exec" Then hDApps._$Exec = Right(sLine, - InStr(sLine, "="))
-      ' If sLine Begins "Terminal" Then hDApps._$Terminal = CBool(Right(sLine, - InStr(sLine, "=")))
-      ' If sLine Begins "Type" Then hDApps._$Type = Right(sLine, - InStr(sLine, "="))
-      ' If sLine Begins "Icon" Then hDApps._$IconName = Right(sLine, - InStr(sLine, "="))
-      ' If sLine Begins "Categories" Then hDApps._$Category = Right(sLine, - InStr(sLine, "="))
-      ' If sLine Begins "Keywords" Then hDApps._$Keywords = Right(sLine, - InStr(sLine, "="))
-      ' If sLine Begins "GenericName=" Then hDApps._$GenericName = Right(sLine, - InStr(sLine, "="))
-      ' If sLine Begins "Comment=" Then hDApps._$Comment = Right(sLine, - InStr(sLine, "="))
-      ' If sLine Begins "Comment[es]=" Then hDApps._$Comment_ES = Right(sLine, - InStr(sLine, "="))
-      ' If sLine Begins "NoDisplay" Then hDApps._$NoDisplay = CBool(Right(sLine, - InStr(sLine, "=")))
-      ' If sLine Begins "DisplayOnlyIn" Then hDApps._$DisplayOnlyIn = CBool(Right(sLine, - InStr(sLine, "=")))
-      ' If sLine Begins "NotShowIn" Then hDApps._$NotShowIn = CBool(Right(sLine, - InStr(sLine, "=")))
-      If sLine Begins "Name=" Then hDApps._$Name = FieldValue(sLine)
-      If sLine Begins "Exec" Then hDApps._$Exec = FieldValue(sLine)
-      If sLine Begins "Terminal" Then hDApps._$Terminal = CBool(FieldValue(sLine))
-      If sLine Begins "Type" Then hDApps._$Type = FieldValue(sLine)
-      If sLine Begins "Icon" Then hDApps._$IconName = FieldValue(sLine)
-      If sLine Begins "Categories" Then hDApps._$Category = FieldValue(sLine)
-      If sLine Begins "Keywords" Then hDApps._$Keywords = FieldValue(sLine)
-      If sLine Begins "GenericName=" Then hDApps._$GenericName = FieldValue(sLine)
-      If sLine Begins "Comment=" Then hDApps._$Comment = FieldValue(sLine)
-      If sLine Begins "Comment[es]=" Then hDApps._$Comment_ES = FieldValue(sLine)
-      If sLine Begins "NoDisplay" Then hDApps._$NoDisplay = CBool(FieldValue(sLine))
-      If sLine Begins "DisplayOnlyIn" Then hDApps._$DisplayOnlyIn = CBool(FieldValue(sLine))
-      If sLine Begins "NotShowIn" Then hDApps._$NotShowIn = CBool(FieldValue(sLine))
+      If sLine Begins "Name=" Then hDApps._$Name = Right(sLine, - InStr(sLine, "="))
+      If sLine Begins "Exec" Then hDApps._$Exec = Right(sLine, - InStr(sLine, "="))
+      If sLine Begins "Terminal" Then hDApps._$Terminal = CBool(Right(sLine, - InStr(sLine, "=")))
+      If sLine Begins "Type" Then hDApps._$Type = Right(sLine, - InStr(sLine, "="))
+      If sLine Begins "Icon" Then hDApps._$IconName = Right(sLine, - InStr(sLine, "="))
+      If sLine Begins "Categories" Then hDApps._$Category = Right(sLine, - InStr(sLine, "="))
+      If sLine Begins "Keywords" Then hDApps._$Keywords = Right(sLine, - InStr(sLine, "="))
+      If sLine Begins "GenericName=" Then hDApps._$GenericName = Right(sLine, - InStr(sLine, "="))
+      If sLine Begins "Comment=" Then hDApps._$Comment = Right(sLine, - InStr(sLine, "="))
+      If sLine Begins "NoDisplay" Then hDApps._$NoDisplay = CBool(Right(sLine, - InStr(sLine, "=")))
+      If sLine Begins "DisplayOnlyIn" Then hDApps._$DisplayOnlyIn = CBool(Right(sLine, - InStr(sLine, "=")))
+      If sLine Begins "NotShowIn" Then hDApps._$NotShowIn = CBool(Right(sLine, - InStr(sLine, "=")))
+
+      If sLine Like "*=*" Then
+        f = Left(sLine, InStr(sLine, "=") - 1)
+        v = Right(sLine, - InStr(sLine, "="))
+        hDApps.PropertyValue[f] = v
+   
+      Endif
     Next
+        
+    
     $cApps[AppName] = hDApps
     getting = False
     Return hDApps
-    'Break
   Endif
   
-  'Next
-  
 End
 
-
-Static Private Function FieldValue(l As String) As String
-  
-  Return Right(l, - InStr(l, "="))
-  
-End
 
 
 
 Static Public Function _next() As String
   
-  If IsNull($aApps) Then MakeAppList
+  If IsNull($aApps) Then MakeAppList()
   
   If Not Enum.Index Then 
     Enum.Index = 0
@@ -312,20 +303,7 @@ Public Function GetComment(Language As String) As String
   
 End
 
-Public Function GetComment_ES(Language As String) As String
-  
-  Dim s As String
-  
-  If $sLastComment_ES Begins Language & ":" Then Return Right($sLastComment_ES, - Len(Language) + 1)
-  
-  s = GetValue(_$Path, "Comment[" & Language & "]")
-  
-  $sLastComment_ES = Language '& ":" & s
-  If s Then 
-    Return s
-  Endif
-  
-End
+
 
 Static Private Sub GetDataDir() As String[]
   
@@ -339,7 +317,6 @@ Static Private Sub GetDataDir() As String[]
 End
 
 Static Public Sub Reset(Optional otherdir As String)
-  
   $aApps = Null
   $cApps.Clear
   $cAppsPath.Clear
@@ -371,11 +348,7 @@ Private Function Comment_Read() As String
   
 End
 
-Private Function Comment_ES_Read() As String
-  
-  Return _$Comment_ES
-  
-End
+
 
 Public Sub GetIcon(Optional Size As Integer = 16) As Image
   
@@ -489,22 +462,6 @@ Public Sub Exec(Optional Args As String)
   
 End
 
-Private Function Exec_R_noargs_read() As String
-  Dim nExec As String
-  Dim field_codes As String[] = ["f", "F", "u", "U", "d", "D", "n", "N", "i", "c", "k", "v", "m"]
-  Dim code As String
-
-  nExec = _$Exec
-  For Each code In field_codes
-    nExec = Replace(nExec, " %" & code & " ", " ")
-    If nExec Ends " %" & code Then 
-      nexec = Left(nexec, -3)
-    Endif
-  Next
-  Return nExec  
-End
-
-
 Private Function Exec_R_Read() As String
   
   Return _$Exec
@@ -526,5 +483,18 @@ Public Sub _free()
   ' $aApps = Null
   ' $cAppsPath = Null
   
+End
+
+
+Public Function Get(field As String, Optional localized As Boolean = True) As Variant
+  Dim out As Variant
+  If localized Then
+    Try out = PropertyValue[field & "[" & sLanguage[0] & "_" & sLanguage[1] & "]"]
+    If out <> Null Then Return out
+    Try out = PropertyValue[field & "[" & sLanguage[0] & "]"]
+    If out <> Null Then Return out
+  Endif
+  Try out = PropertyValue[field]
+  Return out
 End
 
