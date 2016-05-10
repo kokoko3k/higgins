@@ -32,7 +32,7 @@ Public Sub ComboboxTerminalEmulator_Change()
   Settings.Save()
 End
 
-Public Sub Panel1_Arrange()
+Public Sub Panel1_BeforeArrange()
   ShowShortcut()
 End
 
@@ -42,10 +42,9 @@ Private Sub ShowShortcut()
 
   hSettings.button1.text = ("Change")
   Try s = Split(File.Load(FMain.xb_rcpath), "\n", "", True)
+
   If Error Then Return
 
   hSettings.button1.text = s[s.max]
-
-  'hSettings.button1.AutoResize = True
-  
+ 
 End
