@@ -78,6 +78,7 @@ Public Sub TextBox1_Change()
 returnlabel:
   If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
 
+
 End
 
 Public Sub initgrid()

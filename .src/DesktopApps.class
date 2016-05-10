@@ -189,19 +189,32 @@ Static Public Function _get(AppName As String) As DesktopApps
     For Each sLine In sLines
       If sLine Begins "[" Then Break
       sLine = Trim(sLine)
-      If sLine Begins "Name=" Then hDApps._$Name = Right(sLine, - InStr(sLine, "="))
-      If sLine Begins "Exec" Then hDApps._$Exec = Right(sLine, - InStr(sLine, "="))
-      If sLine Begins "Terminal" Then hDApps._$Terminal = CBool(Right(sLine, - InStr(sLine, "=")))
-      If sLine Begins "Type" Then hDApps._$Type = Right(sLine, - InStr(sLine, "="))
-      If sLine Begins "Icon" Then hDApps._$IconName = Right(sLine, - InStr(sLine, "="))
-      If sLine Begins "Categories" Then hDApps._$Category = Right(sLine, - InStr(sLine, "="))
-      If sLine Begins "Keywords" Then hDApps._$Keywords = Right(sLine, - InStr(sLine, "="))
-      If sLine Begins "GenericName=" Then hDApps._$GenericName = Right(sLine, - InStr(sLine, "="))
-      If sLine Begins "Comment=" Then hDApps._$Comment = Right(sLine, - InStr(sLine, "="))
-      If sLine Begins "Comment[es]=" Then hDApps._$Comment_ES = Right(sLine, - InStr(sLine, "="))
-      If sLine Begins "NoDisplay" Then hDApps._$NoDisplay = CBool(Right(sLine, - InStr(sLine, "=")))
-      If sLine Begins "DisplayOnlyIn" Then hDApps._$DisplayOnlyIn = CBool(Right(sLine, - InStr(sLine, "=")))
-      If sLine Begins "NotShowIn" Then hDApps._$NotShowIn = CBool(Right(sLine, - InStr(sLine, "=")))
+      ' If sLine Begins "Name=" Then hDApps._$Name = Right(sLine, - InStr(sLine, "="))
+      ' If sLine Begins "Exec" Then hDApps._$Exec = Right(sLine, - InStr(sLine, "="))
+      ' If sLine Begins "Terminal" Then hDApps._$Terminal = CBool(Right(sLine, - InStr(sLine, "=")))
+      ' If sLine Begins "Type" Then hDApps._$Type = Right(sLine, - InStr(sLine, "="))
+      ' If sLine Begins "Icon" Then hDApps._$IconName = Right(sLine, - InStr(sLine, "="))
+      ' If sLine Begins "Categories" Then hDApps._$Category = Right(sLine, - InStr(sLine, "="))
+      ' If sLine Begins "Keywords" Then hDApps._$Keywords = Right(sLine, - InStr(sLine, "="))
+      ' If sLine Begins "GenericName=" Then hDApps._$GenericName = Right(sLine, - InStr(sLine, "="))
+      ' If sLine Begins "Comment=" Then hDApps._$Comment = Right(sLine, - InStr(sLine, "="))
+      ' If sLine Begins "Comment[es]=" Then hDApps._$Comment_ES = Right(sLine, - InStr(sLine, "="))
+      ' If sLine Begins "NoDisplay" Then hDApps._$NoDisplay = CBool(Right(sLine, - InStr(sLine, "=")))
+      ' If sLine Begins "DisplayOnlyIn" Then hDApps._$DisplayOnlyIn = CBool(Right(sLine, - InStr(sLine, "=")))
+      ' If sLine Begins "NotShowIn" Then hDApps._$NotShowIn = CBool(Right(sLine, - InStr(sLine, "=")))
+      If sLine Begins "Name=" Then hDApps._$Name = FieldValue(sLine)
+      If sLine Begins "Exec" Then hDApps._$Exec = FieldValue(sLine)
+      If sLine Begins "Terminal" Then hDApps._$Terminal = CBool(FieldValue(sLine))
+      If sLine Begins "Type" Then hDApps._$Type = FieldValue(sLine)
+      If sLine Begins "Icon" Then hDApps._$IconName = FieldValue(sLine)
+      If sLine Begins "Categories" Then hDApps._$Category = FieldValue(sLine)
+      If sLine Begins "Keywords" Then hDApps._$Keywords = FieldValue(sLine)
+      If sLine Begins "GenericName=" Then hDApps._$GenericName = FieldValue(sLine)
+      If sLine Begins "Comment=" Then hDApps._$Comment = FieldValue(sLine)
+      If sLine Begins "Comment[es]=" Then hDApps._$Comment_ES = FieldValue(sLine)
+      If sLine Begins "NoDisplay" Then hDApps._$NoDisplay = CBool(FieldValue(sLine))
+      If sLine Begins "DisplayOnlyIn" Then hDApps._$DisplayOnlyIn = CBool(FieldValue(sLine))
+      If sLine Begins "NotShowIn" Then hDApps._$NotShowIn = CBool(FieldValue(sLine))
     Next
     $cApps[AppName] = hDApps
     getting = False
@@ -212,6 +225,15 @@ Static Public Function _get(AppName As String) As DesktopApps
   'Next
   
 End
+
+
+Static Private Function FieldValue(l As String) As String
+  
+  Return Right(l, - InStr(l, "="))
+  
+End
+
+
 
 Static Public Function _next() As String
   

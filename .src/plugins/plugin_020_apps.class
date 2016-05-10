@@ -46,8 +46,6 @@ Public Sub find(textcontrol As Object) As RItemT[]
   Dim rResults As New RItemT[]
   Dim rResult As RItemT
   Dim current_search As String = textcontrol.text
-                                                            Dim i As Integer
-                                                            Dim t As Float
   Dim happ As DesktopApps
   Dim app As String
   Dim ismatched As Boolean = False
@@ -80,11 +78,7 @@ Public Sub find(textcontrol As Object) As RItemT[]
       Wait 'if calculations are heavy a wait may be handy.
       If textcontrol.text <> current_search Then Return
     Next 'happ
-                                                t = Timer()
-                                                For i = 0 To 10
-                                                  DesktopApps.MakeAppList()
-                                                Next
-                                                Debug Timer() - t
+
   update_apps.start()
   Return rResults
     
