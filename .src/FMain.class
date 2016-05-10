@@ -184,7 +184,6 @@ End
 Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
 
   Dim rcResult As New RItemT
-  Dim img As Image
 
   If results_list.count = 0 Then Return
   rcResult = results_list[Row]
@@ -647,7 +646,6 @@ End
 
 
 Public Sub setup_xbindkeys()
-  Dim msg As String
   Shell "killall xbindkeys_higgins" Wait
   Wait 0.1
   Shell "killall -9 xbindkeys_higgins" Wait
@@ -744,7 +742,6 @@ End
 Public Sub Draw_plugin(plugin_name As String, enabled As Boolean, Optional redraw As Boolean = False)
   Dim o_hbox As Hbox
   Dim o_checkbox As Checkbox
-  Dim o_spacer, o_spacer2 As Panel
   Dim o_button, o_buttonup, o_buttondown As Button
   Dim o_label As Label
   Dim friendly_name, description As String

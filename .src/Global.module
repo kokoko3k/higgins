@@ -14,7 +14,6 @@ Public Function image_from_svg(svg_file As String, rSize As String) As Image
 End
 
 Public Function Load_image(img_file As String, Optional rSize As Integer = -1) As Image
-  Dim w As Integer
   Dim i As New Image
 
   If Not Exist(img_file, True) Then Return Null

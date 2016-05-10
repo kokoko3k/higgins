@@ -45,9 +45,7 @@ Public Sub find(textcontrol As Object) As RItemT[]
   Dim current_search As String = textcontrol.text
 
   Dim b_file_split As New String[]
-  Dim b_files As New String[]
-  Dim bookmarks As New String[]
-  Dim b_file, aLine, path As String
+  Dim aLine, path As String
   Dim match_str As String
   Dim term As String
   
@@ -55,7 +53,7 @@ Public Sub find(textcontrol As Object) As RItemT[]
   Dim kde_paths As New String[]
   Dim kde_path As String
   Dim k_recent As String
-  Dim gtk_path, gtk_file As String
+  Dim gtk_path As String
   
   If Not trigged(textcontrol.text) Then Return
 
@@ -145,7 +143,6 @@ End
 
 Private Function create_item_k(path As String) As RItemT 'a lot of code duplication here
   Dim return_item As RItemT
-  Dim i As Integer
   Dim url As String
     
     return_item = New RItemT

@@ -170,7 +170,6 @@ Static Public Sub Get_file_Icon(dIconName As String, Optional Size As Integer = 
   Dim hImage As Image
   Dim sDir As String
   Dim sSize As String
-  Dim hSvg As SvgImage
   Dim s As String
   Dim out As String
 
