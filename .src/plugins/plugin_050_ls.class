@@ -95,6 +95,9 @@ Private Function create_item(path As String) As RItemT
     If isdir Then 
       return_item.image_file = "icon:/" & iconsize & "/directory" 
       return_item.Text = File.Name(path) & "/"    
+        Else If path Ends ".desktop" Then
+          return_item.image_file = "desktopfile://" & path
+          return_item.Text = File.Name(path)    
         Else
       return_item.image_file = "mimetype://" & path
       return_item.Text = File.Name(path)
