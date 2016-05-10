@@ -44,7 +44,7 @@ Public Sub TextBox1_Change()
   Dim previous_search As String
   Dim current_search As String
   Dim c As String
-  
+
   Object.Lock(TextBox1)
   c = Complete(TextBox1.text)
   TextBox2.text = c
@@ -64,8 +64,11 @@ Public Sub TextBox1_Change()
   If Error Then Return
   
   Wait 0.3
-  If previous_search <> textbox1.text Then Return 'user is typing
-  
+  If previous_search <> textbox1.text Then 
+    Debug previous_search, "<>", textbox1.text
+    Return 'user is typing
+  Endif
+
   immediate_search(textbox1)
   If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
   Wait 0.3
@@ -1020,7 +1023,7 @@ Public Sub Form_Hide()
   If fmain.tag = "minimized" Then Return
   fmain.visible = False
   fmain.tag = "minimized"
-
+  previous_search = ""
 End
 
 Public Sub Form_Show()
