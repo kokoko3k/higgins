@@ -133,7 +133,11 @@ Private Function create_item_g(path As String) As RItemT 'a lot of code duplicat
   return_item.Action = "XDGOPEN"
   return_item.Action_p = url
   return_item.Clipboard_data = url
-  return_item.image_file = "mimetype://" & url
+  If url Ends ".desktop" Then
+    return_item.image_file = "desktopfile://" & url
+      Else
+    return_item.image_file = "mimetype://" & url
+  Endif
   return_item.Text = File.Name(url)
   return_item.SubText = "Recent Document (GTK)"
   Return return_item
@@ -161,7 +165,12 @@ Private Function create_item_k(path As String) As RItemT 'a lot of code duplicat
 
     return_item.Action_p = url
     return_item.Clipboard_data = url
-    return_item.image_file = "mimetype://" & url
+    
+    If url Ends ".desktop" Then
+      return_item.image_file = "desktopfile://" & url
+        Else
+      return_item.image_file = "mimetype://" & url
+    Endif
     return_item.Text = MyDesktop.dName
     return_item.SubText = "Recent Document (KDE)"
     Return return_item

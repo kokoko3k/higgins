@@ -52,7 +52,6 @@ Public Sub find(textcontrol As Object) As RItemT[]
   
   If Exist(s_path) Then
     If Stat(s_path, True).type = gb.file Then
-      Stop
       Return [create_item(s_path)]
     Endif
   Endif
