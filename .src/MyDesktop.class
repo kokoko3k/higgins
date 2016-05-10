@@ -4,14 +4,14 @@
  
 Public dname As String
 Public dExec As String
-Public dTerminal As String
+Public dTerminal As Boolean
 Public dType As String
 Public dIconName As String
 Public dCategory As String
 Public dGenericName As String
 Public dComment As String
 Public dComment_ES As String
-Public dNoDisplay As String
+Public dNoDisplay As Boolean
 Public dDisplayOnlyIn As String
 Public dNotShowIn As String
 Public dURL As String

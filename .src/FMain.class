@@ -255,7 +255,7 @@ Public Sub start_item(i As Integer)
 
   Dim rcResult As RItemT
   Dim p As String  
-
+Stop
   If results_list.count = 0 Then Return
   rcResult = results_list[i]  
   p = rcResult.Action_p
@@ -322,12 +322,13 @@ Private Function strip_desktop_args(e As String) As String
 End
 
 Public Sub start_dot_desktop(dPath As String)
-
-  Dim d As New DesktopFile(dPath)
-  Dim exe_no_args As String = strip_desktop_args(d.Exec)
+  Dim exe_no_args As String
   Dim terminal_emulator As String
+  MyDesktop.parse(dPath)
+  exe_no_args = strip_desktop_args(MyDesktop.dExec)
 
-  If d.terminal Then 
+
+  If MyDesktop.dTerminal Then 
     terminal_emulator = settings["terminal_emulator", Global.find_term()]
     Shell Global.terminal_cmdline(terminal_emulator, exe_no_args)
   Else
