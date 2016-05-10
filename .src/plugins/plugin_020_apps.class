@@ -61,6 +61,7 @@ Public Sub find(textcontrol As Object) As RItemT[]
       If Not ismatched Then ismatched = ismatched Or InStr(Lower(happ.Get("Category")), Lower(current_search)) > 0 
       If Not ismatched Then ismatched = ismatched Or InStr(Lower(happ.Get("Keywords")), Lower(current_search)) > 0 
       If Not ismatched Then ismatched = ismatched Or InStr(Lower(happ.Get("GenericName")), Lower(current_search)) > 0 
+      If Not ismatched Then ismatched = ismatched Or InStr(Lower(File.BaseName(happ.file_path)), Lower(current_search)) > 0 
     Endif
     
     If ismatched Then
