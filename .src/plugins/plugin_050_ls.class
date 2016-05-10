@@ -47,8 +47,15 @@ Public Sub find(textcontrol As Object) As RItemT[]
   Dim s_path, path As String
 
   If Not trigged(textcontrol.text) Then Return
-  
+
   s_path = current_search
+  
+  If Exist(s_path) Then
+    If Stat(s_path, True).type = gb.file Then
+      Stop
+      Return [create_item(s_path)]
+    Endif
+  Endif
   
   If Not (s_path Begins "/") Then s_path = User.home & "/" & s_path
   If Not Exist(s_path) Then Return
