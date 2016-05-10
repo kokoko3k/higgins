@@ -20,12 +20,16 @@ Private plugin As String
 Private iconsize As Integer
 Private minchar As Integer = 3  'exit if the search term is lower than that
 
+Private update_apps As Timer
+
 
 Public Sub _new(p_plugin As String, p_iconsize As Integer)
 
   plugin = p_plugin
   iconsize = p_iconsize
-
+  update_apps = New Timer As "update_apps"
+  update_apps.delay = 3000
+  update_apps.enabled = False
 End
 
 Private Sub trigged(query As String) As Boolean
@@ -42,7 +46,8 @@ Public Sub find(textcontrol As Object) As RItemT[]
   Dim rResults As New RItemT[]
   Dim rResult As RItemT
   Dim current_search As String = textcontrol.text
-
+                                                            Dim i As Integer
+                                                            Dim t As Float
   Dim happ As DesktopApps
   Dim app As String
   Dim ismatched As Boolean = False
@@ -75,12 +80,23 @@ Public Sub find(textcontrol As Object) As RItemT[]
       Wait 'if calculations are heavy a wait may be handy.
       If textcontrol.text <> current_search Then Return
     Next 'happ
-
-
-
+                                                t = Timer()
+                                                For i = 0 To 10
+                                                  DesktopApps.MakeAppList()
+                                                Next
+                                                Debug Timer() - t
+  update_apps.start()
   Return rResults
-
+    
 End
+
+Public Sub update_apps_timer()
+  update_apps.stop
+  DesktopApps.MakeAppList()
+End
+
+
+
 
 
 Private Sub add_no_dupe(happs As DesktopApps[], new_happ As DesktopApps)

@@ -64,10 +64,7 @@ Public Sub TextBox1_Change()
   If Error Then Return
   
   Wait 0.3
-  If previous_search <> textbox1.text Then 
-    Debug previous_search, "<>", textbox1.text
-    Return 'user is typing
-  Endif
+  If previous_search <> textbox1.text Then Return 'user is typing
 
   immediate_search(textbox1)
   If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True

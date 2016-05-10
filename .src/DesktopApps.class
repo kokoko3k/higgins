@@ -70,7 +70,7 @@ Static Public Sub _init()
 
 End
 
-Static Private Sub MakeAppList()
+Static Public Sub MakeAppList()
   
   Dim sPath As String
   $aApps = New String[]
@@ -82,10 +82,7 @@ Static Private Sub MakeAppList()
 
   If anotherdir <> "" Then AddFile(anotherdir)
 
-
  $aApps.Sort(gb.Natural)
-  
-  'Print $aApps.Join("\n")
   
 End
 
