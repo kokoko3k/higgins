@@ -55,7 +55,7 @@ Public Sub find(textcontrol As Object) As RItemT[]
 
   For Each app In DesktopApps
       happ = DesktopApps[app]
-      ismatched = InStr(Lower(happ._$Name), Lower(current_search)) > 0 
+      ismatched = InStr(Lower(happ.Get("Name")), Lower(current_search)) > 0 
     If Not ismatched Then 
       If Not ismatched Then ismatched = InStr(Lower(happ.Get("Comment")), Lower(current_search)) > 0 
       If Not ismatched Then ismatched = ismatched Or InStr(Lower(happ.Get("Category")), Lower(current_search)) > 0 
