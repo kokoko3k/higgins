@@ -1,12 +1,14 @@
 [Bookmarks]
 FMain=[438]
 plugin_indexer=[38]
+plugin_090_indexer=[]
 
 [Breakpoints]
 Count=0
 
 [DebugWindow]
-Count=0
+Count=1
+DebugWindow[1]="Stat(s_path, True)"
 
 [DebugWindow/$aApps]
 Geometry=[1407,332,224,280]
@@ -83,6 +85,9 @@ Geometry=[1280,0,224,280]
 [DebugWindow/Picture["icon:|" & rSize & "|file"]]
 Geometry=[1280,0,224,280]
 
+[DebugWindow/PropertyValue]
+Geometry=[75,676,226,280]
+
 [DebugWindow/RItemT]
 Geometry=[45,0,224,280]
 
@@ -119,6 +124,9 @@ Geometry=[146,254,224,280]
 [DebugWindow/Stat(rcResult.uri, True)]
 Geometry=[1280,0,224,280]
 
+[DebugWindow/Stat(s_path, True)]
+Geometry=[45,-3,224,280]
+
 [DebugWindow/Stock[CStr(Size) &| "program"].Image]
 Geometry=[1280,-3,345,363]
 
@@ -153,7 +161,10 @@ Geometry=[1280,0,224,542]
 Geometry=[47,0,224,280]
 
 [DebugWindow/hDApps]
-Geometry=[45,-3,224,280]
+Geometry=[348,734,224,280]
+
+[DebugWindow/hDApps.PropertyValue]
+Geometry=[78,644,224,280]
 
 [DebugWindow/hDApps.property]
 Geometry=[45,-3,224,280]
@@ -316,28 +327,28 @@ Path="gbLocate.gambas"
 
 [OpenFile]
 File[1]=".src/FMain.form"
-Active=9
-File[2]=".src/FMain.class:65.66"
+Active=10
+File[2]=".src/FMain.class:48.208"
 Count=21
-File[3]=".src/MyDesktop.class:5.141"
-File[4]=".src/DesktopApps.class:41.151"
+File[3]=".src/MyDesktop.class:27.15"
+File[4]=".src/DesktopApps.class:0.46"
 File[5]="appicon.png"
 File[6]="README:0.7"
 File[7]=".src/old_Plugins.class:41.48"
-File[8]=".src/XbindKeys.class:32.69"
+File[8]=".src/XbindKeys.class:3.98"
 File[9]=".src/hSettings.form"
-File[10]=".src/hSettings.class:0.22"
+File[10]=".src/hSettings.class:0.37"
 File[11]=".src/MySettings.module:17.10"
 File[12]=".src/plugins/plugin_indexer_gui.form"
 File[13]=".src/plugins/plugin_indexer_gui.class:23.36"
-File[14]=".src/plugins/plugin_090_indexer.class:0.174"
-File[15]=".src/Global.module:3.30"
+File[14]=".src/plugins/plugin_090_indexer.class:0.116"
+File[15]=".src/Global.module:0.16"
 File[16]=".src/plugins/plugin_030_executable.class:2.59"
-File[17]=".src/plugins/plugin_050_ls.class:25.81"
-File[18]=".src/plugins/plugin_015_recent.class:2.125"
+File[17]=".src/plugins/plugin_050_ls.class:48.98"
+File[18]=".src/plugins/plugin_015_recent.class:29.70"
 File[19]=".src/plugins/plugin_999_template.class:78.18"
 File[20]=".src/plugins/plugin_040_fbookmarks.class:83.81"
-File[21]=".src/plugins/plugin_020_apps.class:0.0"
+File[21]=".src/plugins/plugin_020_apps.class:44.125"
 
 [Watches]
 Count=0

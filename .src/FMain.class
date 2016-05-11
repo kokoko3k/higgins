@@ -255,7 +255,7 @@ Public Sub start_item(i As Integer)
 
   Dim rcResult As RItemT
   Dim p As String  
-Stop
+
   If results_list.count = 0 Then Return
   rcResult = results_list[i]  
   p = rcResult.Action_p
