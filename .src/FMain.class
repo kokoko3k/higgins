@@ -3,6 +3,7 @@
 Public xb As XbindKeys
 Public Const appname As String = "higgins"
 Public Confpath As String = Settings.defaultdir & "/" & appname
+Public extbinpath As String = Settings.defaultdir & "/" & appname & "/extbin"
 Public xb_rcpath As String = confpath & "/higgins.xb.rc"
 
 Public Struct rItemT
@@ -103,11 +104,14 @@ Private plugins As New Collection 'a collection of plugin instances
 
 
 Public Sub load_plugin(plugin_name As String, iconsize As Integer)
-
   Dim myplugin As Object
-  Try myplugin = Object.New(plugin_name, [plugin_name, iconsize])
+  If Not (plugin_name Begins "EXT:") Then 
+    Try myplugin = Object.New(plugin_name, [plugin_name, iconsize])
+      Else
+    Try myplugin = Object.New("bridge", [plugin_name, iconsize, extbinpath & "/" & Right(plugin_name, - InStr(plugin_name, ":"))])
+  Endif
   If Error Then
-    Debug "Plugin " & plugin_name & " Is missing"
+    Debug "Couldn't load " & plugin_name
     Return
   Endif
   Debug plugin_name
@@ -165,7 +169,7 @@ End
 Public Sub run_plugin(plugin_name As String, textcontrol As Object)
 
   Dim rResults As RItemT[]
-  
+
   rResults = Object.Call(plugins[plugin_name], "find", [textcontrol]) 'chiama il metodo find()
   If rResults = Null Then Return
   
@@ -661,6 +665,7 @@ End
 
 Private Function plugins_ordered_array() As String[]
   Dim i As Integer
+  Dim t As String
   
   Dim plugins_saved As New String[]
   Dim plugins_available As New String[]
@@ -673,6 +678,11 @@ Private Function plugins_ordered_array() As String[]
   For i = plugins_available.max DownTo 0
     If (plugins_available[i] Ends "_GUI") Then plugins_available.Delete(i)
   Next  
+
+  For Each t In Dir(extbinpath)
+    plugins_available.add("EXT:" & t)  
+  Next
+  
 
   'delete from saved plugins every plugin not available
   For i = plugins_saved.max DownTo 0
@@ -710,6 +720,7 @@ Public Sub init_hSettings(Optional redraw As Boolean = False)
   Dim plugin_class As Class
   Dim plugin_is_enabled As Boolean
   Dim plist_all As New String[]
+  Dim ext_module As String
 
   plugins_enabled = New String[]
   
@@ -731,7 +742,6 @@ Public Sub init_hSettings(Optional redraw As Boolean = False)
         Endif
       Endif
     Endif
-    
     Draw_plugin(plugin_name, plugin_is_enabled, redraw)
   Next
   save_plugin_list() 
@@ -749,13 +759,19 @@ Public Sub Draw_plugin(plugin_name As String, enabled As Boolean, Optional redra
   Dim plugin_class As Class
   Dim configurable As Boolean = False
   Dim o_separator As Separator
-  
+
     Try plugin_class = Class.Load(plugin_name)
-    If Not Error Then
-      description = Object.GetProperty(plugin_class, "Description")
-      friendly_name = Object.GetProperty(plugin_class, "Friendly_name")
-      configurable = False
-      Try configurable = Object.GetProperty(plugin_class, "Configurable")
+    If (Not Error ) Or (plugin_name Begins "EXT:") Then
+      If Not (plugin_name Begins "EXT:") Then
+        description = Object.GetProperty(plugin_class, "Description")
+        friendly_name = Object.GetProperty(plugin_class, "Friendly_name")
+        configurable = False
+        Try configurable = Object.GetProperty(plugin_class, "Configurable")
+          Else
+        description = "Bridge to external plugin"
+        friendly_name = Right(plugin_name, - InStr(plugin_name, ":"))
+        configurable = False
+      Endif
     Else
       friendly_name = plugin_name
     Endif
@@ -887,7 +903,7 @@ End
 Public Sub plugin_checkbox_Click()
   
   If Last.value = CheckBox.True Then
-    If Not (plugins.Exist(Lower(Last.tag))) Then
+    If Not (plugins.Exist(Last.tag)) Then
       load_plugin(Last.tag, rsize)
     Endif
   Else
@@ -910,23 +926,29 @@ End
 Public Sub save_plugin_list()
   
   Dim o As Object  
-
+  Dim is_plugin As Boolean
+  Dim savename As String
+  
   plugins_all = New String[]
   plugins_enabled.clear
   plugins_enabled = New String[]
+  
 
   For Each o In hSettings.Controls
+    is_plugin = False
     If o Is CheckBox Then
-      If o.tag Begins "PLUGIN" Then
-        Debug "saving " & o.handle
-        If o.value = CheckBox.True Then plugins_enabled.Add(o.tag)
-        plugins_all.Add(o.tag)
+      If (o.tag Begins "PLUGIN_") Or (o.tag Begins "EXT:") Then
+        Debug "saving " & o.handle, o.tag
+        Try savename = o.tag
+        If o.value = CheckBox.True Then plugins_enabled.Add(savename)
+        plugins_all.Add(savename)
       Endif
     Endif
   Next
 
   Settings["hsettings/plist"] = plugins_enabled.Join()
   Settings["hsettings/plist_all"] = plugins_all.Join()
+
 
 End
 
@@ -954,6 +976,7 @@ Public Sub myQuit()
   'Quit
 End
 
+
 '-- FMAIN FUNCTIONS  ---------------------------------------------------------------------
 
 Public Sub Form_Open()
@@ -969,6 +992,11 @@ Public Sub Form_Open()
     newuser = True
     Mkdir confpath
   Endif
+  If Not Exist(extbinpath, True) Then
+    Mkdir extbinpath
+  Endif
+
+
   If Newuser Then
     msg = ("Higgins is not configured") & "\n"
     msg &= ("Please configure at least the hotkey") & "\n"
