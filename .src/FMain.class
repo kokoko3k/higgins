@@ -960,6 +960,7 @@ Public Sub TimerClose_Timer()
 End
 
 Public Sub myQuit()
+
   Try save_plugin_list()
   Try MySettings.save()
   Try xb.close
@@ -971,9 +972,8 @@ Public Sub myQuit()
   fmain.persistent = False
   TrayIcon2.Delete()
   fmain.Close()
-  'fmain.Delete()
+  fmain.Delete()
   
-  'Quit
 End
 
 
@@ -1050,9 +1050,8 @@ Public Sub Form_Hide()
 End
 
 Public Sub Form_Show()
-
+  MySettings.load_geometry()
   If firstrun Then 
-    MySettings.load_geometry()
     fmain.visible = False
     Wait
     firstrun = False

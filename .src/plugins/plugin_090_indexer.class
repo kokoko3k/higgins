@@ -61,16 +61,40 @@ Private Sub trigged(query As String) As Boolean
   Return True
 End
 
+Private Function which_is_better(a As String, b As String) As String
+  If a > b Then Return a
+  Return b
+End
+
 
 Public Sub find(textcontrol As Object) As RItemT[]
   'search for filedialogs bookmarks
   Dim rResults As New RItemT[]
   Dim rResult As RItemT
   Dim current_search As String = textcontrol.text
-  Dim i As Integer
+  Dim i, j As Integer
   Dim results_pushed As Integer
-
+  Dim sorted_db As New String[]
+  Dim placed As Boolean
   If Not trigged(textcontrol.text) Then Return
+
+'   For i = 0 To index_db.max
+'     If index_db[i] Like "*" & current_search & "*" Then 
+' Stop
+'       placed = False
+'       For j = 0 To sorted_db.Max
+' 
+'         If which_is_better(index_db[i], sorted_db[j]) = index_db[i] Then
+'           sorted_db.Add(index_db[i], sorted_db[j])
+'           placed = True
+'           Break
+'         Endif
+'       Next
+'       If Not placed Then sorted_db.Add(index_db[i])
+'     Endif
+'   Next
+
+
 
   For i = 0 To index_db.max
     If index_db[i] Like "*" & current_search & "*" Then 

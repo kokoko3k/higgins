@@ -23,6 +23,7 @@ Public Sub Button1_Click()
 End
 
 Public Sub Form_Hide()
+  If Me.closed Then Return
   MySettings.save()
   FMain.Show()
 End

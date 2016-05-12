@@ -10,7 +10,7 @@ Public Sub Form_Show()
 End
 
 Public Sub Form_Hide()
-
+  If Me.closed Then Return
   SaveSettings()
 
 End
