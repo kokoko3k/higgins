@@ -3,10 +3,12 @@
 Public confdir As String
 Public last_index_time As Date
 Public caller As Object
+Public index_size As Integer = 0
 
 Public Sub Form_Show()
   init(caller)
   LoadSettings()
+  UpdateLabelIndexSize()
 End
 
 Public Sub Form_Hide()
@@ -128,3 +130,11 @@ Public Sub ValueBoxReindex_Change()
 Try caller.restart_timer()
 
 End
+
+Public Sub UpdateLabelIndexSize()
+  
+  LabelIndexSize.text = ("Index size: " & caller.index_db.count)
+  
+End
+
+

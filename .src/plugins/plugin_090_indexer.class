@@ -21,7 +21,7 @@ Private plugin As String
 Private iconsize As Integer
 Private minchar As Integer = 4   'exit if the search term is lower than that
 
-Private index_db As New String[]
+Public index_db As New String[]
 Private index_file As String
 
 Private caller As Object
@@ -212,10 +212,7 @@ Private Function create_item(path As String) As RItemT
   Return return_item
 End
 
-Public Sub configure()
-  'this starts the configuration window.
-  plugin_indexer_gui.Show()
-End
+
 
 Event new_results(rResults As RItemT[])
 
@@ -270,6 +267,7 @@ Public Sub ReIndex()
     cmdline &= "; nice -n 19 ionice -c3 schedtool -B -e find " & dir & " -maxdepth " & depth 
   Next
   If cmdline Begins ";" Then cmdline = Right(cmdline, -1)
+  cmdline &= "| sort -u"
   cmdline = "sh -c " & "\"" & cmdline & "\""
   Debug "Indexing..."
   Debug cmdline
@@ -285,6 +283,7 @@ End
 
 Public Sub indexprocess_kill()
   Debug "Finished indexing"
+  plugin_indexer_gui.UpdateLabelIndexSize
   indexing = False
   'Raise indexing_done(Now())
   File.Save(index_file, index_db.Join())
@@ -294,3 +293,8 @@ Public Sub indexprocess_kill()
   reindex_timer.start
 End
 
+
+Public Sub configure()
+  'this starts the configuration window.
+  plugin_indexer_gui.Show()
+End
