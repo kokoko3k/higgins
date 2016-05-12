@@ -63,16 +63,19 @@ End
 
 Private Function get_score(s As String, query As String) As Integer
   Dim score As Integer = -1
+  Dim fn_s As String
   s = Lower(s)
+  fn_s = File.Name(s)
+  
   query = Lower(query)
   
   If s = query Then 
     score = 100
-      Else If File.Name(s) = query Then 
+      Else If fn_s = query Then 
         score = 90  
       Else If s Begins query Then 
         score = 80  
-      Else If file.Name(s) Begins query Then 
+      Else If fn_s Begins query Then 
         score = 70
   Endif
 
@@ -85,9 +88,11 @@ Private Function get_score(s As String, query As String) As Integer
 
 End
 
-Private Function which_is_better(a As String, b As String, query As String) As String
-  Dim a_score, b_score As Integer
+Fast Private Function which_is_better(a As String, b As String, query As String) As String
 
+  Dim a_score, b_score As Integer
+  Dim fn_a, fn_b As String
+  
   a_score = get_score(a, query)
   b_score = get_score(b, query)
   
@@ -95,10 +100,12 @@ Private Function which_is_better(a As String, b As String, query As String) As S
   If a_score < b_score Then Return b
   
   If a_score = b_score Then
-    If File.Name(a) Begins "." Then Return b 'non hidden files wins.
-    If File.Name(b) Begins "." Then Return a 'non hidden files wins.
-    If File.Name(a) Like "*[*+-\\,;.:_='^/\"!<> ]" & query & "[*+-\\,;.:_='^/\"!<> ]*" Then Return a
-    If File.Name(a) Like query & "[*+-\\,;.:_='^/\"!<> ]*" Then Return a
+    fn_a = File.Name(a)
+    fn_b = File.Name(b)
+    If fn_a Begins "." Then Return b 'non hidden files wins.
+    If fn_b Begins "." Then Return a 'non hidden files wins.
+    If fn_a Like "*[*+-\\,;.:_='^/\"!<> ]" & query & "[*+-\\,;.:_='^/\"!<> ]*" Then Return a
+    If fn_a Like query & "[*+-\\,;.:_='^/\"!<> ]*" Then Return a
   Endif
   
   Return b
