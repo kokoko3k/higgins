@@ -61,9 +61,48 @@ Private Sub trigged(query As String) As Boolean
   Return True
 End
 
-Private Function which_is_better(a As String, b As String) As String
-  If a > b Then Return a
+Private Function get_score(s As String, query As String) As Integer
+  Dim score As Integer = -1
+  s = Lower(s)
+  query = Lower(query)
+  
+  If s = query Then 
+    score = 100
+      Else If File.Name(s) = query Then 
+        score = 90  
+      Else If s Begins query Then 
+        score = 80  
+      Else If file.Name(s) Begins query Then 
+        score = 70
+  Endif
+
+  'penalize hidden files
+  If s Begins "." Then score -= 80
+  If InStr(s, "/.") Then score -= 80
+
+
+  Return score
+
+End
+
+Private Function which_is_better(a As String, b As String, query As String) As String
+  Dim a_score, b_score As Integer
+
+  a_score = get_score(a, query)
+  b_score = get_score(b, query)
+  
+  If a_score > b_score Then Return a
+  If a_score < b_score Then Return b
+  
+  If a_score = b_score Then
+    If File.Name(a) Begins "." Then Return b 'non hidden files wins.
+    If File.Name(b) Begins "." Then Return a 'non hidden files wins.
+    If File.Name(a) Like "*[*+-\\,;.:_='^/\"!<> ]" & query & "[*+-\\,;.:_='^/\"!<> ]*" Then Return a
+    If File.Name(a) Like query & "[*+-\\,;.:_='^/\"!<> ]*" Then Return a
+  Endif
+  
   Return b
+
 End
 
 
@@ -78,27 +117,32 @@ Public Sub find(textcontrol As Object) As RItemT[]
   Dim placed As Boolean
   If Not trigged(textcontrol.text) Then Return
 
-'   For i = 0 To index_db.max
-'     If index_db[i] Like "*" & current_search & "*" Then 
-' Stop
-'       placed = False
-'       For j = 0 To sorted_db.Max
-' 
-'         If which_is_better(index_db[i], sorted_db[j]) = index_db[i] Then
-'           sorted_db.Add(index_db[i], sorted_db[j])
-'           placed = True
-'           Break
-'         Endif
-'       Next
-'       If Not placed Then sorted_db.Add(index_db[i])
-'     Endif
-'   Next
-
-
-
+  'sort matches so that relevant item comes firse
   For i = 0 To index_db.max
     If index_db[i] Like "*" & current_search & "*" Then 
-      rResult = create_item(index_db[i])
+      placed = False
+      For j = 0 To sorted_db.Max
+        'If index_db[i] = "/mnt/nas.crypt/Musica/RadioParalax2/Dafunk - Dropbox.mp3" Then Stop
+        If which_is_better(index_db[i], sorted_db[j], current_search) = index_db[i] Then
+          sorted_db.Add(index_db[i], j)
+          placed = True
+          Break
+        Endif
+      Next
+      If Not placed Then sorted_db.Add(index_db[i])
+    Endif
+    If (i Mod 100) = 0 Then
+      Wait 0.0005 'take a breath
+      If current_search <> textcontrol.text Then
+        Debug "Cancelled previous search " & current_search
+        Return
+      Endif 
+    Endif
+
+  Next
+
+  For i = 0 To sorted_db.max
+      rResult = create_item(sorted_db[i])
       If rResult <> Null Then 
         rResults.Add(rResult)
         Wait 0.0005
@@ -112,11 +156,11 @@ Public Sub find(textcontrol As Object) As RItemT[]
       textcontrol.refresh()
       Wait
       If current_search <> textcontrol.text Then
-        Debug "Cancelling previous search " & current_search
+        Debug "Cancelled previous search " & current_search
         Return
       Endif 
-    Endif
-    If (i Mod 25) = 0 Then
+    
+    If (i Mod 100) = 0 Then
       If rResults.count > 0 Then
         Wait 0.0005
         Raise new_results(rResults)
