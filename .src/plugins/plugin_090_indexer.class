@@ -226,6 +226,7 @@ Public Sub find(textcontrol As Object) As RItemT[]
     Endif
   Next
  
+  Return rResults
 
 End
 

@@ -10,7 +10,6 @@ Public dIconName As String
 Public dCategory As String
 Public dGenericName As String
 Public dComment As String
-Public dComment_ES As String
 Public dNoDisplay As Boolean
 Public dDisplayOnlyIn As String
 Public dNotShowIn As String
@@ -20,13 +19,12 @@ Public dURL As String
 Public Sub init()
  dname = ""
  dExec = ""
- dTerminal = ""
+ dTerminal = False
  dType = ""
  dIconName = ""
  dCategory = ""
  dGenericName = ""
  dComment = ""
- dComment_ES = ""
  dNoDisplay = ""
  dDisplayOnlyIn = ""
  dNotShowIn = ""
@@ -47,14 +45,15 @@ Public Function parse(desktopfile As String)
       Endif
       If sLine Begins "Name=" Then dName = Right(sLine, - InStr(sLine, "="))
       If sLine Begins "Exec" Then dExec = Right(sLine, - InStr(sLine, "="))
-      If sLine Begins "Terminal" Then dTerminal = CBool(Right(sLine, - InStr(sLine, "=")))
+      If sLine Begins "Terminal" Then
+        dTerminal = (Lower((Right(sLine, - InStr(sLine, "=")))) = "true")
+      Endif
       If sLine Begins "Type" Then dType = Right(sLine, - InStr(sLine, "="))
       If sLine Begins "Icon" Then dIconName = Right(sLine, - InStr(sLine, "="))
       If sLine Begins "URL" Then dURL = Right(sLine, - InStr(sLine, "="))
       If sLine Begins "Categories" Then dCategory = Right(sLine, - InStr(sLine, "="))
       If sLine Begins "GenericName=" Then dGenericName = Right(sLine, - InStr(sLine, "="))
       If sLine Begins "Comment=" Then dComment = Right(sLine, - InStr(sLine, "="))
-      If sLine Begins "Comment[es]=" Then dComment_ES = Right(sLine, - InStr(sLine, "="))
       If sLine Begins "NoDisplay" Then dNoDisplay = CBool(Right(sLine, - InStr(sLine, "=")))
       If sLine Begins "DisplayOnlyIn" Then dDisplayOnlyIn = CBool(Right(sLine, - InStr(sLine, "=")))
       If sLine Begins "NotShowIn" Then dNotShowIn = CBool(Right(sLine, - InStr(sLine, "=")))

@@ -99,7 +99,7 @@ Private Sub add_no_dupe(happs As DesktopApps[], new_happ As DesktopApps)
           If existing_happ.Get("Comment") <> "" Then 
             Return
               Else
-            If new_happ.comment <> "" Then 
+            If new_happ.Get("Comment") <> "" Then 
               happs.Find(existing_happ)
               existing_happ = new_happ
             Endif
