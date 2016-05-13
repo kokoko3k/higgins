@@ -49,3 +49,15 @@ Private Sub ShowShortcut()
   hSettings.button1.text = s[s.max]
  
 End
+
+Public Sub ButtonOpenExtPlugin_Click()
+
+  Desktop.Open(FMain.extbinpath)
+
+End
+
+Public Sub LabelHotkey2_MouseDown()
+
+  
+
+End

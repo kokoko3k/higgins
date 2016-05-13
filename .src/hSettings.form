@@ -9,43 +9,30 @@
   Spacing = True
   Margin = True
   { Panel1 HBox
-    MoveScaled(2,0,77,4.5714)
+    MoveScaled(2,0,77,10)
     AutoResize = True
     Spacing = True
-    { VBox2 VBox
-      MoveScaled(1,1,5,4)
-      Expand = True
-    }
     { LabelHotkey Label
-      MoveScaled(6,0,26,4)
+      MoveScaled(0,1,17,4)
       AutoResize = True
       Text = ("Hide/show shortcut:")
       Alignment = Align.Right
     }
     { Button1 Button
-      MoveScaled(55,1,21,4)
+      MoveScaled(18,2,21,4)
       AutoResize = True
       Text = ("Change")
       Picture = Picture["icon:/small/shortcut"]
     }
-  }
-  { Panel2 HBox
-    MoveScaled(2,5,77,4.5714)
-    AutoResize = True
-    Spacing = True
-    { VBox1 VBox
-      MoveScaled(1,1,5,4)
-      Expand = True
-    }
     { LabelHotkey2 Label
-      MoveScaled(9,1,24,4)
+      MoveScaled(42,2,13,4)
+      Expand = True
       AutoResize = True
-      Text = ("Preferred terminal emulator")
+      Text = ("Terminal")
       Alignment = Align.Right
     }
     { ComboboxTerminalEmulator ComboBox
-      MoveScaled(46,0,29,4)
-      Expand = True
+      MoveScaled(56,2,22,4)
       List = [("xterm"), ("lxterminal"), ("xfce4-terminal"), ("gnome-terminal"), ("konsole")]
     }
   }
@@ -57,11 +44,16 @@
     Alignment = Align.Center
   }
   { Frame1 ScrollView
-    MoveScaled(2,17,77,45)
+    MoveScaled(1,17,78,38)
     Background = Color.TextBackground
     Expand = True
     Arrangement = Arrange.Vertical
     Spacing = True
     Margin = True
+  }
+  { ButtonOpenExtPlugin Button
+    MoveScaled(7,57,64,4)
+    Text = ("Open External plugins directory")
+    Picture = Picture["icon:/small/shortcut"]
   }
 }
