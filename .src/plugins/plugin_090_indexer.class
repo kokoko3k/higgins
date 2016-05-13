@@ -29,7 +29,7 @@ Private index_file As String
 Private caller As Object
 
 Private wait_time As Float = 0.0005
-Private ratio_wait_time As Integer = 100000
+Private ratio_wait_time As Integer = 10000
 
 Public Sub _new(p_plugin As String, p_iconsize As Integer)
 
@@ -196,31 +196,21 @@ Public Sub find(textcontrol As Object) As RItemT[]
         rResult = create_item(index_db[i])
         If rResult <> Null Then 
           rResults.Add(rResult)
-          If rResults.count >= 25 Then 
+          If rResults.count >= 5 Then 
             Raise new_results(rResults)
             results_pushed += rResults.Count
             If results_pushed >= plugin_indexer_gui.SpinMaxResults.value Then Return
             rResults.clear
           Endif
         Endif
-        textcontrol.refresh()
-        Wait
         If current_search <> textcontrol.text Then
           Debug "Cancelled previous search " & current_search
           Return
         Endif 
-      
-        If (i Mod 25) = 0 Then
-          If rResults.count > 0 Then
-            Raise new_results(rResults)
-            results_pushed += rResults.Count
-            If results_pushed >= plugin_indexer_gui.SpinMaxResults.value Then Return
-            rResults.clear
-          Endif
-        Endif
       Endif
     Endif
-    If (i Mod ratio_wait_time) = 0 Then 
+    If (i Mod (ratio_wait_time Div 100)) = 0 Then 
+      'Debug "take a break" & Timer()
       Wait wait_time 'take a breath
       If current_search <> textcontrol.text Then
         Debug "Cancelled previous search " & current_search

@@ -170,7 +170,7 @@ Public Sub run_plugin(plugin_name As String, textcontrol As Object)
 
   Dim rResults As RItemT[]
 
-  rResults = Object.Call(plugins[plugin_name], "find", [textcontrol]) 'chiama il metodo find()
+  Try rResults = Object.Call(plugins[plugin_name], "find", [textcontrol]) 'call the find method
   If rResults = Null Then Return
   
   results_list.Insert(rResults)
