@@ -218,7 +218,9 @@ Public Sub find(textcontrol As Object) As RItemT[]
       Endif 
     Endif
   Next
- 
+  
+  If current_search <> textcontrol.text Then Return
+  
   Return rResults
 
 End
@@ -252,6 +254,7 @@ Private Function create_item(path As String) As RItemT
   return_item.SubText = "In: " & File.Dir(path)
 
   Return return_item
+
 End
 
 

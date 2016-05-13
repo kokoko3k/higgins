@@ -6,6 +6,9 @@ Static Public Friendly_name As String = "Bridge Plugin"   'A friendly name for t
 Static Public configurable As Boolean = False             'Does this plugin provides a configure() method?
 Static Public Default_enabled As Boolean = False          'Does this plugin have to be enabled by default?
 
+Private wait_time As Float = 0.0005 
+Private queue_size As Integer = 10 ' item queue size
+
 Public Sub _free()
     Stop() 
 End
@@ -40,8 +43,9 @@ End
 
 Public Sub Stop()
   If ext <> Null Then
-    Try ext.Close
-    Try ext.kill
+      Try Flush #ext
+      Try ext.Close
+      Try ext.kill
   Endif
   items.clear
 End
@@ -55,7 +59,7 @@ Private Sub trigged(query As String) As Boolean
 End
 
 
-
+Private textcontrol_copy As Object
 
 Public Sub find(textcontrol As Object) As RItemT[]
   'this is the main function, textcontrol is an object that exposes a "text" property.
@@ -63,17 +67,23 @@ Public Sub find(textcontrol As Object) As RItemT[]
   'we can stop a (slow) plugin as soon as textcontrol.text changes (ie: the user is still typing...)
 
   Dim current_search As String = textcontrol.text
+  textcontrol_copy = textcontrol
+
 
   Stop()
     
   If Not trigged(textcontrol.text) Then Return
 
   ext = Shell ext_plugin & " " & current_search For Input As "ext"
+  ext.tag = current_search
+   While ext.state = Process.running 'async wait for process to end.
+     Wait 0.01
+   Wend
   
-  While ext.state = Process.running 'async wait for process to end.
-    Wait 0.01
-  Wend
+  If current_search <> textcontrol.text Then Return
+  
   Return items
+  
 
 End
 
@@ -81,11 +91,18 @@ End
 Private current_item As RItemT
 Private items As New RItemT[]
 
+Private t0 As Float = 0
+Private interval As Float = 0
+
 Public Sub ext_read()
   Dim iLine As String
-  ' If Not ext.state = Process.running Then Return
-  ' If Eof(ext) Then Return
+  Dim push As Boolean = False
   Line Input #ext, iLine
+  
+    If ext.tag <> textcontrol_copy.text Then
+      Debug "Cancelled previous search " & ext.tag
+      Return
+    Endif 
   
   Select iLine
     
@@ -112,7 +129,16 @@ Public Sub ext_read()
       
     Case "END"
       items.Add(current_item)
-      
+      interval = Timer() - t0
+      push = (items.count >= queue_size)
+      push = push Or (t0 = 0) 
+      push = push Or interval > 0.1
+      If push Then 
+        Raise new_results(items)
+        items.Clear
+        t0 = Timer()
+      Endif  
+            
   End Select
 
 End
@@ -127,5 +153,5 @@ Public Sub configure()
   
 End
 
-
+Event new_results(rResults As RItemT[])
 
