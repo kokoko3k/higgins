@@ -156,9 +156,9 @@ Public Sub immediate_search(textcontrol As Object)
 
   For Each aplugin In plugins_enabled
     t0 = Timer()
-    'Debug "[START]", plugins.key
+    Debug "[START]", plugins.key
     run_plugin(aPlugin, textbox1)
-    'Debug "[END]", plugins.key, "time:", Timer() - t0, "[END]"
+    Debug "[END]", plugins.key, "time:", Timer() - t0, "[END]"
   Next
   Debug "Search ends here."
   

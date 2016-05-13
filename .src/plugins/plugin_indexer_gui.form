@@ -90,6 +90,7 @@
         }
         { SpinMaxResults SpinBox
           MoveScaled(2,23,16,4)
+          MaxValue = 10000
           Value = 50
         }
         { Separator2 Separator
