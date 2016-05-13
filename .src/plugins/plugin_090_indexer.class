@@ -6,6 +6,8 @@ Static Public Friendly_name As String = "Indexer"
 Static Public configurable As Boolean = True
 Static Public Default_enabled As Boolean = True
 
+
+
 Public Struct rItemT
   plugin As String            'the plugin name
   Text As String              'text displayed in the clipboard
@@ -26,14 +28,16 @@ Private index_file As String
 
 Private caller As Object
 
+Private wait_time As Float = 0.0005
+Private ratio_wait_time As Integer = 100000
+
 Public Sub _new(p_plugin As String, p_iconsize As Integer)
 
   caller = Last
   index_file = fmain.Confpath & "/indexer.txt"
-
+  
   plugin = p_plugin
   iconsize = p_iconsize
-  
   Try index_db = Split(File.Load(index_file))
   plugin_indexer_gui.init(Me)
   plugin_indexer_gui.LoadSettings()
@@ -61,131 +65,163 @@ Private Sub trigged(query As String) As Boolean
   Return True
 End
 
-Private Function get_score(s As String, query As String) As Integer
-  Dim score As Integer = -1
-  Dim fn_s As String
-  s = Lower(s)
-  fn_s = File.Name(s)
-  
-  query = Lower(query)
-  
-  If s = query Then 
-    score = 100
-      Else If fn_s = query Then 
-        score = 90  
-      Else If s Begins query Then 
-        score = 80  
-      Else If fn_s Begins query Then 
-        score = 70
-  Endif
-
-  'penalize hidden files
-  If s Begins "." Then score -= 80
-  If InStr(s, "/.") Then score -= 80
-
-
-  Return score
-
-End
-
-Fast Private Function which_is_better(a As String, b As String, query As String) As String
-
-  Dim a_score, b_score As Integer
-  Dim fn_a, fn_b As String
-  
-  a_score = get_score(a, query)
-  b_score = get_score(b, query)
-  
-  If a_score > b_score Then Return a
-  If a_score < b_score Then Return b
-  
-  If a_score = b_score Then
-    fn_a = File.Name(a)
-    fn_b = File.Name(b)
-    If fn_a Begins "." Then Return b 'non hidden files wins.
-    If fn_b Begins "." Then Return a 'non hidden files wins.
-    If fn_a Like "*[*+-\\,;.:_='^/\"!<> ]" & query & "[*+-\\,;.:_='^/\"!<> ]*" Then Return a
-    If fn_a Like query & "[*+-\\,;.:_='^/\"!<> ]*" Then Return a
-  Endif
-  
-  Return b
-
-End
 
 
 Public Sub find(textcontrol As Object) As RItemT[]
   'search for filedialogs bookmarks
   Dim rResults As New RItemT[]
   Dim rResult As RItemT
-  Dim current_search As String = textcontrol.text
-  Dim i, j As Integer
+  Dim current_search As String = Lower(textcontrol.text)
+  Dim aline As String
+  Dim i As Integer
   Dim results_pushed As Integer
-  Dim sorted_db As New String[]
-  Dim placed As Boolean
+  Dim got_items As New String[]
+  Dim fd, fn As String
+  
+  
   If Not trigged(textcontrol.text) Then Return
 
-  'sort matches so that relevant item comes firse
-  For i = 0 To index_db.max
-    If index_db[i] Like "*" & current_search & "*" Then 
-      placed = False
-      For j = 0 To sorted_db.Max
-        'If index_db[i] = "/mnt/nas.crypt/Musica/RadioParalax2/Dafunk - Dropbox.mp3" Then Stop
-        If which_is_better(index_db[i], sorted_db[j], current_search) = index_db[i] Then
-          sorted_db.Add(index_db[i], j)
-          placed = True
-          Break
-        Endif
-      Next
-      If Not placed Then sorted_db.Add(index_db[i])
-    Endif
-    If (i Mod 100) = 0 Then
-      Wait 0.0005 'take a breath
-      If current_search <> textcontrol.text Then
-        Debug "Cancelled previous search " & current_search
-        Return
-      Endif 
-    Endif
-
-  Next
-
-  For i = 0 To sorted_db.max
-      rResult = create_item(sorted_db[i])
-      If rResult <> Null Then 
-        rResults.Add(rResult)
-        Wait 0.0005
-        If rResults.count >= 25 Then 
+  'directories whose name = query
+  For i = 0 To index_db.Max
+    aline = Lower(index_db[i])
+    If aline Ends "/" Then 'isdir
+      fd = File.Name(File.Dir(aline))
+      If fd = current_search Then
+        rResult = create_item(index_db[i])
+        If rResult <> Null Then
+          got_items.Add(i)
+          rResults.Add(rResult)
           Raise new_results(rResults)
-          results_pushed += rResults.Count
-          If results_pushed >= plugin_indexer_gui.SpinMaxResults.value Then Return
           rResults.clear
         Endif
+      Endif     
+    Endif
+    If (i Mod ratio_wait_time) = 0 Then Wait wait_time 'take a breath
+  Next
+
+
+  'files whose name = query
+  For i = 0 To index_db.Max
+    If got_items.Find(i) < 0 'this avoids searching for already displayed items
+      aline = Lower(index_db[i])
+      If Not (aline Ends "/") Then 'is not dir
+        fn = File.Name(aline)
+        If fn = current_search Then
+          rResult = create_item(index_db[i])
+          If rResult <> Null Then
+            got_items.Add(i)
+            rResults.Add(rResult)
+            Raise new_results(rResults)
+            rResults.clear
+          Endif
+        Endif     
       Endif
-      textcontrol.refresh()
-      Wait
+    Endif
+    If (i Mod ratio_wait_time) = 0 Then 
+      Wait wait_time 'take a breath
       If current_search <> textcontrol.text Then
         Debug "Cancelled previous search " & current_search
         Return
       Endif 
-    
-    If (i Mod 100) = 0 Then
-      If rResults.count > 0 Then
-        Wait 0.0005
-        Raise new_results(rResults)
-        results_pushed += rResults.Count
-        If results_pushed >= plugin_indexer_gui.SpinMaxResults.value Then Return
-        rResults.clear
-      Endif
     Endif
   Next
 
-  Return rResults
+
+  'directories whose name begins with query
+  For i = 0 To index_db.Max
+    If got_items.Find(i) < 0 'this avoids searching for already displayed items
+      aline = Lower(index_db[i])
+      If aline Ends "/" Then 'isdir
+        fd = File.Name(File.Dir(aline))
+        If fd Begins current_search Then
+          rResult = create_item(index_db[i])
+          If rResult <> Null Then
+            got_items.Add(i)
+            rResults.Add(rResult)
+            Raise new_results(rResults)
+            rResults.clear
+          Endif
+        Endif     
+      Endif
+    Endif
+    If (i Mod ratio_wait_time) = 0 Then 
+      Wait wait_time 'take a breath
+      If current_search <> textcontrol.text Then
+        Debug "Cancelled previous search " & current_search
+        Return
+      Endif 
+    Endif
+  Next
+
+
+  'files whose name begins with query
+  For i = 0 To index_db.Max
+    If got_items.Find(i) < 0 'this avoids searching for already displayed items
+      aline = Lower(index_db[i])
+      If Not (aline Ends "/") Then 'is not dir
+        fn = File.Name(aline)
+        If fn Begins current_search Then
+          rResult = create_item(index_db[i])
+          If rResult <> Null Then
+            got_items.Add(i)
+            rResults.Add(rResult)
+            Raise new_results(rResults)
+            rResults.clear
+          Endif
+        Endif     
+      Endif
+    Endif
+    If (i Mod ratio_wait_time) = 0 Then 
+      Wait wait_time 'take a breath
+      If current_search <> textcontrol.text Then
+        Debug "Cancelled previous search " & current_search
+        Return
+      Endif 
+    Endif
+  Next
+
+  'all of the others
+  For i = 0 To index_db.max
+    If got_items.Find(i) < 0 'this avoids searching for already displayed items
+      If InStr(Lower(index_db[i]), Lower(current_search)) Then
+        rResult = create_item(index_db[i])
+        If rResult <> Null Then 
+          rResults.Add(rResult)
+          Wait 0.0005
+          If rResults.count >= 25 Then 
+            Raise new_results(rResults)
+            results_pushed += rResults.Count
+            If results_pushed >= plugin_indexer_gui.SpinMaxResults.value Then Return
+            rResults.clear
+          Endif
+        Endif
+        textcontrol.refresh()
+        Wait
+        If current_search <> textcontrol.text Then
+          Debug "Cancelled previous search " & current_search
+          Return
+        Endif 
+      
+        If (i Mod 25) = 0 Then
+          If rResults.count > 0 Then
+            Wait 0.0005
+            Raise new_results(rResults)
+            results_pushed += rResults.Count
+            If results_pushed >= plugin_indexer_gui.SpinMaxResults.value Then Return
+            rResults.clear
+          Endif
+        Endif
+      Endif
+    Endif
+  Next
+ 
 
 End
 
 
 Private Function create_item(path As String) As RItemT
   Dim return_item As RItemT
-  
+
   If Not (Exist(path, True)) Then Return Null
   return_item = New RItemT  
 
@@ -205,7 +241,8 @@ Private Function create_item(path As String) As RItemT
   return_item.Action = "GUESS"
   return_item.Action_p = path
   return_item.Clipboard_data = path
-  
+
+  If path Ends "/" Then path = Left(path, -1)  
   return_item.Text = File.Name(path)
   return_item.SubText = "In: " & File.Dir(path)
 
@@ -277,7 +314,13 @@ End
 
 Public Sub indexprocess_Read()
   Dim oLine As String
+  Dim isdir As Boolean = False
   Line Input #indexprocess, oline
+  If Not (oline Ends "/") Then
+    Try isdir = (Stat(oLine, True).type = gb.Directory)
+    If isdir Then oline &= "/"
+  Endif
+  
   index_db.Add(oline)
 End
 
@@ -298,3 +341,5 @@ Public Sub configure()
   'this starts the configuration window.
   plugin_indexer_gui.Show()
 End
+
+

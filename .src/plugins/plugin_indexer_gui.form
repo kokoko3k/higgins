@@ -34,6 +34,18 @@
           ShowCursor = True
           Header = GridView.Horizontal
         }
+        { Separator4 Separator
+          MoveScaled(2,30,38,1)
+        }
+        { Label1 Label
+          MoveScaled(2,31,24,4)
+          Text = ("Match patterns:")
+        }
+        { ComboBox1 ComboBox
+          MoveScaled(1,36,38,4)
+          ReadOnly = True
+          List = [("All files"), ("Common file extensions")]
+        }
         { LabelIndexSize Label
           MoveScaled(1,40,17,4)
           AutoResize = True
