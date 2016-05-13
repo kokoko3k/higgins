@@ -679,7 +679,7 @@ Private Function plugins_ordered_array() As String[]
     If (plugins_available[i] Ends "_GUI") Then plugins_available.Delete(i)
   Next  
 
-  For Each t In Dir(extbinpath)
+  For Each t In Dir(extbinpath, "", gb.file)
     plugins_available.add("EXT:" & t)  
   Next
   

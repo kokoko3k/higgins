@@ -1,14 +1,12 @@
 [Bookmarks]
 FMain=[438]
 plugin_indexer=[38]
-plugin_090_indexer=[]
 
 [Breakpoints]
 Count=0
 
 [DebugWindow]
-Count=1
-DebugWindow[1]="Stat(s_path, True)"
+Count=0
 
 [DebugWindow/$aApps]
 Geometry=[1407,332,224,280]
@@ -44,7 +42,7 @@ Geometry=[1322,39,224,280]
 Geometry=[1336,53,224,280]
 
 [DebugWindow/FMain]
-Geometry=[45,-3,224,280]
+Geometry=[45,638,224,929]
 
 [DebugWindow/FileView1]
 Geometry=[47,0,224,280]
@@ -57,6 +55,12 @@ Geometry=[425,184,224,280]
 
 [DebugWindow/Global]
 Geometry=[122,314,224,280]
+
+[DebugWindow/GridIndex.Rows[GridIndex.row + 1]]
+Geometry=[61,307,224,280]
+
+[DebugWindow/GridIndex.Rows[GridIndex.row]]
+Geometry=[45,-3,224,280]
 
 [DebugWindow/Label]
 Geometry=[45,-3,224,280]
@@ -100,6 +104,9 @@ Geometry=[1280,0,224,280]
 [DebugWindow/Split(File.Load(FMain.xb_rcpath), "\n", "", True)]
 Geometry=[45,0,224,280]
 
+[DebugWindow/Split(File.Load(desktopfile), "\n")]
+Geometry=[16,234,224,732]
+
 [DebugWindow/Split(File.Load(sAppPath), "\n")]
 Geometry=[1280,0,224,280]
 
@@ -120,6 +127,9 @@ Geometry=[45,-3,224,280]
 
 [DebugWindow/Split(results, "\n", "", True)]
 Geometry=[146,254,224,280]
+
+[DebugWindow/Stat(oLine, True)]
+Geometry=[45,-3,224,280]
 
 [DebugWindow/Stat(rcResult.uri, True)]
 Geometry=[1280,0,224,280]
@@ -151,14 +161,23 @@ Geometry=[0,612,242,448]
 [DebugWindow/class.load("plugin_template")]
 Geometry=[45,0,224,280]
 
+[DebugWindow/current_item]
+Geometry=[76,447,224,280]
+
 [DebugWindow/d]
 Geometry=[45,0,291,403]
+
+[DebugWindow/ext]
+Geometry=[45,0,224,465]
 
 [DebugWindow/fmain]
 Geometry=[1280,0,224,542]
 
 [DebugWindow/global]
 Geometry=[47,0,224,280]
+
+[DebugWindow/gr]
+Geometry=[500,86,224,280]
 
 [DebugWindow/hDApps]
 Geometry=[348,734,224,280]
@@ -211,6 +230,9 @@ Geometry=[45,-3,224,280]
 [DebugWindow/item]
 Geometry=[45,-3,224,280]
 
+[DebugWindow/items]
+Geometry=[45,-3,224,280]
+
 [DebugWindow/locatep]
 Geometry=[1280,0,254,449]
 
@@ -228,6 +250,9 @@ Geometry=[59,11,224,280]
 
 [DebugWindow/my_screen]
 Geometry=[47,0,224,280]
+
+[DebugWindow/new_happ]
+Geometry=[32,670,224,280]
 
 [DebugWindow/o]
 Geometry=[931,542,224,280]
@@ -250,8 +275,17 @@ Geometry=[45,-3,224,280]
 [DebugWindow/plugins]
 Geometry=[45,0,224,280]
 
+[DebugWindow/plugins[plugin_name]]
+Geometry=[45,-3,224,280]
+
 [DebugWindow/plugins_all]
-Geometry=[1280,-3,224,280]
+Geometry=[55,470,224,280]
+
+[DebugWindow/plugins_available]
+Geometry=[45,-3,224,280]
+
+[DebugWindow/plugins_enabled]
+Geometry=[45,-3,224,280]
 
 [DebugWindow/preserve]
 Geometry=[0,306,224,280]
@@ -298,6 +332,9 @@ Geometry=[45,-3,224,280]
 [DebugWindow/results_list[resultgrid.row]]
 Geometry=[122,226,705,394]
 
+[DebugWindow/return_item]
+Geometry=[45,-3,224,280]
+
 [DebugWindow/ritem]
 Geometry=[45,0,224,280]
 
@@ -306,6 +343,9 @@ Geometry=[1280,307,224,280]
 
 [DebugWindow/selectable]
 Geometry=[1280,0,224,280]
+
+[DebugWindow/sorted_db]
+Geometry=[1671,159,540,654]
 
 [DebugWindow/textbox1]
 Geometry=[45,-3,224,280]
