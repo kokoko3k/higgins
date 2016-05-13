@@ -72,7 +72,7 @@ Public Sub GridIndex_Save(Row As Integer, Column As Integer, Value As String)
 End
 
 Public Sub ButtonDel_Click()
- GridIndex.Rows.Remove(GridIndex.row)
+ Try GridIndex.Rows.Remove(GridIndex.row)
  SaveSettings()
 End
 
@@ -133,8 +133,37 @@ End
 
 Public Sub UpdateLabelIndexSize()
   
-  LabelIndexSize.text = ("Index size: " & caller.index_db.count)
+  LabelIndexSize.text = caller.index_db.count & " " & ("items indexed.")
   
 End
 
 
+
+Public Sub ButtonUp_Click()
+  Dim t As String
+  Dim c As Integer
+  If GridIndex.row <= 0 Then Return
+  
+  For c = 0 To GridIndex.Columns.Max
+    t = GridIndex[GridIndex.row - 1, c].text
+    GridIndex[GridIndex.row - 1, c].text = GridIndex[GridIndex.row, c].text
+    GridIndex[GridIndex.row, c].text = t
+  Next
+  Try GridIndex.row -= 1
+  SaveGrid()
+End
+
+Public Sub ButtonDown_Click()
+  Dim t As String
+  Dim c As Integer
+  If GridIndex.row < 0 Then Return
+  If GridIndex.row = GridIndex.Rows.max Then Return
+  
+  For c = 0 To GridIndex.Columns.Max
+    t = GridIndex[GridIndex.row + 1, c].text
+    GridIndex[GridIndex.row + 1, c].text = GridIndex[GridIndex.row, c].text
+    GridIndex[GridIndex.row, c].text = t
+  Next
+  Try GridIndex.row += 1
+  SaveGrid()
+End

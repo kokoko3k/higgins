@@ -15,95 +15,103 @@
     Margin = True
     Border = Border.Raised
     { Label3 Label
-      MoveScaled(2,0,35,5)
+      MoveScaled(0,0,35,5)
       Text = ("Directories to index")
+      Alignment = Align.Center
     }
     { HBox1 HBox
       MoveScaled(2,5,72,49)
       Expand = True
       Spacing = True
       { VBox3 VBox
-        MoveScaled(2,2,43,45)
+        MoveScaled(3,1,40,45)
         Expand = True
         Spacing = True
         { GridIndex TableView
-          MoveScaled(2,2,38,27)
+          MoveScaled(3,11,23,27)
           Expand = True
           Mode = Select.Single
           Grid = False
           ShowCursor = True
           Header = GridView.Horizontal
         }
-        { Separator4 Separator
-          MoveScaled(2,30,38,1)
-        }
-        { Label1 Label
-          MoveScaled(2,31,24,4)
-          Text = ("Match patterns:")
-        }
-        { ComboBox1 ComboBox
-          MoveScaled(1,36,38,4)
-          ReadOnly = True
-          List = [("All files"), ("Common file extensions")]
-        }
         { LabelIndexSize Label
-          MoveScaled(1,40,17,4)
+          MoveScaled(8,40,17,4)
           AutoResize = True
           Alignment = Align.Left
         }
       }
       { HBox3 VBox
-        MoveScaled(49,1,20,46)
+        MoveScaled(49,2,20,46)
         AutoResize = True
         Spacing = True
-        { ButtonAdd Button
-          MoveScaled(1,1,16,4)
-          AutoResize = True
-          Text = ("Add")
-          Picture = Picture["icon:/small/add"]
-        }
-        { ButtonDel Button
-          MoveScaled(1,6,16,4)
-          AutoResize = True
-          Text = ("Delete")
-          Picture = Picture["icon:/small/delete"]
+        { Panel1 Panel
+          MoveScaled(2,1,14,5)
+          Arrangement = Arrange.Horizontal
+          { ButtonAdd Button
+            MoveScaled(0,0,4,4)
+            Expand = True
+            Picture = Picture["icon:/small/add"]
+          }
+          { ButtonDel Button
+            MoveScaled(5,0,4,4)
+            Expand = True
+            Picture = Picture["icon:/small/delete"]
+          }
         }
         { Separator1 Separator
-          MoveScaled(2,10,16,1)
+          MoveScaled(1,6,16,1)
+        }
+        { Panel2 Panel
+          MoveScaled(2,7,14,5)
+          Arrangement = Arrange.Horizontal
+          { ButtonUp Button
+            MoveScaled(0,0,4,4)
+            Expand = True
+            Picture = Picture["icon:/small/up"]
+          }
+          { ButtonDown Button
+            MoveScaled(5,0,4,4)
+            Expand = True
+            Picture = Picture["icon:/small/down"]
+          }
+        }
+        { Separator4 Separator
+          MoveScaled(1,13,16,1)
         }
         { VBox1 VBox
-          MoveScaled(1,11,16,1)
+          MoveScaled(1,15,16,1)
           Expand = True
         }
         { LabelLimit Label
-          MoveScaled(1,13,14,3)
+          MoveScaled(3,19,14,3)
           AutoResize = True
           Text = ("Limit results to:")
         }
         { SpinMaxResults SpinBox
-          MoveScaled(1,16,16,4)
+          MoveScaled(2,23,16,4)
           Value = 50
         }
         { Separator2 Separator
-          MoveScaled(1,22,16,1)
+          MoveScaled(1,27,16,1)
         }
         { VBox2 VBox
-          MoveScaled(1,24,16,1)
+          MoveScaled(1,29,16,1)
           Expand = True
         }
         { Label2 Label
-          MoveScaled(1,26,17,4)
+          MoveScaled(1,30,17,4)
           AutoResize = True
           Text = ("Update index every:")
           Alignment = Align.Left
         }
         { ValueBoxReindex ValueBox
-          MoveScaled(1,30,17,4)
+          MoveScaled(1,34,17,4)
           Text = ("00:30")
           Type = ValueBox.Time
         }
         { Separator3 Separator
-          MoveScaled(1,34,16,1)
+          MoveScaled(2,39,16,1)
         }
         { ButtonReindex Button
           MoveScaled(1,41,16,4)
