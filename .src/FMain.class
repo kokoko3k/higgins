@@ -842,7 +842,7 @@ Public Sub o_buttondown_Click()
 
   i = plugins_all.Find(current_plugin)
   If i < 0 Then Return 'not found
-  If i >= plugins.count Then Return 'already at the bottom.
+  If i >= plugins_all.count Then Return 'already at the bottom.
   
   'swap plugin items representation in the array
   t = plugins_all[i + 1]
