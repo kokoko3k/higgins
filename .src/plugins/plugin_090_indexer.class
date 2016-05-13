@@ -191,7 +191,7 @@ Public Sub find(textcontrol As Object) As RItemT[]
     matched = False
     If got_items.Find(i) < 0 'this avoids searching for already displayed items
       If InStr(Lower(index_db[i]), Lower(current_search)) Then matched = True
-      If (Not matched) And (index_db[i] Like "*" & current_search & "*") Then matched = True
+      If (Not matched) Then Try matched = (index_db[i] Like "*" & current_search & "*") 
       If matched Then
         rResult = create_item(index_db[i])
         If rResult <> Null Then 
