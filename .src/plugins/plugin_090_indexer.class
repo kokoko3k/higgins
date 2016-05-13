@@ -77,7 +77,7 @@ Public Sub find(textcontrol As Object) As RItemT[]
   Dim results_pushed As Integer
   Dim got_items As New String[]
   Dim fd, fn As String
-  
+  Dim matched As Boolean = False
   
   If Not trigged(textcontrol.text) Then Return
 
@@ -188,8 +188,11 @@ Public Sub find(textcontrol As Object) As RItemT[]
 
   'all of the others
   For i = 0 To index_db.max
+    matched = False
     If got_items.Find(i) < 0 'this avoids searching for already displayed items
-      If InStr(Lower(index_db[i]), Lower(current_search)) Then
+      If InStr(Lower(index_db[i]), Lower(current_search)) Then matched = True
+      If (Not matched) And (index_db[i] Like "*" & current_search & "*") Then matched = True
+      If matched Then
         rResult = create_item(index_db[i])
         If rResult <> Null Then 
           rResults.Add(rResult)
