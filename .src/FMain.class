@@ -45,11 +45,11 @@ Public Sub TextBox1_Change()
   Dim previous_search As String
   Dim current_search As String
   Dim c As String
-                                                  'Debug
-  Object.Lock(TextBox1)
+                 'Debug
+  global.object_lock(TextBox1)
   c = Complete(TextBox1.text)
   TextBox2.text = c
-  Object.unLock(TextBox1)
+  global.object_unlock(TextBox1)
                                                   'Debug  
   Try current_search = TextBox1.text 
   If Error Then Return
@@ -396,11 +396,11 @@ Public Sub ResultGrid_activate()
 End
 
 Public Sub TextBox1_KeyPress()
-  
+
   Select Key.Code
-      
+
     Case Key.end 'fill complete
-      Object.Lock(textbox1)
+      global.object_lock(textbox1)
       If textbox1.pos = Len(textbox2.Text) Then Return
       If textbox1.pos = textbox1.Length Then
         If textbox2.text <> "" Then 
@@ -408,16 +408,16 @@ Public Sub TextBox1_KeyPress()
           textbox1_change_delay.Trigger()
         Endif
       Endif
-      Object.unLock(textbox1)
+      global.object_unlock(textbox1)
       
     Case Key.right 'fill complete
-      Object.Lock(textbox1)
+      global.object_lock(textbox1)
       If textbox1.pos = textbox1.Length Then
         textbox1.text &= Mid$(textbox2.text, Len(textbox1.text) + 1, 1)
         'If textbox1.text = textbox2.text Then 
         textbox1_change_delay.Trigger()
       Endif
-      Object.unLock(textbox1)
+      global.object_unlock(textbox1)
       
     Case Key.down
       showgrid()
@@ -787,14 +787,14 @@ Public Sub Draw_plugin(plugin_name As String, enabled As Boolean, Optional redra
     o_checkbox.Font.Bold = True
     o_checkbox.Expand = True
     
-    Object.Lock(o_checkbox)
+    global.object_lock(o_checkbox)
       If enabled Then
         o_checkbox.value = CheckBox.True
         If (Not redraw) Then load_plugin(plugin_name, rsize)
       Else
         o_checkbox.value = CheckBox.false
       Endif
-    Object.unLock(o_checkbox)
+    global.object_unlock(o_checkbox)
     
     If configurable Then
       o_button = New Button(o_hbox) As "plugin_configure"
@@ -1050,7 +1050,7 @@ Public Sub Form_Hide()
 End
 
 Public Sub Form_Show()
-  Object.unLock(TextBox1) '<--?? needed?
+  global.object_unlock(TextBox1) '<--?? needed?
   Debug
   MySettings.load_geometry()
   If firstrun Then 

@@ -45,3 +45,15 @@ End
 Public Function terminal_cmdline(terminal_emulator As String, cmdline As String) As String
   Return terminal_emulator & " -e " & "\"" & "sh -c ' " & cmdline & "; echo; echo  Press enter to exit ; read ' \""
 End
+
+Public Function object_lock(o As Object)
+  While Not (Object.IsLocked(o))
+    Object.lock(o)
+  Wend
+End
+
+Public Function object_unlock(o As Object)
+  While Object.IsLocked(o)
+    Object.unlock(o)
+  Wend
+End
