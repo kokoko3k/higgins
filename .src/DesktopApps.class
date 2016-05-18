@@ -50,25 +50,32 @@ Static Private $aDataDir As String[]
 Static Private $cApps As New Collection
 Static Private $aApps As String[]
 Static Private $cAppsPath As New Collection
-Static Private anotherdir As String
+Static Private anotherdirs As String[]
 
 Static Public Sub _init()
 
 End
 
+
 Static Private sLanguage As String[] = Split(System.Language, "_", "", True, False)
 
 Static Public Sub MakeAppList()
-  
+  Dim path As String
   Dim sPath As String
   $aApps = New String[]
+  
   
   For Each sPath In GetDataDir()
     If Not Exist(sPath &/ "applications") Then Continue
     AddFile(sPath &/ "applications")
   Next
 
-  If anotherdir <> "" Then AddFile(anotherdir)
+  For Each path In anotherdirs
+    AddFile(path)    
+  Next
+
+
+  'AddFile("/usr/share/kde4/services/")
 
  $aApps.Sort(gb.Natural)
   
@@ -236,11 +243,11 @@ Static Private Sub GetDataDir() As String[]
   
 End
 
-Static Public Sub Reset(Optional otherdir As String)
+Static Public Sub Reset(Optional otherdirs As String[])
   $aApps = Null
   $cApps.Clear
   $cAppsPath.Clear
-  anotherdir = otherdir
+  anotherdirs = otherdirs
 End
 
 

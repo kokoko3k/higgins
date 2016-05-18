@@ -155,11 +155,63 @@ Static Public Sub GetIcon(dIconName As String, Optional Size As Integer = 16) As
       If hImage Then Break
     Next
   Endif
-  If Not hImage Then hImage = Stock[CStr(Size) &/ "program"].Image
+  If Not hImage Then hImage = fallback_icon(dIconName, size)
   If hImage.W <> Size Or If hImage.H <> Size Then hImage = hImage.Stretch(Size, Size)
   Return hImage
 Catch
 
+End
+
+
+Static Private Sub fallback_icon(iconname As String, size As Integer) As Image
+  Dim tPath, theme As String
+  Dim icon_theme As String
+  Dim iconfiles As String[]
+  Dim iconfiles_name As String
+  Dim scores As New Integer[]
+  Dim maxscore As Integer = 0
+  Dim best_item_index As Integer = 0
+  Dim best_item As String
+  Dim good_matches As New String[]
+  Dim i, s As Integer
+  Dim himage As Image
+  Dim t0 As Float
+  
+  Debug "getting fallback icon"
+  
+  icon_theme = Settings["icon_theme", ""]
+  If icon_theme = "" Then Stop
+  t0 = Timer()
+  
+  If icon_theme <> "" Then 
+    If Exist(User.home & "/" & icon_theme, True) Then
+      tpath = User.home & "/" & icon_theme
+        Else
+      tpath = "/usr/share/icons/" & icon_theme
+    Endif
+
+    iconfiles = RDir(tPath, "*/*")
+    For i = 0 To iconfiles.Max
+      iconfiles_name = File.BaseName(iconfiles[i])
+      For s = 0 To Len(iconfiles_name) - 1
+        If Not (iconname Begins Left(iconfiles_name, s + 1)) Then Break
+      Next
+      If (s > maxscore) Then
+        maxscore = s
+        best_item_index = i
+      Endif     
+    Next
+  Endif  
+
+  If maxscore > (Len(File.BaseName(iconname)) Div 2) Then
+    best_item = tpath & "/" & iconfiles[best_item_index]
+    If best_item Ends "*.svg" Then Try Return Global.image_from_svg(best_item, size)
+    Try Return Image.Load(best_item)
+  Endif
+
+    
+  Return Null 'Stock[CStr(Size) &/ "program"].Image
+  
 End
 
 

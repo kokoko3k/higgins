@@ -11,6 +11,7 @@ Public plugin_indexer_last_index_time As Date
 
 Public Sub load()
   hSettings.ComboboxTerminalEmulator.text = Settings["terminal_emulator", Global.find_term()]
+  hSettings.ComboboxIconThemes.text = Settings["icon_theme", ""]
   load_geometry()
 End
 

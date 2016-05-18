@@ -56,8 +56,29 @@ Public Sub ButtonOpenExtPlugin_Click()
 
 End
 
-Public Sub LabelHotkey2_MouseDown()
+Public Sub UpdateIconThemes()
+  Dim theme As String
+  Dim extext As String = ComboboxIconThemes.text
+  ComboboxIconThemes.Clear()
+  For Each theme In Stock.Themes
+    Debug theme
+    If ComboboxIconThemes.Find(theme) < 0 Then
+      ComboboxIconThemes.Add(theme)
+    Endif
+  Next
+  ComboboxIconThemes.text = extext
+End
 
+
+Public Sub Panel2_Arrange()
   
+  UpdateIconThemes()
 
 End
+
+Public Sub ComboboxIconThemes_Change()
+  Settings["icon_theme"] = ComboboxIconThemes.text
+  Debug Settings["icon_theme"] 
+  Settings.Save()
+End
+
