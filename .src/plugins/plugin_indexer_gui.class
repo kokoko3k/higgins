@@ -106,10 +106,10 @@ Public Sub LoadGrid()
     End Select
   Next
   
-  For i = 0 To GridIndex.Rows.Max
-    filedata &= GridIndex[i, 0].text & "\n"
-    filedata &= GridIndex[i, 1].text & "\n"
-  Next
+  ' For i = 0 To GridIndex.Rows.Max
+  '   filedata &= GridIndex[i, 0].text & "\n"
+  '   filedata &= GridIndex[i, 1].text & "\n"
+  ' Next
 End
 
 Public Sub ButtonReindex_Click()
@@ -167,3 +167,4 @@ Public Sub ButtonDown_Click()
   Try GridIndex.row += 1
   SaveGrid()
 End
+

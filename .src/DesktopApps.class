@@ -74,10 +74,8 @@ Static Public Sub MakeAppList()
     AddFile(path)    
   Next
 
-
   'AddFile("/usr/share/kde4/services/")
-
- $aApps.Sort(gb.Natural)
+  $aApps.Sort(gb.Natural)
   
 End
 

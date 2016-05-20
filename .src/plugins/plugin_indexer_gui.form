@@ -9,7 +9,7 @@
   Spacing = True
   Margin = True
   { Frame1 Panel
-    MoveScaled(0,0,77,61)
+    MoveScaled(1,0,77,61)
     Expand = True
     Arrangement = Arrange.Vertical
     Margin = True
@@ -28,7 +28,7 @@
         Expand = True
         Spacing = True
         { GridIndex TableView
-          MoveScaled(3,11,23,27)
+          MoveScaled(4,4,23,27)
           Expand = True
           Mode = Select.Single
           Grid = False

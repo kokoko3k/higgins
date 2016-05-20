@@ -3,7 +3,7 @@
 Create Static
 Static Public Description As String = "Find desktop applications"
 Static Public Friendly_name As String = "Desktop apps"
-Static Public configurable As Boolean = False
+Static Public configurable As Boolean = True
 Static Public Default_enabled As Boolean = True
 
 Public Struct rItemT
@@ -31,7 +31,8 @@ Public Sub _new(p_plugin As String, p_iconsize As Integer)
   update_apps.delay = 3000
   update_apps.enabled = False
 
-  DesktopApps.reset(["/usr/share/kde4/services/"])
+  plugin_apps_gui.init(Me)
+
 End
 
 Private Sub trigged(query As String) As Boolean
@@ -139,7 +140,7 @@ Private Function create_item(happ As DesktopApps) As RItemT
 End
 
 Public Sub configure()
-  
-  'this starts the configuration window.
+
+  plugin_apps_gui.Show()
   
 End

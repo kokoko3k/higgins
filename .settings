@@ -92,11 +92,20 @@ Geometry=[1280,0,224,280]
 [DebugWindow/PropertyValue]
 Geometry=[75,676,226,280]
 
+[DebugWindow/RDir(tPath & "|" & icon_theme, "*|*|*")]
+Geometry=[87,312,224,280]
+
 [DebugWindow/RItemT]
 Geometry=[45,0,224,280]
 
 [DebugWindow/ResultGrid]
 Geometry=[45,-3,224,280]
+
+[DebugWindow/Settings]
+Geometry=[71,555,224,280]
+
+[DebugWindow/Settings.Keys]
+Geometry=[61,180,224,280]
 
 [DebugWindow/Socket]
 Geometry=[1280,0,224,280]
@@ -176,6 +185,9 @@ Geometry=[1280,0,224,542]
 [DebugWindow/global]
 Geometry=[47,0,224,280]
 
+[DebugWindow/good_matches]
+Geometry=[47,-3,224,280]
+
 [DebugWindow/gr]
 Geometry=[500,86,224,280]
 
@@ -211,6 +223,12 @@ Geometry=[86,450,224,280]
 
 [DebugWindow/i.Picture]
 Geometry=[59,14,224,280]
+
+[DebugWindow/iconfiles]
+Geometry=[1727,165,408,649]
+
+[DebugWindow/iconfiles_scores]
+Geometry=[47,-3,224,280]
 
 [DebugWindow/img]
 Geometry=[45,-3,224,280]
@@ -341,8 +359,14 @@ Geometry=[45,0,224,280]
 [DebugWindow/sLines]
 Geometry=[1280,307,224,280]
 
+[DebugWindow/scores]
+Geometry=[47,-3,229,280]
+
 [DebugWindow/selectable]
 Geometry=[1280,0,224,280]
+
+[DebugWindow/sizes]
+Geometry=[47,-3,224,280]
 
 [DebugWindow/sorted_db]
 Geometry=[1671,159,540,654]
@@ -356,6 +380,9 @@ Geometry=[45,-3,224,280]
 [DebugWindow/tmp]
 Geometry=[1280,-3,224,280]
 
+[DebugWindow/tree]
+Geometry=[1534,194,422,815]
+
 [DebugWindow/update_apps_timer]
 Geometry=[45,-3,224,280]
 
@@ -367,28 +394,28 @@ Path="gbLocate.gambas"
 
 [OpenFile]
 File[1]=".src/FMain.form"
-Active=15
-File[2]=".src/FMain.class:22.51"
+Active=21
+File[2]=".src/FMain.class:17.1008"
 Count=23
-File[3]=".src/MyDesktop.class:21.15"
-File[4]=".src/DesktopApps.class:0.46"
+File[3]=".src/MyDesktop.class:21.220"
+File[4]=".src/DesktopApps.class:4.346"
 File[5]="appicon.png"
 File[6]="README:0.7"
 File[7]=".src/old_Plugins.class:41.48"
 File[8]=".src/XbindKeys.class:3.98"
 File[9]=".src/hSettings.form"
-File[10]=".src/hSettings.class:16.36"
-File[11]=".src/MySettings.module:0.10"
+File[10]=".src/hSettings.class:15.63"
+File[11]=".src/MySettings.module:9.12"
 File[12]=".src/plugins/plugin_indexer_gui.form"
 File[13]=".src/plugins/plugin_indexer_gui.class:23.36"
 File[14]=".src/plugins/plugin_090_indexer.class:2.223"
-File[15]=".src/Global.module:3.42"
+File[15]=".src/Global.module:10.3"
 File[16]=".src/plugins/plugin_030_executable.class:2.59"
 File[17]=".src/plugins/plugin_050_ls.class:48.98"
 File[18]=".src/plugins/plugin_015_recent.class:29.70"
 File[19]=".src/plugins/plugin_999_template.class:78.18"
 File[20]=".src/plugins/plugin_040_fbookmarks.class:83.81"
-File[21]=".src/plugins/plugin_020_apps.class:16.47"
+File[21]=".src/plugins/plugin_020_apps.class:26.53"
 File[22]=".src/plugins/bridge.class:0.78"
 File[23]="External_plugin_kill.sh:40.14"
 
