@@ -59,7 +59,9 @@ End
 Public Sub UpdateIconThemes()
   Dim theme As String
   Dim extext As String = ComboboxIconThemes.text
-  ComboboxIconThemes.Clear()
+  Object.Lock(ComboboxIconThemes)
+    ComboboxIconThemes.Clear()
+  Object.unLock(ComboboxIconThemes)
   For Each theme In Stock.Themes
     Debug theme
     If ComboboxIconThemes.Find(theme) < 0 Then

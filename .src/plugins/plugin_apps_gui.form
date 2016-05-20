@@ -4,7 +4,7 @@
   MoveScaled(0,0,78,63)
   Persistent = True
   { Frame1 Panel
-    MoveScaled(0,0,77,61)
+    MoveScaled(0,0,77,62)
     Expand = True
     Arrangement = Arrange.Vertical
     Margin = True
@@ -23,7 +23,7 @@
         Expand = True
         Spacing = True
         { GridPaths TableView
-          MoveScaled(4,5,23,27)
+          MoveScaled(3,1,23,27)
           Expand = True
           Mode = Select.Single
           Grid = False
@@ -74,6 +74,11 @@
           Expand = True
         }
       }
+    }
+    { Label1 Label
+      MoveScaled(2,54,70,4)
+      Foreground = Color.TextForeground
+      Text = ("eg: /usr/share/kservices5/ or /usr/share/kde4/services/")
     }
   }
 }

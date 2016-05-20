@@ -12,7 +12,6 @@ Public Sub Form_Show()
 End
 
 Public Sub init(caller_p As Object)
-Stop
   caller = caller_p
   GridPaths.Columns.count = 1
   GridPaths.Columns[0].Title = ("Directory")
