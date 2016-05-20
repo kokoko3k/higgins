@@ -1,0 +1,100 @@
+' Gambas class file
+
+Private caller As Object
+
+Public Sub GridPaths_Activate()
+  GridPaths.Edit
+End
+
+
+Public Sub Form_Show()
+  LoadSettings()
+End
+
+Public Sub init(caller_p As Object)
+Stop
+  caller = caller_p
+  GridPaths.Columns.count = 1
+  GridPaths.Columns[0].Title = ("Directory")
+  GridPaths.Columns.w = -1
+  LoadSettings()
+  Update_apps_List()
+End
+
+Public Sub SaveSettings()
+  Dim i As Integer
+  Dim filedata As String
+  For i = 0 To GridPaths.Rows.Max
+    filedata &= GridPaths[i, 0].text & "\n"
+  Next
+  Settings["plugin_apps/grid"] = Left(filedata, -1)
+  Settings.Save()
+End
+
+Public Sub LoadSettings()
+  Dim i As Integer
+  Dim filedata, item, WhatToDo As String
+  GridPaths.Rows.count = 0
+  Try filedata = Settings["plugin_apps/grid"]
+  If Error Then Return
+  For Each item In Split(filedata, "\n", "", False)
+    GridPaths.Rows.count += 1
+    GridPaths[GridPaths.Rows.max, 0].text = item
+  Next
+End
+
+Public Sub ButtonAdd_Click()
+  If Dialog.SelectDirectory() Then Return
+  GridPaths.Rows.count += 1
+  GridPaths[GridPaths.Rows.max, 0].text = Dialog.Path
+  GridPaths.Columns.w = -1
+  SaveSettings()
+  Update_apps_List()
+End
+
+Public Sub ButtonDel_Click()
+ Try GridPaths.Rows.Remove(GridPaths.row)
+ SaveSettings()
+ Update_apps_List()
+End
+
+Public Sub ButtonUp_Click()
+  Dim t As String
+  Dim c As Integer
+  If GridPaths.row <= 0 Then Return
+  
+  For c = 0 To GridPaths.Columns.Max
+    t = GridPaths[GridPaths.row - 1, c].text
+    GridPaths[GridPaths.row - 1, c].text = GridPaths[GridPaths.row, c].text
+    GridPaths[GridPaths.row, c].text = t
+  Next
+  Try GridPaths.row -= 1
+  SaveSettings()
+  Update_apps_List()
+End
+
+Public Sub ButtonDown_Click()
+  Dim t As String
+  Dim c As Integer
+  If GridPaths.row < 0 Then Return
+  If GridPaths.row = GridPaths.Rows.max Then Return
+  
+  For c = 0 To GridPaths.Columns.Max
+    t = GridPaths[GridPaths.row + 1, c].text
+    GridPaths[GridPaths.row + 1, c].text = GridPaths[GridPaths.row, c].text
+    GridPaths[GridPaths.row, c].text = t
+  Next
+  Try GridPaths.row += 1
+  SaveSettings()
+  Update_apps_List()
+End
+
+Private Sub Update_apps_List()
+  Dim newdirs As New String[]
+  Dim i As Integer
+  For i = 0 To GridPaths.Rows.max
+    newdirs.Add(GridPaths[i, 0].text)
+  Next
+  DesktopApps.Reset(newdirs)
+End
+

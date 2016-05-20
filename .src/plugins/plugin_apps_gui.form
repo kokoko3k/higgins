@@ -1,0 +1,79 @@
+# Gambas Form File 3.0
+
+{ Form Form
+  MoveScaled(0,0,78,63)
+  Persistent = True
+  { Frame1 Panel
+    MoveScaled(0,0,77,61)
+    Expand = True
+    Arrangement = Arrange.Vertical
+    Margin = True
+    Border = Border.Raised
+    { Label3 Label
+      MoveScaled(0,0,42,5)
+      Text = ("Also search for apps in the following folders")
+      Alignment = Align.Center
+    }
+    { HBox1 HBox
+      MoveScaled(2,5,72,49)
+      Expand = True
+      Spacing = True
+      { VBox3 VBox
+        MoveScaled(3,1,40,45)
+        Expand = True
+        Spacing = True
+        { GridPaths TableView
+          MoveScaled(4,5,23,27)
+          Expand = True
+          Mode = Select.Single
+          Grid = False
+          ShowCursor = True
+          Header = GridView.Horizontal
+        }
+      }
+      { HBox3 VBox
+        MoveScaled(49,2,20,46)
+        AutoResize = True
+        Spacing = True
+        { Panel1 Panel
+          MoveScaled(2,1,14,5)
+          Arrangement = Arrange.Horizontal
+          { ButtonAdd Button
+            MoveScaled(0,0,4,4)
+            Expand = True
+            Picture = Picture["icon:/small/add"]
+          }
+          { ButtonDel Button
+            MoveScaled(5,0,4,4)
+            Expand = True
+            Picture = Picture["icon:/small/delete"]
+          }
+        }
+        { Separator1 Separator
+          MoveScaled(1,6,16,1)
+        }
+        { Panel2 Panel
+          MoveScaled(2,7,14,5)
+          Arrangement = Arrange.Horizontal
+          { ButtonUp Button
+            MoveScaled(0,0,4,4)
+            Expand = True
+            Picture = Picture["icon:/small/up"]
+          }
+          { ButtonDown Button
+            MoveScaled(5,0,4,4)
+            Expand = True
+            Picture = Picture["icon:/small/down"]
+          }
+        }
+        { Separator4 Separator
+          MoveScaled(1,13,16,1)
+        }
+        { HBox2 HBox
+          MoveScaled(4,16,11,3)
+          Expand = True
+        }
+      }
+    }
+  }
+}
