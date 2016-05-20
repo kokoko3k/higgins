@@ -3,11 +3,17 @@ Application launcher,
 starts applications and search for things.
 
 Currently it:
-Evaluate expressions (calculator)
-Find recently opened documents
-Find desktop applications
-Find executables
-Find local bookmarks
-Lists the content of folders
-Find files by indexing user-specified folders
- 
+* Evaluate expressions (calculator)
+* Find recently opened documents
+* Find desktop applications
+* Find executables
+* Find local bookmarks
+* Lists the content of folders
+* Find files by indexing user-specified folders
+
+If you miss some functionality, i've to know that higgins
+supports external plugins located in ~/.config/gambas3/higgins/extbin/
+and since parses the external plugin output, the plugins can be written 
+in any language, from bash to c++!
+Take a look to External_plugin_locate.sh or External_plugin_kill.sh
+
