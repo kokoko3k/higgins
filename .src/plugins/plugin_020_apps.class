@@ -134,10 +134,15 @@ Private Function create_item(happ As DesktopApps) As RItemT
     return_item.image_file = "desktopfile://" & happ.file_path
 
     return_item.Text = happ.Get("Name")
+    If return_item.Text = "" Then 
+      return_item.Text = File.BaseName(happ.file_path)
+    Endif
 
     subtext = happ.Get("GenericName") & ", " & happ.Get("Comment")
     If subtext Begins ", " Then subtext = Right(subtext, -2)
     If subtext Ends ", " Then subtext = Left(subtext, -2)
+    If subtext = "" Then subtext = ("In: ") & File.Dir(happ.file_path)
+    
     return_item.SubText = subtext 
     Return return_item
 End

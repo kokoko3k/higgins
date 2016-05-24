@@ -87,7 +87,13 @@ Static Private Sub AddFile(sPath As String)
     If IsDir(sPath &/ s) Then
       AddFile(sPath &/ s)
     Else
- 
+
+      'may need a smarter way to identify .desktop files, without extension?
+      'If Not (s Ends ".desktop") Then
+        'If desktopmime.fromfile("/home/root/FolderViews/LinkDesktop/GP4").type = "text/plain"
+        'read first line, is  "[Desktop Entry]" ?       
+      'Endif
+
       If s Ends ".desktop" Then 
         s = File.BaseName(s)
         If Not $aApps.Exist(s) Then 
