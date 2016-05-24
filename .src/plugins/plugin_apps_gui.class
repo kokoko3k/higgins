@@ -97,3 +97,9 @@ Private Sub Update_apps_List()
   DesktopApps.Reset(newdirs)
 End
 
+
+Public Sub Form_Open()
+
+  
+
+End

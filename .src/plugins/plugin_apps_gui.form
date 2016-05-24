@@ -3,6 +3,8 @@
 { Form Form
   MoveScaled(0,0,78,63)
   Persistent = True
+  Arrangement = Arrange.Vertical
+  Margin = True
   { Frame1 Panel
     MoveScaled(0,0,77,62)
     Expand = True
