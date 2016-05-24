@@ -87,11 +87,13 @@ Static Private Sub AddFile(sPath As String)
     If IsDir(sPath &/ s) Then
       AddFile(sPath &/ s)
     Else
+ 
       If s Ends ".desktop" Then 
         s = File.BaseName(s)
         If Not $aApps.Exist(s) Then 
           $aApps.Add(s)
           $cAppsPath[s] = sPath &/ s & ".desktop"
+          '$cAppsPath[s] = sPath &/ s 
         Endif
       Endif
     Endif
@@ -193,11 +195,11 @@ Static Public Function _get(AppName As String) As DesktopApps
       If sLine Like "*=*" Then
         f = Left(sLine, InStr(sLine, "=") - 1)
         v = Right(sLine, - InStr(sLine, "="))
-        hDApps.PropertyValue[f] = v
+        Try hDApps.PropertyValue[f] = v
       Endif
     Next
         
-    
+    Debug Appname
     $cApps[AppName] = hDApps
     getting = False
     Return hDApps

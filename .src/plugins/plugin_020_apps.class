@@ -57,7 +57,9 @@ Public Sub find(textcontrol As Object) As RItemT[]
   If Not trigged(textcontrol.text) Then Return
 
   For Each app In DesktopApps
-      happ = DesktopApps[app]
+      Try happ = DesktopApps[app]
+      If Error Then Continue
+
       If happ.Exec_R <> "" Then
         ismatched = InStr(Lower(happ.Get("Name")), Lower(current_search)) > 0 
         If Not ismatched Then 
@@ -79,6 +81,7 @@ Public Sub find(textcontrol As Object) As RItemT[]
 
     For Each happ In happs
       rResult = create_item(happ)
+
       If rResult <> Null Then rResults.Add(rResult)
       Wait 'if calculations are heavy a wait may be handy.
       If textcontrol.text <> current_search Then Return
