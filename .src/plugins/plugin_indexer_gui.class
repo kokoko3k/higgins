@@ -132,9 +132,9 @@ Try caller.restart_timer()
 End
 
 Public Sub UpdateLabelIndexSize()
-  
+
   LabelIndexSize.text = caller.index_db.count & " " & ("items indexed.")
-  
+
 End
 
 

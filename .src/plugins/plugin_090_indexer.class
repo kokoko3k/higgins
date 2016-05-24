@@ -5,8 +5,7 @@ Static Public Description As String = "Index filenames from user-defined folders
 Static Public Friendly_name As String = "Indexer"
 Static Public configurable As Boolean = True
 Static Public Default_enabled As Boolean = True
-
-
+Public id As Float
 
 Public Struct rItemT
   plugin As String            'the plugin name
@@ -32,7 +31,7 @@ Private wait_time As Float = 0.0005
 Private ratio_wait_time As Integer = 10000
 
 Public Sub _new(p_plugin As String, p_iconsize As Integer)
-
+id = Rnd(0, 1)
   caller = Last
   index_file = fmain.Confpath & "/indexer.txt"
   
@@ -334,7 +333,6 @@ End
 
 Public Sub indexprocess_kill()
   Debug "Finished indexing"
-  plugin_indexer_gui.UpdateLabelIndexSize
   indexing = False
   'Raise indexing_done(Now())
   File.Save(index_file, index_db.Join())
@@ -342,6 +340,7 @@ Public Sub indexprocess_kill()
   Try index_db = Split(File.Load(index_file))
   plugin_indexer_gui.SaveSettings()
   reindex_timer.start
+  plugin_indexer_gui.UpdateLabelIndexSize
 End
 
 
