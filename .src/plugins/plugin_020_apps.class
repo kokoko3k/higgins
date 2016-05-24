@@ -148,7 +148,5 @@ Private Function create_item(happ As DesktopApps) As RItemT
 End
 
 Public Sub configure()
-
   plugin_apps_gui.Show()
-  
 End

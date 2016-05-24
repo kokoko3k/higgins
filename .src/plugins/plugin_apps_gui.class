@@ -88,7 +88,7 @@ Public Sub ButtonDown_Click()
   Update_apps_List()
 End
 
-Private Sub Update_apps_List()
+Public Sub Update_apps_List()
   Dim newdirs As New String[]
   Dim i As Integer
   For i = 0 To GridPaths.Rows.max
@@ -98,8 +98,12 @@ Private Sub Update_apps_List()
 End
 
 
-Public Sub Form_Open()
+Public Sub CheckboxNoDesktop_Click()
+   Settings["plugin_apps/desktop_from_extension"] = CheckboxNoDesktop.value
+   MySettings.save()
+   caller.update_apps_timer()
+End
 
-  
-
+Public Sub Frame1_Arrange()
+   CheckboxNoDesktop.value = Settings["plugin_apps/desktop_from_extension", CheckBox.true]
 End

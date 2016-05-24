@@ -63,7 +63,6 @@ Public Sub UpdateIconThemes()
     ComboboxIconThemes.Clear()
   Object.unLock(ComboboxIconThemes)
   For Each theme In Stock.Themes
-    Debug theme
     If ComboboxIconThemes.Find(theme) < 0 Then
       ComboboxIconThemes.Add(theme)
     Endif

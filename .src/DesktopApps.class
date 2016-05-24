@@ -52,10 +52,6 @@ Static Private $aApps As String[]
 Static Private $cAppsPath As New Collection
 Static Private anotherdirs As String[]
 
-Static Public Sub _init()
-
-End
-
 
 Static Private sLanguage As String[] = Split(System.Language, "_", "", True, False)
 
@@ -63,7 +59,6 @@ Static Public Sub MakeAppList()
   Dim path As String
   Dim sPath As String
   $aApps = New String[]
-  
   
   For Each sPath In GetDataDir()
     If Not Exist(sPath &/ "applications") Then Continue
@@ -82,18 +77,13 @@ End
 Static Private Sub AddFile(sPath As String)
   
   Dim s As String
-  
+  Dim IsDesktopFileOut As Boolean = False
+
   For Each s In Dir(sPath)
     If IsDir(sPath &/ s) Then
       AddFile(sPath &/ s)
     Else
-
-      'may need a smarter way to identify .desktop files, without extension?
-      'If Not (s Ends ".desktop") Then
-        'If desktopmime.fromfile("/home/root/FolderViews/LinkDesktop/GP4").type = "text/plain"
-        'read first line, is  "[Desktop Entry]" ?       
-      'Endif
-
+  
       If s Ends ".desktop" Then 
         s = File.BaseName(s)
         If Not $aApps.Exist(s) Then 
@@ -101,11 +91,43 @@ Static Private Sub AddFile(sPath As String)
           $cAppsPath[s] = sPath &/ s & ".desktop"
           '$cAppsPath[s] = sPath &/ s 
         Endif
+          Else
+        If (Settings["plugin_apps/desktop_from_extension"] <> CheckBox.true) Then
+
+          IsDesktopFileOut = isDesktopFile(sPath &/ s) 
+          If IsDesktopFileOut Then
+            If Not $aApps.Exist(s) Then 
+              $aApps.Add(s)
+              $cAppsPath[s] = sPath &/ s  
+            Endif
+          Endif
+        Endif
       Endif
     Endif
   Next
   
 End
+
+
+Static Private Function IsDesktopFile(sFile As String) As Boolean
+  Dim hFile As Stream
+  Dim sOneLine As String
+  Dim FoundTag As Boolean = False
+  Dim maxLines As Integer = 10
+  Dim i As Integer = 1
+  hFile = Open sFile For Input
+  While Not Eof(hFile)
+    Line Input #hFile, sOneLine
+    sOneLine = Trim(sOneLine)
+    If sOneLine = "[Desktop Entry]" Then Return True
+    If Not ((sOneLine Begins "#") Or (sOneLine = "")) Then Return False
+    i += 1
+    If i > maxLines Then Return False
+  Wend
+  Close #hFile  
+  Return False
+End
+
 
 Public Function GetAppName(sApp As String, Language As String) As String
   
@@ -204,8 +226,7 @@ Static Public Function _get(AppName As String) As DesktopApps
         Try hDApps.PropertyValue[f] = v
       Endif
     Next
-        
-    Debug Appname
+
     $cApps[AppName] = hDApps
     getting = False
     Return hDApps

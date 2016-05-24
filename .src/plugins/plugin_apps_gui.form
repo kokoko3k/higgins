@@ -6,7 +6,7 @@
   Arrangement = Arrange.Vertical
   Margin = True
   { Frame1 Panel
-    MoveScaled(0,0,77,62)
+    MoveScaled(-1,0,77,61)
     Expand = True
     Arrangement = Arrange.Vertical
     Margin = True
@@ -25,7 +25,7 @@
         Expand = True
         Spacing = True
         { GridPaths TableView
-          MoveScaled(3,1,23,27)
+          MoveScaled(3,6,23,27)
           Expand = True
           Mode = Select.Single
           Grid = False
@@ -72,15 +72,16 @@
           MoveScaled(1,13,16,1)
         }
         { HBox2 HBox
-          MoveScaled(4,16,11,3)
+          MoveScaled(2,15,11,3)
           Expand = True
         }
       }
     }
-    { Label1 Label
-      MoveScaled(2,54,70,4)
-      Foreground = Color.TextForeground
-      Text = ("eg: /usr/share/kservices5/ or /usr/share/kde4/services/")
+    { CheckboxNoDesktop CheckBox
+      MoveScaled(2,55,70,4)
+      AutoResize = True
+      Text = ("Identify desktop files by extension only (faster)")
+      Value = CheckBox.True
     }
   }
 }

@@ -651,9 +651,9 @@ End
 
 
 Public Sub setup_xbindkeys()
-  Shell "killall xbindkeys_higgins" Wait
+  Shell "killall xbindkeys_higgins &>/dev/null" Wait
   Wait 0.1
-  Shell "killall -9 xbindkeys_higgins" Wait
+  Shell "killall -9 xbindkeys_higgins &>/dev/null" Wait
   xb = New XbindKeys(xb_rcpath, confpath & "/xbindkeys_higgins") As "xb"
   If xb.init_error Then
     xb_show_init_error()
@@ -727,9 +727,7 @@ Public Sub init_hSettings(Optional redraw As Boolean = False)
   Try plist = Settings["hsettings/plist"]
   If Not Error Then plugins_enabled = Split(plist)
 
-  Debug hsettings.frame1.children.count
   Delete_childs(hsettings.Frame1)
-  Debug hsettings.frame1.children.count
 
   For Each plugin_name In plugins_ordered_array()
     plugin_is_enabled = (plugins_enabled.find(plugin_name) > -1)
@@ -1007,6 +1005,7 @@ Public Sub Form_Open()
   resultgrid.Rows.h = resultgrid.Font.RichTextHeight("|j<br>|j") + padding
   rSize = ResultGrid.Rows.H - padding
   MySettings.load()
+
   
   If Not Exist(xb_rcpath) Then
     msg = "No shortcut defined to hide/show the main window,"
@@ -1051,7 +1050,6 @@ End
 
 Public Sub Form_Show()
   global.object_unlock(TextBox1) '<--?? needed?
-  Debug
   MySettings.load_geometry()
   If firstrun Then 
     fmain.visible = False
