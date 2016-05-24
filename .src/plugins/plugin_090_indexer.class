@@ -97,7 +97,7 @@ Public Sub find(textcontrol As Object) As RItemT[]
     Endif
     If (i Mod ratio_wait_time) = 0 Then 
       Wait wait_time 'take a breath
-      If current_search <> textcontrol.text Then
+      If current_search <> Lower(textcontrol.text) Then
         Debug "Cancelled previous search " & current_search
         Return
       Endif 
@@ -124,7 +124,7 @@ Public Sub find(textcontrol As Object) As RItemT[]
     Endif
     If (i Mod ratio_wait_time) = 0 Then 
       Wait wait_time 'take a breath
-      If current_search <> textcontrol.text Then
+      If current_search <> Lower(textcontrol.text) Then
         Debug "Cancelled previous search " & current_search
         Return
       Endif 
@@ -151,7 +151,7 @@ Public Sub find(textcontrol As Object) As RItemT[]
     Endif
     If (i Mod ratio_wait_time) = 0 Then 
       Wait wait_time 'take a breath
-      If current_search <> textcontrol.text Then
+        If current_search <> Lower(textcontrol.text) Then
         Debug "Cancelled previous search " & current_search
         Return
       Endif 
@@ -178,7 +178,7 @@ Public Sub find(textcontrol As Object) As RItemT[]
     Endif
     If (i Mod ratio_wait_time) = 0 Then 
       Wait wait_time 'take a breath
-      If current_search <> textcontrol.text Then
+        If current_search <> Lower(textcontrol.text) Then
         Debug "Cancelled previous search " & current_search
         Return
       Endif 
@@ -202,7 +202,7 @@ Public Sub find(textcontrol As Object) As RItemT[]
             rResults.clear
           Endif
         Endif
-        If current_search <> textcontrol.text Then
+          If current_search <> Lower(textcontrol.text) Then
           Debug "Cancelled previous search " & current_search
           Return
         Endif 
@@ -211,14 +211,14 @@ Public Sub find(textcontrol As Object) As RItemT[]
     If (i Mod (ratio_wait_time Div 100)) = 0 Then 
       'Debug "take a break" & Timer()
       Wait wait_time 'take a breath
-      If current_search <> textcontrol.text Then
+        If current_search <> Lower(textcontrol.text) Then
         Debug "Cancelled previous search " & current_search
         Return
       Endif 
     Endif
   Next
   
-  If current_search <> textcontrol.text Then Return
+   If current_search <> Lower(textcontrol.text) Then Return
   
   Return rResults
 
