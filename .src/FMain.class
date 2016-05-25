@@ -982,10 +982,10 @@ Public Sub Form_Open()
   Dim padding As Integer = (Desktop.scale * 2)
   Dim newuser As Boolean = False
   Dim msg As String
-  Dim t0 As Float
   Me.visible = False
-  t0 = Timer()
+
   If Not firstrun Then Return
+  resultgrid.Font.size = fmain.Font.size * 1.112
   If Not Exist(Confpath, True) Then
     newuser = True
     Mkdir confpath
