@@ -1178,3 +1178,11 @@ Public Sub Form_Leave()
   MySettings.save()
 
 End
+
+Public Sub ResultGrid_MouseMove()
+  Dim iRow As Integer = 0
+  iRow = resultgrid.RowAt(Mouse.y)
+  If iRow <> -1 Then Try resultgrid.Rows[iRow].selected = True
+  
+
+End
