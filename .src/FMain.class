@@ -190,6 +190,8 @@ Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
   Dim rcResult As New RItemT
 
   If results_list.count = 0 Then Return
+  
+
   rcResult = results_list[Row]
   
   'two lines:
