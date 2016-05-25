@@ -12,8 +12,8 @@
     Margin = True
     Border = Border.Raised
     { Label3 Label
-      MoveScaled(0,0,42,5)
-      Text = ("Also search for apps in the following folders")
+      MoveScaled(0,0,52,5)
+      Text = ("Also search for apps in the following folders (Not recursive)")
       Alignment = Align.Center
     }
     { HBox1 HBox

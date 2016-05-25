@@ -108,7 +108,7 @@ Geometry=[45,-3,224,280]
 Geometry=[71,555,224,280]
 
 [DebugWindow/Settings.Keys]
-Geometry=[61,180,224,280]
+Geometry=[85,569,224,280]
 
 [DebugWindow/Socket]
 Geometry=[1280,0,224,280]
@@ -400,32 +400,32 @@ Path="gbLocate.gambas"
 
 [OpenFile]
 File[1]=".src/FMain.form"
-Active=14
-File[2]=".src/FMain.class:2.172"
+Active=24
+File[2]=".src/FMain.class:44.734"
 Count=25
 File[3]=".src/MyDesktop.class:21.220"
-File[4]=".src/DesktopApps.class:0.90"
+File[4]=".src/DesktopApps.class:0.82"
 File[5]="appicon.png"
 File[6]="README:0.7"
 File[7]=".src/old_Plugins.class:41.48"
 File[8]=".src/XbindKeys.class:3.98"
 File[9]=".src/hSettings.form"
-File[10]=".src/hSettings.class:0.79"
-File[11]=".src/MySettings.module:9.12"
+File[10]=".src/hSettings.class:0.65"
+File[11]=".src/MySettings.module:0.14"
 File[12]=".src/plugins/plugin_indexer_gui.form"
-File[13]=".src/plugins/plugin_indexer_gui.class:22.10"
-File[14]=".src/plugins/plugin_090_indexer.class:12.216"
+File[13]=".src/plugins/plugin_indexer_gui.class:29.155"
+File[14]=".src/plugins/plugin_090_indexer.class:0.225"
 File[15]=".src/Global.module:10.3"
 File[16]=".src/plugins/plugin_030_executable.class:2.59"
 File[17]=".src/plugins/plugin_050_ls.class:48.98"
 File[18]=".src/plugins/plugin_015_recent.class:29.70"
 File[19]=".src/plugins/plugin_999_template.class:78.18"
 File[20]=".src/plugins/plugin_040_fbookmarks.class:83.81"
-File[21]=".src/plugins/plugin_020_apps.class:46.12"
+File[21]=".src/plugins/plugin_020_apps.class:30.94"
 File[22]=".src/plugins/bridge.class:0.78"
 File[23]="External_plugin_kill.sh:40.14"
 File[24]=".src/plugins/plugin_apps_gui.form"
-File[25]=".src/plugins/plugin_apps_gui.class:2.102"
+File[25]=".src/plugins/plugin_apps_gui.class:0.96"
 
 [Watches]
 Count=0
