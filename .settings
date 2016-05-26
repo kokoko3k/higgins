@@ -400,11 +400,11 @@ Path="gbLocate.gambas"
 
 [OpenFile]
 File[1]=".src/FMain.form"
-Active=24
-File[2]=".src/FMain.class:44.734"
+Active=2
+File[2]=".src/FMain.class:0.80"
 Count=25
 File[3]=".src/MyDesktop.class:21.220"
-File[4]=".src/DesktopApps.class:0.82"
+File[4]=".src/DesktopApps.class:29.82"
 File[5]="appicon.png"
 File[6]="README:0.7"
 File[7]=".src/old_Plugins.class:41.48"
@@ -414,7 +414,7 @@ File[10]=".src/hSettings.class:0.65"
 File[11]=".src/MySettings.module:0.14"
 File[12]=".src/plugins/plugin_indexer_gui.form"
 File[13]=".src/plugins/plugin_indexer_gui.class:29.155"
-File[14]=".src/plugins/plugin_090_indexer.class:0.225"
+File[14]=".src/plugins/plugin_090_indexer.class:0.81"
 File[15]=".src/Global.module:10.3"
 File[16]=".src/plugins/plugin_030_executable.class:2.59"
 File[17]=".src/plugins/plugin_050_ls.class:48.98"

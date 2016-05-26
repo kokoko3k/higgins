@@ -57,3 +57,23 @@ Public Function object_unlock(o As Object)
     Object.unlock(o)
   Wend
 End
+
+Public Function IsDesktopFile(sFile As String) As Boolean
+  Dim hFile As Stream
+  Dim sOneLine As String
+  Dim FoundTag As Boolean = False
+  Dim maxLines As Integer = 10
+  Dim i As Integer = 1
+  If Lower(sFile) Ends ".desktop" Then Return True
+  hFile = Open sFile For Input
+  While Not Eof(hFile)
+    Line Input #hFile, sOneLine
+    sOneLine = Trim(sOneLine)
+    If sOneLine = "[Desktop Entry]" Then Return True
+    If Not ((sOneLine Begins "#") Or (sOneLine = "")) Then Return False
+    i += 1
+    If i > maxLines Then Return False
+  Wend
+  Close #hFile  
+  Return False
+End

@@ -95,7 +95,7 @@ Static Private Sub AddFile(sPath As String, Optional recursive As Boolean = True
           Else
         If (Settings["plugin_apps/desktop_from_extension"] <> CheckBox.true) Then
 
-          IsDesktopFileOut = isDesktopFile(sPath &/ s) 
+          IsDesktopFileOut = Global.isDesktopFile(sPath &/ s) 
           If IsDesktopFileOut Then
             If Not $aApps.Exist(s) Then 
               $aApps.Add(s)
@@ -109,25 +109,6 @@ Static Private Sub AddFile(sPath As String, Optional recursive As Boolean = True
   
 End
 
-
-Static Private Function IsDesktopFile(sFile As String) As Boolean
-  Dim hFile As Stream
-  Dim sOneLine As String
-  Dim FoundTag As Boolean = False
-  Dim maxLines As Integer = 10
-  Dim i As Integer = 1
-  hFile = Open sFile For Input
-  While Not Eof(hFile)
-    Line Input #hFile, sOneLine
-    sOneLine = Trim(sOneLine)
-    If sOneLine = "[Desktop Entry]" Then Return True
-    If Not ((sOneLine Begins "#") Or (sOneLine = "")) Then Return False
-    i += 1
-    If i > maxLines Then Return False
-  Wend
-  Close #hFile  
-  Return False
-End
 
 
 Public Function GetAppName(sApp As String, Language As String) As String
