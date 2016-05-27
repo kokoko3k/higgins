@@ -13,7 +13,7 @@ End
 
 Public Struct rItemT
   plugin As String            'The plugin name
-  Text As String              'Text displayed in the clipboard
+  Text As String              'Text displayed (main text)
   SubText As String           'Text displayed under the main text
   Image_file As String        'Optional image displayed: possible values:
                               '  "mimetype://fullpath/to/filename/to/identify"
