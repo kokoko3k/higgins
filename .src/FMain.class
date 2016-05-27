@@ -487,7 +487,7 @@ Public Sub ResultGrid_KeyPress()
 End
 
 Public Sub MenuOpenFolder_Click()
-
+  If resultgrid.row < 0 Then Return
   If results_list[resultgrid.row].Action_p = Null Then Return
   Try Desktop.Open(File.Dir(results_list[resultgrid.row].Action_p))
   TimerClose.Trigger
@@ -495,7 +495,7 @@ Public Sub MenuOpenFolder_Click()
 End
 
 Public Sub MenuOpenFile_Click()
-
+  If resultgrid.row < 0 Then Return
   If results_list[resultgrid.row].Action_p = Null Then Return
   start_item(resultgrid.row)
   TimerClose.Trigger
@@ -503,9 +503,8 @@ Public Sub MenuOpenFile_Click()
 End
 
 Public Sub MenuCopy_Click()
-
+  If resultgrid.row < 0 Then Return
   Clipboard.Copy(results_list[ResultGrid.row].Clipboard_data)
-
 End
 
 '======================================== START SOCKET FUNCTIONS ========================================
