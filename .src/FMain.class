@@ -992,10 +992,10 @@ Public Sub Form_Open()
   resultgrid.Font.size = fmain.Font.size * 1.112
   If Not Exist(Confpath, True) Then
     newuser = True
-    Mkdir confpath
+    Shell.MkDir(confpath)
   Endif
   If Not Exist(extbinpath, True) Then
-    Mkdir extbinpath
+    Shell.Mkdir(extbinpath)
   Endif
 
 
