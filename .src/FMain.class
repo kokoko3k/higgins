@@ -499,7 +499,6 @@ Public Sub MenuOpenFile_Click()
   If results_list[resultgrid.row].Action_p = Null Then Return
   start_item(resultgrid.row)
   TimerClose.Trigger
-
 End
 
 Public Sub MenuCopy_Click()
@@ -977,6 +976,17 @@ Public Sub myQuit()
   
 End
 
+Private Sub cmdline_args()
+  Dim bArg_undecorated As Boolean = False
+  
+  Args.begin("Higgins:")
+    Try bArg_undecorated = Args.Has("u", "undecorated", "Tell the Window manager to not draw window decoration")
+  Args.End()
+  
+  fmain.border = Not bArg_undecorated
+End
+
+
 
 '-- FMAIN FUNCTIONS  ---------------------------------------------------------------------
 
@@ -986,7 +996,7 @@ Public Sub Form_Open()
   Dim newuser As Boolean = False
   Dim msg As String
   Me.visible = False
-
+  cmdline_args()
   If Not firstrun Then Return
   resultgrid.Font.size = fmain.Font.size * 1.112
   If Not Exist(Confpath, True) Then
