@@ -33,6 +33,8 @@ Public Struct rItemT
                               '       Open files using xdg desktop routines
                               '"EXEC"
                               '       Executes executables files
+                              '"EXEC_TERMINAL"
+                              '       Executes executables files in terminal emulator
                               '"GUESS"
                               '       Choose an action based on filetype
                               '"NULL"

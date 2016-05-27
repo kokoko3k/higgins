@@ -276,6 +276,8 @@ Public Sub start_item(i As Integer)
       Endif
     Case "EXEC"
       Shell p For Input Output
+    Case "EXEC_TERMINAL"
+      start_executable_terminal(p)
     Case "XDGOPEN"
       Desktop.Open(p)
     Case "GUESS"
@@ -344,6 +346,13 @@ Public Sub start_dot_desktop_exe(dPath As String)
   Endif
 
 End
+
+Public Sub start_executable_terminal(sPath As String)
+  Dim terminal_emulator As String
+    terminal_emulator = settings["terminal_emulator", Global.find_term()]
+    Shell Global.terminal_cmdline(terminal_emulator, sPath)
+End
+
 
 Public Sub start_executable(ePath As String)
 
@@ -1217,3 +1226,10 @@ End
 Public Sub ResultGrid_Menu()
   Show_main_menu(True)
 End
+
+Public Sub Form_LostFocus()
+Stop
+  Form_Hide()
+
+End
+
