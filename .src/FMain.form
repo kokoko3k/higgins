@@ -3,7 +3,6 @@
 { Form Form
   MoveScaled(0,0,83,50)
   Tracking = True
-  PopupMenu = "MenuPopup"
   Icon = Picture["appicon.png"]
   Persistent = True
   Stacking = Window.Above
@@ -79,7 +78,6 @@
     Font = Font["+1"]
     Tracking = True
     Expand = True
-    PopupMenu = "MenuPopup"
     Mode = Select.Single
     Grid = False
   }

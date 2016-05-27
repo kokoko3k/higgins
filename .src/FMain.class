@@ -1190,3 +1190,21 @@ Public Sub ResultGrid_MouseMove()
   
 
 End
+
+Public Sub Form_Menu()
+  Show_main_menu(False)
+End
+
+Private Sub Show_main_menu(bResult_actions As Boolean)
+  Dim bActions_enabled As Boolean 
+  bActions_enabled = bResult_actions And (ResultGrid.current <> Null)
+  
+  MenuOpenFolder.Enabled = bActions_enabled
+  MenuOpenFile.Enabled = bActions_enabled
+  MenuCopy.enabled = bActions_enabled
+  menupopup.Popup()
+End
+
+Public Sub ResultGrid_Menu()
+  Show_main_menu(True)
+End

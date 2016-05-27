@@ -12,7 +12,7 @@ Public Sub _new(conf As String, Optional alias As String = "")
     init_error = True
     Return
   Endif
-  Stop
+ 
   If alias <> "" Then
     Shell.MkDir(File.Dir(alias))
     Try Link System.Find("xbindkeys") To alias
