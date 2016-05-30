@@ -1097,8 +1097,12 @@ End
 Public Sub TextBox1_GotFocus()
 
   Dim o As Object
+  Try textbox1.SelectAll()
+  textbox1.Select(0, String.Len(textbox1.text))
+    Wait
+    Stop
   o = findSelectable(TextBox1)
-  Wait
+
   If o <> Null Then 
     o.selectall
   Endif
