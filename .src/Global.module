@@ -1,5 +1,7 @@
 ' Gambas module file
 
+Public unfocused_hide As Boolean = True
+
 Public Function image_from_svg(svg_file As String, rSize As String) As Image
   Dim hSvg As SvgImage
   Dim hImage As Image

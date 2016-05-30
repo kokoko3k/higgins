@@ -70,7 +70,7 @@
     }
   }
   { TimerClose #Timer
-    #MoveScaled(74,6)
+    #MoveScaled(69,10)
   }
   { ResultGrid GridView
     MoveScaled(5,16,71,31)

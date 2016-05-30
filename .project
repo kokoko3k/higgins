@@ -18,6 +18,7 @@ Component=gb.net
 Component=gb.util
 Component=gb.web
 Description="Higgins:\nApplication launcher,\nstarts applications and search for things.\n\nCurrently it:\nEvaluate expressions (calculator)\nFind recently opened documents\nFind desktop applications\nFind executables\nFind local bookmarks\nLists the content of folders\nFind files by indexing user-specified folders\n\nSupport external plugins; take a look to External_plugin_locate.sh for an example"
+Arguments="-p"
 TabSize=2
 Language=it
 ControlPublic=1
