@@ -992,6 +992,7 @@ Private Sub cmdline_args()
     Try bArg_undecorated = Args.Has("u", "undecorated", ("Tell the Window manager to not draw window decoration"))
     Try global.unfocused_hide = Not (Args.Has("p", "persistent", ("Do not auto-hide main window")))
     Try global.UseTray = Not (Args.Has("n", "notray", ("Do not use a tray icon")))
+    Try global.cleartext = Args.Has("c", "cleartext", ("Clear the previous search on show"))
   Args.End()
   
   fmain.border = Not bArg_undecorated
@@ -1108,7 +1109,13 @@ Public Sub TextBox1_GotFocus()
   ' Wait 0.1
   ' o = findSelectable(TextBox1)
 
-  select_all_override(textbox1)
+  If global.cleartext Then 
+    textbox1.Clear
+    textbox1.text = ""
+      Else
+    select_all_override(textbox1)
+  Endif
+    
 
 End
 
