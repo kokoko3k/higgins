@@ -401,7 +401,7 @@ Path="higgins.gambas"
 [OpenFile]
 File[1]=".src/FMain.form"
 Active=2
-File[2]=".src/FMain.class:0.1235"
+File[2]=".src/FMain.class:19.1006"
 Count=26
 File[3]=".src/MyDesktop.class:21.6"
 File[4]=".src/DesktopApps.class:34.360"

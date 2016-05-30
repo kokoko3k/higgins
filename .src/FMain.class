@@ -991,6 +991,7 @@ Private Sub cmdline_args()
   Args.begin("Higgins:")
     Try bArg_undecorated = Args.Has("u", "undecorated", ("Tell the Window manager to not draw window decoration"))
     Try global.unfocused_hide = Not (Args.Has("p", "persistent", ("Do not auto-hide main window")))
+    Try global.UseTray = Not (Args.Has("n", "notray", ("Do not use a tray icon")))
   Args.End()
   
   fmain.border = Not bArg_undecorated
@@ -1038,7 +1039,7 @@ Public Sub Form_Open()
   Endif
 
   socket_init()
-  InitTrayIcon()
+  If global.UseTray Then InitTrayIcon()
   
   resize_form()
   
