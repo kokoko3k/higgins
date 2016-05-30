@@ -1097,16 +1097,16 @@ End
 Public Sub TextBox1_GotFocus()
 
   Dim o As Object
-  Try textbox1.SelectAll()
+  Wait 0.1
+  Try textbox1.SelectAll
+  Wait
   textbox1.Select(0, String.Len(textbox1.text))
-    Wait
-    Stop
+  Wait
   o = findSelectable(TextBox1)
-
   If o <> Null Then 
+    Wait
     o.selectall
   Endif
-
 End
 
 Private Function findSelectable(o As Object) As Object
@@ -1237,3 +1237,9 @@ Stop
 
 End
 
+
+Public Sub TextBox2_LostFocus()
+
+  Stop
+
+End
