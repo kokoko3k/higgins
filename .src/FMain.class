@@ -1250,7 +1250,8 @@ End
 Private Sub Form_LostFocus_workaround()
   If global.unfocused_hide Then
     Wait 0.1
-    If Not fmain.hasfocus Then Form_hide()
+    Debug Desktop.ActiveWindow = fmain.Handle
+    If Not (Desktop.ActiveWindow = fmain.Handle) Then form_hide
   Endif
 End
 
