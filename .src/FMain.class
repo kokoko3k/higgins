@@ -1096,19 +1096,30 @@ Public Sub QuitMenu_Click()
 End
 
 Public Sub TextBox1_GotFocus()
+  ' 
+  ' Dim o As Object
+  ' Wait
+  ' Wait 0.1
+  ' Try textbox1.SelectAll
+  ' textbox1.sele
+  ' Wait 0.1
+  ' textbox1.Select(0, String.Len(textbox1.text))
+  ' Wait 0.1
+  ' o = findSelectable(TextBox1)
 
-  Dim o As Object
-  Wait 0.1
-  Try textbox1.SelectAll
-  Wait
-  textbox1.Select(0, String.Len(textbox1.text))
-  Wait
-  o = findSelectable(TextBox1)
-  If o <> Null Then 
-    Wait
-    o.selectall
-  Endif
+  select_all_override(textbox1)
+
 End
+
+
+Private Sub select_all_override(t As Textbox)
+  While t.Selection.text <> t.Text 
+    textbox1.SelectAll
+    Wait 0.01
+  Wend
+End
+
+
 
 Private Function findSelectable(o As Object) As Object
 
@@ -1250,7 +1261,6 @@ End
 Private Sub Form_LostFocus_workaround()
   If global.unfocused_hide Then
     Wait 0.1
-    Debug Desktop.ActiveWindow = fmain.Handle
     If Not (Desktop.ActiveWindow = fmain.Handle) Then form_hide
   Endif
 End
