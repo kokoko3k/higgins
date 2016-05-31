@@ -570,13 +570,13 @@ End
 Public Sub socket_Read()
 
   Dim command As String = ""
-  'Stop
+  Dim old_visible As Boolean = fmain.visible
   Line Input #Last, command
   If command = "show" Then
     Repeat
-      fmain.visible = True
+      fmain.visible = Not (old_visible)
       Wait
-    Until fmain.visible = True
+    Until fmain.visible = Not (old_visible)
   Endif
   My_listening_socket.close
   My_listening_socket.Listen(1)
