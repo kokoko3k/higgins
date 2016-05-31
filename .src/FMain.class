@@ -979,7 +979,7 @@ Public Sub myQuit()
   Try hSettings.close
   plugins.clear
   fmain.persistent = False
-  TrayIcon2.Delete()
+  Try TrayIcon2.Delete()
   fmain.Close()
   fmain.Delete()
   
