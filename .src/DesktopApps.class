@@ -245,9 +245,14 @@ Static Private Sub GetDataDir() As String[]
   
   If Not $aDataDir Then
     $aDataDir = Split(Desktop.DataDir, ":", "", True)
-    $aDataDir.Insert(Split(Env["XDG_DATA_DIRS"], ":", "", True))
+    If Trim(Env["XDG_DATA_DIRS"]) <> "" Then 
+      $aDataDir.Insert(Split(Env["XDG_DATA_DIRS"], ":", "", True))
+        Else
+      $aDataDir.add("/usr/share")
+      $aDataDir.add("/usr/local/share")
+    Endif
   Endif
-  
+
   Return $aDataDir
   
 End

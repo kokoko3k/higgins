@@ -396,7 +396,7 @@ Geometry=[45,-3,224,280]
 Geometry=[1280,-3,224,280]
 
 [Executable]
-Path="higgins.gambas"
+Path="/home/root/archlive.kde5/releng/work/i686/root-image/home/koko/tmp/higgins.gambas"
 
 [OpenFile]
 File[1]=".src/FMain.form"
