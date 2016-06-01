@@ -69,7 +69,8 @@ Public Function IsDesktopFile(sFile As String) As Boolean
   Dim maxLines As Integer = 10
   Dim i As Integer = 1
   If Lower(sFile) Ends ".desktop" Then Return True
-  hFile = Open sFile For Input
+  Try hFile = Open sFile For Input
+  If Error Then Return
   While Not Eof(hFile)
     Line Input #hFile, sOneLine
     sOneLine = Trim(sOneLine)

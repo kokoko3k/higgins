@@ -400,11 +400,11 @@ Path="/home/root/archlive.kde5/releng/work/i686/root-image/home/koko/tmp/higgins
 
 [OpenFile]
 File[1]=".src/FMain.form"
-Active=2
-File[2]=".src/FMain.class:19.1006"
+Active=4
+File[2]=".src/FMain.class:3.985"
 Count=26
 File[3]=".src/MyDesktop.class:21.6"
-File[4]=".src/DesktopApps.class:34.360"
+File[4]=".src/DesktopApps.class:19.251"
 File[5]="appicon.png"
 File[6]="README:0.7"
 File[7]=".src/old_Plugins.class:41.48"
@@ -421,7 +421,7 @@ File[17]=".src/plugins/plugin_050_ls.class:48.98"
 File[18]=".src/plugins/plugin_015_recent.class:15.79"
 File[19]=".src/plugins/plugin_999_template.class:57.15"
 File[20]=".src/plugins/plugin_040_fbookmarks.class:83.81"
-File[21]=".src/plugins/plugin_020_apps.class:0.130"
+File[21]=".src/plugins/plugin_020_apps.class:29.58"
 File[22]=".src/plugins/bridge.class:0.78"
 File[23]="External_plugin_kill.sh:40.14"
 File[24]=".src/plugins/plugin_apps_gui.form"
