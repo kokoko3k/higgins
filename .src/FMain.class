@@ -587,25 +587,25 @@ End
 
 '--- TRYICON RELATED
 
-Public TrayIcon2 As Trayicon
+
 
 Public Sub InitTrayIcon()
   
-  Dim SystemTray As Boolean = True
-
-  Try SystemTray = desktop.HasSystemTray
-  If Error Then
-    Debug "Couldn't check if your desktop has a system tray, assuming it has"
-  Endif
-  
-  If Not SystemTray Then Return
-  Try TrayIcon2 = New Trayicon 
-  If Error Then Debug "Cannot Init Trayicon"
-  TrayIcon2.Picture = Picture["appicon.png"]
-  TrayIcon2.Visible = True
-  object.Attach(TrayIcon2, Me, "TrayIcon2")
-  TrayIcon2.PopupMenu = "TrayMenu"
-  If Error Then Debug "Cannot Init Trayicon"
+  ' Dim SystemTray As Boolean = True
+  ' 
+  ' Try SystemTray = desktop.HasSystemTray
+  ' If Error Then
+  '   Debug "Couldn't check if your desktop has a system tray, assuming it has"
+  ' Endif
+  ' 
+  ' If Not SystemTray Then Return
+  ' Try TrayIcon2 = New Trayicon 
+  ' If Error Then Debug "Cannot Init Trayicon"
+  ' TrayIcon2.Picture = Picture["appicon.png"]
+  ' TrayIcon2.Visible = True
+  ' object.Attach(TrayIcon2, Me, "TrayIcon2")
+  ' TrayIcon2.PopupMenu = "TrayMenu"
+  ' If Error Then Debug "Cannot Init Trayicon"
 
 End
 
@@ -982,7 +982,7 @@ Public Sub myQuit()
   Try hSettings.close
   plugins.clear
   fmain.persistent = False
-  Try TrayIcon2.Delete()
+'   Try TrayIcon2.Delete()
   fmain.Close()
   fmain.Delete()
   
