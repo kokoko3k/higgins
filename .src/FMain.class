@@ -820,7 +820,7 @@ Public Sub Draw_plugin(plugin_name As String, enabled As Boolean, Optional redra
     o_buttondown.tag = plugin_name
     
     o_buttonup = New Button(o_hbox) As "o_buttonup"
-    o_buttondown.border = False
+    o_buttonup.border = False
     o_buttonup.w = o_hbox.H
     o_buttonup.picture = Picture["icon:/medium/up"]
     o_buttonup.tag = plugin_name
