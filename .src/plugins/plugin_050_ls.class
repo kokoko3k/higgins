@@ -59,7 +59,9 @@ Public Sub find(textcontrol As Object) As RItemT[]
   If Not (s_path Begins "/") Then s_path = User.home & "/" & s_path
   If Not Exist(s_path) Then Return
   If Not (Stat(s_path, True).type = gb.Directory) Then Return
-  
+
+  rResults.Add(create_item(s_path))
+
     For Each path In Dir(s_path).Sort()
       If s_path Ends "/" Then 
         path = s_path & path
@@ -82,9 +84,13 @@ Private Function create_item(path As String) As RItemT
     If Exist(path, True) Then
       If Not (path Ends "/") Then 
         isdir = (Stat(path, True).type = gb.Directory)
+          Else
+        isdir = True
       Endif
       Wait
     Endif
+
+    If path Ends "/" Then path = Left(path, -1)
     return_item = New RItemT
     return_item.plugin = plugin
     return_item.Action = "GUESS" ' DESKTOPOPEN,EXEC,TERMINALEXEC,GUESS,NULL... MORE?
@@ -101,8 +107,8 @@ Private Function create_item(path As String) As RItemT
       return_item.image_file = "mimetype://" & path
       return_item.Text = File.Name(path)
     Endif
-
-    return_item.SubText = "In " & File.dir(path) & "/"
+    
+    return_item.SubText = "In " & File.dir(path) '& "/"
 
     Return return_item
 End
