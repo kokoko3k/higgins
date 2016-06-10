@@ -3,7 +3,7 @@
 Title=Higgins
 Startup=FMain
 Icon=appicon.png
-Version=0.5.15
+Version=0.5.14
 Component=gb.args
 Component=gb.image
 Component=gb.qt4
