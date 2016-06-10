@@ -38,6 +38,9 @@ Geometry=[1280,0,224,280]
 [DebugWindow/Dir(kde_path, "*.desktop")]
 Geometry=[45,-3,224,280]
 
+[DebugWindow/Dir(s_path).Sort()]
+Geometry=[63,251,224,280]
+
 [DebugWindow/DrawingArea(TextBox1.Children[0]).Children]
 Geometry=[1322,39,224,280]
 
@@ -396,12 +399,12 @@ Geometry=[45,-3,224,280]
 Geometry=[1280,-3,224,280]
 
 [Executable]
-Path="/home/root/archlive.kde5/releng/work/i686/root-image/home/koko/tmp/higgins.gambas"
+Path="/tmp/higgins.gambas"
 
 [OpenFile]
 File[1]=".src/FMain.form"
-Active=2
-File[2]=".src/FMain.class:31.816"
+Active=17
+File[2]=".src/FMain.class:29.1272"
 Count=26
 File[3]=".src/MyDesktop.class:21.6"
 File[4]=".src/DesktopApps.class:19.251"
@@ -417,7 +420,7 @@ File[13]=".src/plugins/plugin_indexer_gui.class:29.155"
 File[14]=".src/plugins/plugin_090_indexer.class:0.81"
 File[15]=".src/Global.module:0.57"
 File[16]=".src/plugins/plugin_030_executable.class:22.107"
-File[17]=".src/plugins/plugin_050_ls.class:48.98"
+File[17]=".src/plugins/plugin_050_ls.class:51.71"
 File[18]=".src/plugins/plugin_015_recent.class:15.79"
 File[19]=".src/plugins/plugin_999_template.class:57.15"
 File[20]=".src/plugins/plugin_040_fbookmarks.class:83.81"

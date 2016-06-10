@@ -6,6 +6,14 @@ Public Confpath As String = Settings.defaultdir & "/" & appname
 Public extbinpath As String = Settings.defaultdir & "/" & appname & "/extbin"
 Public xb_rcpath As String = confpath & "/higgins.xb.rc"
 
+
+Public Sub _new()
+  
+  'Stop
+  Form_Open()
+End
+
+
 Public Struct rItemT
   plugin As String            'the plugin name
   Text As String              'text displayed in the clipboard
@@ -571,6 +579,7 @@ Public Sub socket_Read()
 
   Dim command As String = ""
   Dim old_visible As Boolean = fmain.visible
+
   Line Input #Last, command
   If command = "show" Then
     Repeat
@@ -592,7 +601,7 @@ Public TrayIcon2 As Trayicon
 Public Sub InitTrayIcon()
   
   Dim SystemTray As Boolean = True
-
+Stop
   Try SystemTray = desktop.HasSystemTray
   If Error Then
     Debug "Couldn't check if your desktop has a system tray, assuming it has"
@@ -643,13 +652,14 @@ End
 '-- XBINDKEYS ---------------------------------------------------------------------
 
 Public Sub xb_HotkeyPressed(action As String)
-
   If action = "show" Then
     If fmain.visible Then
       MySettings.save()  
-      fmain.Hide()
+      'fmain.Hide()
+      fmain.visible = False
     Else
-      fmain.Show()
+      fmain.visible = True
+      'fmain.Show()
     Endif
   Endif
 
@@ -1055,6 +1065,7 @@ Public Sub Form_Open()
   If Newuser Then hSettings.Show()
   
   setup_xbindkeys()
+                                  firstrun = False
 End
 
 Public Sub Form_KeyRelease()
@@ -1079,13 +1090,13 @@ End
 Public Sub Form_Show()
   global.object_unlock(TextBox1) '<--?? needed?
   MySettings.load_geometry()
-  If firstrun Then 
-    fmain.visible = False
-    Wait
-    firstrun = False
-    Return
-  Endif
-  
+  ' If firstrun Then 
+  '   fmain.visible = False
+  '   Wait
+  '   firstrun = False
+  '   Return
+  ' Endif
+
   fmain.visible = True
   fmain.tag = ""
   resize_form()

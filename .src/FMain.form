@@ -2,6 +2,7 @@
 
 { Form Form
   MoveScaled(0,0,83,50)
+  Visible = False
   Tracking = True
   Icon = Picture["appicon.png"]
   Persistent = True
