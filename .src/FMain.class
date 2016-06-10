@@ -988,7 +988,6 @@ Public Sub myQuit()
 End
 
 Private Sub cmdline_args()
-  Dim bArg_undecorated As Boolean = False
   
   Args.begin("Higgins:")
     Try global.undecorated = Args.Has("u", "undecorated", ("Tell the Window manager to not draw window decoration"))
@@ -1047,8 +1046,6 @@ Public Sub first_init()
   
   If Newuser Then hSettings.Show()
   
-  fmain.border = Not global.Undecorated
-  
   setup_xbindkeys()
 End
 
@@ -1078,6 +1075,7 @@ Public Sub Form_Hide()
 End
 
 Public Sub Form_Show()
+  fmain.border = Not global.Undecorated
   global.object_unlock(TextBox1) '<--?? needed?
   MySettings.load_geometry()
 
