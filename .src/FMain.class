@@ -22,7 +22,6 @@ Public picture_list As New Collection
 Public rSize As Integer
 Public Socket_File As String = Confpath & "/socket"
 Public Lock_File As String = Confpath & "/lock"
-Public firstrun As Boolean = True
 Private plugins_enabled As String[]
 Private plugins_all As String[]
 
@@ -1080,13 +1079,7 @@ End
 Public Sub Form_Show()
   global.object_unlock(TextBox1) '<--?? needed?
   MySettings.load_geometry()
-'   If firstrun Then 
-'     fmain.visible = False
-'     Wait
-'     firstrun = False
-'     Return
-'   Endif
-'   
+
   fmain.visible = True
   fmain.tag = ""
   resize_form()
