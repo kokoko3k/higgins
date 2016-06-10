@@ -73,7 +73,7 @@
     #MoveScaled(69,10)
   }
   { ResultGrid GridView
-    MoveScaled(5,16,71,31)
+    MoveScaled(5,16,74,31)
     Visible = False
     Font = Font["+1"]
     Tracking = True

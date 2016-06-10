@@ -6,9 +6,7 @@ plugin_indexer=[38]
 Count=0
 
 [DebugWindow]
-Count=2
-DebugWindow[1]="RItemT"
-DebugWindow[2]="Dir(s_path).Sort()"
+Count=0
 
 [DebugWindow/$aApps]
 Geometry=[1354,332,246,471]
@@ -405,9 +403,9 @@ Path="/home/root/archlive.kde5/releng/work/i686/root-image/home/koko/tmp/higgins
 
 [OpenFile]
 File[1]=".src/FMain.form"
-Active=17
-File[2]=".src/FMain.class:29.1272"
-Count=26
+Active=27
+File[2]=".src/FMain.class:0.603"
+Count=27
 File[3]=".src/MyDesktop.class:21.6"
 File[4]=".src/DesktopApps.class:19.251"
 File[5]="appicon.png"
@@ -432,6 +430,7 @@ File[23]="External_plugin_kill.sh:40.14"
 File[24]=".src/plugins/plugin_apps_gui.form"
 File[25]=".src/plugins/plugin_apps_gui.class:0.96"
 File[26]="External_plugin_locate.sh:0.0"
+File[27]=".src/StartClass.class:15.4"
 
 [Watches]
 Count=0

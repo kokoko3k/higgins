@@ -1002,12 +1002,8 @@ Private Sub cmdline_args()
 End
 
 
-
-'-- FMAIN FUNCTIONS  ---------------------------------------------------------------------
-
-Public Sub Form_Open()
-
-  Dim padding As Integer = (Desktop.scale * 2)
+Public Sub main_init()
+ Dim padding As Integer = (Desktop.scale * 2)
   Dim newuser As Boolean = False
   Dim msg As String
   Me.visible = False
@@ -1055,6 +1051,15 @@ Public Sub Form_Open()
   If Newuser Then hSettings.Show()
   
   setup_xbindkeys()
+End
+
+
+
+'-- FMAIN FUNCTIONS  ---------------------------------------------------------------------
+
+Public Sub Form_Open()
+
+ 
 End
 
 Public Sub Form_KeyRelease()

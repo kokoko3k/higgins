@@ -1,0 +1,5 @@
+' Gambas class file
+
+Static Public Sub Main()
+  FMain.main_init()
+End

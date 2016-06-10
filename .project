@@ -1,7 +1,7 @@
 # Gambas Project File 3.0
 # Compiled with Gambas 3.8.4
 Title=Higgins
-Startup=FMain
+Startup=StartClass
 Icon=appicon.png
 Version=0.5.14
 Component=gb.args
