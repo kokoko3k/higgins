@@ -1002,13 +1002,12 @@ Private Sub cmdline_args()
 End
 
 
-Public Sub main_init()
+Public Sub first_init()
  Dim padding As Integer = (Desktop.scale * 2)
   Dim newuser As Boolean = False
   Dim msg As String
   Me.visible = False
   cmdline_args()
-  If Not firstrun Then Return
   resultgrid.Font.size = fmain.Font.size * 1.112
   If Not Exist(Confpath, True) Then
     newuser = True
@@ -1057,10 +1056,7 @@ End
 
 '-- FMAIN FUNCTIONS  ---------------------------------------------------------------------
 
-Public Sub Form_Open()
 
- 
-End
 
 Public Sub Form_KeyRelease()
 
@@ -1084,13 +1080,13 @@ End
 Public Sub Form_Show()
   global.object_unlock(TextBox1) '<--?? needed?
   MySettings.load_geometry()
-  If firstrun Then 
-    fmain.visible = False
-    Wait
-    firstrun = False
-    Return
-  Endif
-  
+'   If firstrun Then 
+'     fmain.visible = False
+'     Wait
+'     firstrun = False
+'     Return
+'   Endif
+'   
   fmain.visible = True
   fmain.tag = ""
   resize_form()
