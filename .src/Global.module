@@ -2,6 +2,7 @@
 
 Public unfocused_hide As Boolean = True
 Public UseTray As Boolean = True
+Public Undecorated As Boolean = False
 Public cleartext As Boolean = True
 
 Public Function image_from_svg(svg_file As String, rSize As String) As Image

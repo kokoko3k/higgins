@@ -991,13 +991,12 @@ Private Sub cmdline_args()
   Dim bArg_undecorated As Boolean = False
   
   Args.begin("Higgins:")
-    Try bArg_undecorated = Args.Has("u", "undecorated", ("Tell the Window manager to not draw window decoration"))
+    Try global.undecorated = Args.Has("u", "undecorated", ("Tell the Window manager to not draw window decoration"))
     Try global.unfocused_hide = Not (Args.Has("p", "persistent", ("Do not auto-hide main window")))
     Try global.UseTray = Not (Args.Has("n", "notray", ("Do not use a tray icon")))
     Try global.cleartext = Args.Has("c", "cleartext", ("Clear the previous search on show"))
   Args.End()
   
-  fmain.border = Not bArg_undecorated
 End
 
 
@@ -1047,6 +1046,8 @@ Public Sub first_init()
   textbox1_change_delay.enabled = False
   
   If Newuser Then hSettings.Show()
+  
+  fmain.border = Not global.Undecorated
   
   setup_xbindkeys()
 End
