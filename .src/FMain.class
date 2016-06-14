@@ -1269,5 +1269,6 @@ Private Sub Form_LostFocus_workaround()
   Endif
 End
 
-
-
+Public Sub Form_MouseDrag()
+  Me.Move(fmain.x + (mouse.x - mouse.StartX), fmain.y + (mouse.y - mouse.Starty))
+End

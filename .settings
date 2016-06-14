@@ -403,8 +403,8 @@ Path="/tmp/higgins.gambas"
 
 [OpenFile]
 File[1]=".src/FMain.form"
-Active=27
-File[2]=".src/FMain.class:0.603"
+Active=2
+File[2]=".src/FMain.class:19.1111"
 Count=27
 File[3]=".src/MyDesktop.class:21.6"
 File[4]=".src/DesktopApps.class:19.251"
@@ -418,7 +418,7 @@ File[11]=".src/MySettings.module:0.14"
 File[12]=".src/plugins/plugin_indexer_gui.form"
 File[13]=".src/plugins/plugin_indexer_gui.class:29.155"
 File[14]=".src/plugins/plugin_090_indexer.class:0.81"
-File[15]=".src/Global.module:0.57"
+File[15]=".src/Global.module:21.9"
 File[16]=".src/plugins/plugin_030_executable.class:22.107"
 File[17]=".src/plugins/plugin_050_ls.class:51.71"
 File[18]=".src/plugins/plugin_015_recent.class:15.79"
@@ -430,7 +430,7 @@ File[23]="External_plugin_kill.sh:40.14"
 File[24]=".src/plugins/plugin_apps_gui.form"
 File[25]=".src/plugins/plugin_apps_gui.class:0.96"
 File[26]="External_plugin_locate.sh:0.0"
-File[27]=".src/StartClass.class:15.4"
+File[27]=".src/StartClass.class:24.2"
 
 [Watches]
 Count=0
