@@ -26,9 +26,13 @@ Private plugins_enabled As String[]
 Private plugins_all As String[]
 
 Public Sub resize_form()
-
-  FMain.h = TextBox1.h + (Desktop.scale * 2)
-
+  Dim pad As Integer
+  If fmain.padding = 0 Then 
+    pad = Desktop.scale
+      Else
+    pad = fmain.padding
+  Endif
+  FMain.h = TextBox1.h + (pad * 2)
 End
 
 Public textbox1_change_delay As Timer 
@@ -133,9 +137,13 @@ End
 Private previous_search As String
 
 Private Sub showgrid()
-
-  FMain.h = TextBox1.h + (Desktop.scale * 3) + resultgrid.h
-
+  Dim pad As Integer
+  If fmain.padding = 0 Then 
+    pad = Desktop.scale
+      Else
+    pad = fmain.padding
+  Endif
+  FMain.h = TextBox1.h + (pad * 3) + resultgrid.h
 End
 
 Public Sub immediate_search(textcontrol As Object)

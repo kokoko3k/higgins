@@ -85,11 +85,6 @@ End
 
 
 
-Public Sub ButtonColor_Click()
-
-
-
-End
 
 Public Sub ColorButton1_Change()
   Applystyle()
@@ -109,9 +104,16 @@ Public Sub Applystyle()
       Else
     FMain.Background = ColorButton1.value
   Endif
+  FMain.padding = CInt(Desktop.scale * (SpinBox1.value / 10))
+  FMain.resize_form()
 End
 
 Public Sub CheckBox1_Click()
   Settings["style/undecorated"] = CheckBox1.value
+  applystyle()
+End
+
+Public Sub SpinBox1_Change()
+  Settings["style/padfactor"] = SpinBox1.value
   applystyle()
 End

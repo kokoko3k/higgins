@@ -12,6 +12,7 @@
   Arrangement = Arrange.Vertical
   Spacing = True
   Margin = True
+  Padding = 20
   { TrayMenu Menu
     Text = ("TrayMenu")
     Visible = False
@@ -70,16 +71,16 @@
       ReadOnly = True
     }
   }
-  { TimerClose #Timer
-    #MoveScaled(69,10)
-  }
   { ResultGrid GridView
-    MoveScaled(5,16,74,31)
+    MoveScaled(3,9,78,35)
     Visible = False
     Font = Font["+1"]
     Tracking = True
     Expand = True
     Mode = Select.Single
     Grid = False
+  }
+  { TimerClose #Timer
+    #MoveScaled(75,10)
   }
 }
