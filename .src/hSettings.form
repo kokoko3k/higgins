@@ -7,12 +7,12 @@
   Persistent = True
   Arrangement = Arrange.Vertical
   Spacing = True
-  Margin = True
   { TabStrip1 TabStrip
     MoveScaled(1,3,79,60)
     Expand = True
     Arrangement = Arrange.Vertical
     Spacing = True
+    Margin = True
     Count = 2
     Index = 0
     Text = ("General")
@@ -68,8 +68,28 @@
           List = [("xterm"), ("lxterminal"), ("xfce4-terminal"), ("gnome-terminal"), ("konsole")]
         }
       }
+      { Separator1 Separator
+        MoveScaled(13,25,39,1)
+      }
+      { Panel6 HBox
+        MoveScaled(0,27,71,5)
+        Margin = True
+        { VBox2 VBox
+          MoveScaled(0,0,4,3)
+          Expand = True
+        }
+        { CheckBox1 CheckBox
+          MoveScaled(17,0,26,4)
+          AutoResize = True
+          Text = ("Undecorated Window")
+        }
+        { VBox1 VBox
+          MoveScaled(60,1,4,3)
+          Expand = True
+        }
+      }
       { Panel5 HBox
-        MoveScaled(1,25,71,5)
+        MoveScaled(0,34,71,5)
         { LabelFormColor Label
           MoveScaled(1,1,17,4)
           Expand = True

@@ -110,3 +110,8 @@ Public Sub Applystyle()
     FMain.Background = ColorButton1.value
   Endif
 End
+
+Public Sub CheckBox1_Click()
+  Settings["style/undecorated"] = CheckBox1.value
+  applystyle()
+End
