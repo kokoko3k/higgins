@@ -23,32 +23,30 @@
       Spacing = True
       Margin = True
       { Panel1 HBox
-        MoveScaled(0,3,75,7)
+        MoveScaled(0,3,75,5)
         Spacing = True
-        Margin = True
         { LabelHotkey Label
           MoveScaled(0,1,17,4)
           Expand = True
           AutoResize = True
           Text = ("Hide/show shortcut:")
-          Alignment = Align.Right
+          Alignment = Align.Left
         }
         { Button1 Button
-          MoveScaled(48,2,25.7143,4)
+          MoveScaled(48,1,25.7143,4)
           Text = ("Change")
           Picture = Picture["icon:/small/shortcut"]
         }
       }
       { Panel4 HBox
-        MoveScaled(-2,11,75,7)
+        MoveScaled(-2,11,75,5)
         Spacing = True
-        Margin = True
         { LabelHotkey2 Label
-          MoveScaled(0,0,12,4)
+          MoveScaled(4,1,12,4)
           Expand = True
           AutoResize = True
           Text = ("Terminal")
-          Alignment = Align.Right
+          Alignment = Align.Left
         }
         { ComboboxTerminalEmulator ComboBox
           MoveScaled(49,0,25.7143,4)
@@ -56,19 +54,38 @@
         }
       }
       { Panel2 HBox
-        MoveScaled(-1,19,75,7)
+        MoveScaled(-1,19,75,5)
         Spacing = True
-        Margin = True
         { LabelHotkey4 Label
-          MoveScaled(1,2,40,4)
+          MoveScaled(1,0,40,4)
           Expand = True
           AutoResize = True
           Text = ("Fallback icons (or current desktop icon theme)")
-          Alignment = Align.Right
+          Alignment = Align.Left
         }
         { ComboboxIconThemes ComboBox
-          MoveScaled(52,2,25.7143,4)
+          MoveScaled(48,0,25.7143,4)
           List = [("xterm"), ("lxterminal"), ("xfce4-terminal"), ("gnome-terminal"), ("konsole")]
+        }
+      }
+      { Panel5 HBox
+        MoveScaled(1,25,71,5)
+        { LabelFormColor Label
+          MoveScaled(1,1,17,4)
+          Expand = True
+          AutoResize = True
+          Text = ("Window color")
+          Alignment = Align.Left
+        }
+        { Button2 Button
+          MoveScaled(39,1,6,4)
+          AutoResize = True
+          Picture = Picture["icon:/small/clear"]
+          Border = False
+        }
+        { ColorButton1 ColorButton
+          MoveScaled(46,1,25.7143,4)
+          Value = Color.Background
         }
       }
     }

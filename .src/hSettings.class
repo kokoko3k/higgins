@@ -83,3 +83,30 @@ Public Sub ComboboxIconThemes_Change()
   Settings.Save()
 End
 
+
+
+Public Sub ButtonColor_Click()
+
+
+
+End
+
+Public Sub ColorButton1_Change()
+  Applystyle()
+  Settings["style/background"] = ColorButton1.value
+  Settings.Save
+End
+
+Public Sub Button2_Click()
+  ColorButton1.value = Color.Background
+  Applystyle()
+End
+
+
+Public Sub Applystyle()
+  If ColorButton1.value = Color.background Then 
+    FMain.Background = -1
+      Else
+    FMain.Background = ColorButton1.value
+  Endif
+End
