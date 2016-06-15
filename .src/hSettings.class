@@ -94,6 +94,8 @@ End
 
 Public Sub Button2_Click()
   ColorButton1.value = Color.Background
+  Settings["style/background"] = ColorButton1.value
+  Settings.Save
   Applystyle()
 End
 
@@ -105,6 +107,11 @@ Public Sub Applystyle()
     FMain.Background = ColorButton1.value
   Endif
   FMain.padding = CInt(Desktop.scale * (SpinBox1.value / 10))
+  If Global.backimage <> Null Then 
+    FMain.picture = Global.backimage.Stretch(FMain.w, FMain.h).picture
+      Else
+    FMain.picture = Null
+  Endif
   FMain.resize_form()
 End
 
@@ -115,5 +122,24 @@ End
 
 Public Sub SpinBox1_Change()
   Settings["style/padfactor"] = SpinBox1.value
+  applystyle()
+End
+
+Public Sub ButtonPicture_Click()
+  Dialog.title = ("Choose a picture")
+  If Not Dialog.OpenFile() Then
+    ButtonPicture.text = Dialog.path
+    Settings["style/backpicture"] = ButtonPicture.text 
+    applystyle()
+  Endif
+End
+
+Public Sub ButtonPicture_Clear()
+  Settings["style/backpicture"] = ""
+  applystyle()
+End
+
+Public Sub ButtonPicture_Activate()
+  Settings["style/backpicture"] = ButtonPicture.text 
   applystyle()
 End

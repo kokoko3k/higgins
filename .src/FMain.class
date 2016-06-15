@@ -1279,3 +1279,7 @@ End
 Public Sub Form_MouseDrag()
   Me.Move(fmain.x + (mouse.x - mouse.StartX), fmain.y + (mouse.y - mouse.Starty))
 End
+
+Public Sub Form_Resize()
+  If Global.backimage <> Null Then FMain.picture = Global.backimage.Stretch(FMain.w, FMain.h).picture
+End

@@ -403,8 +403,8 @@ Path="/tmp/higgins.gambas"
 
 [OpenFile]
 File[1]=".src/FMain.form"
-Active=2
-File[2]=".src/FMain.class:19.1111"
+Active=10
+File[2]=".src/FMain.class:24.27"
 Count=27
 File[3]=".src/MyDesktop.class:21.6"
 File[4]=".src/DesktopApps.class:19.251"
@@ -413,12 +413,12 @@ File[6]="README:0.7"
 File[7]=".src/old_Plugins.class:41.48"
 File[8]=".src/XbindKeys.class:1.14"
 File[9]=".src/hSettings.form"
-File[10]=".src/hSettings.class:0.65"
-File[11]=".src/MySettings.module:0.14"
+File[10]=".src/hSettings.class:30.122"
+File[11]=".src/MySettings.module:22.18"
 File[12]=".src/plugins/plugin_indexer_gui.form"
 File[13]=".src/plugins/plugin_indexer_gui.class:29.155"
 File[14]=".src/plugins/plugin_090_indexer.class:0.81"
-File[15]=".src/Global.module:21.9"
+File[15]=".src/Global.module:28.27"
 File[16]=".src/plugins/plugin_030_executable.class:22.107"
 File[17]=".src/plugins/plugin_050_ls.class:51.71"
 File[18]=".src/plugins/plugin_015_recent.class:15.79"

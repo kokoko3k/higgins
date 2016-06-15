@@ -75,8 +75,10 @@
     MoveScaled(3,9,78,35)
     Visible = False
     Font = Font["+1"]
+    Background = &HFFFFFF&
     Tracking = True
     Expand = True
+    Border = False
     Mode = Select.Single
     Grid = False
   }
