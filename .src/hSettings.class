@@ -102,6 +102,8 @@ End
 
 Public Sub Applystyle()
   Dim wopacity As Integer
+  Dim wopacitygrid As Integer
+  
   If Not Global.fullyloaded Then Return
   'window background 
     If ColorButton1.value = Color.background Then 
@@ -123,13 +125,17 @@ Public Sub Applystyle()
       FMain.picture = Null
       If FMain.transparent = True Then 
         Try FMain.Transparent = False
-        If Error Then Message.Error("Please restart higgins for changes to take effect")
       Endif
     Endif
  
   'inner widgets opacity 
+
   wopacity = CInt(SpinBoxwopacity.value * (255 / 100))
-  FMain.ResultGrid.background = Color.SetAlpha(FMain.ResultGrid.background, 255 - wopacity)
+  wopacitygrid = CInt(wopacity * (wopacity / 255)) 'hack for gambas bug (?)
+  If wopacity = 0 Then wopacity = 1
+  If wopacitygrid = 0 Then wopacitygrid = 1
+
+  FMain.ResultGrid.background = Color.SetAlpha(FMain.ResultGrid.background, 255 - wopacitygrid)
   FMain.buttonconfigure.background = Color.SetAlpha(FMain.buttonconfigure.background, 255 - wopacity)
   FMain.textbox2.background = Color.SetAlpha(FMain.textbox2.background, 255 - wopacity)
   
@@ -175,4 +181,10 @@ End
 Public Sub SpinBoxwopacity_Change()
   Settings["style/inneropacity"] = SpinBoxwopacity.value
   applystyle()
+End
+
+Public Sub ButtonPicture_Change()
+
+  If ButtonPicture.text = "" Then Message.Error("Please restart higgins for changes to take effect")
+
 End
