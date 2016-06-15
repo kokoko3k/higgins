@@ -128,8 +128,18 @@ Public Sub Applystyle()
       Endif
     Endif
  
+ 
+  'text fg/bg
+  Global.text_foreground = colorbuttontextfg.value
+  FMain.ResultGrid.background = colorbuttontextbg.value
+  FMain.ResultGrid.Foreground = Global.text_foreground
+  FMain.textbox2.Background = colorbuttontextbg.value
+  FMain.TextBox2.Foreground = Color.Merge(Global.text_foreground, colorbuttontextbg.value, 0.75)
+  FMain.TextBox1.Foreground = colorbuttontextfg.value
+  
+ 
+ 
   'inner widgets opacity 
-
   wopacity = CInt(SpinBoxwopacity.value * (255 / 100))
   wopacitygrid = CInt(wopacity * (wopacity / 255)) 'hack for gambas bug (?)
   If wopacity = 0 Then wopacity = 1
@@ -184,7 +194,30 @@ Public Sub SpinBoxwopacity_Change()
 End
 
 Public Sub ButtonPicture_Change()
-
   If ButtonPicture.text = "" Then Message.Error("Please restart higgins for changes to take effect")
+End
 
+Public Sub Button3_Click()
+  colorbuttontextfg.value = Color.TextForeground
+  Settings["style/textfg"] = colorbuttontextfg.value
+  applystyle()
+End
+
+Public Sub colorbuttontextfg_Change()
+  Applystyle()
+  Settings["style/textfg"] = colorbuttontextfg.value
+  Settings.Save
+End
+
+
+Public Sub Button4_Click()
+  colorbuttontextbg.value = Color.TextBackground
+  Settings["style/textbg"] = colorbuttontextbg.value
+  applystyle()
+End
+
+Public Sub ColorButtontextbg_Change()
+  Applystyle()
+  Settings["style/textbg"] = colorbuttontextbg.value
+  Settings.Save
 End

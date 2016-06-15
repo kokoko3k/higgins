@@ -133,8 +133,48 @@
           Value = Color.Background
         }
       }
+      { Panel11 HBox
+        MoveScaled(2,14,73,5)
+        { LabelFormColor2 Label
+          MoveScaled(1,1,17,4)
+          Expand = True
+          AutoResize = True
+          Text = ("Text Color")
+          Alignment = Align.Left
+        }
+        { Button3 Button
+          MoveScaled(39,1,6,4)
+          AutoResize = True
+          Picture = Picture["icon:/small/clear"]
+          Border = False
+        }
+        { ColorButtontextfg ColorButton
+          MoveScaled(46,1,25.7143,4)
+          Value = Color.TextForeground
+        }
+      }
+      { Panel12 HBox
+        MoveScaled(1,20,73,5)
+        { LabelFormColor3 Label
+          MoveScaled(1,1,28,4)
+          Expand = True
+          AutoResize = True
+          Text = ("Text background Color")
+          Alignment = Align.Left
+        }
+        { Button4 Button
+          MoveScaled(39,1,6,4)
+          AutoResize = True
+          Picture = Picture["icon:/small/clear"]
+          Border = False
+        }
+        { ColorButtontextbg ColorButton
+          MoveScaled(46,1,25.7143,4)
+          Value = Color.TextBackground
+        }
+      }
       { Panel8 HBox
-        MoveScaled(1,15,73,5)
+        MoveScaled(1,27,73,5)
         Spacing = True
         { LabelHotkey3 Label
           MoveScaled(1,0,40,4)
@@ -149,7 +189,7 @@
         }
       }
       { Panel7 HBox
-        MoveScaled(1,21,73,5)
+        MoveScaled(0,32,73,5)
         Spacing = True
         { LabelPadding Label
           MoveScaled(2,0,40,4)
@@ -164,7 +204,7 @@
         }
       }
       { Panel10 HBox
-        MoveScaled(1,27,73,5)
+        MoveScaled(1,38,73,5)
         Spacing = True
         { LabelWidgetOpacity Label
           MoveScaled(2,0,40,4)

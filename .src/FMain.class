@@ -193,12 +193,11 @@ Public Sub plugin_event_new_results(rResults As RItemT[])
 End
 
 Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
-
   Dim rcResult As New RItemT
 
   If results_list.count = 0 Then Return
   
-
+  resultgrid.Data.Foreground = Global.text_foreground
   rcResult = results_list[Row]
   
   'two lines:
