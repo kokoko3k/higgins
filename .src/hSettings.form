@@ -25,38 +25,38 @@
       Spacing = True
       Margin = True
       { Panel1 HBox
-        MoveScaled(0,3,75,5)
+        MoveScaled(1,3,73,5)
         Spacing = True
         { LabelHotkey Label
-          MoveScaled(0,1,17,4)
+          MoveScaled(1,1,17,4)
           Expand = True
           AutoResize = True
           Text = ("Hide/show shortcut:")
           Alignment = Align.Left
         }
         { Button1 Button
-          MoveScaled(48,1,25.7143,4)
+          MoveScaled(46,1,25.7143,4)
           Text = ("Change")
           Picture = Picture["icon:/small/shortcut"]
         }
       }
       { Panel4 HBox
-        MoveScaled(-2,11,75,5)
+        MoveScaled(1,11,73,5)
         Spacing = True
         { LabelHotkey2 Label
-          MoveScaled(4,1,12,4)
+          MoveScaled(2,1,12,4)
           Expand = True
           AutoResize = True
           Text = ("Terminal")
           Alignment = Align.Left
         }
         { ComboboxTerminalEmulator ComboBox
-          MoveScaled(49,0,25.7143,4)
+          MoveScaled(45,0,25.7143,4)
           List = [("xterm"), ("lxterminal"), ("xfce4-terminal"), ("gnome-terminal"), ("konsole")]
         }
       }
       { Panel2 HBox
-        MoveScaled(-1,19,75,5)
+        MoveScaled(1,19,73,5)
         Spacing = True
         { LabelHotkey4 Label
           MoveScaled(1,0,40,4)
@@ -66,7 +66,7 @@
           Alignment = Align.Left
         }
         { ComboboxIconThemes ComboBox
-          MoveScaled(48,0,25.7143,4)
+          MoveScaled(45,0,25.7143,4)
           List = [("xterm"), ("lxterminal"), ("xfce4-terminal"), ("gnome-terminal"), ("konsole")]
         }
       }
@@ -75,7 +75,7 @@
     Text = ("Plugins")
     Picture = Picture["icon:/small/connect"]
     { Frame1 ScrollView
-      MoveScaled(2,8,54,15)
+      MoveScaled(2,3,74,22)
       Background = Color.TextBackground
       Expand = True
       Arrangement = Arrange.Vertical
@@ -83,7 +83,7 @@
       Margin = True
     }
     { ButtonOpenExtPlugin Button
-      MoveScaled(1,36,44,5)
+      MoveScaled(3,27,73,5)
       Text = ("Open External plugins directory")
       Picture = Picture["icon:/small/shortcut"]
     }

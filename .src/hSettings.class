@@ -109,8 +109,13 @@ Public Sub Applystyle()
   FMain.padding = CInt(Desktop.scale * (SpinBox1.value / 10))
   If Global.backimage <> Null Then 
     FMain.picture = Global.backimage.Stretch(FMain.w, FMain.h).picture
+    FMain.transparent = True
       Else
     FMain.picture = Null
+    If FMain.transparent = True Then 
+      Try FMain.Transparent = False
+      If Error Then Message.Error("Please restart higgins for changes to take effect")
+    Endif
   Endif
   FMain.resize_form()
 End
@@ -130,16 +135,22 @@ Public Sub ButtonPicture_Click()
   If Not Dialog.OpenFile() Then
     ButtonPicture.text = Dialog.path
     Settings["style/backpicture"] = ButtonPicture.text 
+    Try Global.backimage = MySettings.loadBackimage(hSettings.ButtonPicture.text)
+    If Error Then Debug "Could not load background image"
     applystyle()
   Endif
 End
 
 Public Sub ButtonPicture_Clear()
   Settings["style/backpicture"] = ""
+  Global.backimage = Null
   applystyle()
 End
 
 Public Sub ButtonPicture_Activate()
   Settings["style/backpicture"] = ButtonPicture.text 
+  Global.backimage = MySettings.loadBackimage(hSettings.ButtonPicture.text)
+  Try Global.backimage = MySettings.loadBackimage(hSettings.ButtonPicture.text)
+  If Error Then Debug "Could not load background image"
   applystyle()
 End
