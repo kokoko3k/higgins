@@ -1054,6 +1054,8 @@ Public Sub first_init()
   If Newuser Then hSettings.Show()
   
   setup_xbindkeys()
+  global.fullyloaded = True
+  hsettings.Applystyle()
 End
 
 

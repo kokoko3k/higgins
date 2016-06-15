@@ -4,6 +4,7 @@ Public unfocused_hide As Boolean = True
 Public UseTray As Boolean = True
 Public cleartext As Boolean = True
 Public backimage As Image
+Public fullyloaded As Boolean = False
 
 Public Function image_from_svg(svg_file As String, rSize As String) As Image
   Dim hSvg As SvgImage

@@ -101,22 +101,39 @@ End
 
 
 Public Sub Applystyle()
-  If ColorButton1.value = Color.background Then 
-    FMain.Background = -1
-      Else
-    FMain.Background = ColorButton1.value
-  Endif
-  FMain.padding = CInt(Desktop.scale * (SpinBox1.value / 10))
-  If Global.backimage <> Null Then 
-    FMain.picture = Global.backimage.Stretch(FMain.w, FMain.h).picture
-    FMain.transparent = True
-      Else
-    FMain.picture = Null
-    If FMain.transparent = True Then 
-      Try FMain.Transparent = False
-      If Error Then Message.Error("Please restart higgins for changes to take effect")
+  Dim wopacity As Integer
+  If Not Global.fullyloaded Then Return
+  'window background 
+    If ColorButton1.value = Color.background Then 
+      FMain.Background = -1
+        Else
+      FMain.Background = ColorButton1.value
     Endif
-  Endif
+  
+  'padding 
+    FMain.padding = CInt(Desktop.scale * (SpinBox1.value / 10))
+ 
+  'background picture
+    If Global.backimage <> Null Then 
+      If FMain.picture <> Global.backimage.Stretch(FMain.w, FMain.h).picture Then
+        FMain.picture = Global.backimage.Stretch(FMain.w, FMain.h).picture
+        FMain.transparent = True
+      Endif
+        Else
+      FMain.picture = Null
+      If FMain.transparent = True Then 
+        Try FMain.Transparent = False
+        If Error Then Message.Error("Please restart higgins for changes to take effect")
+      Endif
+    Endif
+ 
+  'inner widgets opacity 
+  wopacity = CInt(SpinBoxwopacity.value * (255 / 100))
+  FMain.ResultGrid.background = Color.SetAlpha(FMain.ResultGrid.background, 255 - wopacity)
+  FMain.buttonconfigure.background = Color.SetAlpha(FMain.buttonconfigure.background, 255 - wopacity)
+  FMain.textbox2.background = Color.SetAlpha(FMain.textbox2.background, 255 - wopacity)
+  
+  
   FMain.resize_form()
 End
 
@@ -152,5 +169,10 @@ Public Sub ButtonPicture_Activate()
   Global.backimage = MySettings.loadBackimage(hSettings.ButtonPicture.text)
   Try Global.backimage = MySettings.loadBackimage(hSettings.ButtonPicture.text)
   If Error Then Debug "Could not load background image"
+  applystyle()
+End
+
+Public Sub SpinBoxwopacity_Change()
+  Settings["style/inneropacity"] = SpinBoxwopacity.value
   applystyle()
 End

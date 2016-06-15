@@ -21,6 +21,7 @@ Public Sub load()
     Try Global.backimage = loadBackimage(hSettings.ButtonPicture.text)
     If Error Then Debug "Could not load background image"
   Endif
+  hSettings.SpinBoxwopacity.value = Settings["style/inneropacity", 100]
   hSettings.ApplyStyle()
 End
 

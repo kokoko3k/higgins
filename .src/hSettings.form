@@ -149,7 +149,7 @@
         }
       }
       { Panel7 HBox
-        MoveScaled(1,22,73,5)
+        MoveScaled(1,21,73,5)
         Spacing = True
         { LabelPadding Label
           MoveScaled(2,0,40,4)
@@ -161,6 +161,21 @@
         { SpinBox1 SpinBox
           MoveScaled(47,0,25.7143,4)
           Value = 10
+        }
+      }
+      { Panel10 HBox
+        MoveScaled(1,27,73,5)
+        Spacing = True
+        { LabelWidgetOpacity Label
+          MoveScaled(2,0,40,4)
+          Expand = True
+          AutoResize = True
+          Text = ("Inner widgets opacity")
+          Alignment = Align.Left
+        }
+        { SpinBoxwopacity SpinBox
+          MoveScaled(47,0,25.7143,4)
+          Value = 100
         }
       }
     }
