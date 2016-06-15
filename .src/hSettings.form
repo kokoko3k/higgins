@@ -14,9 +14,10 @@
     Arrangement = Arrange.Vertical
     Spacing = True
     Margin = True
-    Count = 2
+    Count = 3
     Index = 0
     Text = ("General")
+    Picture = Picture["icon:/small/options"]
     { Panel3 ScrollView
       MoveScaled(1,2,76,53)
       Expand = True
@@ -69,11 +70,34 @@
           List = [("xterm"), ("lxterminal"), ("xfce4-terminal"), ("gnome-terminal"), ("konsole")]
         }
       }
-      { Separator1 Separator
-        MoveScaled(18,25,39,1)
-      }
+    }
+    Index = 1
+    Text = ("Plugins")
+    Picture = Picture["icon:/small/connect"]
+    { Frame1 ScrollView
+      MoveScaled(2,8,54,15)
+      Background = Color.TextBackground
+      Expand = True
+      Arrangement = Arrange.Vertical
+      Spacing = True
+      Margin = True
+    }
+    { ButtonOpenExtPlugin Button
+      MoveScaled(1,36,44,5)
+      Text = ("Open External plugins directory")
+      Picture = Picture["icon:/small/shortcut"]
+    }
+    Index = 2
+    Text = ("Style")
+    Picture = Picture["icon:/small/color-picker"]
+    { Panel9 ScrollView
+      MoveScaled(1,1,76,53)
+      Expand = True
+      Arrangement = Arrange.Vertical
+      Spacing = True
+      Margin = True
       { Panel6 HBox
-        MoveScaled(2,27,71,5)
+        MoveScaled(2,2,71,5)
         Margin = True
         { VBox2 VBox
           MoveScaled(0,0,4,3)
@@ -90,7 +114,7 @@
         }
       }
       { Panel5 HBox
-        MoveScaled(1,32,73,5)
+        MoveScaled(2,9,73,5)
         { LabelFormColor Label
           MoveScaled(1,1,17,4)
           Expand = True
@@ -110,7 +134,7 @@
         }
       }
       { Panel8 HBox
-        MoveScaled(1,37,73,5)
+        MoveScaled(1,15,73,5)
         Spacing = True
         { LabelHotkey3 Label
           MoveScaled(1,0,40,4)
@@ -125,7 +149,7 @@
         }
       }
       { Panel7 HBox
-        MoveScaled(1,45,73,5)
+        MoveScaled(1,22,73,5)
         Spacing = True
         { LabelPadding Label
           MoveScaled(2,0,40,4)
@@ -139,21 +163,6 @@
           Value = 10
         }
       }
-    }
-    Index = 1
-    Text = ("Plugins")
-    { Frame1 ScrollView
-      MoveScaled(2,8,54,15)
-      Background = Color.TextBackground
-      Expand = True
-      Arrangement = Arrange.Vertical
-      Spacing = True
-      Margin = True
-    }
-    { ButtonOpenExtPlugin Button
-      MoveScaled(1,36,44,5)
-      Text = ("Open External plugins directory")
-      Picture = Picture["icon:/small/shortcut"]
     }
     Index = 0
   }
