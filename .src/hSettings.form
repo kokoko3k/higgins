@@ -196,18 +196,17 @@
         }
       }
       { Panel7 HBox
-        MoveScaled(0,37,73,5)
+        MoveScaled(0,37,74,5)
         Spacing = True
         { LabelPadding Label
           MoveScaled(2,0,40,4)
           Expand = True
           AutoResize = True
-          Text = ("Window padding multiplier ( 1/10 )")
+          Text = ("Extra window padding")
           Alignment = Align.Left
         }
-        { SpinBox1 SpinBox
-          MoveScaled(47,0,25.7143,4)
-          Value = 10
+        { SpinBoxExtraPad SpinBox
+          MoveScaled(46,1,25.7143,4)
         }
       }
       { Panel10 HBox

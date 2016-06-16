@@ -15,7 +15,7 @@ Public Sub load()
   load_geometry()
   hSettings.ColorButton1.value = Settings["style/background", Color.background]
   hSettings.checkbox1.value = Settings["style/undecorated", CheckBox.false]
-  hSettings.SpinBox1.value = Settings["style/padfactor", 10]
+  hSettings.SpinBoxExtraPad.value = Settings["style/extrapad", 0]
   hSettings.ButtonPicture.text = Settings["style/backpicture", ""]
   If hSettings.ButtonPicture.text <> "" Then 
     Try Global.backimage = loadBackimage(hSettings.ButtonPicture.text)

@@ -114,7 +114,7 @@ Public Sub Applystyle()
     Endif
   
   'padding 
-    FMain.panel2.padding = CInt(Desktop.scale * (SpinBox1.value / 10))
+    FMain.panel2.padding = Desktop.scale + SpinBoxExtraPad.value
  
   'background picture
     If Global.backimage <> Null Then 
@@ -171,8 +171,9 @@ Public Sub CheckBox1_Click()
   FMain.show
 End
 
-Public Sub SpinBox1_Change()
-  Settings["style/padfactor"] = SpinBox1.value
+Public Sub SpinBoxExtraPad_Change()
+  Settings["style/extrapad"] = SpinBoxExtraPad.value
+  FMain.form_Resize()
   applystyle()
 End
 

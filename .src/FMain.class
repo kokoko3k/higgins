@@ -1325,10 +1325,14 @@ Public Sub Form_Resize()
   Dim pad, minh, minw As Integer
   
   pad = Max(panel2.padding, Desktop.scale)
-  'If fmain.margin = True Then pad = pad + (Max(fmain.padding, Desktop.scale) * 3)
+  If fmain.margin = True Then pad = pad + (Max(fmain.padding, Desktop.scale) * 2)
+
   
   minw = fmain.textbox1.Font.TextWidth("_") * 40
   minh = fmain.textbox1.h + pad - 1
+
+Debug minh
+  
   If fmain.w < minw Then fmain.w = minw
   If fmain.h < minh Then fmain.h = minh
 
