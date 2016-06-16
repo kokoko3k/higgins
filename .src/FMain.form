@@ -9,7 +9,6 @@
   Sticky = True
   SkipTaskbar = True
   Arrangement = Arrange.Fill
-  Margin = True
   { TrayMenu Menu
     Text = ("TrayMenu")
     Visible = False
