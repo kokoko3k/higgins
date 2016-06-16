@@ -1317,9 +1317,7 @@ End
 
 
 Public Sub panel2_Mouseup()
-  
   bRresize = False
-  
 End
 
 

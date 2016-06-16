@@ -105,6 +105,7 @@ Public Sub Applystyle()
   Dim wopacitygrid As Integer
   
   If Not Global.fullyloaded Then Return
+  
   'window background 
     If ColorButton1.value = Color.background Then 
       FMain.Background = -1
@@ -131,34 +132,36 @@ Public Sub Applystyle()
  
  
   'text fg/bg
-  Global.text_foreground = colorbuttontextfg.value
-  FMain.ResultGrid.background = colorbuttontextbg.value
-  FMain.ResultGrid.Foreground = Global.text_foreground
-  FMain.textbox2.Background = colorbuttontextbg.value
-  FMain.TextBox2.Foreground = Color.Merge(Global.text_foreground, colorbuttontextbg.value, 0.75)
-  FMain.TextBox1.Foreground = colorbuttontextfg.value
+    Global.text_foreground = colorbuttontextfg.value
+    FMain.ResultGrid.background = colorbuttontextbg.value
+    FMain.ResultGrid.Foreground = Global.text_foreground
+    FMain.textbox2.Background = colorbuttontextbg.value
+    FMain.TextBox2.Foreground = Color.Merge(Global.text_foreground, colorbuttontextbg.value, 0.75)
+    FMain.TextBox1.Foreground = colorbuttontextfg.value
   
  
   'inner widgets opacity 
-  wopacity = CInt(SpinBoxwopacity.value * (255 / 100))
-  wopacitygrid = CInt(wopacity * (wopacity / 255)) 'hack for gambas bug (?)
-  If wopacity = 0 Then wopacity = 1
-  If wopacitygrid = 0 Then wopacitygrid = 1
-
-  FMain.ResultGrid.background = Color.SetAlpha(FMain.ResultGrid.background, 255 - wopacitygrid)
-  FMain.buttonconfigure.background = Color.SetAlpha(FMain.buttonconfigure.background, 255 - wopacity)
-  FMain.textbox2.background = Color.SetAlpha(FMain.textbox2.background, 255 - wopacity)
+    FMain.ResultGrid.border = (SpinBoxwopacity.value >= 75)
+    
+    wopacity = CInt(SpinBoxwopacity.value * (255 / 100))
+    wopacitygrid = CInt(wopacity * (wopacity / 255)) 'hack for gambas bug (?)
+    If wopacity = 0 Then wopacity = 1
+    If wopacitygrid = 0 Then wopacitygrid = 1
+  
+    FMain.ResultGrid.background = Color.SetAlpha(FMain.ResultGrid.background, 255 - wopacitygrid)
+    FMain.buttonconfigure.background = Color.SetAlpha(FMain.buttonconfigure.background, 255 - wopacity)
+    FMain.textbox2.background = Color.SetAlpha(FMain.textbox2.background, 255 - wopacity)
   
  
   'window border drawing
-  If hSettings.CheckBoxborder.value = CheckBox.true Then 
-    FMain.Panel2.border = Border.plain
-      Else
-    FMain.Panel2.border = Border.none
-  Endif
+    If hSettings.CheckBoxborder.value = CheckBox.true Then 
+      FMain.Panel2.border = Border.plain
+        Else
+      FMain.Panel2.border = Border.none
+    Endif
   
 
-  FMain.resize_form()
+  'FMain.resize_form()
 End
 
 Public Sub CheckBox1_Click()
