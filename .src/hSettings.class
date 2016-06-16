@@ -159,23 +159,16 @@ Public Sub Applystyle()
       FMain.Panel2.border = Border.none
     Endif
 
-  'decoration
-    'The main window decoration state doesn't have to be changed at startup
-    'to avoid graphical glitches, so we check if hsettings is visible first.
-    'Note that the following statement is there only to provide visual feedback.
-    'The real work is done inside the form_show() event handler.
-    If hSettings.visible Then
-        FMain.Hide
-        Wait 0.1
-        FMain.show
-    Endif
 
   'FMain.resize_form()
 End
 
 Public Sub CheckBox1_Click()
+  If Not Global.fullyloaded Then Return
   Settings["style/undecorated"] = CheckBox1.value
-  applystyle()
+  FMain.Hide
+  Wait 0.1
+  FMain.show
 End
 
 Public Sub SpinBox1_Change()
