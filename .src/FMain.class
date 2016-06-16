@@ -1157,11 +1157,7 @@ Private Function findSelectable(o As Object) As Object
 End
 
 Public Sub ButtonConfigure_Click()
-
   hSettings.show
-  Wait
-  Me.hide
-
 End
 
 Public Sub indexer_indexing_done(finish_time As Date)
@@ -1274,7 +1270,11 @@ End
 Private Sub Form_LostFocus_workaround()
   If global.unfocused_hide Then
     Wait 0.1
-    If Not (Desktop.ActiveWindow = fmain.Handle) Then form_hide
+    If Not (Desktop.ActiveWindow = fmain.Handle) Then 
+      If Not (Desktop.activewindow = hsettings.handle) Then
+        form_hide
+      Endif
+    Endif
   Endif
 End
 
