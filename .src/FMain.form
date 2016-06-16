@@ -3,16 +3,12 @@
 { Form Form
   MoveScaled(0,0,83,50)
   Visible = False
-  Tracking = True
   Icon = Picture["appicon.png"]
   Persistent = True
   Stacking = Window.Above
   Sticky = True
   SkipTaskbar = True
-  Arrangement = Arrange.Vertical
-  Spacing = True
-  Margin = True
-  Padding = 20
+  Arrangement = Arrange.Fill
   { TrayMenu Menu
     Text = ("TrayMenu")
     Visible = False
@@ -49,40 +45,49 @@
       Picture = Picture["icon:/huge/quit"]
     }
   }
-  { Panel1 Panel
-    MoveScaled(3,3,79,4.5714)
-    Arrangement = Arrange.Horizontal
-    { TextBox1 TextBox
-      MoveScaled(23,0,24,4.5714)
-      Background = &HFF000000&
-      Foreground = Color.TextForeground
-      Expand = True
-    }
-    { ButtonConfigure Button
-      MoveScaled(69,0,4.5714,4)
-      Picture = Picture["icon:/medium/options"]
-    }
-    { TextBox2 TextBox
-      MoveScaled(0,0,20,4.5714)
-      Background = Color.TextBackground
-      Foreground = Color.LightForeground
-      NoTabFocus = True
-      Ignore = True
-      ReadOnly = True
-    }
-  }
-  { ResultGrid GridView
-    MoveScaled(3,9,78,35)
-    Visible = False
-    Font = Font["+1"]
-    Background = &HFFFFFF&
+  { Panel2 Panel
+    MoveScaled(1,3,81,45)
     Tracking = True
-    Expand = True
-    Border = False
-    Mode = Select.Single
-    Grid = False
-  }
-  { TimerClose #Timer
-    #MoveScaled(75,10)
+    Arrangement = Arrange.Vertical
+    Spacing = True
+    Margin = True
+    Padding = 20
+    Border = Border.Plain
+    { Panel1 Panel
+      MoveScaled(0,0,79,4.5714)
+      Arrangement = Arrange.Horizontal
+      { TextBox1 TextBox
+        MoveScaled(23,0,24,4.5714)
+        Background = &HFF000000&
+        Foreground = Color.TextForeground
+        Expand = True
+      }
+      { ButtonConfigure Button
+        MoveScaled(69,0,4.5714,4)
+        Picture = Picture["icon:/medium/options"]
+      }
+      { TextBox2 TextBox
+        MoveScaled(0,0,20,4.5714)
+        Background = Color.TextBackground
+        Foreground = Color.LightForeground
+        NoTabFocus = True
+        Ignore = True
+        ReadOnly = True
+      }
+    }
+    { TimerClose #Timer
+      #MoveScaled(72,7)
+    }
+    { ResultGrid GridView
+      MoveScaled(1,7,78,35)
+      Visible = False
+      Font = Font["+1"]
+      Background = &HFFFFFF&
+      Tracking = True
+      Expand = True
+      Border = False
+      Mode = Select.Single
+      Grid = False
+    }
   }
 }

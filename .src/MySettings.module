@@ -25,7 +25,7 @@ Public Sub load()
   Global.text_foreground = Settings["style/textfg", Color.TextForeground]
   hSettings.colorbuttontextfg.value = Global.text_foreground 
   hSettings.colorbuttontextbg.value = Settings["style/textbg", Color.TextBackground]
-
+  hSettings.CheckBoxborder.value = Settings["style/border", CheckBox.false]
 End
 
 Public Sub loadBackimage(ifile As String) As Image

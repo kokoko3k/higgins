@@ -99,19 +99,23 @@
       { Panel6 HBox
         MoveScaled(2,2,71,5)
         Margin = True
-        { VBox2 VBox
-          MoveScaled(0,0,4,3)
-          Expand = True
-        }
         { CheckBox1 CheckBox
-          MoveScaled(17,0,26,4)
+          MoveScaled(5,0,26,4)
           AutoResize = True
           Text = ("Undecorated Window")
         }
-        { VBox1 VBox
-          MoveScaled(60,1,4,3)
+        { VBox3 VBox
+          MoveScaled(32,1,4,3)
           Expand = True
         }
+        { CheckBoxborder CheckBox
+          MoveScaled(39,0,26,4)
+          AutoResize = True
+          Text = ("Draw window border")
+        }
+      }
+      { Separator1 Separator
+        MoveScaled(13,8,50,1)
       }
       { Panel5 HBox
         MoveScaled(2,9,73,5)
@@ -173,8 +177,11 @@
           Value = Color.TextBackground
         }
       }
+      { Separator2 Separator
+        MoveScaled(13,27,47,1)
+      }
       { Panel8 HBox
-        MoveScaled(1,27,73,5)
+        MoveScaled(1,32,73,5)
         Spacing = True
         { LabelHotkey3 Label
           MoveScaled(1,0,40,4)
@@ -189,7 +196,7 @@
         }
       }
       { Panel7 HBox
-        MoveScaled(0,32,73,5)
+        MoveScaled(0,37,73,5)
         Spacing = True
         { LabelPadding Label
           MoveScaled(2,0,40,4)
@@ -204,7 +211,7 @@
         }
       }
       { Panel10 HBox
-        MoveScaled(1,38,73,5)
+        MoveScaled(1,43,73,5)
         Spacing = True
         { LabelWidgetOpacity Label
           MoveScaled(2,0,40,4)

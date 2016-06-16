@@ -27,10 +27,10 @@ Private plugins_all As String[]
 
 Public Sub resize_form()
   Dim pad As Integer
-  If fmain.padding = 0 Then 
+  If panel2.padding = 0 Then 
     pad = Desktop.scale
       Else
-    pad = fmain.padding
+    pad = panel2.padding
   Endif
   FMain.h = TextBox1.h + (pad * 2)
 End
@@ -139,10 +139,10 @@ Private previous_search As String
 Private Sub showgrid()
   Dim pad As Integer
   Dim minh As Integer = resultgrid.Font.TextHeight("|") * 10
-  If fmain.padding = 0 Then 
+  If panel2.padding = 0 Then 
     pad = Desktop.scale
       Else
-    pad = fmain.padding
+    pad = panel2.padding
   Endif
   FMain.h = TextBox1.h + (pad * 3) + Max(resultgrid.h, minh)
 End
@@ -1278,7 +1278,7 @@ Private Sub Form_LostFocus_workaround()
   Endif
 End
 
-Public Sub Form_MouseDrag()
+Public Sub panel2_MouseDrag()
   Me.Move(fmain.x + (mouse.x - mouse.StartX), fmain.y + (mouse.y - mouse.Starty))
 End
 

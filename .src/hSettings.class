@@ -113,7 +113,8 @@ Public Sub Applystyle()
     Endif
   
   'padding 
-    FMain.padding = CInt(Desktop.scale * (SpinBox1.value / 10))
+    FMain.panel2.padding = CInt(Desktop.scale * (SpinBox1.value / 10))
+    Debug FMain.panel2.padding
  
   'background picture
     If Global.backimage <> Null Then 
@@ -138,7 +139,6 @@ Public Sub Applystyle()
   FMain.TextBox1.Foreground = colorbuttontextfg.value
   
  
- 
   'inner widgets opacity 
   wopacity = CInt(SpinBoxwopacity.value * (255 / 100))
   wopacitygrid = CInt(wopacity * (wopacity / 255)) 'hack for gambas bug (?)
@@ -149,6 +149,13 @@ Public Sub Applystyle()
   FMain.buttonconfigure.background = Color.SetAlpha(FMain.buttonconfigure.background, 255 - wopacity)
   FMain.textbox2.background = Color.SetAlpha(FMain.textbox2.background, 255 - wopacity)
   
+ 
+  'window border drawing
+  If hSettings.CheckBoxborder.value = CheckBox.true Then 
+    FMain.Panel2.border = Border.plain
+      Else
+    FMain.Panel2.border = Border.none
+  Endif
   
   FMain.resize_form()
 End
@@ -220,4 +227,10 @@ Public Sub ColorButtontextbg_Change()
   Applystyle()
   Settings["style/textbg"] = colorbuttontextbg.value
   Settings.Save
+End
+
+Public Sub CheckBoxborder_Click()
+  Settings["style/border"] = CheckBoxborder.value
+  Settings.save
+  Applystyle()
 End
