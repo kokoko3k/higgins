@@ -1289,7 +1289,7 @@ End
 Public bRresize As Boolean = False
 
 Public Sub panel2_mousemove()
-  Dim move As Boolean
+  Dim bResize As Boolean
   Dim ppad As Integer = Max(panel2.padding, Desktop.scale)
   
   If fmain.border = True Then Return 
@@ -1298,9 +1298,10 @@ Public Sub panel2_mousemove()
     bRresize = Mouse.y > (panel2.h - ppad)  
     bRresize = bRresize And Mouse.x > (panel2.w - ppad) 
 
+
     If bRresize Then 
       panel2.mouse = Mouse.SizeNW
-        Else
+        Else 
       panel2.mouse = Mouse.SizeAll
     Endif
     Return
@@ -1331,12 +1332,17 @@ Public Sub Form_Resize()
   minw = fmain.textbox1.Font.TextWidth("_") * 40
   minh = fmain.textbox1.h + pad 
 
-
-  
   If fmain.w < minw Then fmain.w = minw
   If fmain.h < minh Then fmain.h = minh
 
 
   If Global.backimage <> Null Then FMain.picture = Global.backimage.Stretch(FMain.w, FMain.h).picture
-  
+
+End
+
+Public Sub ResultGrid_Enter()
+  panel2.mouse = Mouse.default
+End
+Public Sub buttonconfigure_Enter()
+  panel2.mouse = Mouse.default
 End

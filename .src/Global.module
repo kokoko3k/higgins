@@ -86,3 +86,6 @@ Public Function IsDesktopFile(sFile As String) As Boolean
   Close #hFile  
   Return False
 End
+
+
+
