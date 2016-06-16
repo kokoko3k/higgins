@@ -1278,8 +1278,20 @@ Private Sub Form_LostFocus_workaround()
   Endif
 End
 
-Public Sub panel2_MouseDrag()
-  Me.Move(fmain.x + (mouse.x - mouse.StartX), fmain.y + (mouse.y - mouse.Starty))
+Private mouse_startx As Integer
+Private mouse_starty As Integer
+
+Public Sub panel2_MouseDown()
+  
+  mouse_startx = Mouse.x
+  mouse_starty = Mouse.y
+End
+
+
+Public Sub panel2_mousemove()
+  If Mouse.left Then
+    Me.Move(fmain.x + (mouse.x - mouse_StartX), fmain.y + (mouse.y - mouse_Starty))
+  Endif
 End
 
 Public Sub Form_Resize()
