@@ -6,7 +6,7 @@ Public cleartext As Boolean = True
 Public backimage As Image
 Public text_foreground As Integer = Color.textforeground
 Public fullyloaded As Boolean = False
-
+Public already_shown As Boolean = False
 
 Public Function image_from_svg(svg_file As String, rSize As String) As Image
   Dim hSvg As SvgImage
