@@ -157,6 +157,7 @@ Public Sub Applystyle()
     FMain.Panel2.border = Border.none
   Endif
   
+
   FMain.resize_form()
 End
 
