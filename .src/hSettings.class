@@ -124,7 +124,7 @@ Public Sub Applystyle()
         Else
       FMain.picture = Null
       If FMain.transparent = True Then 
-        Try FMain.Transparent = False
+        Try FMain.Transparent = False 
       Endif
     Endif
  

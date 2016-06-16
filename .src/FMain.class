@@ -138,12 +138,13 @@ Private previous_search As String
 
 Private Sub showgrid()
   Dim pad As Integer
+  Dim minh As Integer = resultgrid.Font.TextHeight("|") * 10
   If fmain.padding = 0 Then 
     pad = Desktop.scale
       Else
     pad = fmain.padding
   Endif
-  FMain.h = TextBox1.h + (pad * 3) + resultgrid.h
+  FMain.h = TextBox1.h + (pad * 3) + Max(resultgrid.h, minh)
 End
 
 Public Sub immediate_search(textcontrol As Object)
