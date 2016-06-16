@@ -115,7 +115,6 @@ Public Sub Applystyle()
   
   'padding 
     FMain.panel2.padding = CInt(Desktop.scale * (SpinBox1.value / 10))
-    Debug FMain.panel2.padding
  
   'background picture
     If Global.backimage <> Null Then 
