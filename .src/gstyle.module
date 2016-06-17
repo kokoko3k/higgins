@@ -1,0 +1,126 @@
+' Gambas module file
+
+' Gambas class file
+
+Public Sub applystyle()
+  Dim wopacity As Integer
+  Dim wopacitygrid As Integer
+  
+  If Not Global.fullyloaded Then Return
+  
+  'window background 
+    If hSettings.ColorButton1.value = Color.background Then 
+      fmain.panel2.Background = -1
+        Else
+      fmain.panel2.Background = hSettings.ColorButton1.value
+    Endif
+
+  
+  'padding 
+    FMain.panel2.padding = Desktop.scale + hSettings.SpinBoxExtraPad.value
+ 
+  'background
+    gstyle.make_background()
+ 
+ 
+ 
+  'text fg/bg
+    Global.text_foreground = hSettings.colorbuttontextfg.value
+    FMain.ResultGrid.background = hSettings.colorbuttontextbg.value
+    FMain.ResultGrid.Foreground = Global.text_foreground
+    FMain.textbox2.Background = hSettings.colorbuttontextbg.value
+    FMain.TextBox2.Foreground = Color.Merge(Global.text_foreground, hSettings.colorbuttontextbg.value, 0.75)
+    FMain.TextBox1.Foreground = hSettings.colorbuttontextfg.value
+  
+ 
+  'inner widgets opacity 
+    FMain.ResultGrid.border = (hSettings.SpinBoxwopacity.value >= 75)
+    
+    wopacity = CInt(hSettings.SpinBoxwopacity.value * (255 / 100))
+    wopacitygrid = CInt(wopacity * (wopacity / 255)) 'hack for gambas bug (?)
+    If wopacity = 0 Then wopacity = 1
+    If wopacitygrid = 0 Then wopacitygrid = 1
+  
+    FMain.ResultGrid.background = Color.SetAlpha(FMain.ResultGrid.background, 255 - wopacitygrid)
+    FMain.buttonconfigure.background = Color.SetAlpha(FMain.buttonconfigure.background, 255 - wopacity)
+    FMain.textbox2.background = Color.SetAlpha(FMain.textbox2.background, 255 - wopacity)
+  
+ 
+  'window border drawing
+    If hSettings.CheckBoxborder.value = CheckBox.true Then 
+      FMain.Panel2.border = Border.plain
+        Else
+      FMain.Panel2.border = Border.none
+    Endif
+
+  'FMain.resize_form()
+End
+
+
+Public Sub make_background()
+  'Se c'è ombra, fai l'ombra con l'eventuale immagine
+  If hSettings.CheckboxShadow.value = CheckBox.true Then
+      fmain.transparent = True
+      fmain.margin = True
+      fmain.padding = hSettings.SpinBoxshadowsize.value
+      FMain.picture = gstyle.shadow(fmain, FMain.padding, hSettings.SpinBoxshadowalpha.value, hSettings.spinboxshadowgamma.value / 10, Global.backimage)
+      Return
+  Endif
+  
+  
+  'se c'è solo immagine, fai solo l'immagine
+  If Global.backimage <> Null Then 
+      FMain.picture = Global.backimage.Stretch(FMain.w, FMain.h).picture
+      FMain.transparent = True
+      Return
+  Endif
+  
+  'altrimenti, resetta:
+    Try FMain.Transparent = False 
+    fmain.margin = False
+    fmain.padding = 0
+    fmain.picture = Null
+
+End
+
+
+Public Function shadow(f As Object, radius As Integer, alpha As Integer, fgamma As Float, Optional i As Image = Null) As Picture
+  Dim s As New Image
+  Dim boxcolor As Integer
+  Dim eraseimg As New Image
+ 
+  'the color of the shadow with alpha parameter into account
+    boxcolor = Color.SetAlpha(Color.black, alpha)
+ 
+  'Make a white image a little bigger than the form:
+    s = s.Resize(f.w + radius, f.h + radius)
+    s = s.Fill(Color.white)
+  
+  'Draw a black box inside the image and smooth the borders according to gamma parameter
+    s.PaintRect(radius, radius, s.w - (radius * 2), s.h - (radius * 2), boxcolor)
+    s = s.fuzzy(radius).gamma(fgamma)
+
+  'make the white color transparent
+    s = s.erase(Color.white)
+  
+  'resize the image to the form size
+    s = s.Stretch(f.w, f.h)
+  
+
+  'erase from the shadow the "content" part or use the image passed as parameter.
+    If i <> Null Then 
+      eraseimg = i.Copy()
+      eraseimg = eraseimg.stretch(s.w - (radius * 2), s.h - (radius * 2))  
+      eraseimg = eraseimg.Resize(s.w - (radius * 2), s.h - (radius * 2))
+
+        Else
+      eraseimg.Resize(s.w - (radius * 2), s.h - (radius * 2))
+      eraseimg.Fill(Color.transparent)
+    Endif
+
+    s.DrawImage(eraseimg, radius, radius)
+  
+  'finally, return the picture
+  Return s.Picture
+  
+End

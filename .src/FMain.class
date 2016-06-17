@@ -1055,7 +1055,7 @@ Public Sub first_init()
   
   setup_xbindkeys()
   global.fullyloaded = True
-  hsettings.Applystyle()
+  gstyle.applystyle()
 End
 
 
@@ -1089,7 +1089,7 @@ Public Sub Form_Show()
 
   fmain.visible = True
   fmain.tag = ""
-  hsettings.make_background()
+  gstyle.make_background()
   resize_form()
   Wait
   TextBox1.SetFocus()
@@ -1345,7 +1345,7 @@ Private fmain_old_h As Integer
 
 Public Sub timer_end_resize_Timer()
   If (fmain_old_w = fmain.w) And (fmain_old_h = fmain.h) Then
-    hsettings.make_background()
+    gstyle.make_background()
   Endif
   timer_end_resize.stop
 End
