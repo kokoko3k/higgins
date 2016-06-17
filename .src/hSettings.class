@@ -108,26 +108,18 @@ Public Sub Applystyle()
   
   'window background 
     If ColorButton1.value = Color.background Then 
-      FMain.Background = -1
+      fmain.panel2.Background = -1
         Else
-      FMain.Background = ColorButton1.value
+      fmain.panel2.Background = ColorButton1.value
     Endif
+
   
   'padding 
     FMain.panel2.padding = Desktop.scale + SpinBoxExtraPad.value
  
-  'background picture
-    If Global.backimage <> Null Then 
-      If FMain.picture <> Global.backimage.Stretch(FMain.w, FMain.h).picture Then
-        FMain.picture = Global.backimage.Stretch(FMain.w, FMain.h).picture
-        FMain.transparent = True
-      Endif
-        Else
-      FMain.picture = Null
-      If FMain.transparent = True Then 
-        Try FMain.Transparent = False 
-      Endif
-    Endif
+  'background
+    make_background()
+ 
  
  
   'text fg/bg
@@ -159,9 +151,37 @@ Public Sub Applystyle()
       FMain.Panel2.border = Border.none
     Endif
 
-
   'FMain.resize_form()
 End
+
+Public Sub make_background()
+  'Se c'è ombra, fai l'ombra con l'eventuale immagine
+  If CheckboxShadow.value = CheckBox.true Then
+      fmain.transparent = True
+      fmain.margin = True
+      fmain.padding = SpinBoxshadowsize.value
+      FMain.picture = Shadow(fmain, FMain.padding, SpinBoxshadowalpha.value, spinboxshadowgamma.value / 10, Global.backimage)
+      Return
+  Endif
+  
+  
+  'se c'è solo immagine, fai solo l'immagine
+  If Global.backimage <> Null Then 
+      FMain.picture = Global.backimage.Stretch(FMain.w, FMain.h).picture
+      FMain.transparent = True
+      Return
+  Endif
+  
+  'altrimenti, resetta:
+    Try FMain.Transparent = False 
+    fmain.margin = False
+    fmain.padding = 0
+    fmain.picture = Null
+
+End
+
+
+
 
 Public Sub CheckBox1_Click()
   If Not Global.fullyloaded Then Return
@@ -240,6 +260,82 @@ Public Sub CheckBoxborder_Click()
   Settings["style/border"] = CheckBoxborder.value
   Settings.save
   Applystyle()
+End
+
+Public Function Shadow(f As Object, radius As Integer, alpha As Integer, fgamma As Float, Optional i As Image = Null) As Picture
+  Dim s As New Image
+  Dim boxcolor As Integer
+  Dim eraseimg As New Image
+ 
+  'the color of the shadow with alpha parameter into account
+    boxcolor = Color.SetAlpha(Color.black, alpha)
+ 
+  'Make a white image a little bigger than the form:
+    s = s.Resize(f.w + radius, f.h + radius)
+    s = s.Fill(Color.white)
+  
+  'Draw a black box inside the image and smooth the borders according to gamma parameter
+    s.PaintRect(radius, radius, s.w - (radius * 2), s.h - (radius * 2), boxcolor)
+    s = s.fuzzy(radius).gamma(fgamma)
+
+  'make the white color transparent
+    s = s.erase(Color.white)
+  
+  'resize the image to the form size
+    s = s.Stretch(f.w, f.h)
+  
+
+  'erase from the shadow the "content" part or use the image passed as parameter.
+    If i <> Null Then 
+      eraseimg = i.Copy()
+      eraseimg = eraseimg.stretch(s.w - (radius * 2), s.h - (radius * 2))  
+      eraseimg = eraseimg.Resize(s.w - (radius * 2), s.h - (radius * 2))
+
+        Else
+      eraseimg.Resize(s.w - (radius * 2), s.h - (radius * 2))
+      eraseimg.Fill(Color.transparent)
+    Endif
+
+    s.DrawImage(eraseimg, radius, radius)
+  
+  'finally, return the picture
+  Return s.Picture
+  
+End
+
+
+Public Sub CheckboxShadow_Click()
+  If Not Global.FULLYLOADED Then Return
+  object.lock(fmain)
+   FMain.Hide
+   Wait 0.1
+   FMain.show
+  Object.Unlock(fmain)
+  Settings["style/shadows"] = CheckboxShadow.value
+  panelshadow.enabled = (CheckboxShadow.value = CheckBox.true)
+  make_background()
+End
+
+Public Sub PanelShadow_Arrange()
+  panelshadow.enabled = (CheckboxShadow.value = CheckBox.true)
+End
+
+Public Sub SpinBoxshadowsize_Change()
+  Settings["style/shadowsize"] = Last.value
+  Settings.save
+  make_background()
+End
+
+Public Sub SpinBoxshadowgamma_Change()
+  Settings["style/shadowgamma"] = Last.value
+  Settings.save
+  make_background()
+End
+
+Public Sub SpinBoxshadowalpha_Change()
+  Settings["style/shadowalpha"] = Last.value
+  Settings.save
+  make_background()
 End
 
 

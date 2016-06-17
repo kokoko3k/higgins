@@ -26,6 +26,14 @@ Public Sub load()
   hSettings.colorbuttontextfg.value = Global.text_foreground 
   hSettings.colorbuttontextbg.value = Settings["style/textbg", Color.TextBackground]
   hSettings.CheckBoxborder.value = Settings["style/border", CheckBox.false]
+  
+  hSettings.CheckboxShadow.value = Settings["style/shadows", CheckBox.false]
+  hSettings.SpinBoxshadowsize.value = Settings["style/shadowsize", 9]
+  hSettings.SpinBoxshadowgamma.value = Settings["style/shadowgamma", -7]
+  hSettings.SpinBoxshadowalpha.value = Settings["style/shadowalpha", 200]
+  
+  
+  
 End
 
 Public Sub loadBackimage(ifile As String) As Image

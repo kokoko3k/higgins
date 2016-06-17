@@ -1,7 +1,7 @@
 # Gambas Form File 3.0
 
 { Form Form
-  MoveScaled(0,0,81,67)
+  MoveScaled(0,0,81,79)
   Text = ("Higgins settings")
   Icon = Picture["icon:/medium/options"]
   Persistent = True
@@ -9,7 +9,7 @@
   Spacing = True
   Margin = True
   { TabStrip1 TabStrip
-    MoveScaled(1,4,79,60)
+    MoveScaled(2,4,79,74)
     Expand = True
     Arrangement = Arrange.Vertical
     Spacing = True
@@ -91,25 +91,24 @@
     Text = ("Style")
     Picture = Picture["icon:/small/color-picker"]
     { Panel9 ScrollView
-      MoveScaled(1,1,76,53)
+      MoveScaled(1,1,76,68)
       Expand = True
       Arrangement = Arrange.Vertical
       Spacing = True
       Margin = True
       { Panel6 HBox
         MoveScaled(2,2,71,5)
-        Margin = True
         { CheckBox1 CheckBox
-          MoveScaled(5,0,26,4)
+          MoveScaled(0,0,24,4)
           AutoResize = True
           Text = ("Undecorated Window")
         }
         { VBox3 VBox
-          MoveScaled(32,1,4,3)
+          MoveScaled(28,1,2,3)
           Expand = True
         }
         { CheckBoxborder CheckBox
-          MoveScaled(39,0,26,4)
+          MoveScaled(43,0,26,4)
           AutoResize = True
           Text = ("Draw window border")
         }
@@ -117,8 +116,56 @@
       { Separator1 Separator
         MoveScaled(13,8,50,1)
       }
+      { HPanel1 Panel
+        MoveScaled(1,9,72,5)
+        Arrangement = Arrange.Vertical
+        { CheckboxShadow CheckBox
+          MoveScaled(1,1,24,4)
+          AutoResize = True
+          Text = ("Shadow")
+        }
+      }
+      { PanelShadow HBox
+        MoveScaled(1,15,72,5)
+        Spacing = True
+        Indent = True
+        { Label1 Label
+          MoveScaled(1,0,4,4)
+          AutoResize = True
+          Text = ("S:")
+        }
+        { SpinBoxshadowsize SpinBox
+          MoveScaled(6,1,9,4)
+          Expand = True
+        }
+        { Label2 Label
+          MoveScaled(17,1,4,4)
+          AutoResize = True
+          Text = ("G:")
+        }
+        { SpinBoxshadowgamma SpinBox
+          MoveScaled(21,1,16,4)
+          Expand = True
+          MinValue = -10
+          MaxValue = 10
+        }
+        { Label3 Label
+          MoveScaled(42,1,4,4)
+          AutoResize = True
+          Text = ("A:")
+        }
+        { SpinBoxshadowalpha SpinBox
+          MoveScaled(52,1,16,4)
+          Expand = True
+          MaxValue = 255
+          Step = 10
+        }
+      }
+      { Separator3 Separator
+        MoveScaled(8,22,58,1)
+      }
       { Panel5 HBox
-        MoveScaled(2,9,73,5)
+        MoveScaled(1,31,73,5)
         { LabelFormColor Label
           MoveScaled(1,1,17,4)
           Expand = True
@@ -138,7 +185,7 @@
         }
       }
       { Panel11 HBox
-        MoveScaled(2,14,73,5)
+        MoveScaled(1,37,73,5)
         { LabelFormColor2 Label
           MoveScaled(1,1,17,4)
           Expand = True
@@ -158,7 +205,7 @@
         }
       }
       { Panel12 HBox
-        MoveScaled(1,20,73,5)
+        MoveScaled(1,43,73,5)
         { LabelFormColor3 Label
           MoveScaled(1,1,28,4)
           Expand = True
@@ -178,10 +225,10 @@
         }
       }
       { Separator2 Separator
-        MoveScaled(13,27,47,1)
+        MoveScaled(14,48,47,1)
       }
       { Panel8 HBox
-        MoveScaled(1,32,73,5)
+        MoveScaled(1,49,73,5)
         Spacing = True
         { LabelHotkey3 Label
           MoveScaled(1,0,40,4)
@@ -196,7 +243,7 @@
         }
       }
       { Panel7 HBox
-        MoveScaled(0,37,74,5)
+        MoveScaled(1,55,73,5)
         Spacing = True
         { LabelPadding Label
           MoveScaled(2,0,40,4)
@@ -210,10 +257,10 @@
         }
       }
       { Panel10 HBox
-        MoveScaled(1,43,73,5)
+        MoveScaled(1,61,73,5)
         Spacing = True
         { LabelWidgetOpacity Label
-          MoveScaled(2,0,40,4)
+          MoveScaled(1,1,40,4)
           Expand = True
           AutoResize = True
           Text = ("Inner widgets opacity")

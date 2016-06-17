@@ -32,7 +32,7 @@ Public Sub resize_form()
       Else
     pad = panel2.padding
   Endif
-  FMain.h = TextBox1.h + (pad * 2)
+  check_min_size(True)
 End
 
 Public textbox1_change_delay As Timer 
@@ -48,12 +48,12 @@ Public Sub TextBox1_Change()
   Dim previous_search As String
   Dim current_search As String
   Dim c As String
-                 'Debug
+
   global.object_lock(TextBox1)
   c = Complete(TextBox1.text)
   TextBox2.text = c
   global.object_unlock(TextBox1)
-                                                  'Debug  
+                                              'Debug  
   Try current_search = TextBox1.text 
   If Error Then Return
                                                   'Debug
@@ -63,7 +63,7 @@ Public Sub TextBox1_Change()
     reinit()
     Return
   Endif
-                                                    'Debug
+                                        'Debug
   Try previous_search = TextBox1.text
   If Error Then Return
                                                     'Debug
@@ -1074,7 +1074,6 @@ Public Sub Form_KeyRelease()
 End
 
 Public Sub Form_Hide()
-
   ResultGrid.UnSelectAll()
   resultgrid.row = -1
   If fmain.tag = "minimized" Then Return
@@ -1090,10 +1089,10 @@ Public Sub Form_Show()
 
   fmain.visible = True
   fmain.tag = ""
+  hsettings.make_background()
   resize_form()
   Wait
   TextBox1.SetFocus()
-  
 End
 
 '-- END FMAIN FUNCTIONS  ---------------------------------------------------------------------
@@ -1322,21 +1321,51 @@ Public Sub panel2_Mouseup()
 End
 
 
-Public Sub Form_Resize()
+Public Sub check_min_size(Optional force As Boolean = False)
   Dim pad, minh, minw As Integer
-  
   pad = Max(panel2.padding, Desktop.scale) * 2
   If fmain.margin = True Then pad = pad + (Max(fmain.padding, Desktop.scale) * 2)
-
   
   minw = fmain.textbox1.Font.TextWidth("_") * 40
   minh = fmain.textbox1.h + pad 
 
-  If fmain.w < minw Then fmain.w = minw
-  If fmain.h < minh Then fmain.h = minh
+  If force Then 
+    fmain.h = minh
+      Else
+    If fmain.w < minw Then fmain.w = minw
+    If fmain.h < minh Then fmain.h = minh
+  Endif 
+End
 
 
-  If Global.backimage <> Null Then FMain.picture = Global.backimage.Stretch(FMain.w, FMain.h).picture
+Public timer_end_resize As Timer 
+
+Private fmain_old_w As Integer
+Private fmain_old_h As Integer
+
+Public Sub timer_end_resize_Timer()
+  If (fmain_old_w = fmain.w) And (fmain_old_h = fmain.h) Then
+    hsettings.make_background()
+  Endif
+  timer_end_resize.stop
+End
+
+
+
+Public Sub Form_Resize()
+  If Not global.fullyloaded Then Return
+
+  object.lock(fmain)
+
+  check_min_size()  
+  Object.unLock(fmain)
+
+  fmain_old_w = fmain.W
+  fmain_old_h = fmain.H
+  
+  timer_end_resize = New Timer As "timer_end_resize"
+  timer_end_resize.delay = 100
+  timer_end_resize.start
 
 End
 
