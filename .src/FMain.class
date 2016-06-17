@@ -1092,8 +1092,8 @@ Public Sub Form_Show()
 
   fmain.visible = True
   fmain.tag = ""
-  gstyle.make_background()
   resize_form()
+  gstyle.make_background()
   Wait
   TextBox1.SetFocus()
 End
