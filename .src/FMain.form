@@ -75,11 +75,8 @@
         ReadOnly = True
       }
     }
-    { TimerClose #Timer
-      #MoveScaled(72,7)
-    }
     { ResultGrid GridView
-      MoveScaled(2,8,60,25)
+      MoveScaled(2,6,60,37)
       Visible = False
       Font = Font["+1"]
       Background = &HFFFFFF&
@@ -88,6 +85,9 @@
       Border = False
       Mode = Select.Single
       Grid = False
+    }
+    { TimerClose #Timer
+      #MoveScaled(72,7)
     }
   }
 }

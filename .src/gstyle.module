@@ -65,9 +65,9 @@ Public Sub make_background()
       fmain.margin = True
       fmain.padding = hSettings.SpinBoxshadowsize.value
       FMain.picture = gstyle.shadow(fmain, FMain.padding, hSettings.SpinBoxshadowalpha.value, hSettings.spinboxshadowgamma.value / 10, Global.backimage, hSettings.ColorButton1.value)
-      Return
+      Return  
   Endif
-  
+
   fmain.margin = False
   fmain.padding = 0
   

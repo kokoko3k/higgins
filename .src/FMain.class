@@ -78,7 +78,7 @@ Public Sub TextBox1_Change()
   If Error Then Return
   If previous_search <> current_search Then Return
                                                     'Debug
-  If resultgrid.Rows.count > 0 Then showgrid
+  'If resultgrid.Rows.count > 0 Then showgrid
 returnlabel:
   If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
 
@@ -138,16 +138,16 @@ Private previous_search As String
 
 Private Sub showgrid()
   Dim pad As Integer
-  Dim minh As Integer = resultgrid.Font.TextHeight("|") * 10
+  Dim minh As Integer = resultgrid.Font.TextHeight("|") * 20
+  If fmain.h > resultgrid.h Then Return 'grid is already visible
+
   If panel2.padding = 0 Then 
     pad = Desktop.scale
       Else
     pad = panel2.padding
   Endif
   FMain.h = TextBox1.h + (pad * 3) + Max(resultgrid.h, minh)
-  Wait
   gstyle.make_background()
-  
 End
 
 Public Sub immediate_search(textcontrol As Object)
@@ -443,12 +443,14 @@ Public Sub TextBox1_KeyPress()
       global.object_unlock(textbox1)
       
     Case Key.down
-      showgrid()
-      ResultGrid.SetFocus()
-      If resultgrid.current = Null Then 
-        Try resultgrid.Rows[0].Selected = True
-      Else
-        Try resultgrid.Rows[1].Selected = True
+      If resultgrid.Rows.count > 0 Then 
+        showgrid()
+        ResultGrid.SetFocus()
+        If resultgrid.current = Null Then 
+          Try resultgrid.Rows[0].Selected = True
+        Else
+          Try resultgrid.Rows[1].Selected = True
+        Endif
       Endif
       
     Case Key.PgDown
@@ -1270,6 +1272,7 @@ Public Sub ResultGrid_LostFocus()
 End
 
 Private Sub Form_LostFocus_workaround()
+Return
   If global.unfocused_hide Then
     Wait 0.1
     If Not (Desktop.ActiveWindow = fmain.Handle) Then 
@@ -1327,15 +1330,15 @@ End
 Public Sub check_min_size(Optional force As Boolean = False)
   Dim pad, minh, minw As Integer
   pad = Max(panel2.padding, Desktop.scale) * 2
-  If fmain.margin Then
-
-     If fmain.padding = 0 Then 
-       pad = pad + (Desktop.scale * 2)
-         Else
-       pad = pad + (fmain.padding * 2)
-     Endif
-   Endif
-  
+   If fmain.margin Then
+   
+      If fmain.padding = 0 Then 
+        pad = pad + (Desktop.scale * 2)
+          Else
+        pad = pad + (fmain.padding * 2)
+      Endif
+    Endif
+  ' 
 
 
   minw = fmain.textbox1.Font.TextWidth("_") * 40
@@ -1386,4 +1389,11 @@ Public Sub ResultGrid_Enter()
 End
 Public Sub buttonconfigure_Enter()
   panel2.mouse = Mouse.default
+End
+
+Public Sub TextBox1_Enter()
+  Last.mouse = Mouse.text
+End
+Public Sub TextBox2_Enter()
+  Last.mouse = Mouse.text
 End
