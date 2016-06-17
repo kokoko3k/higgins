@@ -111,7 +111,7 @@ End
 
 Public Sub SpinBoxExtraPad_Change()
   Settings["style/extrapad"] = SpinBoxExtraPad.value
-  FMain.form_Resize()
+  fmain.check_min_size(True)
   gstyle.applystyle()
 End
 
@@ -125,6 +125,7 @@ Public Sub ButtonPicture_Click()
     Try Global.backimage = MySettings.loadBackimage(hSettings.ButtonPicture.text)
     If Error Then Debug "Could not load background image"
     gstyle.applystyle()
+    gstyle.make_background()
   Endif
 End
 

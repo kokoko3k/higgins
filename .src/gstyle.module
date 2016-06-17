@@ -60,10 +60,11 @@ End
 Public Sub make_background()
   'Se c'è ombra, fai l'ombra con l'eventuale immagine
   If hSettings.CheckboxShadow.value = CheckBox.true Then
+      fmain.panel2.background = -1
       fmain.transparent = True
       fmain.margin = True
       fmain.padding = hSettings.SpinBoxshadowsize.value
-      FMain.picture = gstyle.shadow(fmain, FMain.padding, hSettings.SpinBoxshadowalpha.value, hSettings.spinboxshadowgamma.value / 10, Global.backimage)
+      FMain.picture = gstyle.shadow(fmain, FMain.padding, hSettings.SpinBoxshadowalpha.value, hSettings.spinboxshadowgamma.value / 10, Global.backimage, hSettings.ColorButton1.value)
       Return
   Endif
   
@@ -72,6 +73,7 @@ Public Sub make_background()
   
   'se c'è solo immagine, fai solo l'immagine
   If Global.backimage <> Null Then 
+      fmain.panel2.background = -1
       FMain.picture = Global.backimage.Stretch(FMain.w, FMain.h).picture
       FMain.transparent = True
       Return
@@ -84,7 +86,7 @@ Public Sub make_background()
 End
 
 
-Public Function shadow(f As Object, radius As Integer, alpha As Integer, fgamma As Float, Optional i As Image = Null) As Picture
+Public Function shadow(f As Object, radius As Integer, alpha As Integer, fgamma As Float, Optional i As Image = Null, Optional window_color As Integer = Color.Background) As Picture
   Dim s As New Image
   Dim boxcolor As Integer
   Dim eraseimg As New Image
@@ -115,7 +117,7 @@ Public Function shadow(f As Object, radius As Integer, alpha As Integer, fgamma 
 
         Else
       eraseimg.Resize(s.w - (radius * 2), s.h - (radius * 2))
-      eraseimg.Fill(Color.transparent)
+      eraseimg.Fill(window_color)
     Endif
 
     s.DrawImage(eraseimg, radius, radius)
