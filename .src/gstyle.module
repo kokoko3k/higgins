@@ -67,6 +67,8 @@ Public Sub make_background()
       Return
   Endif
   
+  fmain.margin = False
+  fmain.padding = 0
   
   'se c'è solo immagine, fai solo l'immagine
   If Global.backimage <> Null Then 
@@ -77,8 +79,6 @@ Public Sub make_background()
   
   'altrimenti, resetta:
     Try FMain.Transparent = False 
-    fmain.margin = False
-    fmain.padding = 0
     fmain.picture = Null
 
 End

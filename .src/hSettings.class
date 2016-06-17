@@ -194,6 +194,8 @@ Public Sub CheckboxShadow_Click()
   Settings["style/shadows"] = CheckboxShadow.value
   panelshadow.enabled = (CheckboxShadow.value = CheckBox.true)
   gstyle.make_background()
+  Wait
+  fmain.check_min_size(True)
 End
 
 Public Sub PanelShadow_Arrange()
@@ -203,6 +205,7 @@ End
 Public Sub SpinBoxshadowsize_Change()
   Settings["style/shadowsize"] = Last.value
   Settings.save
+  fmain.check_min_size(True)
   gstyle.make_background()
 End
 

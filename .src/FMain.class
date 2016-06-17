@@ -145,6 +145,9 @@ Private Sub showgrid()
     pad = panel2.padding
   Endif
   FMain.h = TextBox1.h + (pad * 3) + Max(resultgrid.h, minh)
+  Wait
+  gstyle.make_background()
+  
 End
 
 Public Sub immediate_search(textcontrol As Object)
@@ -1324,8 +1327,17 @@ End
 Public Sub check_min_size(Optional force As Boolean = False)
   Dim pad, minh, minw As Integer
   pad = Max(panel2.padding, Desktop.scale) * 2
-  If fmain.margin = True Then pad = pad + (Max(fmain.padding, Desktop.scale) * 2)
+  If fmain.margin Then
+
+     If fmain.padding = 0 Then 
+       pad = pad + (Desktop.scale * 2)
+         Else
+       pad = pad + (fmain.padding * 2)
+     Endif
+   Endif
   
+
+
   minw = fmain.textbox1.Font.TextWidth("_") * 40
   minh = fmain.textbox1.h + pad 
 

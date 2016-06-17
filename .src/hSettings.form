@@ -137,6 +137,7 @@
         { SpinBoxshadowsize SpinBox
           MoveScaled(6,1,9,4)
           Expand = True
+          MinValue = 1
         }
         { Label2 Label
           MoveScaled(17,1,4,4)
