@@ -1272,7 +1272,6 @@ Public Sub ResultGrid_LostFocus()
 End
 
 Private Sub Form_LostFocus_workaround()
-Return
   If global.unfocused_hide Then
     Wait 0.1
     If Not (Desktop.ActiveWindow = fmain.Handle) Then 

@@ -406,17 +406,17 @@ Path="/tmp/higgins.gambas"
 
 [OpenFile]
 File[1]=".src/FMain.form"
-Active=10
-File[2]=".src/FMain.class:33.1091"
+Active=2
+File[2]=".src/FMain.class:15.1265"
 Count=28
 File[3]=".src/MyDesktop.class:2.256"
 File[4]=".src/DesktopApps.class:19.251"
 File[5]="appicon.png"
 File[6]="README:21.15"
 File[7]=".src/old_Plugins.class:41.48"
-File[8]=".src/XbindKeys.class:1.107"
+File[8]=".src/XbindKeys.class:20.81"
 File[9]=".src/hSettings.form"
-File[10]=".src/hSettings.class:0.114"
+File[10]=".src/hSettings.class:22.113"
 File[11]=".src/plugins/plugin_indexer_gui.form"
 File[12]=".src/plugins/plugin_indexer_gui.class:29.155"
 File[13]=".src/plugins/plugin_090_indexer.class:0.81"
@@ -434,7 +434,7 @@ File[24]=".src/plugins/plugin_apps_gui.class:0.96"
 File[25]="External_plugin_locate.sh:0.0"
 File[26]=".src/StartClass.class:18.3"
 File[27]=".src/MySettings.module:37.20"
-File[28]=".src/style.module:0.126"
+File[28]=".src/gstyle.module:0.58"
 
 [Watches]
 Count=0
