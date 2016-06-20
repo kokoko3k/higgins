@@ -138,8 +138,11 @@ Private previous_search As String
 
 Private Sub showgrid()
   Dim pad As Integer
-  Dim minh As Integer = resultgrid.Font.TextHeight("|") * 20
-  If fmain.h > resultgrid.h Then Return 'grid is already visible
+  Dim minh As Integer = resultgrid.Font.TextHeight("|") * 7
+
+  If (fmain.h > resultgrid.h) Then 
+    If fmain.h > minh Then Return 'grid is already visible
+  Endif
 
   If panel2.padding = 0 Then 
     pad = Desktop.scale
@@ -1219,7 +1222,6 @@ Public Function Complete(s As String) As String
   
 returnlabel:
   If out Begins s Then Return out
-  
   Return ""
   
 End
