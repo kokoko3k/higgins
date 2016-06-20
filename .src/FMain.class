@@ -1232,13 +1232,11 @@ Public Sub Form_Leave()
 
 End
 
-Public Sub ResultGrid_MouseMove()
-  Dim iRow As Integer = 0
-  iRow = resultgrid.RowAt(Mouse.y)
-  If iRow <> -1 Then Try resultgrid.Rows[iRow].selected = True
-  
-
-End
+' Public Sub ResultGrid_MouseMove()
+'   Dim iRow As Integer = 0
+'   iRow = resultgrid.RowAt(Mouse.y)
+'   If iRow <> -1 Then Try resultgrid.Rows[iRow].selected = True
+' End
 
 Public Sub Form_Menu()
   Show_main_menu(False)
