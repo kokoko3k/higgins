@@ -31,7 +31,78 @@ Public Sub _new(p_plugin As String, p_iconsize As Integer)
 End
 
 Private Sub trigged(query As String) As Boolean
-  If Len(query) < minchar Then Return False
+  Dim lquery As String = Lower(query)
+  If Left(lquery) = "=" Then Return True
+  If Right(lquery) = "=" Then Return True
+  
+  If Len(lquery) < minchar Then Return False
+
+  If InStr(lquery, "(") Then Return True
+  If InStr(lquery, ")") Then Return True
+
+  If InStr(lquery, "+") Then Return True  
+  If InStr(lquery, "-") Then Return True
+  If InStr(lquery, "*") Then Return True
+  If InStr(lquery, "/") Then Return True
+
+  If InStr(lquery, "^") Then Return True
+  If InStr(lquery, "div") Then Return True
+  If InStr(lquery, "%") Then Return True
+  If InStr(lquery, "mod") Then Return True
+  If InStr(lquery, "/") Then Return True
+  
+  If InStr(lquery, ">") Then Return True
+  If InStr(lquery, "<") Then Return True
+  
+  If InStr(lquery, "and") Then Return True
+  If InStr(lquery, "not") Then Return True
+  If InStr(lquery, "or") Then Return True
+  If InStr(lquery, "xor") Then Return True
+  
+  If InStr(lquery, "abs") Then Return True
+  If InStr(lquery, "ceil") Then Return True
+  If InStr(lquery, "dec") Then Return True
+  If InStr(lquery, "fix") Then Return True
+  If InStr(lquery, "floor") Then Return True
+  If InStr(lquery, "frac") Then Return True
+  If InStr(lquery, "inc") Then Return True
+  If InStr(lquery, "int") Then Return True
+  If InStr(lquery, "max") Then Return True
+  If InStr(lquery, "min") Then Return True
+  If InStr(lquery, "round") Then Return True
+  If InStr(lquery, "sgn") Then Return True
+  
+  If InStr(lquery, "acos") Then Return True
+  If InStr(lquery, "acosh") Then Return True
+  If InStr(lquery, "and") Then Return True
+  If InStr(lquery, "asin") Then Return True
+  If InStr(lquery, "asinh") Then Return True
+  If InStr(lquery, "atan") Then Return True
+  If InStr(lquery, "atan2") Then Return True
+  If InStr(lquery, "atanh") Then Return True
+  If InStr(lquery, "cos") Then Return True
+  If InStr(lquery, "cosh") Then Return True
+  If InStr(lquery, "deg") Then Return True
+  If InStr(lquery, "hyp") Then Return True
+  If InStr(lquery, "mag") Then Return True
+  If InStr(lquery, "pi") Then Return True
+  If InStr(lquery, "sin") Then Return True
+  If InStr(lquery, "sinh") Then Return True
+  If InStr(lquery, "tan") Then Return True
+  If InStr(lquery, "tanh") Then Return True
+  If InStr(lquery, "rad") Then Return True
+  
+  If InStr(lquery, "cbr") Then Return True
+  If InStr(lquery, "exp") Then Return True
+  If InStr(lquery, "exp2") Then Return True
+  If InStr(lquery, "exp10") Then Return True
+  If InStr(lquery, "expm") Then Return True
+  If InStr(lquery, "log") Then Return True
+  If InStr(lquery, "log2") Then Return True
+  If InStr(lquery, "log10") Then Return True
+  If InStr(lquery, "logp") Then Return True
+  If InStr(lquery, "sqr") Then Return True
+  
   'some more controls here (?)
   Return True
 End
@@ -59,7 +130,7 @@ End
 
 Private Function create_item(expr As String) As RItemT
   Dim return_item As RItemT
-  Dim evalued As String
+  Dim evalued As Variant
 
     If expr Begins "=" Then expr = Right(expr, -1)
     If expr Ends "=" Then expr = Left(expr, -1)
@@ -73,6 +144,9 @@ Private Function create_item(expr As String) As RItemT
       return_item.Clipboard_data = evalued
 
       return_item.image_file = "icon:/" & iconsize & "/calculator"
+
+      If evalued = True Then evalued = ("TRUE")
+      If evalued = False Then evalued = ("FALSE")
 
       return_item.Text = evalued
       return_item.SubText = "= " & expr
