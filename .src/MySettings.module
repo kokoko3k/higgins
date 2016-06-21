@@ -31,7 +31,7 @@ Public Sub load()
   hSettings.SpinBoxshadowsize.value = Settings["style/shadowsize", 9]
   hSettings.SpinBoxshadowgamma.value = Settings["style/shadowgamma", -7]
   hSettings.SpinBoxshadowalpha.value = Settings["style/shadowalpha", 200]
-  
+  hSettings.SpinBoxcornerradius.value = Settings["style/cornerradius", 0]
   
   
 End

@@ -66,6 +66,7 @@
       { ButtonConfigure Button
         MoveScaled(69,0,4.5714,4)
         Picture = Picture["icon:/medium/options"]
+        Border = False
       }
       { TextBox2 TextBox
         MoveScaled(0,0,20,4.5714)

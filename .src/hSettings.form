@@ -114,11 +114,122 @@
           Text = ("Draw window border")
         }
       }
-      { Separator1 Separator
-        MoveScaled(13,8,50,1)
+      { Separator3 Separator
+        MoveScaled(5,9,58,1)
+      }
+      { Panel5 HBox
+        MoveScaled(1,10,73,5)
+        { LabelFormColor Label
+          MoveScaled(1,1,17,4)
+          Expand = True
+          AutoResize = True
+          Text = ("Window color")
+          Alignment = Align.Left
+        }
+        { Button2 Button
+          MoveScaled(39,1,6,4)
+          AutoResize = True
+          Picture = Picture["icon:/small/clear"]
+          Border = False
+        }
+        { ColorButton1 ColorButton
+          MoveScaled(46,1,25.7143,4)
+          Value = Color.Background
+        }
+      }
+      { Panel11 HBox
+        MoveScaled(1,15,73,5)
+        { LabelFormColor2 Label
+          MoveScaled(1,1,17,4)
+          Expand = True
+          AutoResize = True
+          Text = ("Text Color")
+          Alignment = Align.Left
+        }
+        { Button3 Button
+          MoveScaled(39,1,6,4)
+          AutoResize = True
+          Picture = Picture["icon:/small/clear"]
+          Border = False
+        }
+        { ColorButtontextfg ColorButton
+          MoveScaled(46,1,25.7143,4)
+          Value = Color.TextForeground
+        }
+      }
+      { Panel12 HBox
+        MoveScaled(1,20,73,5)
+        { LabelFormColor3 Label
+          MoveScaled(1,1,28,4)
+          Expand = True
+          AutoResize = True
+          Text = ("Text background Color")
+          Alignment = Align.Left
+        }
+        { Button4 Button
+          MoveScaled(39,1,6,4)
+          AutoResize = True
+          Picture = Picture["icon:/small/clear"]
+          Border = False
+        }
+        { ColorButtontextbg ColorButton
+          MoveScaled(46,1,25.7143,4)
+          Value = Color.TextBackground
+        }
+      }
+      { Panel7 HBox
+        MoveScaled(2,26,73,5)
+        Spacing = True
+        { LabelPadding Label
+          MoveScaled(2,0,40,4)
+          Expand = True
+          AutoResize = True
+          Text = ("Extra window padding")
+          Alignment = Align.Left
+        }
+        { SpinBoxExtraPad SpinBox
+          MoveScaled(46,1,25.7143,4)
+        }
+      }
+      { Panel10 HBox
+        MoveScaled(1,31,73,5)
+        Spacing = True
+        { LabelWidgetOpacity Label
+          MoveScaled(1,1,40,4)
+          Expand = True
+          AutoResize = True
+          Text = ("Inner widgets opacity")
+          Alignment = Align.Left
+        }
+        { SpinBoxwopacity SpinBox
+          MoveScaled(47,0,25.7143,4)
+          Value = 100
+        }
+      }
+      { Panel8 HBox
+        MoveScaled(0,36,73,5)
+        Spacing = True
+        { LabelHotkey3 Label
+          MoveScaled(1,0,40,4)
+          Expand = True
+          AutoResize = True
+          Text = ("Background picture")
+          Alignment = Align.Left
+        }
+        { ButtonPicture ButtonBox
+          MoveScaled(47,1,25.7143,4)
+          ClearButton = True
+        }
+      }
+      { Separator2 Separator
+        MoveScaled(14,41,47,1)
+      }
+      { Label4 Label
+        MoveScaled(2,42,37,3)
+        Text = ("The followings need a compositor")
       }
       { HPanel1 Panel
-        MoveScaled(1,9,72,5)
+        MoveScaled(2,47,72,5)
         Arrangement = Arrange.Vertical
         { CheckboxShadow CheckBox
           MoveScaled(1,1,24,4)
@@ -127,7 +238,7 @@
         }
       }
       { PanelShadow HBox
-        MoveScaled(1,15,72,5)
+        MoveScaled(2,52,72,5)
         Spacing = True
         Indent = True
         { Label1 Label
@@ -164,114 +275,18 @@
           Step = 10
         }
       }
-      { Separator3 Separator
-        MoveScaled(8,22,58,1)
-      }
-      { Panel5 HBox
-        MoveScaled(1,31,73,5)
-        { LabelFormColor Label
-          MoveScaled(1,1,17,4)
-          Expand = True
-          AutoResize = True
-          Text = ("Window color")
-          Alignment = Align.Left
-        }
-        { Button2 Button
-          MoveScaled(39,1,6,4)
-          AutoResize = True
-          Picture = Picture["icon:/small/clear"]
-          Border = False
-        }
-        { ColorButton1 ColorButton
-          MoveScaled(46,1,25.7143,4)
-          Value = Color.Background
-        }
-      }
-      { Panel11 HBox
-        MoveScaled(1,37,73,5)
-        { LabelFormColor2 Label
-          MoveScaled(1,1,17,4)
-          Expand = True
-          AutoResize = True
-          Text = ("Text Color")
-          Alignment = Align.Left
-        }
-        { Button3 Button
-          MoveScaled(39,1,6,4)
-          AutoResize = True
-          Picture = Picture["icon:/small/clear"]
-          Border = False
-        }
-        { ColorButtontextfg ColorButton
-          MoveScaled(46,1,25.7143,4)
-          Value = Color.TextForeground
-        }
-      }
-      { Panel12 HBox
-        MoveScaled(1,43,73,5)
-        { LabelFormColor3 Label
-          MoveScaled(1,1,28,4)
-          Expand = True
-          AutoResize = True
-          Text = ("Text background Color")
-          Alignment = Align.Left
-        }
-        { Button4 Button
-          MoveScaled(39,1,6,4)
-          AutoResize = True
-          Picture = Picture["icon:/small/clear"]
-          Border = False
-        }
-        { ColorButtontextbg ColorButton
-          MoveScaled(46,1,25.7143,4)
-          Value = Color.TextBackground
-        }
-      }
-      { Separator2 Separator
-        MoveScaled(14,48,47,1)
-      }
-      { Panel8 HBox
-        MoveScaled(1,49,73,5)
+      { PanelShadow2 HBox
+        MoveScaled(2,58,72,5)
         Spacing = True
-        { LabelHotkey3 Label
+        Indent = True
+        { Label5 Label
           MoveScaled(1,0,40,4)
           Expand = True
           AutoResize = True
-          Text = ("Background picture")
-          Alignment = Align.Left
+          Text = ("Window corner round radius")
         }
-        { ButtonPicture ButtonBox
-          MoveScaled(47,1,25.7143,4)
-          ClearButton = True
-        }
-      }
-      { Panel7 HBox
-        MoveScaled(1,55,73,5)
-        Spacing = True
-        { LabelPadding Label
-          MoveScaled(2,0,40,4)
-          Expand = True
-          AutoResize = True
-          Text = ("Extra window padding")
-          Alignment = Align.Left
-        }
-        { SpinBoxExtraPad SpinBox
-          MoveScaled(46,1,25.7143,4)
-        }
-      }
-      { Panel10 HBox
-        MoveScaled(1,61,73,5)
-        Spacing = True
-        { LabelWidgetOpacity Label
-          MoveScaled(1,1,40,4)
-          Expand = True
-          AutoResize = True
-          Text = ("Inner widgets opacity")
-          Alignment = Align.Left
-        }
-        { SpinBoxwopacity SpinBox
-          MoveScaled(47,0,25.7143,4)
-          Value = 100
+        { SpinBoxcornerradius SpinBox
+          MoveScaled(46,0,25.7143,4)
         }
       }
     }

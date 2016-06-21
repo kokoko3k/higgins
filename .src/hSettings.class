@@ -209,7 +209,7 @@ Public Sub SpinBoxshadowsize_Change()
   Settings["style/shadowsize"] = Last.value
   Settings.save
   gstyle.make_background()
-  fmain.check_min_size(True)
+  'fmain.check_min_size(True)
 End
 
 Public Sub SpinBoxshadowgamma_Change()
@@ -225,3 +225,9 @@ Public Sub SpinBoxshadowalpha_Change()
 End
 
 
+
+Public Sub SpinBoxcornerradius_Change()
+  Settings["style/cornerradius"] = Last.value
+  Settings.save
+  gstyle.make_background()
+End

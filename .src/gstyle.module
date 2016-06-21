@@ -57,14 +57,13 @@ End
 
 
 Public Sub make_background(Optional bFast As Boolean = False)
-
+  Dim flat_img As Image
   'make a mean background color of the background picture
   If Global.backimage <> Null Then 
     Try gstyle.color_m_picture = FMain.PictureBoxBackground.Picture.Image.Stretch(5, 5)[2, 2]
       Else
     gstyle.color_m_picture = hSettings.ColorButton1.value
   Endif    
-
 
   'skip slow operations?
   If bFast Then Goto do_fast
@@ -76,7 +75,7 @@ Public Sub make_background(Optional bFast As Boolean = False)
       fmain.padding = hSettings.SpinBoxshadowsize.value
       fmain.PictureBoxBackground.border = False
       'If (fmain.padding * 4) > fmain.h Then fmain.padding = (fmain.h Div 4) - 1
-      FMain.PictureBoxBackground.picture = gstyle.shadow(fmain, FMain.padding, hSettings.SpinBoxshadowalpha.value, hSettings.spinboxshadowgamma.value / 10, Global.backimage, hSettings.ColorButton1.value)
+      FMain.PictureBoxBackground.picture = gstyle.shadow(fmain, FMain.padding, hSettings.SpinBoxshadowalpha.value, hSettings.spinboxshadowgamma.value / 10, Global.backimage, hSettings.ColorButton1.value, hSettings.SpinBoxcornerradius.value)
       Return  
   Endif
 
@@ -86,20 +85,55 @@ Public Sub make_background(Optional bFast As Boolean = False)
   'se c'è solo immagine, fai solo l'immagine
   If Global.backimage <> Null Then 
       fmain.PictureBoxBackground.background = -1
-      FMain.PictureBoxBackground.picture = Global.backimage.Stretch(FMain.w, FMain.h).picture
-      'FMain.transparent = True
+      FMain.PictureBoxBackground.picture = round_img(Global.backimage.Stretch(FMain.w, FMain.h), hSettings.SpinBoxcornerradius.value).picture
       Return
   Endif
+  
+  'plain backgound with rounded corners
+  If hSettings.SpinBoxcornerradius.value <> 0 Then
+   FMain.PictureBoxBackground.background = Color.Transparent
+   flat_img = New Image
+   flat_img.Resize(fmain.PictureBoxBackground.w, fmain.PictureBoxBackground.h)
+   flat_img = flat_img.Resize(fmain.PictureBoxBackground.w, fmain.PictureBoxBackground.h).Fill(gstyle.color_m_picture)
+   fmain.PictureBoxBackground.picture = round_img(flat_img, hSettings.SpinBoxcornerradius.value).picture
+  Endif
+  
   
   do_fast:
   'altrimenti, resetta:
     'Try FMain.Transparent = False 
+    
     FMain.PictureBoxBackground.border = False
     FMain.PictureBoxBackground.background = gstyle.color_m_picture
     FMain.PictureBoxBackground.picture = Null
 End
 
-Public Function shadow(f As Object, radius As Integer, alpha As Integer, fgamma As Float, Optional i As Image = Null, Optional window_color As Integer = Color.Background) As Picture
+Public Sub round_img(i As Image, r As Integer) As Image
+  Dim out_img As New Image
+  out_img.Resize(i.w, i.h)
+
+  Paint.Begin(out_img)
+
+    'clear the image
+    Paint.Brush = Paint.Color(Color.Transparent)
+    Paint.operator = Paint.OperatorClear
+    Paint.Rectangle(0, 0, i.W, i.H, 0)
+    Paint.Fill()
+
+    'draw shaped image
+    Paint.operator = Paint.Operatorover
+    Paint.brush = Paint.Image(i)
+    Paint.Rectangle(0, 0, i.w, i.h, r)
+    Paint.Fill()
+
+  Paint.end
+  
+  Return out_img
+End
+
+
+
+Public Function shadow(f As Object, radius As Integer, alpha As Integer, fgamma As Float, Optional i As Image = Null, Optional window_color As Integer = Color.Background, Optional round_corner As Integer = 0) As Picture
   Dim s As New Image
   Dim boxcolor As Integer
   Dim eraseimg As New Image
@@ -127,13 +161,17 @@ Public Function shadow(f As Object, radius As Integer, alpha As Integer, fgamma 
       eraseimg = i.Copy()
       eraseimg = eraseimg.stretch(s.w - (radius * 2), s.h - (radius * 2))  
       eraseimg = eraseimg.Resize(s.w - (radius * 2), s.h - (radius * 2))
-
         Else
       eraseimg.Resize(s.w - (radius * 2), s.h - (radius * 2))
       eraseimg.Fill(window_color)
     Endif
-
-    s.DrawImage(eraseimg, radius, radius)
+    
+    If round_corner > 0 Then 
+      s.paintimage(round_img(eraseimg, round_corner), radius, radius)
+      's.paintimage(eraseimg, radius, radius)
+        Else
+      s.drawimage(eraseimg, radius, radius)  
+    Endif
   
   'finally, return the picture
   Return s.Picture
