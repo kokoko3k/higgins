@@ -148,9 +148,7 @@ Public Sub SpinBoxwopacity_Change()
   gstyle.applystyle()
 End
 
-Public Sub ButtonPicture_Change()
-  If ButtonPicture.text = "" Then Message.Error("Please restart higgins for changes to take effect")
-End
+
 
 Public Sub Button3_Click()
   colorbuttontextfg.value = Color.TextForeground
@@ -204,6 +202,10 @@ Public Sub PanelShadow_Arrange()
 End
 
 Public Sub SpinBoxshadowsize_Change()
+  If Last.value Mod 2 <> 0 Then
+    Inc Last.value
+    Return
+  Endif
   Settings["style/shadowsize"] = Last.value
   Settings.save
   gstyle.make_background()

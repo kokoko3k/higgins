@@ -1327,28 +1327,34 @@ End
 
 
 Public Sub check_min_size(Optional force As Boolean = False)
-  Dim pad, minh, minw As Integer
-  pad = Max(panel2.padding, Desktop.scale) * 2
-   If fmain.margin Then
-   
-      If fmain.padding = 0 Then 
-        pad = pad + (Desktop.scale * 2)
-          Else
-        pad = pad + (fmain.padding * 2)
-      Endif
-    Endif
-  ' 
-
-
-  minw = fmain.textbox1.Font.TextWidth("_") * 40
-  minh = fmain.textbox1.h + pad 
-
+  Dim minh, minw As Integer
+  minw = fmain_minw()
+  minh = fmain_minh() 
   If force Then 
     fmain.h = minh
       Else
     If fmain.w < minw Then fmain.w = minw
     If fmain.h < minh Then fmain.h = minh
   Endif 
+End
+
+Public Function fmain_minw() As Integer
+  Return fmain.textbox1.Font.TextWidth("_") * 40
+End
+
+Public Function fmain_minh() As Integer
+  Dim pad As Integer
+  pad = Max(panel2.padding, Desktop.scale) * 2
+
+   If fmain.margin Then  
+      If fmain.padding = 0 Then 
+        pad = pad + (Desktop.scale * 2)
+          Else
+        pad = pad + (fmain.padding * 2)
+      Endif
+    Endif
+  Debug fmain.textbox1.h + pad 
+  Return fmain.textbox1.h + pad 
 End
 
 
@@ -1376,10 +1382,15 @@ Public Sub Form_Resize()
 
   fmain_old_w = fmain.W
   fmain_old_h = fmain.H
+
+  PictureBoxBackground.Move(0, 0, fmain.w, fmain.h)
+  gstyle.make_background(True)
   
   timer_end_resize = New Timer As "timer_end_resize"
-  timer_end_resize.delay = 100
+  timer_end_resize.delay = 50 
   timer_end_resize.start
+
+
 
 End
 
@@ -1395,4 +1406,10 @@ Public Sub TextBox1_Enter()
 End
 Public Sub TextBox2_Enter()
   Last.mouse = Mouse.text
+End
+
+Public Sub Form_Arrange()
+
+  PictureBoxBackground.lower
+
 End

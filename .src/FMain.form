@@ -8,6 +8,7 @@
   Stacking = Window.Above
   Sticky = True
   SkipTaskbar = True
+  Transparent = True
   Arrangement = Arrange.Fill
   { TrayMenu Menu
     Text = ("TrayMenu")
@@ -46,7 +47,7 @@
     }
   }
   { Panel2 Panel
-    MoveScaled(0,3,81,45)
+    MoveScaled(1,2,73,38)
     Tracking = True
     Arrangement = Arrange.Vertical
     Spacing = True
@@ -76,7 +77,7 @@
       }
     }
     { ResultGrid GridView
-      MoveScaled(2,6,60,37)
+      MoveScaled(2,6,69,25)
       Visible = False
       Font = Font["+1"]
       Background = &HFFFFFF&
@@ -89,5 +90,11 @@
     { TimerClose #Timer
       #MoveScaled(72,7)
     }
+  }
+  { PictureBoxBackground PictureBox
+    MoveScaled(66,31,16,16)
+    Ignore = True
+    Stretch = True
+    Border = Border.Plain
   }
 }

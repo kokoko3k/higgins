@@ -2,6 +2,9 @@
 
 ' Gambas class file
 
+Public color_m_picture As Integer = Color.transparent
+
+
 Public Sub applystyle()
   Dim wopacity As Integer
   Dim wopacitygrid As Integer
@@ -9,12 +12,8 @@ Public Sub applystyle()
   If Not Global.fullyloaded Then Return
   
   'window background 
-    If hSettings.ColorButton1.value = Color.background Then 
-      fmain.panel2.Background = -1
-        Else
-      fmain.panel2.Background = hSettings.ColorButton1.value
-    Endif
-
+    gstyle.color_m_picture = hSettings.ColorButton1.value
+    fmain.PictureBoxBackground.Background = gstyle.color_m_picture 
   
   'padding 
     FMain.panel2.padding = Desktop.scale + hSettings.SpinBoxExtraPad.value
@@ -57,14 +56,27 @@ Public Sub applystyle()
 End
 
 
-Public Sub make_background()
+Public Sub make_background(Optional bFast As Boolean = False)
+
+  'make a mean background color of the background picture
+  If Global.backimage <> Null Then 
+    Try gstyle.color_m_picture = FMain.PictureBoxBackground.Picture.Image.Stretch(5, 5)[2, 2]
+      Else
+    gstyle.color_m_picture = hSettings.ColorButton1.value
+  Endif    
+
+
+  'skip slow operations?
+  If bFast Then Goto do_fast
+
   'Se c'è ombra, fai l'ombra con l'eventuale immagine
   If hSettings.CheckboxShadow.value = CheckBox.true Then
-      fmain.panel2.background = -1
-      fmain.transparent = True
+      fmain.PictureBoxBackground.background = Color.Transparent
       fmain.margin = True
       fmain.padding = hSettings.SpinBoxshadowsize.value
-      FMain.picture = gstyle.shadow(fmain, FMain.padding, hSettings.SpinBoxshadowalpha.value, hSettings.spinboxshadowgamma.value / 10, Global.backimage, hSettings.ColorButton1.value)
+      fmain.PictureBoxBackground.border = False
+      'If (fmain.padding * 4) > fmain.h Then fmain.padding = (fmain.h Div 4) - 1
+      FMain.PictureBoxBackground.picture = gstyle.shadow(fmain, FMain.padding, hSettings.SpinBoxshadowalpha.value, hSettings.spinboxshadowgamma.value / 10, Global.backimage, hSettings.ColorButton1.value)
       Return  
   Endif
 
@@ -73,18 +85,19 @@ Public Sub make_background()
   
   'se c'è solo immagine, fai solo l'immagine
   If Global.backimage <> Null Then 
-      fmain.panel2.background = -1
-      FMain.picture = Global.backimage.Stretch(FMain.w, FMain.h).picture
-      FMain.transparent = True
+      fmain.PictureBoxBackground.background = -1
+      FMain.PictureBoxBackground.picture = Global.backimage.Stretch(FMain.w, FMain.h).picture
+      'FMain.transparent = True
       Return
   Endif
   
+  do_fast:
   'altrimenti, resetta:
-    Try FMain.Transparent = False 
-    fmain.picture = Null
-
+    'Try FMain.Transparent = False 
+    FMain.PictureBoxBackground.border = False
+    FMain.PictureBoxBackground.background = gstyle.color_m_picture
+    FMain.PictureBoxBackground.picture = Null
 End
-
 
 Public Function shadow(f As Object, radius As Integer, alpha As Integer, fgamma As Float, Optional i As Image = Null, Optional window_color As Integer = Color.Background) As Picture
   Dim s As New Image

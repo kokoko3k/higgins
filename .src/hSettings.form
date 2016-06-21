@@ -5,6 +5,7 @@
   Text = ("Higgins settings")
   Icon = Picture["icon:/medium/options"]
   Persistent = True
+  Stacking = Window.Above
   Arrangement = Arrange.Vertical
   Spacing = True
   Margin = True
@@ -137,7 +138,8 @@
         { SpinBoxshadowsize SpinBox
           MoveScaled(6,1,9,4)
           Expand = True
-          MinValue = 1
+          MinValue = 2
+          Step = 2
         }
         { Label2 Label
           MoveScaled(17,1,4,4)
