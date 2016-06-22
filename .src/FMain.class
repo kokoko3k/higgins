@@ -149,7 +149,10 @@ Private Sub showgrid()
       Else
     pad = panel2.padding
   Endif
-  FMain.h = TextBox1.h + (pad * 3) + Max(resultgrid.h, minh)
+  Stop
+  FMain.h = Max(global.form_open_h, TextBox1.h + (pad * 3) + Max(resultgrid.h, minh))
+  
+  Settings["General/form_open_h"] = fmain.h
   gstyle.make_background()
 End
 
@@ -1336,6 +1339,7 @@ Public Sub check_min_size(Optional force As Boolean = False)
     If fmain.w < minw Then fmain.w = minw
     If fmain.h < minh Then fmain.h = minh
   Endif 
+  
 End
 
 Public Function fmain_minw() As Integer
