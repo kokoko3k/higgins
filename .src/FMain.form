@@ -96,6 +96,5 @@
     MoveScaled(66,31,16,16)
     Ignore = True
     Stretch = True
-    Border = Border.Plain
   }
 }

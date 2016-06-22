@@ -211,7 +211,7 @@ Public Sub SpinBoxshadowsize_Change()
   Settings["style/shadowsize"] = Last.value
   Settings.save
   gstyle.make_background()
-  'fmain.check_min_size(True)
+  fmain.check_min_size()
 End
 
 Public Sub SpinBoxshadowgamma_Change()

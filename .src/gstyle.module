@@ -1,10 +1,5 @@
 ' Gambas module file
 
-' Gambas class file
-
-Public color_m_picture As Integer = Color.transparent
-
-
 Public Sub applystyle()
   Dim wopacity As Integer
   Dim wopacitygrid As Integer
@@ -13,8 +8,7 @@ Public Sub applystyle()
   
   'window background 
     If fmain.PictureBoxBackground.picture <> Null Then
-      Try gstyle.color_m_picture = Global.backimage.Stretch(5, 5)[2, 2]
-      fmain.PictureBoxBackground.Background = gstyle.color_m_picture 
+      fmain.PictureBoxBackground.Background = Color.Default
         Else
       fmain.PictureBoxBackground.Background = hSettings.ColorButton1.value
     Endif
@@ -62,6 +56,7 @@ Public Sub make_background(Optional bFast As Boolean = False)
   Dim flat_img As Image
 
   'Se c'è ombra, fai l'ombra con l'eventuale immagine
+  
   If hSettings.CheckboxShadow.value = CheckBox.true Then
       fmain.PictureBoxBackground.background = Color.Transparent
       fmain.margin = True
@@ -87,65 +82,18 @@ Public Sub make_background(Optional bFast As Boolean = False)
    FMain.PictureBoxBackground.background = Color.Transparent
    flat_img = New Image
    flat_img.Resize(fmain.PictureBoxBackground.w, fmain.PictureBoxBackground.h)
-   flat_img = flat_img.Resize(fmain.PictureBoxBackground.w, fmain.PictureBoxBackground.h).Fill(gstyle.color_m_picture)
+   flat_img = flat_img.Resize(fmain.PictureBoxBackground.w, fmain.PictureBoxBackground.h).Fill(fmain.pictureboxbackground.background)
    fmain.PictureBoxBackground.picture = round_img(flat_img, hSettings.SpinBoxcornerradius.value).picture
   Endif
   
   
-  do_fast:
   'altrimenti, resetta:
     'Try FMain.Transparent = False 
-    
     FMain.PictureBoxBackground.border = False
-    FMain.PictureBoxBackground.background = gstyle.color_m_picture
+    fmain.PictureBoxBackground.Background = hSettings.ColorButton1.value
     FMain.PictureBoxBackground.picture = Null
 End
 
-Public Sub old_make_background(Optional bFast As Boolean = False)
-  Dim flat_img As Image
-
-  'skip slow operations?
-  If bFast Then Goto do_fast
-
-  'Se c'è ombra, fai l'ombra con l'eventuale immagine
-  If hSettings.CheckboxShadow.value = CheckBox.true Then
-      fmain.PictureBoxBackground.background = Color.Transparent
-      fmain.margin = True
-      fmain.padding = hSettings.SpinBoxshadowsize.value
-      fmain.PictureBoxBackground.border = False
-      'If (fmain.padding * 4) > fmain.h Then fmain.padding = (fmain.h Div 4) - 1
-      FMain.PictureBoxBackground.picture = gstyle.shadow(fmain, FMain.padding, hSettings.SpinBoxshadowalpha.value, hSettings.spinboxshadowgamma.value / 10, Global.backimage, hSettings.ColorButton1.value, hSettings.SpinBoxcornerradius.value)
-      Return  
-  Endif
-
-  fmain.margin = False
-  fmain.padding = 0
-  
-  'se c'è solo immagine, fai solo l'immagine
-  If Global.backimage <> Null Then 
-      fmain.PictureBoxBackground.background = -1
-      FMain.PictureBoxBackground.picture = round_img(Global.backimage.Stretch(FMain.w, FMain.h), hSettings.SpinBoxcornerradius.value).picture
-      Return
-  Endif
-  
-  'plain backgound with rounded corners
-  If hSettings.SpinBoxcornerradius.value <> 0 Then
-   FMain.PictureBoxBackground.background = Color.Transparent
-   flat_img = New Image
-   flat_img.Resize(fmain.PictureBoxBackground.w, fmain.PictureBoxBackground.h)
-   flat_img = flat_img.Resize(fmain.PictureBoxBackground.w, fmain.PictureBoxBackground.h).Fill(gstyle.color_m_picture)
-   fmain.PictureBoxBackground.picture = round_img(flat_img, hSettings.SpinBoxcornerradius.value).picture
-  Endif
-  
-  
-  do_fast:
-  'altrimenti, resetta:
-    'Try FMain.Transparent = False 
-    
-    FMain.PictureBoxBackground.border = False
-    FMain.PictureBoxBackground.background = gstyle.color_m_picture
-    FMain.PictureBoxBackground.picture = Null
-End
 
 Public Sub round_img(i As Image, r As Integer) As Image
   Dim out_img As New Image
@@ -170,25 +118,23 @@ Public Sub round_img(i As Image, r As Integer) As Image
   Return out_img
 End
 
+
 Public Function shadow(f As Object, radius As Integer, alpha As Integer, fgamma As Float, Optional i As Image = Null, Optional window_color As Integer = Color.Background, Optional round_corner As Integer = 0, Optional bfast As Boolean = False) As Picture
   Dim s As New Image
   Dim boxcolor As Integer
   Dim eraseimg As New Image
   Dim ff As Integer = 1
-  
   Dim fw, fh As Integer
-  Dim Sradius As Integer
+  Dim sRadius As Integer
+  Dim cRadius As Integer
+
+  'Reduce rendering quality?
+    If bfast Then ff = 2
+    fw = f.w Div ff
+    fh = f.h Div ff
+    Sradius = radius Div ff
+    cRadius = round_corner Div ff
   
-  Dim ar As Float = f.w / f.h
-  
-  If bfast Then ff = 2
-  
-  fw = f.w Div ff
-  fh = f.h Div ff
-  Sradius = radius Div ff
-  
-  
- 
   'the color of the shadow with alpha parameter into account
     boxcolor = Color.SetAlpha(Color.black, alpha)
  
@@ -200,7 +146,6 @@ Public Function shadow(f As Object, radius As Integer, alpha As Integer, fgamma 
     s.PaintRect(Sradius, Sradius, s.w - (Sradius * 2), s.h - (Sradius * 2), boxcolor)
     s = s.fuzzy(Sradius).gamma(fgamma) '********************************
    
-
   'make the white color transparent
      'If Not bfast Then s = s.erase(Color.white) '********************************
      s.Erase(Color.white)
@@ -208,7 +153,6 @@ Public Function shadow(f As Object, radius As Integer, alpha As Integer, fgamma 
   'resize the image to the form size
     s = s.Stretch(fw, fh) '**********************
   
-
   'erase from the shadow the "content" part or use the image passed as parameter.
     If i <> Null Then 
       eraseimg = i.Copy()
@@ -219,56 +163,11 @@ Public Function shadow(f As Object, radius As Integer, alpha As Integer, fgamma 
       eraseimg.Fill(window_color)
     Endif
     
-    If round_corner > 0 Then 
-      s.paintimage(round_img(eraseimg, round_corner), Sradius, Sradius)
+    If cRadius > 0 Then 
+      Try s.paintimage(round_img(eraseimg, cRadius), Sradius, Sradius)
       's.paintimage(eraseimg, radius, radius)
         Else
       s.drawimage(eraseimg, Sradius, Sradius)  
-    Endif
-  
-  'finally, return the picture
-  Return s.Picture
-  
-End
-
-Public Function old_shadow(f As Object, radius As Integer, alpha As Integer, fgamma As Float, Optional i As Image = Null, Optional window_color As Integer = Color.Background, Optional round_corner As Integer = 0) As Picture
-  Dim s As New Image
-  Dim boxcolor As Integer
-  Dim eraseimg As New Image
- 
-  'the color of the shadow with alpha parameter into account
-    boxcolor = Color.SetAlpha(Color.black, alpha)
- 
-  'Make a white image a little bigger than the form:
-    s = s.Resize(f.w + radius, f.h + radius)
-    s = s.Fill(Color.white)
-  
-  'Draw a black box inside the image and smooth the borders according to gamma parameter
-    s.PaintRect(radius, radius, s.w - (radius * 2), s.h - (radius * 2), boxcolor)
-    s = s.fuzzy(radius).gamma(fgamma)
-
-  'make the white color transparent
-    s = s.erase(Color.white)
-  
-  'resize the image to the form size
-    s = s.Stretch(f.w, f.h)
-  
-
-  'erase from the shadow the "content" part or use the image passed as parameter.
-    If i <> Null Then 
-      eraseimg = i.Copy()
-      eraseimg = eraseimg.stretch(s.w - (radius * 2), s.h - (radius * 2))  
-      eraseimg = eraseimg.Resize(s.w - (radius * 2), s.h - (radius * 2))
-        Else
-      eraseimg.Resize(s.w - (radius * 2), s.h - (radius * 2))
-      eraseimg.Fill(window_color)
-    Endif
-    
-    If round_corner > 0 Then 
-      s.paintimage(round_img(eraseimg, round_corner), radius, radius)
-      's.paintimage(eraseimg, radius, radius)
-        Else
-      s.drawimage(eraseimg, radius, radius)  
     Endif
   
   'finally, return the picture
