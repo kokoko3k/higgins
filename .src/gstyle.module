@@ -165,7 +165,13 @@ Public Function shadow(f As Object, radius As Integer, alpha As Integer, fgamma 
   'create the shadow (a little bigger than topimage)
     shadowimage = New Image(fw, fh)
     shadowimage = shadowimage.Fill(Color.white)
-    shadowimage.PaintRect(Sradius, Sradius, shadowimage.w - (Sradius * 2), shadowimage.h - (Sradius * 2), shadowcolor)
+     Paint.Begin(shadowimage)
+       Paint.Brush = Paint.Color(shadowcolor)
+       Paint.Rectangle(Sradius, Sradius, shadowimage.w - (Sradius * 2), shadowimage.h - (Sradius * 2), cRadius)
+       Paint.Fill()
+     Paint.end
+    
+    'shadowimage.PaintRect(Sradius, Sradius, shadowimage.w - (Sradius * 2), shadowimage.h - (Sradius * 2), shadowcolor)
     shadowimage = shadowimage.fuzzy(Sradius).gamma(fgamma) 
     shadowimage.Erase(Color.white)
     
@@ -173,7 +179,7 @@ Public Function shadow(f As Object, radius As Integer, alpha As Integer, fgamma 
     Paint.Begin(shadowimage)
       Paint.Brush = Paint.Color(Color.transparent)
       Paint.operator = Paint.OperatorClear
-      Paint.Rectangle(Sradius, Sradius, shadowimage.w - (Sradius * 2), shadowimage.h - (Sradius * 2), cRadius)
+      Paint.Rectangle(Sradius + 1, Sradius + 1, shadowimage.w - (Sradius * 2) - 2, shadowimage.h - (Sradius * 2) - 2, cRadius)
       Paint.Fill()
     paint.end
     
