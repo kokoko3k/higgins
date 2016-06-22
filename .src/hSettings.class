@@ -115,6 +115,18 @@ Public Sub SpinBoxExtraPad_Change()
   gstyle.applystyle()
 End
 
+Public Sub set_bg_picture()
+  If ComboPicture.Current.text <> "" Then
+      Try Global.backimage = MySettings.loadBackimage(hSettings.ComboPicture.text)
+      If Error Then Debug "Could not load background image"
+        Else
+      Global.backimage = Null
+  Endif
+  gstyle.applystyle()
+  gstyle.make_background()
+  Settings["style/backpicture"] = ComboPicture.text 
+  Settings.save()
+End
 
 
 Public Sub ComboPicture_Click()
@@ -125,28 +137,12 @@ Public Sub ComboPicture_Click()
       Settings["style/backpicture"] = ComboPicture.text 
     Endif
   Endif
-  
-  If ComboPicture.Current.text <> "" Then
-      Try Global.backimage = MySettings.loadBackimage(hSettings.ComboPicture.text)
-      If Error Then Debug "Could not load background image"
-        Else
-      Global.backimage = Null
-  Endif
-  gstyle.applystyle()
-  gstyle.make_background()
+  set_bg_picture()
 End
 
 Public Sub ComboPicture_Clear()
   Settings["style/backpicture"] = ""
   Global.backimage = Null
-  gstyle.applystyle()
-End
-
-Public Sub ComboPicture_Activate()
-  Settings["style/backpicture"] = ComboPicture.text 
-  Global.backimage = MySettings.loadBackimage(hSettings.ComboPicture.text)
-  Try Global.backimage = MySettings.loadBackimage(hSettings.ComboPicture.text)
-  If Error Then Debug "Could not load background image"
   gstyle.applystyle()
 End
 
