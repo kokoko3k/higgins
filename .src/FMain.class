@@ -149,9 +149,8 @@ Private Sub showgrid()
       Else
     pad = panel2.padding
   Endif
-  Stop
+
   FMain.h = Max(global.form_open_h, TextBox1.h + (pad * 3) + Max(resultgrid.h, minh))
-  
   Settings["General/form_open_h"] = fmain.h
   gstyle.make_background()
 End
