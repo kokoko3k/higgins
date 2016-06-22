@@ -1353,7 +1353,6 @@ Public Function fmain_minh() As Integer
         pad = pad + (fmain.padding * 2)
       Endif
     Endif
-  Debug fmain.textbox1.h + pad 
   Return fmain.textbox1.h + pad 
 End
 
@@ -1384,11 +1383,10 @@ Public Sub Form_Resize()
   fmain_old_h = fmain.H
 
   PictureBoxBackground.Move(0, 0, fmain.w, fmain.h)
-  gstyle.make_background(True)
-  
-  timer_end_resize = New Timer As "timer_end_resize"
-  timer_end_resize.delay = 50 
-  timer_end_resize.start
+              gstyle.make_background(True)
+              timer_end_resize = New Timer As "timer_end_resize"
+              timer_end_resize.delay = 50 
+              timer_end_resize.start
 
 
 

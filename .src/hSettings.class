@@ -136,6 +136,7 @@ Public Sub ButtonPicture_Clear()
 End
 
 Public Sub ButtonPicture_Activate()
+Stop
   Settings["style/backpicture"] = ButtonPicture.text 
   Global.backimage = MySettings.loadBackimage(hSettings.ButtonPicture.text)
   Try Global.backimage = MySettings.loadBackimage(hSettings.ButtonPicture.text)
@@ -200,6 +201,7 @@ End
 Public Sub PanelShadow_Arrange()
   panelshadow.enabled = (CheckboxShadow.value = CheckBox.true)
 End
+
 
 Public Sub SpinBoxshadowsize_Change()
   If Last.value Mod 2 <> 0 Then
