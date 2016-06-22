@@ -16,9 +16,9 @@ Public Sub load()
   hSettings.ColorButton1.value = Settings["style/background", Color.background]
   hSettings.checkbox1.value = Settings["style/undecorated", CheckBox.false]
   hSettings.SpinBoxExtraPad.value = Settings["style/extrapad", 0]
-  hSettings.ButtonPicture.text = Settings["style/backpicture", ""]
-  If hSettings.ButtonPicture.text <> "" Then 
-    Try Global.backimage = loadBackimage(hSettings.ButtonPicture.text)
+  hSettings.ComboPicture.text = Settings["style/backpicture", ""]
+  If hSettings.ComboPicture.text <> "" Then 
+    Try Global.backimage = loadBackimage(hSettings.ComboPicture.text)
     If Error Then Debug "Could not load background image"
   Endif
   hSettings.SpinBoxwopacity.value = Settings["style/inneropacity", 100]

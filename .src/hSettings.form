@@ -216,9 +216,8 @@
           Text = ("Background picture")
           Alignment = Align.Left
         }
-        { ButtonPicture ButtonBox
+        { ComboPicture ComboBox
           MoveScaled(47,1,25.7143,4)
-          ClearButton = True
         }
       }
       { Separator2 Separator

@@ -117,29 +117,35 @@ End
 
 
 
-Public Sub ButtonPicture_Click()
-  Dialog.title = ("Choose a picture")
-  If Not Dialog.OpenFile() Then
-    ButtonPicture.text = Dialog.path
-    Settings["style/backpicture"] = ButtonPicture.text 
-    Try Global.backimage = MySettings.loadBackimage(hSettings.ButtonPicture.text)
-    If Error Then Debug "Could not load background image"
-    gstyle.applystyle()
-    gstyle.make_background()
+Public Sub ComboPicture_Click()
+  If ComboPicture.Current.text = ComboPicture[0].text Then 
+    Dialog.title = ("Choose a picture")
+    If Not Dialog.OpenFile() Then
+      ComboPicture.text = Dialog.path
+      Settings["style/backpicture"] = ComboPicture.text 
+    Endif
   Endif
+  
+  If ComboPicture.Current.text <> "" Then
+      Try Global.backimage = MySettings.loadBackimage(hSettings.ComboPicture.text)
+      If Error Then Debug "Could not load background image"
+        Else
+      Global.backimage = Null
+  Endif
+  gstyle.applystyle()
+  gstyle.make_background()
 End
 
-Public Sub ButtonPicture_Clear()
+Public Sub ComboPicture_Clear()
   Settings["style/backpicture"] = ""
   Global.backimage = Null
   gstyle.applystyle()
 End
 
-Public Sub ButtonPicture_Activate()
-Stop
-  Settings["style/backpicture"] = ButtonPicture.text 
-  Global.backimage = MySettings.loadBackimage(hSettings.ButtonPicture.text)
-  Try Global.backimage = MySettings.loadBackimage(hSettings.ButtonPicture.text)
+Public Sub ComboPicture_Activate()
+  Settings["style/backpicture"] = ComboPicture.text 
+  Global.backimage = MySettings.loadBackimage(hSettings.ComboPicture.text)
+  Try Global.backimage = MySettings.loadBackimage(hSettings.ComboPicture.text)
   If Error Then Debug "Could not load background image"
   gstyle.applystyle()
 End
@@ -232,4 +238,16 @@ Public Sub SpinBoxcornerradius_Change()
   Settings["style/cornerradius"] = Last.value
   Settings.save
   gstyle.make_background()
+End
+
+Public Sub ComboPicture_Enter()
+  Dim f As String
+  Dim ptext As String = ComboPicture.text
+  ComboPicture.clear
+  ComboPicture.add("00-Load from file")
+  ComboPicture.Add("")
+  For Each f In Dir("backgrounds").Sort()
+    ComboPicture.Add("backgrounds/" & f)
+  Next
+  ComboPicture.text = ptext
 End
