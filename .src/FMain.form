@@ -8,7 +8,6 @@
   Stacking = Window.Above
   Sticky = True
   SkipTaskbar = True
-  Transparent = True
   Arrangement = Arrange.Fill
   { TrayMenu Menu
     Text = ("TrayMenu")

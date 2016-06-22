@@ -1411,3 +1411,9 @@ Public Sub Form_Arrange()
   PictureBoxBackground.lower
 
 End
+
+Public Sub Form_Open()
+
+  
+
+End
