@@ -244,7 +244,7 @@ Public Sub ComboPicture_Enter()
   Dim f As String
   Dim ptext As String = ComboPicture.text
   ComboPicture.clear
-  ComboPicture.add("00-Load from file")
+  ComboPicture.add(("Load an image"))
   ComboPicture.Add("")
   For Each f In Dir("backgrounds").Sort()
     ComboPicture.Add("backgrounds/" & f)

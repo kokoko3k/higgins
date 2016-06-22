@@ -52,7 +52,6 @@
     Spacing = True
     Margin = True
     Padding = 20
-    Border = Border.Plain
     { Panel1 Panel
       MoveScaled(0,0,79,4.5714)
       Arrangement = Arrange.Horizontal
