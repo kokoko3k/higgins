@@ -1166,6 +1166,7 @@ Private Function findSelectable(o As Object) As Object
 End
 
 Public Sub ButtonConfigure_Click()
+  hSettings.stacking = Window.above
   hSettings.show
 End
 

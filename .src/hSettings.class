@@ -11,6 +11,7 @@ Public Sub Button1_Click()
     Endif
   Endif
   Me.mouse = Mouse.wait
+  hSettings.stacking = Window.normal
   Wait 0.1
   Me.enabled = False
   Wait
