@@ -1093,7 +1093,7 @@ Public Sub Form_Hide()
 End
 
 Public Sub Form_Show()
-  FMain.border = (hsettings.CheckBox1.value <> CheckBox.true)
+  FMain.border = (hsettings.CheckBox1.value <> CheckBox.true)  
   global.object_unlock(TextBox1) '<--?? needed?
   MySettings.load_geometry()
 

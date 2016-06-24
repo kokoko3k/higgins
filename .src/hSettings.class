@@ -197,8 +197,13 @@ Public Sub CheckboxShadow_Click()
   Settings["style/shadows"] = CheckboxShadow.value
   panelshadow.enabled = (CheckboxShadow.value = CheckBox.true)
   gstyle.make_background()
+      Object.Lock(fmain)
+        fmain.border = Not fmain.border
+        fmain.border = Not fmain.border
+      Object.Unlock(fmain)
   Wait
   fmain.check_min_size(True)
+  
 End
 
 Public Sub PanelShadow_Arrange()

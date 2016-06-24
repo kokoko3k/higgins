@@ -58,17 +58,15 @@ Public Sub make_background(Optional bFast As Boolean = False)
 
   'Se c'è ombra, fai l'ombra con l'eventuale immagine
   If hSettings.CheckboxShadow.value = CheckBox.true Then
-      Try FMain.Transparent = True
+      FMain.Transparent = True
       fmain.PictureBoxBackground.Show
       fmain.PictureBoxBackground.background = Color.Transparent
       fmain.margin = True
       fmain.padding = hSettings.SpinBoxshadowsize.value
       fmain.PictureBoxBackground.border = False
-      'If (fmain.padding * 4) > fmain.h Then fmain.padding = (fmain.h Div 4) - 1
       FMain.PictureBoxBackground.picture = gstyle.shadow(fmain, FMain.padding, hSettings.SpinBoxshadowalpha.value, hSettings.spinboxshadowgamma.value / 10, Global.backimage, hSettings.ColorButton1.value, hSettings.SpinBoxcornerradius.value, bfast)
       Return  
   Endif
-
   fmain.margin = False
   fmain.padding = 0
   
@@ -97,7 +95,8 @@ Public Sub make_background(Optional bFast As Boolean = False)
   'altrimenti, resetta:
     If fmain.transparent = True Then
       If restart_message Then
-        If Message.Question("You may need to restart higgins for changes to take effect", "Ok", "Do not show anymore") = 2 Then restart_message = False
+        hSettings.MessageView1.animated = True
+        hSettings.MessageView1.Open("You may need to restart higgins for changes to take effect")
       Endif
     Endif
     Try FMain.Transparent = False 
@@ -149,7 +148,7 @@ Public Function shadow(f As Object, radius As Integer, alpha As Integer, fgamma 
   
   'Reduce rendering quality?
     If bfast Then ff = 2
-    fw = f.w Div ff
+    fw = f.w Div ff 
     fh = f.h Div ff
     Sradius = radius Div ff
     cRadius = round_corner Div ff

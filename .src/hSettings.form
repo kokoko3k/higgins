@@ -9,7 +9,7 @@
   Spacing = True
   Margin = True
   { TabStrip1 TabStrip
-    MoveScaled(2,4,79,74)
+    MoveScaled(1,1,79,71)
     Expand = True
     Arrangement = Arrange.Vertical
     Spacing = True
@@ -91,7 +91,7 @@
     Text = ("Style")
     Picture = Picture["icon:/small/color-picker"]
     { Panel9 ScrollView
-      MoveScaled(1,1,76,68)
+      MoveScaled(1,1,76,65)
       Expand = True
       Arrangement = Arrange.Vertical
       Spacing = True
@@ -289,5 +289,8 @@
       }
     }
     Index = 0
+  }
+  { MessageView1 MessageView
+    MoveScaled(3,72,62,5)
   }
 }
