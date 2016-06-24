@@ -102,7 +102,11 @@ Public Sub make_background(Optional bFast As Boolean = False)
     Endif
     Try FMain.Transparent = False 
     FMain.PictureBoxBackground.border = False
-    fmain.Background = hSettings.ColorButton1.value
+    If hSettings.ColorButton1.value = Color.background Then
+      fmain.Background = -1
+        Else
+      fmain.Background = hSettings.ColorButton1.value
+    Endif
     fmain.PictureBoxBackground.hide
     FMain.PictureBoxBackground.picture = Null
 End
