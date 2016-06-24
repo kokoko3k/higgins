@@ -188,10 +188,10 @@ End
 
 Public Sub CheckboxShadow_Click()
   If Not Global.FULLYLOADED Then Return
-  Settings.save()
   fmain.hide
   Wait
   Settings["style/shadows"] = CheckboxShadow.value
+  Settings.save()
   panelshadow.enabled = (CheckboxShadow.value = CheckBox.true)
   gstyle.make_background()
   fmain.check_min_size(True)

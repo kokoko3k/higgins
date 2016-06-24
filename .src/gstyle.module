@@ -55,8 +55,8 @@ End
 Private restart_message As Boolean = True
 Public Sub make_background(Optional bFast As Boolean = False)
   Dim flat_img As Image
-
-  'Se c'è ombra, fai l'ombra con l'eventuale immagine
+ 
+   'Se c'è ombra, fai l'ombra con l'eventuale immagine
   If hSettings.CheckboxShadow.value = CheckBox.true Then
       FMain.Transparent = True
       fmain.PictureBoxBackground.Show
@@ -162,7 +162,7 @@ Public Function shadow(f As Object, radius As Integer, alpha As Integer, fgamma 
       topimage = topimage.Fill(Window_color)
     Endif
     
-    If cRadius <> 0 Then topimage = round_img(topimage, cRadius)    
+    If cRadius <> 0 Then Try topimage = round_img(topimage, cRadius)    
     
   'create the shadow (a little bigger than topimage)
     shadowimage = New Image(fw, fh)
