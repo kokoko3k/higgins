@@ -188,7 +188,7 @@ End
 
 Public Sub CheckboxShadow_Click()
   If Not Global.FULLYLOADED Then Return
-  MySettings.save()
+  Settings.save()
   fmain.hide
   Wait
   Settings["style/shadows"] = CheckboxShadow.value
@@ -197,6 +197,29 @@ Public Sub CheckboxShadow_Click()
   fmain.check_min_size(True)
   Wait
   fmain.show
+End
+
+Public Sub SpinBoxcornerradius_Change()
+  Dim need_workaround As Boolean = False
+  If Not Global.FULLYLOADED Then Return
+  
+  Settings["style/cornerradius"] = Last.value
+  Settings.save()
+  
+  need_workaround = ((fmain.transparent = False) And (SpinBoxcornerradius.value > 0))
+  need_workaround = need_workaround Or (SpinBoxcornerradius.value = 0)
+    
+  If need_workaround Then 
+    fmain.Hide
+    Wait
+  Endif
+
+  gstyle.make_background()
+
+  If need_workaround Then 
+    Wait
+    fmain.show
+  Endif
 End
 
 
@@ -230,11 +253,7 @@ End
 
 
 
-Public Sub SpinBoxcornerradius_Change()
-  Settings["style/cornerradius"] = Last.value
-  Settings.save
-  gstyle.make_background()
-End
+
 
 Public Sub ComboPicture_Enter()
   Dim f As String
