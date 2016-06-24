@@ -57,7 +57,6 @@ Public Sub make_background(Optional bFast As Boolean = False)
   Dim flat_img As Image
 
   'Se c'è ombra, fai l'ombra con l'eventuale immagine
-  
   If hSettings.CheckboxShadow.value = CheckBox.true Then
       Try FMain.Transparent = True
       fmain.PictureBoxBackground.Show
@@ -103,7 +102,7 @@ Public Sub make_background(Optional bFast As Boolean = False)
     Endif
     Try FMain.Transparent = False 
     FMain.PictureBoxBackground.border = False
-    fmain.PictureBoxBackground.Background = hSettings.ColorButton1.value
+    fmain.Background = hSettings.ColorButton1.value
     fmain.PictureBoxBackground.hide
     FMain.PictureBoxBackground.picture = Null
 End
