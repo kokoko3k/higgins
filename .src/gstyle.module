@@ -17,8 +17,10 @@ Public Sub applystyle()
  
   'background
     gstyle.make_background()
- 
- 
+  
+  'textboxes border
+    fmain.textbox1.border = hSettings.CheckBoxbordertextbox.value = CheckBox.true
+    fmain.textbox2.border = fmain.textbox1.border
  
   'text fg/bg
     Global.text_foreground = hSettings.colorbuttontextfg.value

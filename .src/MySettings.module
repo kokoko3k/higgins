@@ -34,6 +34,7 @@ Public Sub load()
   hSettings.SpinBoxcornerradius.value = Settings["style/cornerradius", 0]
   hSettings.checkBoxbordertextbox.value = Settings["style/inputboxborder", CheckBox.true]
   
+  
   Global.form_open_h = Settings["General/form_open_h", (Screen.h Div 4)]
   
 End
