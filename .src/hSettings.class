@@ -229,6 +229,7 @@ End
 
 
 Public Sub SpinBoxshadowsize_Change()
+  If Not Global.fullyloaded Then Return
   If Last.value Mod 2 <> 0 Then
     Inc Last.value
     Return
@@ -240,12 +241,14 @@ Public Sub SpinBoxshadowsize_Change()
 End
 
 Public Sub SpinBoxshadowgamma_Change()
+  If Not Global.fullyloaded Then Return
   Settings["style/shadowgamma"] = Last.value
   Settings.save
   gstyle.make_background()
 End
 
 Public Sub SpinBoxshadowalpha_Change()
+  If Not Global.fullyloaded Then Return
   Settings["style/shadowalpha"] = Last.value
   Settings.save
   gstyle.make_background()

@@ -52,13 +52,13 @@ Public Sub applystyle()
   'FMain.resize_form()
 End
 
-Private restart_message As Boolean = True
 Public Sub make_background(Optional bFast As Boolean = False)
   Dim flat_img As Image
- 
+  Dim need_compositing As Boolean = False
+  
    'Se c'è ombra, fai l'ombra con l'eventuale immagine
   If hSettings.CheckboxShadow.value = CheckBox.true Then
-      FMain.Transparent = True
+      global.Change_transparency(fmain, True)
       fmain.PictureBoxBackground.Show
       fmain.PictureBoxBackground.background = Color.Transparent
       fmain.margin = True
@@ -72,7 +72,7 @@ Public Sub make_background(Optional bFast As Boolean = False)
   
   'se c'è solo immagine, fai solo l'immagine
   If Global.backimage <> Null Then 
-      Try FMain.Transparent = True
+      global.Change_transparency(fmain, True)
       fmain.PictureBoxBackground.Show
       fmain.PictureBoxBackground.background = -1
       FMain.PictureBoxBackground.picture = round_img(Global.backimage.Stretch(FMain.w, FMain.h), hSettings.SpinBoxcornerradius.value).picture
@@ -81,7 +81,7 @@ Public Sub make_background(Optional bFast As Boolean = False)
   
   'plain backgound with rounded corners
   If hSettings.SpinBoxcornerradius.value <> 0 Then
-    Try FMain.Transparent = True
+    global.Change_transparency(fmain, True)
     fmain.PictureBoxBackground.Show
 
    FMain.PictureBoxBackground.background = Color.Transparent
@@ -89,17 +89,13 @@ Public Sub make_background(Optional bFast As Boolean = False)
    flat_img.Resize(fmain.PictureBoxBackground.w, fmain.PictureBoxBackground.h)
    flat_img = flat_img.Resize(fmain.PictureBoxBackground.w, fmain.PictureBoxBackground.h).Fill(fmain.pictureboxbackground.background)
    fmain.PictureBoxBackground.picture = round_img(flat_img, hSettings.SpinBoxcornerradius.value).picture
+   Return
   Endif
   
-  
+
   'altrimenti, resetta:
-    If fmain.transparent = True Then
-      If restart_message Then
-        hSettings.MessageView1.animated = True
-        hSettings.MessageView1.Open("You may need to restart higgins for changes to take effect")
-      Endif
-    Endif
-    Try FMain.Transparent = False 
+    global.Change_transparency(fmain, False)
+
     FMain.PictureBoxBackground.border = False
     If hSettings.ColorButton1.value = Color.background Then
       fmain.Background = -1
@@ -108,6 +104,7 @@ Public Sub make_background(Optional bFast As Boolean = False)
     Endif
     fmain.PictureBoxBackground.hide
     FMain.PictureBoxBackground.picture = Null
+
 End
 
 

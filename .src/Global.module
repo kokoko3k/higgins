@@ -9,6 +9,21 @@ Public fullyloaded As Boolean = False
 Public already_shown As Boolean = False
 Public form_open_h As Integer = 0
 
+Public Function Change_transparency(f As Form, transparent As Boolean) As Boolean
+  'change the f transparent property and returns if there is an error
+  Dim err As Boolean
+  Try f.transparent = transparent  
+  If Error Then 
+    err = True
+    hSettings.MessageView1.animated = True
+    hSettings.MessageView1.Open("You may need to restart higgins for changes to take effect")
+      Else
+    f.background = -1
+  Endif
+  Return err
+End
+
+
 Public Function image_from_svg(svg_file As String, rSize As String) As Image
   Dim hSvg As SvgImage
   Dim hImage As Image
