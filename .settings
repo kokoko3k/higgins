@@ -185,6 +185,9 @@ Geometry=[76,447,224,280]
 [DebugWindow/d]
 Geometry=[45,0,291,403]
 
+[DebugWindow/desktop_picture]
+Geometry=[47,0,224,280]
+
 [DebugWindow/eraseimg]
 Geometry=[47,0,224,280]
 
@@ -237,7 +240,7 @@ Geometry=[941,119,224,767]
 Geometry=[1294,11,224,280]
 
 [DebugWindow/i]
-Geometry=[86,450,224,280]
+Geometry=[86,449,224,281]
 
 [DebugWindow/i.Picture]
 Geometry=[59,14,224,280]
@@ -401,6 +404,12 @@ Geometry=[45,-3,224,280]
 [DebugWindow/tmp]
 Geometry=[1280,-3,224,280]
 
+[DebugWindow/topimage]
+Geometry=[47,0,224,280]
+
+[DebugWindow/topimage.stretch(fw - (Sradius * 2), fh - (Sradius * 2))]
+Geometry=[47,0,224,280]
+
 [DebugWindow/tree]
 Geometry=[1534,194,422,815]
 
@@ -416,10 +425,16 @@ Path="/tmp/higgins.gambas"
 [OpenFile]
 File[1]=".src/hSettings.form"
 Active=2
-File[2]=".src/hSettings.class:2.13"
-Count=4
+File[2]=".src/hSettings.class:9.275"
+Count=10
 File[3]=".src/FMain.form"
-File[4]=".src/FMain.class:2.1168"
+File[4]=".src/FMain.class:0.1067"
+File[5]=".src/gstyle.module:0.98"
+File[6]=".src/Global.module:7.21"
+File[7]=".src/MyDesktop.class:0.0"
+File[8]=".src/plugins/plugin_090_indexer.class:10.42"
+File[9]=".src/MySettings.module:41.34"
+File[10]=".src/plugins/plugin_apps_gui.form"
 
 [Watches]
 Count=0

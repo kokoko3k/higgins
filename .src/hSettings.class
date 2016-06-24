@@ -269,3 +269,9 @@ Public Sub ComboPicture_Enter()
   Next
   ComboPicture.text = ptext
 End
+
+Public Sub CheckBoxbordertextbox_Click()
+  fmain.textbox1.border = CheckBoxbordertextbox.value = CheckBox.true
+  fmain.textbox2.border = textbox1.border
+  Settings["style/inputboxborder"] = checkBoxbordertextbox.value 
+End

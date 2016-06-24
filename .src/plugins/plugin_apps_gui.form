@@ -25,7 +25,7 @@
         Expand = True
         Spacing = True
         { GridPaths TableView
-          MoveScaled(3,6,23,27)
+          MoveScaled(4,7,23,27)
           Expand = True
           Mode = Select.Single
           Grid = False

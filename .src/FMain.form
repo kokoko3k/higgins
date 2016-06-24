@@ -56,10 +56,11 @@
       MoveScaled(0,0,79,4.5714)
       Arrangement = Arrange.Horizontal
       { TextBox1 TextBox
-        MoveScaled(23,0,24,4.5714)
+        MoveScaled(22,0,24,4.5714)
         Background = &HFF000000&
         Foreground = Color.TextForeground
         Expand = True
+        Border = False
       }
       { ButtonConfigure Button
         MoveScaled(69,0,4.5714,4)
@@ -73,6 +74,7 @@
         NoTabFocus = True
         Ignore = True
         ReadOnly = True
+        Border = False
       }
     }
     { ResultGrid GridView

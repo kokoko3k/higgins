@@ -100,17 +100,23 @@
         MoveScaled(2,2,71,5)
         { CheckBox1 CheckBox
           MoveScaled(0,0,24,4)
+          Expand = True
           AutoResize = True
           Text = ("Undecorated Window")
         }
-        { VBox3 VBox
-          MoveScaled(28,1,2,3)
-          Expand = True
-        }
         { CheckBoxborder CheckBox
-          MoveScaled(43,0,26,4)
+          MoveScaled(23,0,26,4)
+          Expand = True
           AutoResize = True
-          Text = ("Draw window border")
+          Text = ("Window border")
+          Value = CheckBox.True
+        }
+        { CheckBoxbordertextbox CheckBox
+          MoveScaled(48,0,19,4)
+          Expand = True
+          AutoResize = True
+          Text = ("Input field border")
+          Value = CheckBox.True
         }
       }
       { Separator3 Separator
