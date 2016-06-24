@@ -73,7 +73,6 @@
         NoTabFocus = True
         Ignore = True
         ReadOnly = True
-        Border = False
       }
     }
     { ResultGrid GridView
