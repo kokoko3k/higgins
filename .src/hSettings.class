@@ -135,6 +135,7 @@ Public Sub ComboPicture_Click()
     Dialog.title = ("Choose a picture")
     If Not Dialog.OpenFile() Then
       ComboPicture.text = Dialog.path
+      Wait
       Settings["style/backpicture"] = ComboPicture.text 
     Endif
   Endif
