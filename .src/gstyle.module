@@ -12,6 +12,7 @@ Public Sub applystyle()
         Else
       fmain.PictureBoxBackground.Background = hSettings.ColorButton1.value
     Endif
+    
   'padding 
     FMain.panel2.padding = Desktop.scale + hSettings.SpinBoxExtraPad.value
  
@@ -30,7 +31,14 @@ Public Sub applystyle()
     FMain.TextBox2.Foreground = Color.Merge(Global.text_foreground, hSettings.colorbuttontextbg.value, 0.75)
     FMain.TextBox1.Foreground = hSettings.colorbuttontextfg.value
   
- 
+  'scrollbar
+    If hSettings.ScrollbarCheckbox.value = CheckBox.true Then
+      fmain.ResultGrid.scrollbar = Scroll.Vertical
+        Else
+      fmain.ResultGrid.scrollbar = Scroll.none
+    Endif
+  
+
   'inner widgets opacity 
     FMain.ResultGrid.border = (hSettings.SpinBoxwopacity.value >= 75)
     

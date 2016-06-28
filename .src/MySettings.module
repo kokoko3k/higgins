@@ -33,7 +33,7 @@ Public Sub load()
   hSettings.SpinBoxshadowalpha.value = Settings["style/shadowalpha", 200]
   hSettings.SpinBoxcornerradius.value = Settings["style/cornerradius", 0]
   hSettings.checkBoxbordertextbox.value = Settings["style/inputboxborder", CheckBox.true]
-  
+  hSettings.ScrollbarCheckbox.value = Settings["style/scrollbar", CheckBox.false]
   
   Global.form_open_h = Settings["General/form_open_h", (Screen.h Div 4)]
   

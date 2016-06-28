@@ -9,7 +9,7 @@
   Spacing = True
   Margin = True
   { TabStrip1 TabStrip
-    MoveScaled(1,1,79,71)
+    MoveScaled(1,1,79,73)
     Expand = True
     Arrangement = Arrange.Vertical
     Spacing = True
@@ -91,13 +91,14 @@
     Text = ("Style")
     Picture = Picture["icon:/small/color-picker"]
     { Panel9 ScrollView
-      MoveScaled(1,1,76,65)
+      MoveScaled(1,1,76,67)
       Expand = True
       Arrangement = Arrange.Vertical
       Spacing = True
       Margin = True
       { Panel6 HBox
-        MoveScaled(2,2,71,5)
+        MoveScaled(2,1,71,5)
+        Padding = 1
         { CheckBox1 CheckBox
           MoveScaled(0,0,24,4)
           Expand = True
@@ -105,25 +106,35 @@
           Text = ("Undecorated Window")
         }
         { CheckBoxborder CheckBox
-          MoveScaled(23,0,26,4)
+          MoveScaled(40,0,26,4)
           Expand = True
           AutoResize = True
           Text = ("Window border")
           Value = CheckBox.True
         }
+      }
+      { Panel13 HBox
+        MoveScaled(2,7,71,5)
+        Padding = 1
         { CheckBoxbordertextbox CheckBox
-          MoveScaled(48,0,19,4)
+          MoveScaled(0,0,19,4)
           Expand = True
           AutoResize = True
           Text = ("Input field border")
           Value = CheckBox.True
         }
+        { ScrollbarCheckbox CheckBox
+          MoveScaled(38,1,19,4)
+          Expand = True
+          AutoResize = True
+          Text = ("Show scrollbar")
+        }
       }
       { Separator3 Separator
-        MoveScaled(5,9,58,1)
+        MoveScaled(5,13,58,1)
       }
       { Panel5 HBox
-        MoveScaled(1,10,73,5)
+        MoveScaled(1,14,73,5)
         { LabelFormColor Label
           MoveScaled(1,1,17,4)
           Expand = True
@@ -143,7 +154,7 @@
         }
       }
       { Panel11 HBox
-        MoveScaled(1,15,73,5)
+        MoveScaled(1,19,73,5)
         { LabelFormColor2 Label
           MoveScaled(1,1,17,4)
           Expand = True
@@ -163,7 +174,7 @@
         }
       }
       { Panel12 HBox
-        MoveScaled(1,20,73,5)
+        MoveScaled(1,24,73,5)
         { LabelFormColor3 Label
           MoveScaled(1,1,28,4)
           Expand = True
@@ -183,7 +194,7 @@
         }
       }
       { Panel7 HBox
-        MoveScaled(2,26,73,5)
+        MoveScaled(1,29,73,5)
         Spacing = True
         { LabelPadding Label
           MoveScaled(2,0,40,4)
@@ -197,7 +208,7 @@
         }
       }
       { Panel10 HBox
-        MoveScaled(1,31,73,5)
+        MoveScaled(1,34,73,5)
         Spacing = True
         { LabelWidgetOpacity Label
           MoveScaled(1,1,40,4)
@@ -212,10 +223,10 @@
         }
       }
       { Panel8 HBox
-        MoveScaled(0,36,73,5)
+        MoveScaled(1,39,73,5)
         Spacing = True
         { LabelHotkey3 Label
-          MoveScaled(1,0,40,4)
+          MoveScaled(1,1,40,4)
           Expand = True
           AutoResize = True
           Text = ("Background picture")
@@ -226,14 +237,14 @@
         }
       }
       { Separator2 Separator
-        MoveScaled(14,41,47,1)
+        MoveScaled(14,44,47,1)
       }
       { Label4 Label
-        MoveScaled(2,42,37,3)
+        MoveScaled(2,46,37,3)
         Text = ("The followings need a compositor")
       }
       { HPanel1 Panel
-        MoveScaled(2,47,72,5)
+        MoveScaled(2,50,72,5)
         Arrangement = Arrange.Vertical
         { CheckboxShadow CheckBox
           MoveScaled(1,1,24,4)
@@ -242,7 +253,7 @@
         }
       }
       { PanelShadow HBox
-        MoveScaled(2,52,72,5)
+        MoveScaled(2,55,72,5)
         Spacing = True
         Indent = True
         { Label1 Label
@@ -280,7 +291,7 @@
         }
       }
       { PanelShadow2 HBox
-        MoveScaled(2,58,72,5)
+        MoveScaled(2,60,72,5)
         Spacing = True
         Indent = True
         { Label5 Label
@@ -297,6 +308,6 @@
     Index = 0
   }
   { MessageView1 MessageView
-    MoveScaled(3,72,62,5)
+    MoveScaled(0,74,62,5)
   }
 }

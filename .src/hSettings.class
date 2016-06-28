@@ -185,6 +185,12 @@ Public Sub CheckBoxborder_Click()
   gstyle.applystyle()
 End
 
+Public Sub ScrollbarCheckbox_Click()
+  Settings["style/scrollbar"] = ScrollbarCheckbox.value
+  Settings.save
+  gstyle.applystyle()
+End
+
 
 Public Sub CheckboxShadow_Click()
   If Not Global.FULLYLOADED Then Return
@@ -275,3 +281,5 @@ Public Sub CheckBoxbordertextbox_Click()
   Settings.Save()
   gstyle.applystyle()
 End
+
+
