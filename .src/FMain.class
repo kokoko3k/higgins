@@ -206,7 +206,7 @@ Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
 
   If results_list.count = 0 Then Return
   
-  resultgrid.Data.Foreground = Global.text_foreground
+  resultgrid.Data.Foreground = Global.textgrid_foreground
   rcResult = results_list[Row]
   
   'two lines:

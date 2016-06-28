@@ -22,9 +22,13 @@ Public Sub load()
     If Error Then Debug "Could not load background image"
   Endif
   hSettings.SpinBoxwopacity.value = Settings["style/inneropacity", 100]
+  hSettings.SpinBoxwopacitygrid.value = Settings["style/inneropacitygrid", 100]
   Global.text_foreground = Settings["style/textfg", Color.TextForeground]
+  Global.textgrid_foreground = Settings["style/textgridfg", Color.TextForeground]
   hSettings.colorbuttontextfg.value = Global.text_foreground 
+  hSettings.colorbuttontextgridfg.value = Global.textgrid_foreground 
   hSettings.colorbuttontextbg.value = Settings["style/textbg", Color.TextBackground]
+  hSettings.colorbuttongridbg.value = Settings["style/gridbg", Color.TextBackground]
   hSettings.CheckBoxborder.value = Settings["style/border", CheckBox.false]
   
   hSettings.CheckboxShadow.value = Settings["style/shadows", CheckBox.false]

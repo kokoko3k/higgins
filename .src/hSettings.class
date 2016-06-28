@@ -152,13 +152,16 @@ Public Sub SpinBoxwopacity_Change()
   gstyle.applystyle()
 End
 
-
-
-Public Sub Button3_Click()
-  colorbuttontextfg.value = Color.TextForeground
-  Settings["style/textfg"] = colorbuttontextfg.value
+Public Sub SpinBoxwopacityGrid_Change()
+  Settings["style/inneropacitygrid"] = SpinBoxwopacitygrid.value
   gstyle.applystyle()
 End
+
+
+
+
+
+
 
 Public Sub colorbuttontextfg_Change()
   gstyle.applystyle()
@@ -167,15 +170,25 @@ Public Sub colorbuttontextfg_Change()
 End
 
 
-Public Sub Button4_Click()
-  colorbuttontextbg.value = Color.TextBackground
-  Settings["style/textbg"] = colorbuttontextbg.value
+Public Sub colorbuttontextgridfg_Change()
   gstyle.applystyle()
+  Settings["style/textgridfg"] = colorbuttontextgridfg.value
+  Settings.Save
 End
+
+
+
+
 
 Public Sub ColorButtontextbg_Change()
   gstyle.applystyle()
   Settings["style/textbg"] = colorbuttontextbg.value
+  Settings.Save
+End
+
+Public Sub ColorButtongridbg_Change()
+  gstyle.applystyle()
+  Settings["style/gridbg"] = colorbuttongridbg.value
   Settings.Save
 End
 
@@ -283,3 +296,22 @@ Public Sub CheckBoxbordertextbox_Click()
 End
 
 
+Public Sub Button4_Click()
+  SpinBoxwopacity.value = 100
+  colorbuttontextbg.value = Color.TextBackground
+  Settings["style/textbg"] = colorbuttontextbg.value
+  colorbuttontextfg.value = Color.TextForeground
+  Settings["style/textfg"] = colorbuttontextfg.value
+  gstyle.applystyle()
+  Settings.save
+End
+
+Public Sub Button5_Click()
+  SpinBoxwopacitygrid.value = 100
+  colorbuttongridbg.value = Color.TextBackground
+  Settings["style/gridbg"] = colorbuttongridbg.value
+  colorbuttontextgridfg.value = Color.TextForeground
+  Settings["style/textgridfg"] = colorbuttontextgridfg.value
+  gstyle.applystyle()
+  Settings.save
+End

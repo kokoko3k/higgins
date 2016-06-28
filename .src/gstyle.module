@@ -25,8 +25,9 @@ Public Sub applystyle()
  
   'text fg/bg
     Global.text_foreground = hSettings.colorbuttontextfg.value
-    FMain.ResultGrid.background = hSettings.colorbuttontextbg.value
-    FMain.ResultGrid.Foreground = Global.text_foreground
+    Global.textgrid_foreground = hSettings.colorbuttontextgridfg.value
+    FMain.ResultGrid.background = hSettings.colorbuttongridbg.value
+    FMain.ResultGrid.Foreground = Global.textgrid_foreground
     FMain.textbox2.Background = hSettings.colorbuttontextbg.value
     FMain.TextBox2.Foreground = Color.Merge(Global.text_foreground, hSettings.colorbuttontextbg.value, 0.75)
     FMain.TextBox1.Foreground = hSettings.colorbuttontextfg.value
@@ -40,10 +41,10 @@ Public Sub applystyle()
   
 
   'inner widgets opacity 
-    FMain.ResultGrid.border = (hSettings.SpinBoxwopacity.value >= 75)
+    FMain.ResultGrid.border = (hSettings.SpinBoxwopacitygrid.value = 100)
     
     wopacity = CInt(hSettings.SpinBoxwopacity.value * (255 / 100))
-    wopacitygrid = CInt(wopacity * (wopacity / 255)) 'hack for gambas bug (?)
+    wopacitygrid = CInt(hSettings.SpinBoxwopacity.value * (hSettings.SpinBoxwopacity.value / 255)) 'hack for gambas bug (?)
     If wopacity = 0 Then wopacity = 1
     If wopacitygrid = 0 Then wopacitygrid = 1
   

@@ -5,6 +5,7 @@ Public UseTray As Boolean = True
 Public cleartext As Boolean = True
 Public backimage As Image
 Public text_foreground As Integer = Color.textforeground
+Public textgrid_foreground As Integer = Color.textforeground
 Public fullyloaded As Boolean = False
 Public already_shown As Boolean = False
 Public form_open_h As Integer = 0
