@@ -139,17 +139,17 @@
           MoveScaled(1,1,24,4)
           Expand = True
           AutoResize = True
-          Text = ("Window color")
+          Text = ("Window (color, opacity)")
           Alignment = Align.Left
         }
         { Button2 Button
-          MoveScaled(31,1,4,4)
+          MoveScaled(57,0,4,4)
           AutoResize = True
           Picture = Picture["icon:/small/clear"]
           Border = False
         }
         { ColorButton1 ColorButton
-          MoveScaled(36,1,6.4286,4)
+          MoveScaled(63,0,6.4286,4)
           Value = Color.Background
         }
       }
@@ -178,6 +178,7 @@
         }
         { SpinBoxwopacity SpinBox
           MoveScaled(63,0,8,4)
+          Step = 5
           Value = 100
         }
       }
@@ -206,6 +207,7 @@
         }
         { SpinBoxwopacitygrid SpinBox
           MoveScaled(64,0,8,4)
+          Step = 5
           Value = 100
         }
       }
