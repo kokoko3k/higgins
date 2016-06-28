@@ -151,8 +151,8 @@ Private Sub showgrid()
   Endif
 
   FMain.h = Max(global.form_open_h, TextBox1.h + (pad * 3) + Max(resultgrid.h, minh))
-  Settings["General/form_open_h"] = fmain.h
   gstyle.make_background()
+  Settings["General/form_open_h"] = fmain.h
 End
 
 Public Sub immediate_search(textcontrol As Object)
@@ -1390,7 +1390,7 @@ Public Sub Form_Resize()
   timer_end_resize = New Timer As "timer_end_resize"
   timer_end_resize.delay = 100
   timer_end_resize.start
-
+  Settings["General/form_open_h"] = fmain.h
 End
 
 Public Sub ResultGrid_Enter()
@@ -1408,13 +1408,5 @@ Public Sub TextBox2_Enter()
 End
 
 Public Sub Form_Arrange()
-
   PictureBoxBackground.lower
-
-End
-
-Public Sub Form_Open()
-
-  
-
 End

@@ -46,7 +46,7 @@
     }
   }
   { Panel2 Panel
-    MoveScaled(1,2,73,38)
+    MoveScaled(3,2,73,38)
     Tracking = True
     Arrangement = Arrange.Vertical
     Spacing = True
@@ -77,8 +77,11 @@
         Border = False
       }
     }
+    { TimerClose #Timer
+      #MoveScaled(72,7)
+    }
     { ResultGrid GridView
-      MoveScaled(2,6,69,25)
+      MoveScaled(3,7,58,25)
       Visible = False
       Font = Font["+1"]
       Background = &HFFFFFF&
@@ -87,13 +90,11 @@
       Border = False
       Mode = Select.Single
       Grid = False
-    }
-    { TimerClose #Timer
-      #MoveScaled(72,7)
+      ScrollBar = Scroll.None
     }
   }
   { PictureBoxBackground PictureBox
-    MoveScaled(66,31,16,16)
+    MoveScaled(61,32,16,16)
     Ignore = True
     Stretch = True
   }
