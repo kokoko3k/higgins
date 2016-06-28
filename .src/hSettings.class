@@ -158,11 +158,6 @@ Public Sub SpinBoxwopacityGrid_Change()
 End
 
 
-
-
-
-
-
 Public Sub colorbuttontextfg_Change()
   gstyle.applystyle()
   Settings["style/textfg"] = colorbuttontextfg.value

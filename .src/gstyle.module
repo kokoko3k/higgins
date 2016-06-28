@@ -44,7 +44,8 @@ Public Sub applystyle()
     FMain.ResultGrid.border = (hSettings.SpinBoxwopacitygrid.value = 100)
     
     wopacity = CInt(hSettings.SpinBoxwopacity.value * (255 / 100))
-    wopacitygrid = CInt(hSettings.SpinBoxwopacity.value * (hSettings.SpinBoxwopacity.value / 255)) 'hack for gambas bug (?)
+    'wopacitygrid = CInt(hSettings.SpinBoxwopacitygrid.value * (hSettings.SpinBoxwopacitygrid.value / 255)) 'hack for gambas bug (?)
+    wopacitygrid = CInt(hSettings.SpinBoxwopacitygrid.value * (255 / 100)) 'hack for gambas bug (?)
     If wopacity = 0 Then wopacity = 1
     If wopacitygrid = 0 Then wopacitygrid = 1
   
