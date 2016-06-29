@@ -130,12 +130,15 @@ End
 
 
 Public Sub ComboPicture_Click()
+  Dim prevtext As String
   If ComboPicture.Current.text = ComboPicture[0].text Then 
     Dialog.title = ("Choose a picture")
     If Not Dialog.OpenFile() Then
       ComboPicture.text = Dialog.path
       Wait
       Settings["style/backpicture"] = ComboPicture.text 
+        Else
+      ComboPicture.text = ""
     Endif
   Endif
   set_bg_picture()
@@ -275,13 +278,15 @@ End
 Public Sub ComboPicture_Enter()
   Dim f As String
   Dim ptext As String = ComboPicture.text
-  ComboPicture.clear
-  ComboPicture.add(("Load an image"))
-  ComboPicture.Add("")
-  For Each f In Dir("backgrounds").Sort()
-    ComboPicture.Add("backgrounds/" & f)
-  Next
-  ComboPicture.text = ptext
+  Object.Lock(ComboPicture)
+    ComboPicture.clear
+    ComboPicture.add(("Load an image"))
+    ComboPicture.Add("")
+    For Each f In Dir("backgrounds").Sort()
+      ComboPicture.Add("backgrounds/" & f)
+    Next
+    ComboPicture.text = ptext
+  Object.unLock(ComboPicture)
 End
 
 Public Sub CheckBoxbordertextbox_Click()

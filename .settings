@@ -350,6 +350,9 @@ Geometry=[1280,0,224,280]
 [DebugWindow/resultgrid.Data.Picture]
 Geometry=[45,0,224,280]
 
+[DebugWindow/resultgrid.children[0]]
+Geometry=[47,0,224,280]
+
 [DebugWindow/resultgrid[ResultGrid.Rows.max, 0]]
 Geometry=[1280,-3,224,280]
 
@@ -424,16 +427,16 @@ Path="/tmp/higgins.gambas"
 
 [OpenFile]
 File[1]=".src/hSettings.form"
-Active=3
-File[2]=".src/hSettings.class:9.275"
+Active=1
+File[2]=".src/hSettings.class:19.151"
 Count=10
 File[3]=".src/FMain.form"
-File[4]=".src/FMain.class:0.1067"
-File[5]=".src/gstyle.module:0.98"
-File[6]=".src/Global.module:7.21"
+File[4]=".src/FMain.class:2.210"
+File[5]=".src/gstyle.module:37.46"
+File[6]=".src/Global.module:51.13"
 File[7]=".src/MyDesktop.class:0.0"
 File[8]=".src/plugins/plugin_090_indexer.class:10.42"
-File[9]=".src/MySettings.module:41.34"
+File[9]=".src/MySettings.module:0.25"
 File[10]=".src/plugins/plugin_apps_gui.form"
 
 [Watches]
