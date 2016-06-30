@@ -509,7 +509,7 @@ Public Sub ResultGrid_KeyPress()
       If ResultGrid.Rows[0].Selected Then TextBox1.SetFocus()
     Case Key.PageUp
       If ResultGrid.Rows[0].Selected Then TextBox1.SetFocus()
-    Case Key.right
+    Case Key.right 'browse the filesystem, go inside folders
       If ResultGrid.row < 0 Then Return
       If results_list[resultgrid.row].plugin Ends "_LS" Then
         Object.Lock(textbox1)
@@ -519,7 +519,16 @@ Public Sub ResultGrid_KeyPress()
           Debug
         Object.unLock(textbox1)
         Stop Event
-      Endif
+      Endif 
+    Case Key.left 'browse the filesystem go up in folders
+      If Not Exist(textbox1.text, True) Then Return
+      Object.Lock(textbox1)
+        textbox1.text = File.Dir(textbox1.text)
+        immediate_search(textbox1)
+        textbox2.text = Complete(TextBox1.text)
+      Object.unLock(textbox1)
+      Stop Event
+      
     Case Else
       If Key.text <> "" Then SelectFileviewFromKey(Lower(Left(Key.text)))
   End Select
