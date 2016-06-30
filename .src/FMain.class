@@ -1346,9 +1346,8 @@ Public Sub panel2_mousemove()
   If fmain.border = True Then Return 
   
   If Not Mouse.left Then
-    bRresize = Mouse.y > (panel2.h - ppad)  
-    bRresize = bRresize And Mouse.x > (panel2.w - ppad) 
-
+    bRresize = Mouse.y > (panel2.h - (ppad * 4))  
+    bRresize = bRresize And Mouse.x > (panel2.w - (ppad * 4)) 
 
     If bRresize Then 
       panel2.mouse = Mouse.SizeNW
