@@ -203,7 +203,7 @@ End
 
 Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
   Dim rcResult As New RItemT
-
+  
   If results_list.count = 0 Then Return
   
   resultgrid.Data.Foreground = Global.textgrid_foreground
@@ -211,6 +211,7 @@ Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
   
   'two lines:
   resultgrid.data.RichText = "<b>" & rcResult.text & "</b>"
+  'resultgrid.data.RichText = "<font size=+1>" & rcResult.text & "</font>"
   If rcResult.subtext <> "" Then 
     resultgrid.data.RichText &= "<br><font size=-1>" & rcResult.subtext & "</font>"
   Endif

@@ -50,14 +50,14 @@ Public Sub find(textcontrol As Object) As RItemT[]
 
   s_path = current_search
   
-  If Exist(s_path) Then
+  If Exist(s_path, True) Then
     If Stat(s_path, True).type = gb.file Then
       Return [create_item(s_path)]
     Endif
   Endif
   
   If Not (s_path Begins "/") Then s_path = User.home & "/" & s_path
-  If Not Exist(s_path) Then Return
+  If Not Exist(s_path, True) Then Return
   If Not (Stat(s_path, True).type = gb.Directory) Then Return
 
   rResults.Add(create_item(s_path))
