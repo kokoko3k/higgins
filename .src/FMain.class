@@ -509,9 +509,20 @@ Public Sub ResultGrid_KeyPress()
       If ResultGrid.Rows[0].Selected Then TextBox1.SetFocus()
     Case Key.PageUp
       If ResultGrid.Rows[0].Selected Then TextBox1.SetFocus()
+    Case Key.right
+      If results_list[resultgrid.row].plugin Ends "_LS" Then
+        Object.Lock(textbox1)
+          textbox1.text = results_list[resultgrid.row].Action_p
+          immediate_search(textbox1)
+          textbox2.text = Complete(TextBox1.text)
+        Object.unLock(textbox1)
+        Stop Event
+      Endif
   End Select
-
 End
+
+
+
 
 Public Sub MenuOpenFolder_Click()
   If resultgrid.row < 0 Then Return
