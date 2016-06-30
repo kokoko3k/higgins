@@ -178,7 +178,7 @@ Public Sub immediate_search(textcontrol As Object)
     iResults = 0
     iResults = run_plugin(aPlugin, textbox1)
     is_blocking = False
-    is_blocking = Object.GetProperty(plugins[aPlugin], "blocking")
+    Try is_blocking = Object.GetProperty(Class.Load(aPlugin), "default_blocking")
     If is_blocking Then 
       If iResults > 0 Then
         Debug "got results from a blocking plugin: " & aPlugin
