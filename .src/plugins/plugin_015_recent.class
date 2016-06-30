@@ -5,7 +5,9 @@ Static Public Description As String = "Search for Recent Documents"
 Static Public Friendly_name As String = "Recent Documents"
 Static Public configurable As Boolean = False
 Static Public Default_enabled As Boolean = True
-
+Public blocking As Boolean = False                 'Should the subsequent plugins be blocked when
+                                                          'this plugin finds some results?
+                                                          
 Public Struct rItemT
   plugin As String            'the plugin name
   Text As String              'text displayed in the clipboard

@@ -3,7 +3,7 @@
 Title=Higgins
 Startup=StartClass
 Icon=appicon.png
-Version=0.6.4
+Version=0.6.5
 Component=gb.args
 Component=gb.image
 Component=gb.qt4

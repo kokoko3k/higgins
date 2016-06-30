@@ -159,6 +159,8 @@ Public Sub immediate_search(textcontrol As Object)
 
   Dim aPlugin As String
   Dim t0 As Float
+  Dim iResults As Integer
+  Dim is_blocking As Boolean
   
   If previous_search = textcontrol.text Then Return 'don't know why this is important, but works.
   previous_search = textcontrol.text                'don't know why this is important, but works.
@@ -173,7 +175,16 @@ Public Sub immediate_search(textcontrol As Object)
   For Each aplugin In plugins_enabled
     t0 = Timer()
     'Debug "[START]", plugins.key
-    run_plugin(aPlugin, textbox1)
+    iResults = 0
+    iResults = run_plugin(aPlugin, textbox1)
+    is_blocking = False
+    is_blocking = Object.GetProperty(plugins[aPlugin], "blocking")
+    If is_blocking Then 
+      If iResults > 0 Then
+        Debug "got results from a blocking plugin: " & aPlugin
+        Break
+      Endif
+    Endif
     'Debug "[END]", plugins.key, "time:", Timer() - t0, "[END]"
   Next
   Debug "Search ends here."
@@ -182,7 +193,7 @@ Public Sub immediate_search(textcontrol As Object)
 
 End
 
-Public Sub run_plugin(plugin_name As String, textcontrol As Object)
+Public Function run_plugin(plugin_name As String, textcontrol As Object) As Integer
 
   Dim rResults As RItemT[]
 
@@ -191,7 +202,7 @@ Public Sub run_plugin(plugin_name As String, textcontrol As Object)
   
   results_list.Insert(rResults)
   ResultGrid.Rows.count += rResults.Count
-  
+  Return rResults.Count
 End
 
 Public Sub plugin_event_new_results(rResults As RItemT[])
