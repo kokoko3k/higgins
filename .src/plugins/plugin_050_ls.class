@@ -62,7 +62,7 @@ Public Sub find(textcontrol As Object) As RItemT[]
 
   rResults.Add(create_item(s_path))
 
-    For Each path In Dir(s_path).Sort()
+    For Each path In Dir(s_path).Sort(gb.Natural + gb.IgnoreCase)
       If s_path Ends "/" Then 
         path = s_path & path
           Else
