@@ -493,15 +493,15 @@ Public Sub TextBox1_KeyPress()
 End
 
 Public Sub ResultGrid_KeyPress()
-
-  If ResultGrid.row < 0 Then Return
   
   Select Key.Code
     Case Key.Enter
+      If ResultGrid.row < 0 Then Return
       If results_list[resultgrid.row].Action_p = Null Then Return
       start_item(resultgrid.row)
       TimerClose.trigger
     Case Key.Return
+      If ResultGrid.row < 0 Then Return
       If results_list[resultgrid.row].Action_p = Null Then Return
       start_item(resultgrid.row)
       TimerClose.trigger
@@ -510,18 +510,44 @@ Public Sub ResultGrid_KeyPress()
     Case Key.PageUp
       If ResultGrid.Rows[0].Selected Then TextBox1.SetFocus()
     Case Key.right
+      If ResultGrid.row < 0 Then Return
       If results_list[resultgrid.row].plugin Ends "_LS" Then
         Object.Lock(textbox1)
           textbox1.text = results_list[resultgrid.row].Action_p
           immediate_search(textbox1)
           textbox2.text = Complete(TextBox1.text)
+          Debug
         Object.unLock(textbox1)
         Stop Event
       Endif
+    Case Else
+      If Key.text <> "" Then SelectFileviewFromKey(Lower(Left(Key.text)))
   End Select
 End
 
 
+Private Sub SelectFileviewFromKey(k As String)
+  Dim s, ss As Integer
+  If resultgrid.Rows.count = 0 Then Return
+  ss = resultgrid.Row 
+  For s = resultgrid.Row + 1 To resultgrid.Rows.Max
+    If Lower(results_list[s].text) Begins k Then 
+      resultgrid.row = s
+      Return
+    Endif
+  Next
+  
+  If ss = 0 Then Return ' we searched the entire list
+  
+  'if not found there, start from the beginning
+  For s = 0 To ss
+    If Lower(results_list[s].text) Begins k Then 
+      resultgrid.row = s
+      Return
+    Endif
+  Next
+  
+End
 
 
 Public Sub MenuOpenFolder_Click()
@@ -1087,12 +1113,10 @@ End
 
 
 Public Sub Form_KeyRelease()
-
   If Key.code = Key.esc Then 
     MySettings.save()
     Form_Hide()
   Endif
-
 End
 
 Public Sub Form_Hide()

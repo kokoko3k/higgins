@@ -81,7 +81,7 @@
       #MoveScaled(72,7)
     }
     { ResultGrid GridView
-      MoveScaled(3,7,58,25)
+      MoveScaled(5,7,58,25)
       Visible = False
       Font = Font["+1"]
       Background = &HFFFFFF&
