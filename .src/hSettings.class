@@ -220,6 +220,8 @@ Public Sub SpinBoxcornerradius_Change()
   Dim need_workaround As Boolean = False
   If Not Global.FULLYLOADED Then Return
   
+  If SpinBoxcornerradius.value > 0 Then CheckBoxborder.value = CheckBox.false
+  
   Settings["style/cornerradius"] = Last.value
   Settings.save()
   

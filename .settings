@@ -427,8 +427,8 @@ Path="/tmp/higgins.gambas"
 
 [OpenFile]
 File[1]=".src/hSettings.form"
-Active=1
-File[2]=".src/hSettings.class:19.151"
+Active=2
+File[2]=".src/hSettings.class:21.149"
 Count=10
 File[3]=".src/FMain.form"
 File[4]=".src/FMain.class:2.210"
