@@ -1367,7 +1367,7 @@ Public bRresize As Boolean = False
 Public Sub panel2_mousemove()
   Dim bResize As Boolean
   Dim ppad As Integer = Max(panel2.padding, Desktop.scale)
-Debug
+
   If fmain.border = True Then Return 
   
   If Not Mouse.left Then

@@ -29,7 +29,7 @@ Public Sub applystyle()
     FMain.ResultGrid.background = hSettings.colorbuttongridbg.value
     FMain.ResultGrid.Foreground = Global.textgrid_foreground
     FMain.textbox2.Background = hSettings.colorbuttontextbg.value
-    FMain.TextBox2.Foreground = Color.Merge(Global.text_foreground, hSettings.colorbuttontextbg.value, 0.75)
+    FMain.TextBox2.Foreground = Color.Merge(Global.text_foreground, hSettings.colorbuttontextbg.value, 0.5)
     FMain.TextBox1.Foreground = hSettings.colorbuttontextfg.value
   
   'scrollbar
