@@ -1284,7 +1284,6 @@ Public Function Complete(s As String, Optional bNext As Boolean = False) As Stri
       s = previous_search 
     Endif
     
-    
     If r.Count > complete_index Then 
       out = r[complete_index]
       Goto returnlabel
@@ -1298,49 +1297,6 @@ Public Function Complete(s As String, Optional bNext As Boolean = False) As Stri
   
 End
 
-Public Function old_Complete(s As String, Optional bNext As Boolean = True) As String
-
-  Dim r As New String[]
-  Dim d, f, out As String
-  
-  d = File.Dir(s)
-  
-  If Trim(s) = "" Then Return ""  'dont complete nulls
-  If InStr(s, " ") Then Return    'dont complete if spaces in search
-  
-  If Left(s) = "/" Then 'search in full path
-    
-    If Right(d) <> "/" Then d &= "/"
-    
-    f = File.Name(s)
-    Try r = Dir(d, f & "*")
-    
-    If Not Error Then
-      If r.count > 0 Then
-        If IsDir(d & r[0]) Then r[0] &= "/"
-        out = d & r[0]
-        Goto returnlabel
-      Endif
-    Endif
-    
-  Else 'search in $PATH
-    
-    For Each d In Split(Application.Env["PATH"], ":")
-      Try r = r.Insert(Dir(d, s & "*"))
-    Next
-    
-    If r.Count > 0 Then 
-      out = r[0]
-      Goto returnlabel
-    Endif
-    
-  Endif
-  
-returnlabel:
-  If out Begins s Then Return out
-  Return ""
-  
-End
 
 Public Sub Form_Leave()
 
