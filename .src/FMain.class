@@ -38,9 +38,8 @@ End
 Public textbox1_change_delay As Timer 
 
 Public Sub textbox1_change_delay_timer()
-
-  TextBox1_Change()
-
+  immediate_search(textbox1)
+  textbox2.text = complete(textbox1.text)
 End
 
 Public Sub TextBox1_Change()
@@ -527,7 +526,8 @@ Public Sub ResultGrid_KeyPress()
       If results_list[resultgrid.row].plugin Ends "_LS" Then
         Object.Lock(textbox1)
           textbox1.text = results_list[resultgrid.row].Action_p
-          immediate_search(textbox1)
+          'immediate_search(textbox1)
+          textbox1_change_delay.Trigger()
           textbox2.text = Complete(TextBox1.text)
           Debug
         Object.unLock(textbox1)
@@ -537,7 +537,7 @@ Public Sub ResultGrid_KeyPress()
       If Not Exist(textbox1.text, True) Then Return
       Object.Lock(textbox1)
         textbox1.text = File.Dir(textbox1.text)
-        immediate_search(textbox1)
+         textbox1_change_delay.Trigger()
         textbox2.text = Complete(TextBox1.text)
       Object.unLock(textbox1)
       Stop Event
