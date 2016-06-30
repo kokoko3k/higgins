@@ -498,7 +498,9 @@ Public Sub TextBox1_KeyPress()
         showgrid()
         Try resultgrid.row = 0
       Endif
-      
+    
+    Case Key.Up
+      textbox2.text = complete(textbox1.text, True)
   End Select
   
 End
@@ -1240,7 +1242,63 @@ Public Sub Panel1_Arrange()
 
 End
 
-Public Function Complete(s As String) As String
+Private complete_previous As String
+Private complete_index As Integer
+
+Public Function Complete(s As String, Optional bNext As Boolean = False) As String
+
+  Dim r As New String[]
+  Dim d, f, out As String
+  
+  d = File.Dir(s)
+  
+  If Trim(s) = "" Then Return ""  'dont complete nulls
+  If InStr(s, " ") Then Return    'dont complete if spaces in search
+  
+  If Left(s) = "/" Then 'search in full path
+    
+    If Right(d) <> "/" Then d &= "/"
+    
+    f = File.Name(s)
+    Try r = Dir(d, f & "*")
+    
+    If Not Error Then
+      If r.count > 0 Then
+        If IsDir(d & r[0]) Then r[0] &= "/"
+        out = d & r[0]
+        Goto returnlabel
+      Endif
+    Endif
+    
+  Else 'search in $PATH
+    
+    For Each d In Split(Application.Env["PATH"], ":")
+      Try r = r.Insert(Dir(d, s & "*"))
+    Next
+    
+    If s = previous_search Then 
+      Inc complete_index 
+      If r.Count <= complete_index Then complete_index = 0
+        Else
+      complete_index = 0
+      s = previous_search 
+    Endif
+    
+    
+    If r.Count > complete_index Then 
+      out = r[complete_index]
+      Goto returnlabel
+    Endif
+    
+  Endif
+  
+  returnlabel:
+  If out Begins s Then Return out
+  Return ""
+  
+End
+
+Public Function old_Complete(s As String, Optional bNext As Boolean = True) As String
 
   Dim r As New String[]
   Dim d, f, out As String
@@ -1353,7 +1411,7 @@ Public bRresize As Boolean = False
 Public Sub panel2_mousemove()
   Dim bResize As Boolean
   Dim ppad As Integer = Max(panel2.padding, Desktop.scale)
-  
+Debug
   If fmain.border = True Then Return 
   
   If Not Mouse.left Then
@@ -1465,3 +1523,6 @@ End
 Public Sub Form_Arrange()
   PictureBoxBackground.lower
 End
+
+
+ 

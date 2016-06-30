@@ -427,17 +427,27 @@ Path="/tmp/higgins.gambas"
 
 [OpenFile]
 File[1]=".src/hSettings.form"
-Active=2
-File[2]=".src/hSettings.class:21.149"
-Count=10
+Active=4
+File[2]=".src/hSettings.class:2.226"
+Count=20
 File[3]=".src/FMain.form"
-File[4]=".src/FMain.class:2.210"
+File[4]=".src/FMain.class:0.866"
 File[5]=".src/gstyle.module:37.46"
-File[6]=".src/Global.module:51.13"
+File[6]=".src/Global.module:14.17"
 File[7]=".src/MyDesktop.class:0.0"
-File[8]=".src/plugins/plugin_090_indexer.class:10.42"
+File[8]=".src/plugins/plugin_090_indexer.class:50.7"
 File[9]=".src/MySettings.module:0.25"
 File[10]=".src/plugins/plugin_apps_gui.form"
+File[11]=".src/plugins/plugin_050_ls.class:50.7"
+File[12]=".src/plugins/bridge.class:0.0"
+File[13]=".src/plugins/plugin_999_template.class:67.24"
+File[14]=".src/plugins/plugin_010_calculator.class:7.7"
+File[15]=".src/plugins/plugin_015_recent.class:6.7"
+File[16]=".src/plugins/plugin_020_apps.class:50.7"
+File[17]=".src/plugins/plugin_030_executable.class:50.7"
+File[18]=".src/plugins/plugin_040_fbookmarks.class:50.7"
+File[19]=".src/plugins/plugin_indexer_gui.form"
+File[20]=".src/DesktopApps.class:0.0"
 
 [Watches]
 Count=0

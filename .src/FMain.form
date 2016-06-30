@@ -46,7 +46,7 @@
     }
   }
   { Panel2 Panel
-    MoveScaled(3,2,73,38)
+    MoveScaled(2,3,73,38)
     Tracking = True
     Arrangement = Arrange.Vertical
     Spacing = True
@@ -54,6 +54,7 @@
     Padding = 20
     { Panel1 Panel
       MoveScaled(0,0,79,5)
+      Tracking = True
       Arrangement = Arrange.Horizontal
       { TextBox1 TextBox
         MoveScaled(22,0,24,4.5714)
@@ -85,7 +86,6 @@
       Visible = False
       Font = Font["+1"]
       Background = &HFFFFFF&
-      Tracking = True
       Expand = True
       Border = False
       Mode = Select.Single
