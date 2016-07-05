@@ -173,7 +173,7 @@ Public Sub immediate_search(textcontrol As Object)
 
   For Each aplugin In plugins_enabled
     t0 = Timer()
-    'Debug "[START]", plugins.key
+    Debug "[START]", aplugin
     iResults = 0
     iResults = run_plugin(aPlugin, textbox1)
     is_blocking = False
@@ -184,7 +184,7 @@ Public Sub immediate_search(textcontrol As Object)
         Break
       Endif
     Endif
-    'Debug "[END]", plugins.key, "time:", Timer() - t0, "[END]"
+    Debug "[END]", aplugin, "time:", Timer() - t0
   Next
   Debug "Search ends here."
   
@@ -290,6 +290,7 @@ Public Sub start_item(i As Integer)
 
   If results_list.count = 0 Then Return
   rcResult = results_list[i]  
+  
   p = rcResult.Action_p
 
   Select Case rcResult.Action
@@ -299,6 +300,7 @@ Public Sub start_item(i As Integer)
         start_dot_desktop_exe(p)
       Else
         Desktop.Open(p)
+        add_history(p)
       Endif
     Case "EXEC"
       Shell p For Input Output
@@ -306,6 +308,7 @@ Public Sub start_item(i As Integer)
       start_executable_terminal(p)
     Case "XDGOPEN"
       Desktop.Open(p)
+      add_history(p)
     Case "GUESS"
       
       If Exist(p) Then
@@ -320,6 +323,7 @@ Public Sub start_item(i As Integer)
         'directory
         If Stat(p, True).type = gb.Directory Then
           Desktop.Open(p)
+          add_history(p)
           Return
         Endif
         
@@ -331,6 +335,7 @@ Public Sub start_item(i As Integer)
         
         'all of the others
         Desktop.Open(p)
+        add_history(p)
         Return
         
       Endif
@@ -1480,5 +1485,16 @@ Public Sub Form_Arrange()
   PictureBoxBackground.lower
 End
 
+Public Sub add_history(item As String)
+  'will check if history plugin is enabled and call his method to store local higgins history 
+  'it will only store local files.
+  Dim sPlugin As String
+  For Each sPlugin In plugins_enabled
+    If sPlugin Like "PLUGIN_*_HISTORY" Then
+      Object.Call(plugins[sPlugin], "store", [item])
+      Return
+    Endif
+  Next
+End
 
  
