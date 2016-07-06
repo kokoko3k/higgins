@@ -57,6 +57,8 @@ Public Sub find(textcontrol As Object) As RItemT[]
   Dim k_recent As String
   Dim gtk_path As String
   
+  Dim i As Integer
+  
   If Not trigged(textcontrol.text) Then Return
 
   term = current_search
@@ -107,14 +109,26 @@ Public Sub find(textcontrol As Object) As RItemT[]
 
   'deDupe
   For Each rResult In rResults
-    If rResults.Find(rResult) Then 
-      rResults.Delete(rResults.Find(rResult))
-    Endif
+    Stop
+    For i = rResults.max DownTo 0
+      Try rResults.Delete(find_similar(rResult, rResults))
+    Next
+    If (find_similar(rResult, rResults) = -1) Then rResults.Add(rResult, 0)
   Next
 
   Return rResults
 
 End
+
+Private Function find_similar(a As RItemT, ritems As RItemT[]) As Integer
+  Dim i As Integer
+  For i = 0 To ritems.Max
+    If ritems[i].Action_p = a.Action_p Then Return i
+  Next
+  Return -1
+  
+End
+
 
 ' Editable part of the template follows:
 
