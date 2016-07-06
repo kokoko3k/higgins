@@ -1,0 +1,102 @@
+' Gambas class file
+
+Create Static
+Static Public Description As String = "Finds previously selected items"
+Static Public Friendly_name As String = "History plugin"
+Static Public configurable As Boolean = False
+Static Public Default_enabled As Boolean = True
+Static Public default_blocking As Boolean = False                  'Should the subsequent plugins be blocked when
+                                                                   'this plugin finds some results?
+                                                          
+Public Struct rItemT
+  plugin As String            'the plugin name
+  Text As String              'text displayed in the clipboard
+  SubText As String           'text displayed under the main text
+  Image_file As String        'optional image displayed (fullpath or "DefferredMimeIcon")
+  Clipboard_data As String    'the data copied to the clipboard
+  Action As String            'string that indicates an action
+  Action_p As Variant          'the parameter for Action
+End Struct
+
+Private plugin As String
+Private iconsize As Integer
+Private minchar As Integer = 1   'exit if the search term is lower than that
+Private History_size As Integer = 10
+Private fconf As String = FMain.confpath & "/" "history.txt"
+Private history As New String[]
+
+
+Public Sub _new(p_plugin As String, p_iconsize As Integer)
+  plugin = p_plugin
+  iconsize = p_iconsize
+  Try history = Split(File.Load(fconf), "\n", "", True)
+End
+
+Private Sub trigged(query As String) As Boolean
+  Return True
+End
+
+
+Public Sub find(textcontrol As Object) As RItemT[]
+  'evualuate expressions
+  Dim rResults As New RItemT[]
+  Dim rResult As RItemT
+  Dim current_search As String = textcontrol.text
+  Dim item As String
+  
+  If Not trigged(textcontrol.text) Then Return
+  
+  If history.count = 0 Then Return
+
+  For Each item In history
+    If InStr(Lower(item), Lower(textcontrol.text)) Then
+      rResult = create_item(item)
+      If rResult <> Null Then rResults.Add(rResult)
+      If textcontrol.text <> current_search Then Return
+      Wait     
+    Endif
+  Next
+  
+  Return rResults
+
+End
+
+
+Public Sub store(filename As String)
+  Dim pos As Integer
+
+  If Lower(filename) Like "*://*" Then Return
+  If Not Exist(filename, True) Then Return
+  If IsDir(filename) Then Return 
+
+  If history.count > 0 Then
+    pos = history.Find(filename)
+    If pos > -1 Then
+      history.Remove(pos)
+    Endif
+  Endif
+  history.Add(filename, 0)
+  If history.count > history_size Then history.Resize(history_size)
+  File.Save(fconf, history.Join("\n"))
+End
+
+
+Private Function create_item(path As String) As RItemT
+  Dim return_item As RItemT
+
+  If Not (Exist(path, True)) Then Return Null
+  return_item = New RItemT  
+
+  return_item.image_file = "mimetype://" & path
+  
+  return_item.plugin = plugin
+  return_item.Action = "XDGOPEN"
+  return_item.Action_p = path
+  return_item.Clipboard_data = path
+
+  return_item.Text = File.Name(path)
+  return_item.SubText = "Recent item, In: " & File.Dir(path)
+
+  Return return_item
+
+End
