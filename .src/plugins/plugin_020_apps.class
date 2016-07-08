@@ -35,6 +35,8 @@ Public Sub _new(p_plugin As String, p_iconsize As Integer)
 
   plugin_apps_gui.init(Me)
 
+  DesktopApps.WarmCache()
+
 End
 
 Private Sub trigged(query As String) As Boolean

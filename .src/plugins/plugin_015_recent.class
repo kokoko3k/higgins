@@ -109,7 +109,6 @@ Public Sub find(textcontrol As Object) As RItemT[]
 
   'deDupe
   For Each rResult In rResults
-    Stop
     For i = rResults.max DownTo 0
       Try rResults.Delete(find_similar(rResult, rResults))
     Next

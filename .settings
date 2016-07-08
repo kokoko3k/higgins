@@ -41,6 +41,9 @@ Geometry=[47,0,224,280]
 [DebugWindow/Dir(kde_path, "*.desktop")]
 Geometry=[45,-3,224,280]
 
+[DebugWindow/Dir(kde_path, "*.desktop").Sort()]
+Geometry=[47,-3,273,380]
+
 [DebugWindow/Dir(s_path).Sort()]
 Geometry=[47,-3,224,280]
 
@@ -336,10 +339,22 @@ Geometry=[47,0,224,280]
 Geometry=[0,306,224,280]
 
 [DebugWindow/rResult]
-Geometry=[-170,332,443,280]
+Geometry=[1497,374,443,280]
 
 [DebugWindow/rResults]
-Geometry=[45,-3,224,280]
+Geometry=[1495,518,224,280]
+
+[DebugWindow/rResults[0]]
+Geometry=[1336,497,525,280]
+
+[DebugWindow/rResults[1]]
+Geometry=[889,568,224,280]
+
+[DebugWindow/rResults[2]]
+Geometry=[1337,259,697,280]
+
+[DebugWindow/rResults[3]]
+Geometry=[1337,566,697,280]
 
 [DebugWindow/rcResult]
 Geometry=[141,168,464,335]
@@ -385,6 +400,12 @@ Geometry=[45,0,224,280]
 
 [DebugWindow/ritem]
 Geometry=[45,0,224,280]
+
+[DebugWindow/ritems]
+Geometry=[47,-3,224,280]
+
+[DebugWindow/ritems[0]]
+Geometry=[61,11,436,280]
 
 [DebugWindow/sLines]
 Geometry=[1280,307,224,280]
@@ -445,7 +466,7 @@ File[11]=".src/plugins/plugin_050_ls.class:50.7"
 File[12]=".src/plugins/bridge.class:0.0"
 File[13]=".src/plugins/plugin_999_template.class:75.34"
 File[14]=".src/plugins/plugin_010_calculator.class:0.0"
-File[15]=".src/plugins/plugin_015_recent.class:25.68"
+File[15]=".src/plugins/plugin_015_recent.class:0.111"
 File[16]=".src/plugins/plugin_020_apps.class:50.7"
 File[17]=".src/plugins/plugin_030_executable.class:50.7"
 File[18]=".src/plugins/plugin_040_fbookmarks.class:50.7"

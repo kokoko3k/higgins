@@ -90,7 +90,7 @@ Private Function create_item(path As String) As RItemT
   return_item.image_file = "mimetype://" & path
   
   return_item.plugin = plugin
-  return_item.Action = "XDGOPEN"
+  return_item.Action = "GUESS"
   return_item.Action_p = path
   return_item.Clipboard_data = path
 
