@@ -78,9 +78,11 @@ End
 Static Public ProcWarm As Process
 
 Static Public Sub WarmCache()
+  'load desktop files in the kernel pagecache in background, then load them into higgins
   Dim sPath As String
   Dim WarmList As String = " "
   Dim warmcmd As String = "" 
+  
   For Each sPath In GetDataDir()
     Debug "Warming recursive: " & (sPath &/ "applications")
     WarmList &= sPath &/ "applications" & " "
