@@ -1440,10 +1440,13 @@ Private fmain_old_w As Integer
 Private fmain_old_h As Integer
 
 Public Sub timer_end_resize_Timer()
+  timer_end_resize.stop
   If (fmain_old_w = fmain.w) And (fmain_old_h = fmain.h) Then
     gstyle.make_background()
   Endif
-  timer_end_resize.stop
+  Settings["General/form_open_h"] = fmain.h
+  global.form_open_h = fmain.h
+  Settings.Save()
 End
 
 
@@ -1464,7 +1467,6 @@ Public Sub Form_Resize()
   timer_end_resize = New Timer As "timer_end_resize"
   timer_end_resize.delay = 100
   timer_end_resize.start
-  Settings["General/form_open_h"] = fmain.h
 End
 
 Public Sub ResultGrid_Enter()
