@@ -59,7 +59,6 @@ Public Sub TextBox1_Change()
                                                   'Debug
   Wait 0.01
   If Len(current_search) < 2 Then 
-    not_save_hsize = True
     resize_form()
     reinit()
     Return
@@ -140,7 +139,7 @@ Private previous_search As String
 Private Sub showgrid()
   Dim pad As Integer
   Dim minh As Integer = resultgrid.Font.TextHeight("|") * 7
-
+  
   If (fmain.h > resultgrid.h) Then 
     If fmain.h > minh Then Return 'grid is already visible
   Endif
@@ -150,10 +149,9 @@ Private Sub showgrid()
       Else
     pad = panel2.padding
   Endif
-
+  not_save_hsize = True
   FMain.h = Max(global.form_open_h, TextBox1.h + (pad * 3) + Max(resultgrid.h, minh))
   gstyle.make_background()
-  Settings["General/form_open_h"] = fmain.h
 End
 
 Public Sub immediate_search(textcontrol As Object)
@@ -162,7 +160,6 @@ Public Sub immediate_search(textcontrol As Object)
   Dim t0 As Float
   Dim iResults As Integer
   Dim is_blocking As Boolean
-  Dim lastrow As Integer
   
   If previous_search = textcontrol.text Then Return 'don't know why this is important, but works.
   previous_search = textcontrol.text                'don't know why this is important, but works.
@@ -190,18 +187,38 @@ Public Sub immediate_search(textcontrol As Object)
     Debug "[END]", aplugin, "time:", Timer() - t0
   Next
   Debug "Search ends here."
-  
+  resize_shrink()
+  mouse_normal()
+End
+
+Private Function resize_shrink()
+  Dim lastrow As Integer
+  Dim fmain_big_h As Integer
+
+'If resultgrid.Rows.count > 1 Then Stop
+
   If resultgrid.Rows.count > 0 Then
     lastrow = resultgrid.Rows.max
+    fmain_big_h = (resultgrid.screeny - fmain.screeny) + resultgrid.Rows[lastrow].y + resultgrid.Rows[lastrow].h + (fmain.padding * 3)
+    'shrink if needed
     If (resultgrid.Rows[lastrow].y + resultgrid.Rows[lastrow].h) < resultgrid.clienth Then
       not_save_hsize = True
       fmain.h = (resultgrid.screeny - fmain.screeny) + resultgrid.Rows[lastrow].y + resultgrid.Rows[lastrow].h + (fmain.padding * 3)
+      Return
     Endif
-  Endif
-  
-  mouse_normal()
+    ' 
+    ' 'expand till maximum height
+    ' If fmain_big_h <= global.form_open_h Then 
+    '   fmain.h = fmain_big_h 
+    '   Return
+    ' Endif
+    ' 
+    ' 'a lot of results, maximum height
+    ' fmain.h = global.form_open_h 
 
+  Endif
 End
+
 
 Public Function run_plugin(plugin_name As String, textcontrol As Object) As Integer
 
@@ -1418,10 +1435,14 @@ Public Sub check_min_size(Optional force As Boolean = False)
   minw = fmain_minw()
   minh = fmain_minh() 
   If force Then 
+    not_save_hsize = True
     fmain.h = minh
       Else
     If fmain.w < minw Then fmain.w = minw
-    If fmain.h < minh Then fmain.h = minh
+    If fmain.h < minh Then 
+      not_save_hsize = True
+      fmain.h = minh
+    Endif
   Endif 
   
 End
