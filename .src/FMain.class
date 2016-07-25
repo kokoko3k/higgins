@@ -194,16 +194,24 @@ End
 Private Function resize_shrink()
   Dim lastrow As Integer
   Dim fmain_big_h As Integer
-
+  Dim pad As Integer
+  
+  
 'If resultgrid.Rows.count > 1 Then Stop
-
+  not_save_hsize = True
   If resultgrid.Rows.count > 0 Then
+    
+    If panel2.padding = 0 Then 
+       pad = Desktop.scale
+         Else
+       pad = panel2.padding
+     Endif
+    
     lastrow = resultgrid.Rows.max
-    fmain_big_h = (resultgrid.screeny - fmain.screeny) + resultgrid.Rows[lastrow].y + resultgrid.Rows[lastrow].h + (fmain.padding * 3)
+    fmain_big_h = (resultgrid.screeny - fmain.screeny) + resultgrid.Rows[lastrow].y + resultgrid.Rows[lastrow].h + (pad * 3)
     'shrink if needed
     If (resultgrid.Rows[lastrow].y + resultgrid.Rows[lastrow].h) < resultgrid.clienth Then
-      not_save_hsize = True
-      fmain.h = (resultgrid.screeny - fmain.screeny) + resultgrid.Rows[lastrow].y + resultgrid.Rows[lastrow].h + (fmain.padding * 3)
+      fmain.h = (resultgrid.screeny - fmain.screeny) + resultgrid.Rows[lastrow].y + resultgrid.Rows[lastrow].h + (pad * 3)
       Return
     Endif
     ' 
@@ -216,7 +224,9 @@ Private Function resize_shrink()
     ' 'a lot of results, maximum height
     ' fmain.h = global.form_open_h 
 
-  Endif
+      Else
+    fmain.h = (resultgrid.screeny - fmain.screeny) + resultgrid.Rows.h + (pad * 3)      
+  Endif  
 End
 
 
