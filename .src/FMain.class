@@ -5,6 +5,7 @@ Public Const appname As String = "higgins"
 Public Confpath As String = Settings.defaultdir & "/" & appname
 Public extbinpath As String = Settings.defaultdir & "/" & appname & "/extbin"
 Public xb_rcpath As String = confpath & "/higgins.xb.rc"
+Private not_save_hsize As Boolean = False
 
 Public Struct rItemT
   plugin As String            'the plugin name
@@ -58,6 +59,7 @@ Public Sub TextBox1_Change()
                                                   'Debug
   Wait 0.01
   If Len(current_search) < 2 Then 
+    not_save_hsize = True
     resize_form()
     reinit()
     Return
@@ -160,6 +162,7 @@ Public Sub immediate_search(textcontrol As Object)
   Dim t0 As Float
   Dim iResults As Integer
   Dim is_blocking As Boolean
+  Dim lastrow As Integer
   
   If previous_search = textcontrol.text Then Return 'don't know why this is important, but works.
   previous_search = textcontrol.text                'don't know why this is important, but works.
@@ -187,6 +190,14 @@ Public Sub immediate_search(textcontrol As Object)
     Debug "[END]", aplugin, "time:", Timer() - t0
   Next
   Debug "Search ends here."
+  
+  If resultgrid.Rows.count > 0 Then
+    lastrow = resultgrid.Rows.max
+    If (resultgrid.Rows[lastrow].y + resultgrid.Rows[lastrow].h) < resultgrid.clienth Then
+      not_save_hsize = True
+      fmain.h = (resultgrid.screeny - fmain.screeny) + resultgrid.Rows[lastrow].y + resultgrid.Rows[lastrow].h + (fmain.padding * 3)
+    Endif
+  Endif
   
   mouse_normal()
 
@@ -1444,9 +1455,12 @@ Public Sub timer_end_resize_Timer()
   If (fmain_old_w = fmain.w) And (fmain_old_h = fmain.h) Then
     gstyle.make_background()
   Endif
-  Settings["General/form_open_h"] = fmain.h
-  global.form_open_h = fmain.h
-  Settings.Save()
+  If Not (not_save_hsize) Then
+    Settings["General/form_open_h"] = fmain.h
+    global.form_open_h = fmain.h
+    Settings.Save()
+  Endif
+  not_save_hsize = False
 End
 
 

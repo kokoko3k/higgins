@@ -460,11 +460,11 @@ Path="/tmp/higgins.gambas"
 
 [OpenFile]
 File[1]=".src/hSettings.form"
-Active=30
+Active=4
 File[2]=".src/hSettings.class:2.226"
 Count=33
 File[3]=".src/FMain.form"
-File[4]=".src/FMain.class:0.198"
+File[4]=".src/FMain.class:30.1447"
 File[5]=".src/gstyle.module:107.31"
 File[6]=".src/Global.module:42.18"
 File[7]=".src/MyDesktop.class:0.0"
