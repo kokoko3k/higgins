@@ -387,31 +387,37 @@ Public Sub start_item(i As Integer)
   
 End
 
-Private Function strip_desktop_args(e As String) As String
 
-  Dim field_codes As String[] = ["f", "F", "u", "U", "d", "D", "n", "N", "i", "c", "k", "v", "m"]
-  Dim code As String
-  
-  For Each code In field_codes
-    e = Replace(e, " %" & code & " ", " ")
-    If e Ends " %" & code Then e = Left(e, -3)
-  Next
-  Return e
 
-End
 
 Public Sub start_dot_desktop_exe(dPath As String)
-  Dim exe_no_args As String
+  Dim exe As String
+  Dim field_codes As String[] = ["f", "F", "u", "U", "d", "D", "n", "N", "v", "m"]
   Dim terminal_emulator As String
+  Dim code As String
+  
   MyDesktop.parse(dPath)
-  exe_no_args = strip_desktop_args(MyDesktop.dExec)
-
+  
+  exe = MyDesktop.dExec
+  
+  'strip args
+  For Each code In field_codes
+    exe = Replace(exe, " %" & code & " ", " ")
+    If exe Ends " %" & code Then exe = Left(exe, -3)
+  Next
+  
+  'fill args
+  exe = Replace(exe, "%i", "--icon " & "\"" & MyDesktop.dIconName & "\"")
+  exe = Replace(exe, "%c", "\"" & MyDesktop.dname & "\"")
+  exe = Replace(exe, "%k", "\"" & dpath & "\"")
+  
+  Stop
 
   If MyDesktop.dTerminal Then 
     terminal_emulator = settings["terminal_emulator", Global.find_term()]
-    Shell Global.terminal_cmdline(terminal_emulator, exe_no_args)
+    Shell Global.terminal_cmdline(terminal_emulator, exe)
   Else
-    Shell exe_no_args For Input Output
+    Shell exe For Input Output
   Endif
 
 End
@@ -472,6 +478,7 @@ End
 Public Sub ResultGrid_activate()
 
   If results_list[resultgrid.row].Action_p = Null Then Return
+
   start_item(resultgrid.row)
   TimerClose.Trigger
 
