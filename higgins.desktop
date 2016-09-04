@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=higgins
+GenericName=krunner alternative
+Comment=Gambas3 apps launcher
+Exec=higgins
+Icon=higgins
+Type=Application
+StartupNotify=true
+Categories=FileManager;Utility;FileTools;
