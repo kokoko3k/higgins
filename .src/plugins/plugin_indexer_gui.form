@@ -89,7 +89,7 @@
           Text = ("Limit results to:")
         }
         { SpinMaxResults SpinBox
-          MoveScaled(2,23,16,4)
+          MoveScaled(2,22,16,4.5714)
           MaxValue = 10000
           Value = 50
         }
@@ -107,7 +107,7 @@
           Alignment = Align.Left
         }
         { ValueBoxReindex ValueBox
-          MoveScaled(1,34,17,4)
+          MoveScaled(1,34,17,4.5714)
           Text = ("00:30")
           Type = ValueBox.Time
         }
