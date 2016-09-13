@@ -1494,9 +1494,11 @@ Public Sub timer_end_resize_Timer()
     gstyle.make_background()
   Endif
   If Not (not_save_hsize) Then
-    Settings["General/form_open_h"] = fmain.h
-    global.form_open_h = fmain.h
-    Settings.Save()
+    If fmain.h > fmain_minh() Then
+      Settings["General/form_open_h"] = fmain.h
+      global.form_open_h = fmain.h
+      Settings.Save()
+    Endif
   Endif
   not_save_hsize = False
 End

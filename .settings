@@ -465,7 +465,7 @@ File[2]=".src/MySettings.module:0.8"
 Count=5
 File[3]=".src/plugins/plugin_apps_gui.form"
 File[4]=".src/plugins/plugin_indexer_gui.form"
-File[5]=".src/plugins/plugin_015_recent.class:2.141"
+File[5]=".src/plugins/plugin_015_recent.class:0.19"
 
 [Watches]
 Count=0
