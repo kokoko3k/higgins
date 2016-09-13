@@ -460,11 +460,12 @@ Path="/tmp/higgins.gambas"
 
 [OpenFile]
 File[1]="higgins.desktop:18.7"
-Active=4
+Active=5
 File[2]=".src/MySettings.module:0.8"
-Count=4
+Count=5
 File[3]=".src/plugins/plugin_apps_gui.form"
 File[4]=".src/plugins/plugin_indexer_gui.form"
+File[5]=".src/plugins/plugin_015_recent.class:2.141"
 
 [Watches]
 Count=0

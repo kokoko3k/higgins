@@ -1,12 +1,12 @@
 # Gambas Project File 3.0
-# Compiled with Gambas 3.8.4
+# Compiled with Gambas 3.9.0
 Title=Higgins
 Startup=StartClass
 Icon=appicon.png
 Version=0.6.5
 Component=gb.args
 Component=gb.image
-Component=gb.qt4
+Component=gb.qt5
 Component=gb.form
 Component=gb.dbus
 Component=gb.desktop.x11
@@ -14,7 +14,6 @@ Component=gb.desktop
 Component=gb.eval
 Component=gb.settings
 Component=gb.gui.trayicon
-Component=gb.image.effect
 Component=gb.net
 Component=gb.util
 Component=gb.web
