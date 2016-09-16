@@ -286,7 +286,7 @@ End
 Public Sub reindex_timer_Timer()
   Dim time_diff As Integer
   time_diff = DateDiff(plugin_indexer_gui.last_index_time, Now(), gb.Minute)
-  Debug reindex_minutes_timeout - time_diff, "minutes to go"
+  'Debug reindex_minutes_timeout - time_diff, "minutes to go"
   If time_diff >= reindex_minutes_timeout Then
     reindex_timer.stop
     ReIndex()
