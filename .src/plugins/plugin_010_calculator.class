@@ -106,7 +106,7 @@ Private Sub trigged(query As String) As Boolean
   If InStr(lquery, "sqr") Then Return True
   
   'some more controls here (?)
-  Return True
+  Return False
 End
 
 

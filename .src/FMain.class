@@ -71,9 +71,10 @@ Public Sub TextBox1_Change()
                                         'Debug
   Try previous_search = TextBox1.text
   If Error Then Return
+
                                                     'Debug
   Wait 0.3
-  If previous_search <> textbox1.text Then Return 'user is typing
+  If previous_search <> textbox1.text Then Goto returnlabel 'user is typing
                                                   'Debug
   immediate_search(textbox1)
   If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
@@ -81,13 +82,16 @@ Public Sub TextBox1_Change()
                                                     'Debug
   Try current_search = TextBox1.text 
   If Error Then Return
-  If previous_search <> current_search Then Return
+  If previous_search <> current_search Then Goto Returnlabel
                                                     'Debug
   'If resultgrid.Rows.count > 0 Then showgrid
 returnlabel:
-  If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
+  'qt5 antiglitch...
+      textbox1.Hide
+      textbox1.show
+      textbox1.SetFocus
 
-
+  If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True    
 End
 
 Public Sub initgrid()
@@ -201,7 +205,6 @@ Private Function resize_shrink()
   Dim fmain_big_h As Integer
   Dim pad As Integer
   
-  
 'If resultgrid.Rows.count > 1 Then Stop
   not_save_hsize = True
   If resultgrid.Rows.count > 0 Then
@@ -219,15 +222,6 @@ Private Function resize_shrink()
       fmain.h = (resultgrid.screeny - fmain.screeny) + resultgrid.Rows[lastrow].y + resultgrid.Rows[lastrow].h + (pad * 3)
       Return
     Endif
-    ' 
-    ' 'expand till maximum height
-    ' If fmain_big_h <= global.form_open_h Then 
-    '   fmain.h = fmain_big_h 
-    '   Return
-    ' Endif
-    ' 
-    ' 'a lot of results, maximum height
-    ' fmain.h = global.form_open_h 
 
       Else
     fmain.h = (resultgrid.screeny - fmain.screeny) + resultgrid.Rows.h + (pad * 3)      
@@ -557,6 +551,7 @@ Public Sub TextBox1_KeyPress()
      textBox_change_noglitch(textbox2, complete(textbox1.text, True))
   End Select
   
+
 End
 
 Public Sub ResultGrid_KeyPress()
@@ -1557,19 +1552,10 @@ Public Sub add_history(item As String)
 End
 
 Public Sub textBox_change_noglitch(obj As Object, newvalue As String)
-
     textbox2.hide
     textbox1.hide
-    'textbox1.Background = textbox2.background
-'Wait 
-'Stop 
     obj.text = newvalue
- '   Wait 
-'Stop 
     textbox2.show
     textbox1.show
-  '  Wait 
-'Stop 
-    'textbox1.Background = Color.Transparent
-textbox1.SetFocus()
+    textbox1.SetFocus()
 End
