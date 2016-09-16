@@ -49,15 +49,17 @@ Public Sub TextBox1_Change()
   Dim current_search As String
   Dim c As String
 
+
   global.object_lock(TextBox1)
   c = Complete(TextBox1.text)
+
   TextBox2.text = c
   global.object_unlock(TextBox1)
-                                              'Debug  
+                                              'Debug
   Try current_search = TextBox1.text 
   If Error Then Return
                                                   'Debug
-  Wait 0.01
+  Wait 0.01 'glitch textbox
   If Len(current_search) < 2 Then 
     resize_form()
     reinit()
@@ -160,7 +162,7 @@ Public Sub immediate_search(textcontrol As Object)
   Dim t0 As Float
   Dim iResults As Integer
   Dim is_blocking As Boolean
-  
+
   If previous_search = textcontrol.text Then Return 'don't know why this is important, but works.
   previous_search = textcontrol.text                'don't know why this is important, but works.
   
@@ -315,10 +317,8 @@ Public Sub mouse_busy()
 End
 
 Public Sub mouse_normal()
-
-  fmain.mouse = Mouse.Default
-  TextBox1.mouse = Mouse.default
-
+ fmain.mouse = Mouse.Default
+ TextBox1.mouse = Mouse.default
 End
 
 Public Sub start_item(i As Integer)
@@ -411,7 +411,6 @@ Public Sub start_dot_desktop_exe(dPath As String)
   exe = Replace(exe, "%c", "\"" & MyDesktop.dname & "\"")
   exe = Replace(exe, "%k", "\"" & dpath & "\"")
   
-  Stop
 
   If MyDesktop.dTerminal Then 
     terminal_emulator = settings["terminal_emulator", Global.find_term()]
@@ -588,7 +587,7 @@ Public Sub ResultGrid_KeyPress()
       Object.Lock(textbox1)
         textbox1.text = File.Dir(textbox1.text)
          textbox1_change_delay.Trigger()
-        textbox2.text = Complete(TextBox1.text)
+         textbox2.text = Complete(TextBox1.text)
       Object.unLock(textbox1)
       Stop Event
       
@@ -1299,7 +1298,6 @@ Public Function Complete(s As String, Optional bNext As Boolean = False) As Stri
 
   Dim r As New String[]
   Dim d, f, out As String
-  
   d = File.Dir(s)
   
   If Trim(s) = "" Then Return ""  'dont complete nulls
@@ -1552,5 +1550,3 @@ Public Sub add_history(item As String)
     Endif
   Next
 End
-
- 
