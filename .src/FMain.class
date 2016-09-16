@@ -39,8 +39,8 @@ End
 Public textbox1_change_delay As Timer 
 
 Public Sub textbox1_change_delay_timer()
-  immediate_search(textbox1)
-  textbox2.text = complete(textbox1.text)
+ immediate_search(textbox1)
+ textBox_change_noglitch(textbox2, complete(textbox1.text))
 End
 
 Public Sub TextBox1_Change()
@@ -53,13 +53,16 @@ Public Sub TextBox1_Change()
   global.object_lock(TextBox1)
   c = Complete(TextBox1.text)
 
-  TextBox2.text = c
+
+ textBox_change_noglitch(textbox2, c)
   global.object_unlock(TextBox1)
                                               'Debug
   Try current_search = TextBox1.text 
   If Error Then Return
                                                   'Debug
   Wait 0.01 'glitch textbox
+
+
   If Len(current_search) < 2 Then 
     resize_form()
     reinit()
@@ -499,9 +502,12 @@ Public Sub TextBox1_KeyPress()
       global.object_unlock(textbox1)
       
     Case Key.right 'fill complete
+
       global.object_lock(textbox1)
       If textbox1.pos = textbox1.Length Then
-        textbox1.text &= Mid$(textbox2.text, Len(textbox1.text) + 1, 1)
+        'textbox1.text = "ciao"
+        'textbox1.text &= Mid$(textbox2.text, Len(textbox1.text) + 1, 1)
+        textBox_change_noglitch(textbox1, textbox1.text & Mid$(textbox2.text, Len(textbox1.text) + 1, 1))
         'If textbox1.text = textbox2.text Then 
         textbox1_change_delay.Trigger()
       Endif
@@ -548,7 +554,7 @@ Public Sub TextBox1_KeyPress()
       Endif
     
     Case Key.Up
-      textbox2.text = complete(textbox1.text, True)
+     textBox_change_noglitch(textbox2, complete(textbox1.text, True))
   End Select
   
 End
@@ -577,7 +583,7 @@ Public Sub ResultGrid_KeyPress()
           textbox1.text = results_list[resultgrid.row].Action_p
           'immediate_search(textbox1)
           textbox1_change_delay.Trigger()
-          textbox2.text = Complete(TextBox1.text)
+         textBox_change_noglitch(textbox2, Complete(TextBox1.text))
           Debug
         Object.unLock(textbox1)
         Stop Event
@@ -587,7 +593,7 @@ Public Sub ResultGrid_KeyPress()
       Object.Lock(textbox1)
         textbox1.text = File.Dir(textbox1.text)
          textbox1_change_delay.Trigger()
-         textbox2.text = Complete(TextBox1.text)
+        textBox_change_noglitch(textbox2, Complete(TextBox1.text))
       Object.unLock(textbox1)
       Stop Event
       
@@ -1283,12 +1289,10 @@ Public Sub indexer_indexing_done(finish_time As Date)
 End
 
 Public Sub Panel1_Arrange()
-
   With TextBox1
     TextBox2.Move(.x, .y, .w, .h)
     TextBox2.Lower
   End With
-
 End
 
 Private complete_previous As String
@@ -1392,6 +1396,7 @@ Public Sub ResultGrid_LostFocus()
 End
 
 Private Sub Form_LostFocus_workaround()
+Return
   If global.unfocused_hide Then
     Wait 0.1
     If Not (Desktop.ActiveWindow = fmain.Handle) Then 
@@ -1549,4 +1554,22 @@ Public Sub add_history(item As String)
       Return
     Endif
   Next
+End
+
+Public Sub textBox_change_noglitch(obj As Object, newvalue As String)
+
+    textbox2.hide
+    textbox1.hide
+    'textbox1.Background = textbox2.background
+'Wait 
+'Stop 
+    obj.text = newvalue
+ '   Wait 
+'Stop 
+    textbox2.show
+    textbox1.show
+  '  Wait 
+'Stop 
+    'textbox1.Background = Color.Transparent
+textbox1.SetFocus()
 End
