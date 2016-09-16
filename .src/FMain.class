@@ -6,6 +6,8 @@ Public Confpath As String = Settings.defaultdir & "/" & appname
 Public extbinpath As String = Settings.defaultdir & "/" & appname & "/extbin"
 Public xb_rcpath As String = confpath & "/higgins.xb.rc"
 Private not_save_hsize As Boolean = False
+Public timer_expand_check As Timer
+
 
 Public Struct rItemT
   plugin As String            'the plugin name
@@ -149,6 +151,8 @@ Private Sub showgrid()
   Dim pad As Integer
   Dim minh As Integer = resultgrid.Font.TextHeight("|") * 7
   
+  Return
+  
   If (fmain.h > resultgrid.h) Then 
     If fmain.h > minh Then Return 'grid is already visible
   Endif
@@ -161,6 +165,7 @@ Private Sub showgrid()
   not_save_hsize = True
   FMain.h = Max(global.form_open_h, TextBox1.h + (pad * 3) + Max(resultgrid.h, minh))
   gstyle.make_background()
+
 End
 
 Public Sub immediate_search(textcontrol As Object)
@@ -169,6 +174,10 @@ Public Sub immediate_search(textcontrol As Object)
   Dim t0 As Float
   Dim iResults As Integer
   Dim is_blocking As Boolean
+
+  timer_expand_check = New Timer As "timer_expand_check"
+  timer_expand_check.delay = 100
+  timer_expand_check.start
 
   If previous_search = textcontrol.text Then Return 'don't know why this is important, but works.
   previous_search = textcontrol.text                'don't know why this is important, but works.
@@ -196,36 +205,28 @@ Public Sub immediate_search(textcontrol As Object)
     Debug "[END]", aplugin, "time:", Timer() - t0
   Next
   Debug "Search ends here."
-  resize_shrink()
+  
+  timer_expand_check.stop
+  timer_expand_check.Trigger
+
   mouse_normal()
 End
 
-Private Function resize_shrink()
-  Dim lastrow As Integer
-  Dim fmain_big_h As Integer
-  Dim pad As Integer
-  
-'If resultgrid.Rows.count > 1 Then Stop
-  not_save_hsize = True
-  If resultgrid.Rows.count > 0 Then
+Public Function timer_expand_check_timer()
+   Dim newh As Integer = 0
+   Dim pad As Integer = 0 
     
     If panel2.padding = 0 Then 
        pad = Desktop.scale
          Else
        pad = panel2.padding
-     Endif
-    
-    lastrow = resultgrid.Rows.max
-    fmain_big_h = (resultgrid.screeny - fmain.screeny) + resultgrid.Rows[lastrow].y + resultgrid.Rows[lastrow].h + (pad * 3)
-    'shrink if needed
-    If (resultgrid.Rows[lastrow].y + resultgrid.Rows[lastrow].h) < resultgrid.clienth Then
-      fmain.h = (resultgrid.screeny - fmain.screeny) + resultgrid.Rows[lastrow].y + resultgrid.Rows[lastrow].h + (pad * 3)
-      Return
     Endif
-
-      Else
-    fmain.h = (resultgrid.screeny - fmain.screeny) + resultgrid.Rows.h + (pad * 3)      
-  Endif  
+   
+   not_save_hsize = True
+   
+   If resultgrid.Rows.count = 0 Then Return
+   newh = (resultgrid.Rows.count * resultgrid.Rows.Height) + fmain_minh() + pad * 2
+   fmain.h = Min(global.form_open_h, newh)
 End
 
 
@@ -1487,11 +1488,12 @@ Private fmain_old_w As Integer
 Private fmain_old_h As Integer
 
 Public Sub timer_end_resize_Timer()
+  
   timer_end_resize.stop
   If (fmain_old_w = fmain.w) And (fmain_old_h = fmain.h) Then
     gstyle.make_background()
   Endif
-  If Not (not_save_hsize) Then
+  If Not (not_save_hsize) Then  
     If fmain.h > fmain_minh() Then
       Settings["General/form_open_h"] = fmain.h
       global.form_open_h = fmain.h

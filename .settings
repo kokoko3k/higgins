@@ -311,6 +311,9 @@ Geometry=[32,670,224,280]
 [DebugWindow/o]
 Geometry=[931,542,224,280]
 
+[DebugWindow/obj]
+Geometry=[1280,0,224,280]
+
 [DebugWindow/out_img]
 Geometry=[47,0,224,280]
 
