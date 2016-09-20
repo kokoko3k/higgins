@@ -414,7 +414,7 @@ Public Sub start_dot_desktop_exe(dPath As String)
     terminal_emulator = settings["terminal_emulator", Global.find_term()]
     Shell Global.terminal_cmdline(terminal_emulator, exe)
   Else
-    Shell exe For Input Output
+    Shell exe 'For Input Output
   Endif
 
 End
