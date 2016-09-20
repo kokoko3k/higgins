@@ -339,7 +339,7 @@ Public Sub start_item(i As Integer)
         add_history(p)
       Endif
     Case "EXEC"
-      Shell p For Input Output
+      Shell p 'For Input Output
     Case "EXEC_TERMINAL"
       start_executable_terminal(p)
     Case "XDGOPEN"
@@ -433,7 +433,7 @@ Public Sub start_executable(ePath As String)
   
   Select msgout
     Case 1
-      Shell ePath For Input Output
+      Shell ePath 'For Input Output
     Case 2
       Return
   End Select
