@@ -719,23 +719,44 @@ Public TrayIcon2 As Trayicon
 
 Public Sub InitTrayIcon()
   
-  Dim SystemTray As Boolean = True
-
+  Dim SystemTray As Boolean
+  SystemTray = False
   Try SystemTray = desktop.HasSystemTray
   If Error Then
-    Debug "Couldn't check if your desktop has a system tray, assuming it has"
+    Debug "Error while checking if your desktop has a system tray, assuming it has..."
+    SystemTray = True
   Endif
   
-  If Not SystemTray Then Return
+  If Not SystemTray Then
+    Debug "System tray is missing; checking for it later..."
+    InitTrayIconChecker = New Timer As "InitTrayIconChecker"
+    InitTrayIconChecker.delay = 1000
+    InitTrayIconChecker.start
+    Return
+  Endif
+  
   Try TrayIcon2 = New Trayicon 
-  If Error Then Debug "Cannot Init Trayicon"
+  If Error Then 
+    Debug "Cannot Init Trayicon"
+    Return
+      Else
+    Try InitTrayIconChecker.stop
+  Endif
   TrayIcon2.Picture = Picture["appicon.png"]
   TrayIcon2.Visible = True
   object.Attach(TrayIcon2, Me, "TrayIcon2")
   TrayIcon2.PopupMenu = "TrayMenu"
-  If Error Then Debug "Cannot Init Trayicon"
+
 
 End
+
+Public InitTrayIconChecker As Timer
+
+Public Sub InitTrayIconChecker_timer()
+    InitTrayIcon()
+End
+
+
 
 Public Sub TrayIcon2_click()
 
