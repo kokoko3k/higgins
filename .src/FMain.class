@@ -730,7 +730,7 @@ Public Sub InitTrayIcon()
   If Not SystemTray Then
     Debug "System tray is missing; checking for it later..."
     InitTrayIconChecker = New Timer As "InitTrayIconChecker"
-    InitTrayIconChecker.delay = 1000
+    InitTrayIconChecker.delay = 5000
     InitTrayIconChecker.start
     Return
   Endif
