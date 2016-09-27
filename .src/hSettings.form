@@ -124,7 +124,7 @@
           Value = CheckBox.True
         }
         { ScrollbarCheckbox CheckBox
-          MoveScaled(38,1,19,4)
+          MoveScaled(40,1,19,4)
           Expand = True
           AutoResize = True
           Text = ("Show scrollbar")

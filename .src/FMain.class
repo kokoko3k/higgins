@@ -1640,3 +1640,16 @@ Public Sub textBox_change_noglitch(obj As Object, newvalue As String)
     textbox1.show
     textbox1.SetFocus()
 End
+
+Public Sub ResultGrid_MouseMove()
+  Dim scrollbar_state As Integer = Scroll.none
+
+  If Mouse.x > (ResultGrid.w - (Style.ScrollbarSize * 3)) And (Mouse.x < resultgrid.w) Then
+      scrollbar_state = Scroll.Vertical
+        Else
+      scrollbar_state = Scroll.none
+  Endif
+
+  resultgrid.ScrollBar = scrollbar_state
+  
+End

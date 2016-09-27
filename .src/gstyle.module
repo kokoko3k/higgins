@@ -35,8 +35,10 @@ Public Sub applystyle()
   'scrollbar
     If hSettings.ScrollbarCheckbox.value = CheckBox.true Then
       fmain.ResultGrid.scrollbar = Scroll.Vertical
+      fmain.ResultGrid.Tracking = False
         Else
       fmain.ResultGrid.scrollbar = Scroll.none
+      fmain.ResultGrid.Tracking = True
     Endif
   
 
