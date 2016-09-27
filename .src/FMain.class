@@ -1140,6 +1140,7 @@ End
 Private Sub cmdline_args()
   
   Args.begin("Higgins:")
+  Stop
     Try global.unfocused_hide = Not (Args.Has("p", "persistent", ("Do not auto-hide main window")))
     Try global.UseTray = Not (Args.Has("n", "notray", ("Do not use a tray icon")))
     Try global.cleartext = Args.Has("c", "cleartext", ("Clear the previous search on show"))
@@ -1413,7 +1414,6 @@ Public Sub ResultGrid_LostFocus()
 End
 
 Private Sub Form_LostFocus_workaround()
-Return
   If global.unfocused_hide Then
     Wait 0.1
     If Not (Desktop.ActiveWindow = fmain.Handle) Then 
