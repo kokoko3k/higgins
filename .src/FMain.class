@@ -80,7 +80,6 @@ Public Sub TextBox1_Change()
                                                   'Debug
   immediate_search(textbox1)
 
-  If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
   Wait 0.3
                                                     'Debug
   Try current_search = TextBox1.text 
@@ -236,7 +235,6 @@ Public Sub immediate_search(textcontrol As Object)
   timer_expand_check.start
 
   If previous_search = textcontrol.text Then 
-Stop
     Return 'don't know why this is important, but works.
   Endif
   previous_search = textcontrol.text                'don't know why this is important, but works.
@@ -274,7 +272,9 @@ End
 Public Function timer_expand_check_timer()
    Dim newh As Integer = 0
    Dim pad As Integer = 0 
-    
+
+   If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
+
     If panel2.padding = 0 Then 
        pad = Desktop.scale
          Else
