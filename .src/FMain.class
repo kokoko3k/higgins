@@ -47,6 +47,58 @@ End
 
 Public Sub TextBox1_Change()
 
+  Dim p_previous_search, current_search As String
+  Dim c As String
+
+  global.object_lock(TextBox1)
+  c = Complete(TextBox1.text)
+
+  textBox_change_noglitch(textbox2, c)
+  global.object_unlock(TextBox1)
+                                              'Debug
+  Try current_search = TextBox1.text 
+  If Error Then Return
+                                                  'Debug
+  Wait 0.01 'glitch textbox
+
+
+  If Len(current_search) < 2 Then 
+    previous_search = ""
+    resize_form()
+    reinit()
+    Return
+  Endif
+                                        'Debug
+  Try p_previous_search = TextBox1.text
+  If Error Then Return
+
+                                                    'Debug
+  Wait 0.3
+  If p_previous_search <> textbox1.text Then 
+    Goto returnlabel 'user is typing
+  Endif
+                                                  'Debug
+  immediate_search(textbox1)
+
+  If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
+  Wait 0.3
+                                                    'Debug
+  Try current_search = TextBox1.text 
+  If Error Then Return
+  If p_previous_search <> current_search Then Goto Returnlabel
+                                                    'Debug
+  'If resultgrid.Rows.count > 0 Then showgrid
+returnlabel:
+  'qt5 antiglitch...
+      textbox1.Hide
+      textbox1.show
+      textbox1.SetFocus
+
+  If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True    
+End
+
+Public Sub old_TextBox1_Change()
+
   Dim previous_search As String
   Dim current_search As String
   Dim c As String
@@ -66,6 +118,7 @@ Public Sub TextBox1_Change()
 
 
   If Len(current_search) < 2 Then 
+    previous_search = ""
     resize_form()
     reinit()
     Return
@@ -76,9 +129,12 @@ Public Sub TextBox1_Change()
 
                                                     'Debug
   Wait 0.3
-  If previous_search <> textbox1.text Then Goto returnlabel 'user is typing
+  If previous_search <> textbox1.text Then 
+    Goto returnlabel 'user is typing
+  Endif
                                                   'Debug
   immediate_search(textbox1)
+
   If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
   Wait 0.3
                                                     'Debug
@@ -179,7 +235,10 @@ Public Sub immediate_search(textcontrol As Object)
   timer_expand_check.delay = 100
   timer_expand_check.start
 
-  If previous_search = textcontrol.text Then Return 'don't know why this is important, but works.
+  If previous_search = textcontrol.text Then 
+Stop
+    Return 'don't know why this is important, but works.
+  Endif
   previous_search = textcontrol.text                'don't know why this is important, but works.
   
   reinit()
@@ -1140,7 +1199,6 @@ End
 Private Sub cmdline_args()
   
   Args.begin("Higgins:")
-  Stop
     Try global.unfocused_hide = Not (Args.Has("p", "persistent", ("Do not auto-hide main window")))
     Try global.UseTray = Not (Args.Has("n", "notray", ("Do not use a tray icon")))
     Try global.cleartext = Args.Has("c", "cleartext", ("Clear the previous search on show"))
