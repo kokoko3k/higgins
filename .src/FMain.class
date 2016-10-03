@@ -1279,6 +1279,7 @@ Public Sub Form_Hide()
   fmain.visible = False
   fmain.tag = "minimized"
   previous_search = ""
+  resultgrid.visible = False 'act a s a control on show time to force minimum height
 End
 
 Public Sub Form_Show()
@@ -1588,10 +1589,9 @@ Public Sub Form_Resize()
   If Not global.fullyloaded Then Return
 
   object.lock(fmain)
-
-  check_min_size()  
+  check_min_size(Not resultgrid.visible)  
   Object.unLock(fmain)
-
+  
   fmain_old_w = fmain.W
   fmain_old_h = fmain.H
 
