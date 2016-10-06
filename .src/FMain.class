@@ -1266,6 +1266,7 @@ Public Sub Form_Hide()
   MySettings.save_geometry()
   ResultGrid.UnSelectAll()
   resultgrid.row = -1
+  timer_expand_check.stop
   If fmain.tag = "minimized" Then Return
   fmain.visible = False
   fmain.tag = "minimized"
