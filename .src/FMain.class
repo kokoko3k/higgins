@@ -843,7 +843,7 @@ Public Sub xb_HotkeyPressed(action As String)
   If action = "show" Then
     If fmain.visible Then
       MySettings.save()  
-      fmain.Hide()
+      form_hide()
     Else
       fmain.Show()
     Endif
@@ -1261,13 +1261,15 @@ Public Sub Form_KeyRelease()
 End
 
 Public Sub Form_Hide()
+  resultgrid.visible = False 'act a s a control on show time to force minimum height
+  Wait
+  MySettings.save_geometry()
   ResultGrid.UnSelectAll()
   resultgrid.row = -1
   If fmain.tag = "minimized" Then Return
   fmain.visible = False
   fmain.tag = "minimized"
   previous_search = ""
-  resultgrid.visible = False 'act a s a control on show time to force minimum height
 End
 
 Public Sub Form_Show()
