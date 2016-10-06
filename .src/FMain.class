@@ -205,9 +205,7 @@ Private previous_search As String
 Private Sub showgrid()
   Dim pad As Integer
   Dim minh As Integer = resultgrid.Font.TextHeight("|") * 7
-  
   Return
-  
   If (fmain.h > resultgrid.h) Then 
     If fmain.h > minh Then Return 'grid is already visible
   Endif
@@ -272,7 +270,7 @@ End
 Public Function timer_expand_check_timer()
    Dim newh As Integer = 0
    Dim pad As Integer = 0 
-
+   
    If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
 
     If panel2.padding = 0 Then 
@@ -284,6 +282,7 @@ Public Function timer_expand_check_timer()
    not_save_hsize = True
    
    If resultgrid.Rows.count = 0 Then Return
+   resultgrid.visible = True
    newh = (resultgrid.Rows.count * resultgrid.Rows.Height) + fmain_minh() + pad * 2
    fmain.h = Min(global.form_open_h, newh)
 End
@@ -559,32 +558,15 @@ Public Sub TextBox1_KeyPress()
 
       global.object_lock(textbox1)
       If textbox1.pos = textbox1.Length Then
-        'textbox1.text = "ciao"
-        'textbox1.text &= Mid$(textbox2.text, Len(textbox1.text) + 1, 1)
         textBox_change_noglitch(textbox1, textbox1.text & Mid$(textbox2.text, Len(textbox1.text) + 1, 1))
-        'If textbox1.text = textbox2.text Then 
         textbox1_change_delay.Trigger()
       Endif
       global.object_unlock(textbox1)
       
-    Case Key.down
+    Case Key.down Or Key.PageDown
       If resultgrid.Rows.count > 0 Then 
-        showgrid()
+        timer_expand_check.Trigger
         ResultGrid.SetFocus()
-        If resultgrid.current = Null Then 
-          Try resultgrid.Rows[0].Selected = True
-        Else
-          Try resultgrid.Rows[1].Selected = True
-        Endif
-      Endif
-      
-    Case Key.PgDown
-      showgrid()
-      ResultGrid.SetFocus()
-      If resultgrid.current = Null Then 
-        Try resultgrid.Rows[0].Selected = True
-      Else
-        Try resultgrid.Rows[1].Selected = True
       Endif
       
     Case Key.enter
