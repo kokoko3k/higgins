@@ -1189,7 +1189,7 @@ Private Sub cmdline_args()
   Args.begin("Higgins:")
     Try global.unfocused_hide = Not (Args.Has("p", "persistent", ("Do not auto-hide main window")))
     Try global.UseTray = Not (Args.Has("n", "notray", ("Do not use a tray icon")))
-    Try global.cleartext = Args.Has("c", "cleartext", ("Clear the previous search on show"))
+    Try global.cleartext = Args.Has("c", "cleartext", ("Clear the previous search on hide"))
   Args.End()
   
 End
@@ -1271,6 +1271,12 @@ Public Sub Form_Hide()
   fmain.visible = False
   fmain.tag = "minimized"
   previous_search = ""
+
+  If global.cleartext Then 
+    textbox1.Clear
+    textbox1.text = ""
+  Endif
+
 End
 
 Public Sub Form_Show()
@@ -1294,25 +1300,7 @@ Public Sub QuitMenu_Click()
 End
 
 Public Sub TextBox1_GotFocus()
-  ' 
-  ' Dim o As Object
-  ' Wait
-  ' Wait 0.1
-  ' Try textbox1.SelectAll
-  ' textbox1.sele
-  ' Wait 0.1
-  ' textbox1.Select(0, String.Len(textbox1.text))
-  ' Wait 0.1
-  ' o = findSelectable(TextBox1)
-
-  If global.cleartext Then 
-    textbox1.Clear
-    textbox1.text = ""
-      Else
-    select_all_override(textbox1)
-  Endif
-    
-
+  If Not global.cleartext Then select_all_override(textbox1)
 End
 
 
@@ -1469,7 +1457,7 @@ Private Sub Form_LostFocus_workaround()
     Wait 0.1
     If Not (Desktop.ActiveWindow = fmain.Handle) Then 
       If Not (Desktop.activewindow = hsettings.handle) Then
-        form_hide
+        form_hide()
       Endif
     Endif
   Endif
