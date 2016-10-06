@@ -563,7 +563,13 @@ Public Sub TextBox1_KeyPress()
       Endif
       global.object_unlock(textbox1)
       
-    Case Key.down Or Key.PageDown
+    Case Key.down
+      If resultgrid.Rows.count > 0 Then 
+        timer_expand_check.Trigger
+        ResultGrid.SetFocus()
+      Endif
+      
+    Case Key.PageDown
       If resultgrid.Rows.count > 0 Then 
         timer_expand_check.Trigger
         ResultGrid.SetFocus()
@@ -1265,6 +1271,7 @@ Public Sub Form_Hide()
 End
 
 Public Sub Form_Show()
+Debug fmain.y
   FMain.border = (hsettings.CheckBox1.value <> CheckBox.true)  
   global.object_unlock(TextBox1) '<--?? needed?
   MySettings.load_geometry()
