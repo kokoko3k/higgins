@@ -6,13 +6,14 @@ plugin_indexer=[38]
 Count=0
 
 [DebugWindow]
-Count=0
+Count=1
+DebugWindow[1]="$aDataDir"
 
 [DebugWindow/$aApps]
-Geometry=[1354,332,246,471]
+Geometry=[1305,399,246,471]
 
 [DebugWindow/$aDataDir]
-Geometry=[47,-3,234,343]
+Geometry=[52,0,234,343]
 
 [DebugWindow/$aDataDir.Insert(Split(Env["XDG_DATA_DIRS"], ":", "", True))]
 Geometry=[47,-3,224,280]
@@ -21,7 +22,7 @@ Geometry=[47,-3,224,280]
 Geometry=[1003,517,597,308]
 
 [DebugWindow/$cAppsPath]
-Geometry=[1103,491,224,280]
+Geometry=[1056,491,224,280]
 
 [DebugWindow/CHILD]
 Geometry=[1280,-3,226,280]
@@ -31,6 +32,12 @@ Geometry=[45,-3,224,280]
 
 [DebugWindow/DesktopApps]
 Geometry=[1280,0,224,280]
+
+[DebugWindow/DesktopApps.ProcWarm]
+Geometry=[1294,14,268,445]
+
+[DebugWindow/DesktopApps.ProcWarm.Lines]
+Geometry=[1308,28,268,445]
 
 [DebugWindow/DesktopApps[app]]
 Geometry=[1297,307,224,458]
@@ -249,7 +256,10 @@ Geometry=[1239,0,361,555]
 Geometry=[1294,11,361,555]
 
 [DebugWindow/happs]
-Geometry=[406,765,224,280]
+Geometry=[406,712,224,280]
+
+[DebugWindow/happs[0]]
+Geometry=[627,311,471,400]
 
 [DebugWindow/hotkeys]
 Geometry=[45,-3,224,280]
@@ -471,18 +481,20 @@ Path="/tmp/higgins.gambas"
 File[1]="higgins.desktop:18.7"
 Active=7
 File[2]=".src/MySettings.module:0.8"
-Count=13
+Count=15
 File[3]=".src/plugins/plugin_apps_gui.form"
 File[4]=".src/plugins/plugin_indexer_gui.form"
 File[5]=".src/plugins/plugin_015_recent.class:0.19"
 File[6]=".src/FMain.form"
-File[7]=".src/FMain.class:15.1258"
+File[7]=".src/FMain.class:3.1316"
 File[8]=".src/hSettings.class:14.258"
 File[9]=".src/Global.module:34.92"
 File[10]=".src/MyDesktop.class:3.60"
 File[11]=".src/XbindKeys.class:27.18"
 File[12]=".src/hSettings.form"
 File[13]=".src/StartClass.class:18.3"
+File[14]=".src/plugins/plugin_020_apps.class:0.63"
+File[15]=".src/DesktopApps.class:10.86"
 
 [Watches]
 Count=0

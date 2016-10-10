@@ -49,6 +49,7 @@ Public Sub TextBox1_Change()
 
   Dim p_previous_search, current_search As String
   Dim c As String
+  Dim bWasfocused As Boolean
 
   global.object_lock(TextBox1)
   c = Complete(TextBox1.text)
@@ -89,9 +90,10 @@ Public Sub TextBox1_Change()
   'If resultgrid.Rows.count > 0 Then showgrid
 returnlabel:
   'qt5 antiglitch...
+      bWasfocused = textbox1.HasFocus
       textbox1.Hide
       textbox1.show
-      textbox1.SetFocus
+      If bWasfocused Then textbox1.SetFocus
 
   If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True    
 End
@@ -146,6 +148,7 @@ returnlabel:
   'qt5 antiglitch...
       textbox1.Hide
       textbox1.show
+      Debug
       textbox1.SetFocus
 
   If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True    
@@ -282,6 +285,7 @@ Public Function timer_expand_check_timer()
    not_save_hsize = True
    
    If resultgrid.Rows.count = 0 Then Return
+   resultgrid.SetFocus()
    resultgrid.visible = True
    newh = (resultgrid.Rows.count * resultgrid.Rows.Height) + fmain_minh() + pad * 2
    fmain.h = Min(global.form_open_h, newh)
@@ -1290,6 +1294,7 @@ Public Sub Form_Show()
   resize_form()
   gstyle.make_background()
   Wait
+  Debug
   TextBox1.SetFocus()
 End
 
@@ -1618,6 +1623,7 @@ Public Sub textBox_change_noglitch(obj As Object, newvalue As String)
     obj.text = newvalue
     textbox2.show
     textbox1.show
+    Debug
     textbox1.SetFocus()
 End
 
