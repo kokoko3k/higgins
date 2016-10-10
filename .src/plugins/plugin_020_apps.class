@@ -61,7 +61,6 @@ Public Sub find(textcontrol As Object) As RItemT[]
   If Not trigged(textcontrol.text) Then Return
 
   For Each app In DesktopApps
-
       Try happ = DesktopApps[app]
       If Error Then Continue
       If happ.Exec_R <> "" Then
@@ -107,6 +106,7 @@ Private Sub add_no_dupe(happs As DesktopApps[], new_happ As DesktopApps)
 
   For Each existing_happ In happs
         If existing_happ.Get("Exec") = new_happ.Get("Exec") Then 'dupe found
+          Stop
           'prefer the one with the comment
           If existing_happ.Get("Comment") <> "" Then 
             Return

@@ -59,7 +59,7 @@ Static Public Sub MakeAppList()
   Dim path As String
   Dim sPath As String
   $aApps = New String[]
-  
+
   For Each sPath In GetDataDir()
     If Not Exist(sPath &/ "applications") Then Continue
     AddFile(sPath &/ "applications")
@@ -71,7 +71,7 @@ Static Public Sub MakeAppList()
 
   'AddFile("/usr/share/kde4/services/")
   $aApps.Sort(gb.Natural)
-  
+
 End
 
 
@@ -285,6 +285,7 @@ Static Private Sub GetDataDir() As String[]
     If Trim(Env["XDG_DATA_DIRS"]) <> "" Then 
       sPrev = ""
       For Each sDir In Split(Env["XDG_DATA_DIRS"], ":", "", True).Sort()
+        If Right(sDir) <> "/" Then sDir &= "/"
         If sDir <> sPrev
           $aDataDir.Add(sDir)
           sPrev = sDir
@@ -292,10 +293,18 @@ Static Private Sub GetDataDir() As String[]
       Next
       '$aDataDir.Insert(Split(Env["XDG_DATA_DIRS"], ":", "", True))
         Else
-      $aDataDir.add("/usr/share")
-      $aDataDir.add("/usr/local/share")
+      If $aDataDir.find(User.home & "/.local/share/") = -1 Then
+        $aDataDir.add(User.home & "/.local/share/")
+      Endif
+      If $aDataDir.find("/usr/share/") = -1 Then
+        $aDataDir.add("/usr/share/")
+      Endif
+      If $aDataDir.find("/usr/local/share/") = -1 Then
+        $aDataDir.add("/usr/local/share/")
+      Endif
     Endif
   Endif
+
   Return $aDataDir
 End
 
