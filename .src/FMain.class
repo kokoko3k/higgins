@@ -148,8 +148,6 @@ returnlabel:
   'qt5 antiglitch...
       textbox1.Hide
       textbox1.show
-      Debug
-      textbox1.SetFocus
 
   If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True    
 End
@@ -285,7 +283,6 @@ Public Function timer_expand_check_timer()
    not_save_hsize = True
    
    If resultgrid.Rows.count = 0 Then Return
-   resultgrid.SetFocus()
    resultgrid.visible = True
    newh = (resultgrid.Rows.count * resultgrid.Rows.Height) + fmain_minh() + pad * 2
    fmain.h = Min(global.form_open_h, newh)
@@ -318,7 +315,7 @@ Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
   
   resultgrid.Data.Foreground = Global.textgrid_foreground
   rcResult = results_list[Row]
-  
+  Stop
   'two lines:
   resultgrid.data.RichText = "<b>" & rcResult.text & "</b>"
   'resultgrid.data.RichText = "<font size=+1>" & rcResult.text & "</font>"
@@ -571,8 +568,11 @@ Public Sub TextBox1_KeyPress()
       If resultgrid.Rows.count > 0 Then 
         timer_expand_check.Trigger
         ResultGrid.SetFocus()
+        If resultgrid.Rows.count > 1 Then 
+          resultgrid.row += 1
+        Endif
       Endif
-      
+
     Case Key.PageDown
       If resultgrid.Rows.count > 0 Then 
         timer_expand_check.Trigger
@@ -1294,7 +1294,6 @@ Public Sub Form_Show()
   resize_form()
   gstyle.make_background()
   Wait
-  Debug
   TextBox1.SetFocus()
 End
 
@@ -1623,7 +1622,6 @@ Public Sub textBox_change_noglitch(obj As Object, newvalue As String)
     obj.text = newvalue
     textbox2.show
     textbox1.show
-    Debug
     textbox1.SetFocus()
 End
 
