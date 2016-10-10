@@ -153,8 +153,8 @@ returnlabel:
 End
 
 Public Sub initgrid()
-  ResultGrid.Rows.count = 0
   ResultGrid.columns.count = 1
+  ResultGrid.Rows.count = 0
   ResultGrid.mode = Select.Single
   ResultGrid.Show()
   Wait
@@ -315,7 +315,8 @@ Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
   
   resultgrid.Data.Foreground = Global.textgrid_foreground
   rcResult = results_list[Row]
-  Stop
+
+
   'two lines:
   resultgrid.data.RichText = "<b>" & rcResult.text & "</b>"
   'resultgrid.data.RichText = "<font size=+1>" & rcResult.text & "</font>"
@@ -1205,6 +1206,8 @@ Public Sub first_init()
   Dim msg As String
   Me.visible = False
   cmdline_args()
+
+  
   resultgrid.Font.size = fmain.Font.size * 1.112
   If Not Exist(Confpath, True) Then
     newuser = True
@@ -1270,7 +1273,7 @@ Public Sub Form_Hide()
   MySettings.save_geometry()
   ResultGrid.UnSelectAll()
   resultgrid.row = -1
-  timer_expand_check.stop
+  Try timer_expand_check.stop
   If fmain.tag = "minimized" Then Return
   fmain.visible = False
   fmain.tag = "minimized"
