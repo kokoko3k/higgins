@@ -271,7 +271,7 @@ End
 Public Function timer_expand_check_timer()
    Dim newh As Integer = 0
    Dim pad As Integer = 0 
-   
+
    If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
 
     If panel2.padding = 0 Then 
@@ -1286,19 +1286,46 @@ Public Sub Form_Hide()
 
 End
 
-Public Sub Form_Show()
+Public timer_shown As Timer
 
-  FMain.border = (hsettings.CheckBox1.value <> CheckBox.true)  
+Public Sub timer_shown_timer()
+  Dim decorated As Boolean = hsettings.CheckBox1.value <> CheckBox.true  
+  timer_shown.stop
+  
+
+  If Not decorated Then 
+    Debug fmain.y, fmain.screeny
+    If (fmain.y <> fmain.screeny) Or (fmain.x <> fmain.screenx) Then
+      fmain.move(Settings["win_rx"], Settings["win_ry"])
+      Debug "recover, move to y=", Settings["win_ry"]
+    Endif
+  Endif
+End
+
+Public Sub Form_Show()
+  Dim decorated As Boolean = hsettings.CheckBox1.value <> CheckBox.true  
+  fmain.border = decorated
+
   global.object_unlock(TextBox1) '<--?? needed?
   MySettings.load_geometry()
 
   fmain.visible = True
   fmain.tag = ""
+
   resize_form()
   gstyle.make_background()
   Wait
   TextBox1.SetFocus()
+
+  timer_shown = New Timer As "timer_shown"
+  timer_shown.delay = 200
+  timer_shown.start  
 End
+
+
+
+
+
 
 '-- END FMAIN FUNCTIONS  ---------------------------------------------------------------------
 
@@ -1460,6 +1487,7 @@ Public Sub ResultGrid_LostFocus()
 End
 
 Private Sub Form_LostFocus_workaround()
+Return
   If global.unfocused_hide Then
     Wait 0.1
     If Not (Desktop.ActiveWindow = fmain.Handle) Then 
@@ -1640,3 +1668,5 @@ Public Sub ResultGrid_MouseMove()
   resultgrid.ScrollBar = scrollbar_state
   
 End
+
+

@@ -1,8 +1,6 @@
 ' Gambas module file
 
 Public Sub save()
-
-  save_geometry()
   Settings.Save()
 End
 
