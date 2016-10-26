@@ -74,7 +74,7 @@ Public Sub TextBox1_Change()
   If Error Then Return
 
                                                     'Debug
-  Wait 0.3
+  Wait 0.2
   If p_previous_search <> textbox1.text Then 
     Goto returnlabel 'user is typing
   Endif

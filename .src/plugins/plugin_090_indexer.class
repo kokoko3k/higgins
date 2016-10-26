@@ -314,8 +314,8 @@ Public Sub ReIndex()
     cmdline &= "; nice -n 19 ionice -c3 schedtool -B -e find " & dir & " -maxdepth " & depth 
   Next
   If cmdline Begins ";" Then cmdline = Right(cmdline, -1)
-  cmdline &= "| sort -u"
   cmdline = "sh -c " & "\"" & cmdline & "\""
+  cmdline &= "| sort -u"
   Debug "Indexing..."
   Debug cmdline
   indexprocess = Shell cmdline For Read As "indexprocess"
