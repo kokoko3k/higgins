@@ -1618,6 +1618,9 @@ End
 Public Sub Form_Resize()
   If Not global.fullyloaded Then Return
 
+  If fmain.w < 200 Then fmain.w = 200
+
+
   object.lock(fmain)
   check_min_size(Not resultgrid.visible)  
   Object.unLock(fmain)
