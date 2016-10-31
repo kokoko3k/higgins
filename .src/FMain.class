@@ -1287,14 +1287,30 @@ Public Sub Form_Hide()
 End
 
 Public timer_shown As Timer
+Public iterations As Integer
 
 Public Sub timer_shown_timer()
+  'brute force needed for  kwin + qt5
+  '...the window sometimes appears at wrong position
+  '..so hammer it with a timer to restore the right one.
+
   Dim decorated As Boolean = hsettings.CheckBox1.value <> CheckBox.true  
-  timer_shown.stop
+  
+  If decorated Then 
+    timer_shown.stop
+    Return
+  Endif
+  
+  iterations += 1
+  If iterations >= 20 Then 
+    iterations = 0
+    timer_shown.stop
+    Return
+  Endif
   
 
   If Not decorated Then 
-    Debug fmain.y, fmain.screeny
+    'Debug fmain.y, fmain.screeny
     If (fmain.y <> fmain.screeny) Or (fmain.x <> fmain.screenx) Then
       fmain.move(Settings["win_rx"], Settings["win_ry"])
       Debug "recover, move to y=", Settings["win_ry"]
@@ -1318,7 +1334,7 @@ Public Sub Form_Show()
   TextBox1.SetFocus()
 
   timer_shown = New Timer As "timer_shown"
-  timer_shown.delay = 200
+  timer_shown.delay = 10
   timer_shown.start  
 End
 
