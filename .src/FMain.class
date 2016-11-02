@@ -1268,9 +1268,9 @@ Public Sub Form_KeyRelease()
 End
 
 Public Sub Form_Hide()
+  Dim timer_hidden As New Timer As "timer_hidden"
   resultgrid.visible = False 'act a s a control on show time to force minimum height
   Wait
-  MySettings.save_geometry()
   ResultGrid.UnSelectAll()
   resultgrid.row = -1
   Try timer_expand_check.stop
@@ -1283,13 +1283,22 @@ Public Sub Form_Hide()
     textbox1.Clear
     textbox1.text = ""
   Endif
-
+  timer_hidden.delay = 10
+  timer_hidden.start
 End
 
+Public Sub timer_hidden_timer()
+  timer_hidden.stop
+  fmain.border = True
+End
+
+
+Public OLD_timer_shown As Timer
+Public timer_hidden As Timer
 Public timer_shown As Timer
 Public iterations As Integer
 
-Public Sub timer_shown_timer()
+Public Sub OLD_timer_shown_timer()
   'brute force needed for  kwin + qt5
   '...the window sometimes appears at wrong position
   '..so hammer it with a timer to restore the right one.
@@ -1318,7 +1327,7 @@ Public Sub timer_shown_timer()
   Endif
 End
 
-Public Sub Form_Show()
+Public Sub OLD_Form_Show()
   Dim decorated As Boolean = hsettings.CheckBox1.value <> CheckBox.true  
   fmain.border = decorated
 
@@ -1339,6 +1348,58 @@ Public Sub Form_Show()
 End
 
 
+Public Sub Form_Show()
+  Dim iMask As New Image
+  Dim decorated As Boolean = hsettings.CheckBox1.value <> CheckBox.true  
+
+  If Not decorated Then
+    'invisible 'use a blank mask to hide the form until we are sure it is displayed in the right position.
+    iMask.Resize(fmain.w + 10, fmain.H + 10)
+    iMask.Fill(Color.Transparent)
+    Paint.Begin(iMask)
+      Paint.FillRect(iMask.w - 1, iMask.h - 1, 1, 1, Color.white)
+    Paint.end
+    fmain.mask = True
+    fmain.picture = iMask.Picture
+    global.object_unlock(TextBox1) '<--?? needed?
+  Endif
+  
+  timer_shown = New Timer As "timer_shown"
+  timer_shown.trigger
+  
+End
+
+
+Public Sub timer_shown_timer()
+ 'Needed for  kwin + qt5
+  '...the window sometimes appears at wrong position
+  '..so hammer it with a timer to restore the right one.
+
+  Dim decorated As Boolean = hsettings.CheckBox1.value <> CheckBox.true  
+  Dim i As Integer
+  Dim right_geom As Collection
+  fmain.tag = ""
+  resize_form()
+  gstyle.make_background()
+  TextBox1.SetFocus()
+  fmain.Border = decorated
+
+  right_geom = MySettings.load_geometry()
+
+  If Not decorated Then
+    Wait 
+    If (fmain.screeny <> right_geom["y"]) Or (fmain.screeny <> fmain.y) Then
+      For i = 0 To 30
+        Debug fmain.screeny, right_geom["y"]
+        MySettings.load_geometry()  
+        Wait 0.01
+        If (fmain.screeny = right_geom["y"]) And (fmain.screeny = fmain.y) Then Break
+      Next
+    Endif
+  Endif  
+  fmain.mask = False
+  fmain.picture = Null
+End
 
 
 
@@ -1458,7 +1519,7 @@ End
 
 
 Public Sub Form_Leave()
-
+  MySettings.save_geometry()
   MySettings.save()
 
 End
@@ -1522,6 +1583,7 @@ Public Sub panel2_MouseDown()
 End
 
 Public bRresize As Boolean = False
+Public bRMove As Boolean = False
 
 Public Sub panel2_mousemove()
   Dim bResize As Boolean
@@ -1546,13 +1608,18 @@ Public Sub panel2_mousemove()
     mouse_startx = Mouse.x
     mouse_starty = Mouse.y
       Else
+    bRMove = True
     Me.Move(fmain.x + (mouse.x - mouse_StartX), fmain.y + (mouse.y - mouse_Starty))
   Endif
 End
 
 
 Public Sub panel2_Mouseup()
-  bRresize = False
+  If bRresize = True Or (bRMove = True) Then
+    MySettings.save_geometry()
+    bRresize = False
+    bRMove = False
+  Endif
 End
 
 

@@ -90,7 +90,7 @@ Static Public Sub WarmCache()
   
   
   For Each sPath In anotherdirs
-    Debug "Warming norecursiv:e " & sPath
+    Debug "Warming norecursive " & sPath
     WarmList &= sPath & " "
   Next
   

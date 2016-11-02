@@ -57,18 +57,24 @@ Public Sub save_geometry()
 
   Settings["win_rx"] = xy_r[0]
   Settings["win_ry"] = xy_r[1]
+  If xy_r[1] = 28 Then Stop
   Settings["win_w"] = xy_r[2]
 End
 
-Public Sub load_geometry()
+Public Sub load_geometry(Optional pretend As Boolean = False) As Collection
   Dim s As Screen
   Dim rx, ry, w As Integer
+  Dim geom As New Collection
   s = Screenbypos(Mouse.ScreenX, Mouse.ScreenY)
   rx = Settings["win_rx", 0] 
   ry = Settings["win_ry", 0] 
   w = Settings["win_w", (s.w Div 2)] 
   ' h = Settings["win_h", 64] 
-  fmain.Move(rx + s.x, ry + s.y, w)
+  If Not pretend Then fmain.Move(rx + s.x, ry + s.y, w)
+  geom["x"] = rx + s.x 
+  geom["y"] = ry + s.y 
+  geom["w"] = w
+  Return geom
 End
 
 

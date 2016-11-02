@@ -86,6 +86,12 @@ Geometry=[61,307,224,280]
 [DebugWindow/GridIndex.Rows[GridIndex.row]]
 Geometry=[45,-3,224,280]
 
+[DebugWindow/Image.Load("ShapeNull.png").Resize(fmain.w, fmain.h).picture]
+Geometry=[52,0,224,280]
+
+[DebugWindow/Image.Load("ShapeNull.png").Resize(fmain.w, fmain.h).picture.Image]
+Geometry=[66,14,224,280]
+
 [DebugWindow/Label]
 Geometry=[45,-3,224,280]
 
@@ -106,6 +112,9 @@ Geometry=[1280,-3,224,280]
 
 [DebugWindow/Object]
 Geometry=[45,-3,224,280]
+
+[DebugWindow/Picture["appicon.png"]]
+Geometry=[52,0,224,280]
 
 [DebugWindow/Picture["icon:|" & rSize & "|directory"]]
 Geometry=[1280,0,224,280]
@@ -443,6 +452,9 @@ Geometry=[47,-3,229,280]
 [DebugWindow/selectable]
 Geometry=[1280,0,224,280]
 
+[DebugWindow/shadowimage]
+Geometry=[52,0,224,280]
+
 [DebugWindow/sizes]
 Geometry=[47,-3,224,280]
 
@@ -480,12 +492,12 @@ Path="/tmp/higgins.gambas"
 File[1]="higgins.desktop:18.7"
 Active=7
 File[2]=".src/MySettings.module:0.8"
-Count=15
+Count=16
 File[3]=".src/plugins/plugin_apps_gui.form"
 File[4]=".src/plugins/plugin_indexer_gui.form"
 File[5]=".src/plugins/plugin_015_recent.class:0.19"
 File[6]=".src/FMain.form"
-File[7]=".src/FMain.class:0.1489"
+File[7]=".src/FMain.class:0.1629"
 File[8]=".src/hSettings.class:14.258"
 File[9]=".src/Global.module:34.92"
 File[10]=".src/MyDesktop.class:3.60"
@@ -494,6 +506,7 @@ File[12]=".src/hSettings.form"
 File[13]=".src/StartClass.class:18.3"
 File[14]=".src/plugins/plugin_020_apps.class:0.63"
 File[15]=".src/DesktopApps.class:10.86"
+File[16]=".src/gstyle.module:28.180"
 
 [Watches]
 Count=0

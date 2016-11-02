@@ -2,4 +2,10 @@
 
 Static Public Sub Main()
   FMain.first_init()
+  ' While 1 = 1
+  '   fmain.Show()
+  '   Wait 
+  '   fmain.hide()
+  '   Wait 
+  ' Wend
 End
