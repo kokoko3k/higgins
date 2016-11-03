@@ -1348,10 +1348,12 @@ Public Sub OLD_Form_Show()
 End
 
 
+Private show_time As Float
 Public Sub Form_Show()
   Dim iMask As New Image
   Dim decorated As Boolean = hsettings.CheckBox1.value <> CheckBox.true  
 
+  show_time = Timer()
   If Not decorated Then
     'invisible 'use a blank mask to hide the form until we are sure it is displayed in the right position.
     iMask.Resize(fmain.w + 10, fmain.H + 10)
@@ -1564,6 +1566,12 @@ Public Sub ResultGrid_LostFocus()
 End
 
 Private Sub Form_LostFocus_workaround()
+  'Focus stealing prevention
+  If Timer() - show_time < 0.2 Then
+    Desktop.ActiveWindow = fmain.handle
+    Return
+  Endif
+  
   If global.unfocused_hide Then
     Wait 0.1
     If Not (Desktop.ActiveWindow = fmain.Handle) Then 
