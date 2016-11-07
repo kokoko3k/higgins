@@ -4,5 +4,6 @@ GenericName=Versatile application launcher
 Comment=Launches application and do things through plugins
 Exec=higgins
 Icon=higgins
+Categories=FileManager;Utility;FileTools;
 Type=Application
 StartupNotify=true
