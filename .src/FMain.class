@@ -1317,7 +1317,6 @@ Public Sub OLD_timer_shown_timer()
     Return
   Endif
   
-
   If Not decorated Then 
     'Debug fmain.y, fmain.screeny
     If (fmain.y <> fmain.screeny) Or (fmain.x <> fmain.screenx) Then
@@ -1390,12 +1389,17 @@ Public Sub timer_shown_timer()
 
   If Not decorated Then
     Wait 
-    If (fmain.screeny <> right_geom["y"]) Or (fmain.screeny <> fmain.y) Then
+    If (fmain.screeny <> right_geom["y"]) Or (fmain.screeny <> fmain.y) Or (fmain.screenx <> right_geom["x"]) Then
       For i = 0 To 30
-        Debug fmain.screeny, right_geom["y"]
+        If fmain.screeny <> right_geom["y"] Then
+          Debug fmain.screeny, right_geom["y"] 
+        Endif
+        If fmain.screeny <> right_geom["y"] Then
+          Debug fmain.screenx, right_geom["x"] 
+        Endif
         MySettings.load_geometry()  
         Wait 0.01
-        If (fmain.screeny = right_geom["y"]) And (fmain.screeny = fmain.y) Then Break
+        If (fmain.screeny = right_geom["y"]) And (fmain.screeny = fmain.y) And (fmain.x = right_geom["x"]) Then Break
       Next
     Endif
   Endif  
