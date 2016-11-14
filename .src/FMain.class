@@ -453,7 +453,7 @@ Public Sub start_dot_desktop_exe(dPath As String)
   Dim field_codes As String[] = ["f", "F", "u", "U", "d", "D", "n", "N", "v", "m"]
   Dim terminal_emulator As String
   Dim code As String
-  
+
   MyDesktop.parse(dPath)
   
   exe = MyDesktop.dExec
@@ -811,12 +811,11 @@ End
 
 
 Public Sub TrayIcon2_click()
-
   If fmain.visible Then 
     MySettings.save()
-    Form_Hide()
-  Else
-    Form_Show()
+    fmain.Hide()
+      Else
+    fmain.Show()
   Endif
 
 End
@@ -834,8 +833,13 @@ Public Sub QuitMenuTray_Click()
 End
 
 Public Sub MenuTrayShow_click()
-
-  Form_Show()
+  If fmain.visible Then
+    MySettings.save()
+    fmain.Hide()
+      Else
+    fmain.Show()
+  Endif
+  'Form_Show()
 
 End
 
