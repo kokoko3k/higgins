@@ -870,7 +870,7 @@ Public Sub setup_xbindkeys()
   Shell "killall xbindkeys_higgins &>/dev/null" Wait
   Wait 0.1
   Shell "killall -9 xbindkeys_higgins &>/dev/null" Wait
-  xb = New XbindKeys(xb_rcpath, confpath & "/xbindkeys_higgins") As "xb"
+  xb = New XbindKeys(xb_rcpath, confpath & "/xbindkeys_higgins", hsettings) As "xb"
   If xb.init_error Then
     xb_show_init_error()
     Return
