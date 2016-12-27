@@ -62,24 +62,26 @@ Public Sub find(textcontrol As Object) As RItemT[]
 
   For Each app In DesktopApps
       Try happ = DesktopApps[app]
-      If Error Then Continue
-      If happ.Exec_R <> "" Then
-        ismatched = InStr(Lower(happ.Get("Name")), Lower(current_search)) > 0 
-        If Not ismatched Then 
-          If Not ismatched Then ismatched = InStr(Lower(happ.Get("Comment")), Lower(current_search)) > 0 
-          If Not ismatched Then ismatched = ismatched Or InStr(Lower(happ.Get("Category")), Lower(current_search)) > 0 
-          If Not ismatched Then ismatched = ismatched Or InStr(Lower(happ.Get("Keywords")), Lower(current_search)) > 0 
-          If Not ismatched Then ismatched = ismatched Or InStr(Lower(happ.Get("GenericName")), Lower(current_search)) > 0 
-          If Not ismatched Then ismatched = ismatched Or InStr(Lower(File.BaseName(happ.file_path)), Lower(current_search)) > 0 
+      If Not (happ.NoDisplay) Then
+        If Error Then Continue
+        If happ.Exec_R <> "" Then
+          ismatched = InStr(Lower(happ.Get("Name")), Lower(current_search)) > 0 
+          If Not ismatched Then 
+            If Not ismatched Then ismatched = InStr(Lower(happ.Get("Comment")), Lower(current_search)) > 0 
+            If Not ismatched Then ismatched = ismatched Or InStr(Lower(happ.Get("Category")), Lower(current_search)) > 0 
+            If Not ismatched Then ismatched = ismatched Or InStr(Lower(happ.Get("Keywords")), Lower(current_search)) > 0 
+            If Not ismatched Then ismatched = ismatched Or InStr(Lower(happ.Get("GenericName")), Lower(current_search)) > 0 
+            If Not ismatched Then ismatched = ismatched Or InStr(Lower(File.BaseName(happ.file_path)), Lower(current_search)) > 0 
+          Endif
+        
+          If ismatched Then
+            add_no_dupe(happs, happ)
+            Wait 'if calculations are heavy a wait may be handy.
+    
+          Endif
         Endif
-      
-        If ismatched Then
-          add_no_dupe(happs, happ)
-          Wait 'if calculations are heavy a wait may be handy.
-  
-        Endif
+        If textcontrol.text <> current_search Then Return
       Endif
-      If textcontrol.text <> current_search Then Return
   Next 'happ
 
     For Each happ In happs

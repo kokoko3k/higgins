@@ -6,8 +6,7 @@ plugin_indexer=[38]
 Count=0
 
 [DebugWindow]
-Count=1
-DebugWindow[1]="Split(File.Load(desktopfile), \"\\n\")"
+Count=0
 
 [DebugWindow/$aApps]
 Geometry=[1305,399,246,471]
@@ -494,24 +493,26 @@ Path="/tmp/higgins.gambas"
 
 [OpenFile]
 File[1]="higgins.desktop:16.7"
-Active=11
-File[2]=".src/MySettings.module:0.71"
-Count=17
+Active=7
+File[2]=".src/MySettings.module:27.14"
+Count=19
 File[3]=".src/plugins/plugin_apps_gui.form"
 File[4]=".src/plugins/plugin_indexer_gui.form"
 File[5]=".src/plugins/plugin_015_recent.class:0.19"
 File[6]=".src/FMain.form"
-File[7]=".src/FMain.class:20.872"
-File[8]=".src/hSettings.class:14.258"
+File[7]=".src/FMain.class:12.1201"
+File[8]=".src/hSettings.class:0.110"
 File[9]=".src/Global.module:34.92"
 File[10]=".src/MyDesktop.class:1.46"
 File[11]=".src/XbindKeys.class:0.82"
 File[12]=".src/hSettings.form"
-File[13]=".src/StartClass.class:0.11"
+File[13]=".src/StartClass.class:18.3"
 File[14]=".src/plugins/plugin_020_apps.class:0.63"
 File[15]=".src/DesktopApps.class:3.107"
 File[16]=".src/gstyle.module:16.143"
 File[17]=".src/plugins/plugin_090_indexer.class:25.288"
+File[18]=".src/plugins/bridge.class:6.119"
+File[19]="appicon.png"
 
 [Watches]
 Count=0
