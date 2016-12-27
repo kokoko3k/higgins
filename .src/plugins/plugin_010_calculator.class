@@ -147,8 +147,8 @@ Private Function create_item(expr As String) As RItemT
 
       return_item.image_file = "icon:/" & iconsize & "/calculator"
 
-      If evalued = True Then evalued = ("TRUE")
-      If evalued = False Then evalued = ("FALSE")
+      If evalued = True Then evalued = ("-1 (boolean TRUE)")
+      If evalued = False Then evalued = ("0 (boolean FALSE)")
 
       return_item.Text = evalued
       return_item.SubText = "= " & expr
