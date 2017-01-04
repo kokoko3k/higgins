@@ -381,7 +381,7 @@ Geometry=[1497,374,443,280]
 Geometry=[1495,518,224,280]
 
 [DebugWindow/rResults[0]]
-Geometry=[1336,497,525,280]
+Geometry=[1509,532,224,280]
 
 [DebugWindow/rResults[1]]
 Geometry=[889,568,224,280]
@@ -493,9 +493,9 @@ Path="/tmp/higgins.gambas"
 
 [OpenFile]
 File[1]="higgins.desktop:16.7"
-Active=7
+Active=17
 File[2]=".src/MySettings.module:27.14"
-Count=19
+Count=21
 File[3]=".src/plugins/plugin_apps_gui.form"
 File[4]=".src/plugins/plugin_indexer_gui.form"
 File[5]=".src/plugins/plugin_015_recent.class:0.19"
@@ -507,12 +507,14 @@ File[10]=".src/MyDesktop.class:1.46"
 File[11]=".src/XbindKeys.class:0.82"
 File[12]=".src/hSettings.form"
 File[13]=".src/StartClass.class:18.3"
-File[14]=".src/plugins/plugin_020_apps.class:0.63"
+File[14]=".src/plugins/plugin_020_apps.class:11.83"
 File[15]=".src/DesktopApps.class:3.107"
 File[16]=".src/gstyle.module:16.143"
-File[17]=".src/plugins/plugin_090_indexer.class:25.288"
+File[17]=".src/plugins/plugin_090_indexer.class:0.36"
 File[18]=".src/plugins/bridge.class:6.119"
 File[19]="appicon.png"
+File[20]=".src/plugins/plugin_010_calculator.class:33.143"
+File[21]=".src/plugins/plugin_indexer_gui.class:2.115"
 
 [Watches]
 Count=0

@@ -61,7 +61,7 @@ Static Public Sub MakeAppList()
   $aApps = New String[]
 
   For Each sPath In GetDataDir()
-    If Not Exist(sPath &/ "applications") Then Continue
+    If Not Exist(sPath &/ "applications", True) Then Continue
     AddFile(sPath &/ "applications")
   Next
 
@@ -207,7 +207,7 @@ Static Public Function _get(AppName As String) As DesktopApps
   If $cApps.Exist(AppName) Then Return $cApps[AppName]
   'For Each sPath In GetDataDir()
   sAppPath = $cAppsPath[AppName]
-  If Exist(sAppPath) Then 
+  If Exist(sAppPath, True) Then 
     hDApps = New DesktopApps
     hDApps._$Path = sAppPath
 
@@ -327,7 +327,7 @@ Public Sub GetIcon(Optional Size As Integer = 16) As Image
   Dim s As String
 
   If $hImage Then Return $hImage
-  If Exist(_$IconName) Then 
+  If Exist(_$IconName, True) Then 
     If _$IconName Ends ".svg" Then
       hSvg = SvgImage.Load(_$IconName)
       hImage = New Image(Size, Size, Color.Transparent)
@@ -346,12 +346,12 @@ Public Sub GetIcon(Optional Size As Integer = 16) As Image
       'For Each sSize In [CStr(Size), "128", "64", "32"]      
       For Each sSize In [CStr(Size), "256", "128", "64", "48", "32" "22", "16", "8"]
         sPath = Subst(sDir &/ "hicolor/&1x&1/apps/&2.png", sSize, _$IconName)
-        If Exist(sPath) Then 
+        If Exist(sPath, True) Then 
           Try hImage = Image.Load(sPath)
           If hImage Then Break
         Endif
         sPath = Subst(sDir &/ "hicolor/&1x&1/apps/&2.xpm", sSize, _$IconName)
-        If Exist(sPath) Then 
+        If Exist(sPath, True) Then 
           Try hImage = Image.Load(sPath)
           If hImage Then Break
         Endif
@@ -360,12 +360,12 @@ Public Sub GetIcon(Optional Size As Integer = 16) As Image
     Next
     If Not hImage Then
       sPath = Subst("/usr/share/pixmaps/&1.png", _$IconName)
-      If Exist(sPath) Then Try hImage = Image.Load(sPath)
+      If Exist(sPath, True) Then Try hImage = Image.Load(sPath)
     Endif
 
     If Not hImage Then
       sPath = Subst("/usr/share/pixmaps/&1.xpm", _$IconName)
-      If Exist(sPath) Then Try hImage = Image.Load(sPath)
+      If Exist(sPath, True) Then Try hImage = Image.Load(sPath)
     Endif
 
   Endif

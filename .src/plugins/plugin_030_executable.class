@@ -50,7 +50,7 @@ Public Sub find(textcontrol As Object) As RItemT[]
   
   If Not trigged(textcontrol.text) Then Return
 
-  If Exist(current_search) Then
+  If Exist(current_search, True) Then
     If Stat(current_search, True).type = gb.Directory Then Return
   Endif
   

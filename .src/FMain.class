@@ -407,7 +407,7 @@ Public Sub start_item(i As Integer)
       add_history(p)
     Case "GUESS"
       
-      If Exist(p) Then
+      If Exist(p, True) Then
         
         'desktop files with full path
         'If Lower(p) Ends ".desktop" Then
@@ -519,7 +519,7 @@ Public Function is_executable(fPath As String) As Boolean
   Endif
   
   'has to exist
-  If Not Exist(exe) Then Return False
+  If Not Exist(exe, True) Then Return False
   'has to be a file
   If Stat(exe, True).type <> gb.File Then Return False
   'needs executable permissions
@@ -1234,7 +1234,7 @@ Public Sub first_init()
   MySettings.load()
 
   
-  If Not Exist(xb_rcpath) Then
+  If Not Exist(xb_rcpath, True) Then
     msg = "No shortcut defined to hide/show the main window,"
     msg &= "it is advised to define one in the options window."
     Message.Optional(msg, "Ok", "dontshow_message_xbindKeys", "warning")

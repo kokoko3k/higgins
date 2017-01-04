@@ -14,6 +14,7 @@ Component=gb.desktop
 Component=gb.eval
 Component=gb.settings
 Component=gb.gui.trayicon
+Component=gb.inotify
 Component=gb.net
 Component=gb.util
 Component=gb.web
