@@ -115,7 +115,7 @@ Static Private Sub AddFile(sPath As String, Optional recursive As Boolean = True
   
   Dim s As String
   Dim IsDesktopFileOut As Boolean = False
-
+  If Not Exist(sPath, True) Then Return
   For Each s In Dir(sPath)
     If IsDir(sPath &/ s) Then
       If Not recursive Then Continue
