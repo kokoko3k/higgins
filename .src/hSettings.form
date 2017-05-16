@@ -82,10 +82,21 @@
       Spacing = True
       Margin = True
     }
-    { ButtonOpenExtPlugin Button
-      MoveScaled(3,27,73,5)
-      Text = ("Open External plugins directory")
-      Picture = Picture["icon:/small/shortcut"]
+    { Panel10 Panel
+      MoveScaled(0,27,74,5)
+      Arrangement = Arrange.Horizontal
+      { ButtonOpenExtPlugin Button
+        MoveScaled(1,0,33,5)
+        Expand = True
+        Text = ("Open External plugins directory")
+        Picture = Picture["icon:/small/shortcut"]
+      }
+      { Button3 Button
+        MoveScaled(43,0,31,5)
+        Expand = True
+        Text = ("Refresh External plugins list")
+        Picture = Picture["icon:/16/refresh"]
+      }
     }
     Index = 2
     Text = ("Style")

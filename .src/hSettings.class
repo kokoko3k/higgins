@@ -317,3 +317,9 @@ Public Sub Button5_Click()
   gstyle.applystyle()
   Settings.save
 End
+
+Public Sub Button3_Click()
+
+  fmain.init_hsettings()
+
+End
