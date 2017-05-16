@@ -37,6 +37,8 @@ Public Struct rItemT
                               '       Executes executables files
                               '"EXEC_TERMINAL"
                               '       Executes executables files in terminal emulator
+                              '"CLIPBOARD"
+                              '       Copy result into clipboard                                  
                               '"GUESS"
                               '       Choose an action based on filetype
                               '"NULL"

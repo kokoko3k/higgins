@@ -402,11 +402,12 @@ Public Sub start_item(i As Integer)
       Shell p 'For Input Output
     Case "EXEC_TERMINAL"
       start_executable_terminal(p)
+    Case "CLIPBOARD"
+      Clipboard.Copy(P)
     Case "XDGOPEN"
       Desktop.Open(p)
       add_history(p)
     Case "GUESS"
-      
       If Exist(p, True) Then
         
         'desktop files with full path
@@ -533,12 +534,11 @@ Public Function is_executable(fPath As String) As Boolean
 End
 
 Public Sub ResultGrid_activate()
-
+Stop
   If results_list[resultgrid.row].Action_p = Null Then Return
 
   start_item(resultgrid.row)
   TimerClose.Trigger
-
 End
 
 Public Sub TextBox1_KeyPress()
