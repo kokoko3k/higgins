@@ -534,7 +534,6 @@ Public Function is_executable(fPath As String) As Boolean
 End
 
 Public Sub ResultGrid_activate()
-Stop
   If results_list[resultgrid.row].Action_p = Null Then Return
 
   start_item(resultgrid.row)

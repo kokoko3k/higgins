@@ -22,7 +22,6 @@ SCRIPTDIR=${0%/*}
 srcfile=/home/koko/documenti/mycontacts.txt
 results=$(grep -i "$query" $srcfile) || exit
 
-echo "$results"
 #Finally, start the search:
 
 for result in $results ; do

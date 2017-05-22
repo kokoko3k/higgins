@@ -163,7 +163,6 @@ End
 Private Function create_item_k(path As String) As RItemT 'a lot of code duplication here
   Dim return_item As RItemT
   Dim url As String
-    Stop
     return_item = New RItemT
     return_item.plugin = plugin
     return_item.Action = "XDGOPEN"

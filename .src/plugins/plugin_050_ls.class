@@ -47,7 +47,7 @@ Public Sub find(textcontrol As Object) As RItemT[]
   Dim rResult As RItemT
   Dim current_search As String = textcontrol.text
   Dim s_path, path As String
-
+  Dim aDir As New String[]
   If Not trigged(textcontrol.text) Then Return
 
   s_path = current_search
@@ -63,8 +63,10 @@ Public Sub find(textcontrol As Object) As RItemT[]
   If Not (Stat(s_path, True).type = gb.Directory) Then Return
 
   rResults.Add(create_item(s_path))
-
-    For Each path In Dir(s_path).Sort(gb.Natural + gb.IgnoreCase)
+  
+  Try aDir = Dir(s_path).Sort(gb.Natural + gb.IgnoreCase)
+  If Not Error Then
+    For Each path In aDir
       If s_path Ends "/" Then 
         path = s_path & path
           Else
@@ -75,7 +77,7 @@ Public Sub find(textcontrol As Object) As RItemT[]
       Wait
       If textcontrol.text <> current_search Then Return
     Next
-
+  Endif
   Return rResults
 End
 
