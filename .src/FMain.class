@@ -635,8 +635,8 @@ Public Sub ResultGrid_KeyPress()
           'immediate_search(textbox1)
           textbox1_change_delay.Trigger()
          textBox_change_noglitch(textbox2, Complete(TextBox1.text))
-        Debug "UNLOCKING TEXTBOX1"  
-        'Object.unLock(textbox1)
+        'Debug "UNLOCKING TEXTBOX1"  
+        Object.unLock(textbox1)
         Stop Event
       Endif 
     Case Key.left 'browse the filesystem go up in folders
