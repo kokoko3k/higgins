@@ -53,7 +53,7 @@
     Margin = True
     Padding = 20
     { Panel1 Panel
-      MoveScaled(0,0,79,4.5714)
+      MoveScaled(1,0,79,4.5714)
       Tracking = True
       Arrangement = Arrange.Horizontal
       { TextBox1 TextBox

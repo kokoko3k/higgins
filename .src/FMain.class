@@ -52,7 +52,8 @@ Public Sub TextBox1_Change()
   Dim bWasfocused As Boolean
   Dim c0 As Integer
   Dim tSelection_start, tSelection_length As Integer
-
+  Dim fLag As Float
+  
   global.object_lock(TextBox1)
   c = Complete(TextBox1.text)
 
@@ -75,7 +76,13 @@ Public Sub TextBox1_Change()
   Try p_previous_search = TextBox1.text
   If Error Then Return
 
-  Wait CFloat(Settings["input_lag", "0.1"])
+  Try fLag = CFloat(Settings["input_lag", "0.1"])
+  If Error Then 'auto
+    fLag = Max(0, 5 - String.Len(textbox1.text)) / 10
+  Endif
+  Debug flag
+  Wait fLag
+  
   If p_previous_search <> textbox1.text Then 
     Goto returnlabel 'user is typing
   Endif

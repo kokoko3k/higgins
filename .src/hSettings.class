@@ -326,7 +326,12 @@ End
 
 
 Public Sub ComboboxLag_Change()
-  Settings["input_lag"] = Trim(Left(ComboboxLag.text, InStr(ComboboxLag.text, " ")))
+  If InStr(ComboboxLag.text, " ") > 0 Then 
+    Settings["input_lag"] = Trim(Left(ComboboxLag.text, InStr(ComboboxLag.text, " ")))
+      Else
+    Settings["input_lag"] = ComboboxLag.text
+  Endif
   Debug Settings["input_lag"] 
   Settings.Save()
 End
+

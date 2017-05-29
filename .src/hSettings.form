@@ -85,7 +85,7 @@
         }
         { ComboboxLag ComboBox
           MoveScaled(45,0,25.7143,4)
-          List = [("0.00 - immediate"), ("0.05 - Very fast cpu"), ("0.10 - Fast cpu"), ("0.20 - Slow cpu"), ("0.30 - Very slow cpu"), ("0.40 "), ("0.50 ")]
+          List = [("Adaptive "), ("0.00 - immediate"), ("0.05 - Very fast cpu"), ("0.10 - Fast cpu"), ("0.20 - Slow cpu"), ("0.30 - Very slow cpu"), ("0.40 "), ("0.50 ")]
           Text = ("0.10")
         }
       }

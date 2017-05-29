@@ -496,15 +496,15 @@ Path="/tmp/higgins.gambas"
 
 [OpenFile]
 File[1]="higgins.desktop:16.7"
-Active=8
+Active=24
 File[2]=".src/MySettings.module:20.10"
-Count=29
+Count=28
 File[3]=".src/plugins/plugin_apps_gui.form"
 File[4]=".src/plugins/plugin_indexer_gui.form"
-File[5]=".src/plugins/plugin_015_recent.class:0.165"
+File[5]=".src/plugins/plugin_015_recent.class:28.165"
 File[6]=".src/FMain.form"
-File[7]=".src/FMain.class:14.78"
-File[8]=".src/hSettings.class:0.332"
+File[7]=".src/FMain.class:21.334"
+File[8]=".src/hSettings.class:31.314"
 File[9]=".src/Global.module:3.78"
 File[10]=".src/MyDesktop.class:3.31"
 File[11]=".src/XbindKeys.class:15.115"
@@ -520,12 +520,11 @@ File[20]=".src/plugins/plugin_010_calculator.class:33.143"
 File[21]=".src/plugins/plugin_indexer_gui.class:2.115"
 File[22]=".src/plugins/plugin_030_executable.class:20.53"
 File[23]=".src/plugins/plugin_050_ls.class:0.34"
-File[24]=".src/plugins/plugin_040_fbookmarks.class:49.59"
+File[24]=".src/plugins/plugin_040_fbookmarks.class:18.72"
 File[25]=".src/plugins/plugin_999_template.class:48.38"
 File[26]=".src/plugins/plugin_009_history.class:0.64"
 File[27]="extbin/External_plugin_grep.sh:0.24"
 File[28]="extbin/External_plugin_kill.sh:0.23"
-File[29]="/tmp/gambas.1012/9408/1.console:0.0"
 
 [Watches]
 Count=0
