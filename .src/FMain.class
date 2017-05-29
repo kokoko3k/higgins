@@ -99,59 +99,6 @@ returnlabel:
   If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True    
 End
 
-Public Sub old_TextBox1_Change()
-
-  Dim previous_search As String
-  Dim current_search As String
-  Dim c As String
-
-
-  global.object_lock(TextBox1)
-  c = Complete(TextBox1.text)
-
-
- textBox_change_noglitch(textbox2, c)
-  global.object_unlock(TextBox1)
-                                              'Debug
-  Try current_search = TextBox1.text 
-  If Error Then Return
-                                                  'Debug
-  Wait 0.01 'glitch textbox
-
-
-  If Len(current_search) < 2 Then 
-    previous_search = ""
-    resize_form()
-    reinit()
-    Return
-  Endif
-                                        'Debug
-  Try previous_search = TextBox1.text
-  If Error Then Return
-
-                                                    'Debug
-  Wait 0.3
-  If previous_search <> textbox1.text Then 
-    Goto returnlabel 'user is typing
-  Endif
-                                                  'Debug
-  immediate_search(textbox1)
-
-  If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
-  Wait 0.3
-                                                    'Debug
-  Try current_search = TextBox1.text 
-  If Error Then Return
-  If previous_search <> current_search Then Goto Returnlabel
-                                                    'Debug
-  'If resultgrid.Rows.count > 0 Then showgrid
-returnlabel:
-  'qt5 antiglitch...
-      textbox1.Hide
-      textbox1.show
-
-  If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True    
-End
 
 Public Sub initgrid()
   ResultGrid.columns.count = 1
