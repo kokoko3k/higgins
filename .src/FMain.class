@@ -1282,25 +1282,6 @@ Public Sub OLD_timer_shown_timer()
   Endif
 End
 
-Public Sub OLD_Form_Show()
-  Dim decorated As Boolean = hsettings.CheckBox1.value <> CheckBox.true  
-  fmain.border = decorated
-
-  global.object_unlock(TextBox1) '<--?? needed?
-  MySettings.load_geometry()
-
-  fmain.visible = True
-  fmain.tag = ""
-
-  resize_form()
-  gstyle.make_background()
-  Wait
-  TextBox1.SetFocus()
-
-  timer_shown = New Timer As "timer_shown"
-  timer_shown.delay = 10
-  timer_shown.start  
-End
 
 
 Private show_time As Float
