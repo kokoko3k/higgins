@@ -50,6 +50,8 @@ Public Sub TextBox1_Change()
   Dim p_previous_search, current_search As String
   Dim c As String
   Dim bWasfocused As Boolean
+  Dim c0 As Integer
+  Dim tSelection_start, tSelection_length As Integer
 
   global.object_lock(TextBox1)
   c = Complete(TextBox1.text)
@@ -69,21 +71,20 @@ Public Sub TextBox1_Change()
     reinit()
     Return
   Endif
-                                        'Debug
+
   Try p_previous_search = TextBox1.text
   If Error Then Return
 
-                                                    'Debug
   Wait 0.2
   'Wait 0.01
   If p_previous_search <> textbox1.text Then 
     Goto returnlabel 'user is typing
   Endif
-                                                  'Debug
+
   immediate_search(textbox1)
 
   Wait 0.3
-                                                    'Debug
+
   Try current_search = TextBox1.text 
   If Error Then Return
   If p_previous_search <> current_search Then Goto Returnlabel
@@ -92,9 +93,14 @@ Public Sub TextBox1_Change()
 returnlabel:
   'qt5 antiglitch...
       bWasfocused = textbox1.HasFocus
+      c0 = textbox1.Pos
+      tSelection_start = textbox1.selection.Start
+      tSelection_length = textbox1.Selection.Length
       textbox1.Hide
       textbox1.show
       If bWasfocused Then textbox1.SetFocus
+      textbox1.pos = c0
+      textbox1.Select(tSelection_start, tSelection_length)
 
   If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True    
 End
@@ -489,6 +495,7 @@ Public Sub ResultGrid_activate()
 End
 
 Public Sub TextBox1_KeyPress()
+
   Select Key.Code
 
     Case Key.end 'fill complete
@@ -1254,34 +1261,6 @@ Public timer_hidden As Timer
 Public timer_shown As Timer
 Public iterations As Integer
 
-Public Sub OLD_timer_shown_timer()
-  'brute force needed for  kwin + qt5
-  '...the window sometimes appears at wrong position
-  '..so hammer it with a timer to restore the right one.
-
-  Dim decorated As Boolean = hsettings.CheckBox1.value <> CheckBox.true  
-  
-  If decorated Then 
-    timer_shown.stop
-    Return
-  Endif
-  
-  iterations += 1
-  If iterations >= 20 Then 
-    iterations = 0
-    timer_shown.stop
-    Return
-  Endif
-  
-  If Not decorated Then 
-    'Debug fmain.y, fmain.screeny
-    If (fmain.y <> fmain.screeny) Or (fmain.x <> fmain.screenx) Then
-      fmain.move(Settings["win_rx"], Settings["win_ry"])
-      Debug "recover, move to y=", Settings["win_ry"]
-    Endif
-  Endif
-End
-
 
 
 Private show_time As Float
@@ -1466,12 +1445,6 @@ Public Sub Form_Leave()
   MySettings.save()
 
 End
-
-' Public Sub ResultGrid_MouseMove()
-'   Dim iRow As Integer = 0
-'   iRow = resultgrid.RowAt(Mouse.y)
-'   If iRow <> -1 Then Try resultgrid.Rows[iRow].selected = True
-' End
 
 Public Sub Form_Menu()
   Show_main_menu(False)
