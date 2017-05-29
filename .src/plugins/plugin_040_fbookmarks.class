@@ -49,7 +49,8 @@ Public Sub find(textcontrol As Object) As RItemT[]
   Dim b_file_split As New String[]
   Dim b_files As New String[]
   Dim bookmarks As New String[]
-  Dim b_file, aLine, path As String
+  Dim b_file, aLine, path, file_path As String
+  Dim ok_to_create As Boolean = False
   Dim match_str As String
   Dim term As String
   
@@ -62,42 +63,52 @@ Public Sub find(textcontrol As Object) As RItemT[]
     b_files.Add(User.home & "/" & ".local/share/user-places.xbel")
   
     For Each b_file In b_files
-        Try b_file_split = Split(File.load(b_file), "\n")
-        If Not Error Then 'parseit
-           For Each aline In b_file_split
+        
+      Try b_file_split = Split(File.load(b_file), "\n")
+      If Not Error Then 'parseit
+        For Each aline In b_file_split
 
-             If b_file Ends ".xbel" Then 
-               match_str = "* href=*//*" & term & "*"  'qt/kde
-                 Else
-               match_str = "*://*" & term & "*" 'gtk2,3
-             Endif
+          If b_file Ends ".xbel" Then 
+            match_str = "* href=*//*" & term & "*"  'qt/kde
+              Else
+            match_str = "*://*" & term & "*" 'gtk2,3
+          Endif
 
-             If aline Like match_str Then
+          If aline Like match_str Then
+            If b_file Ends ".xbel" Then 
+              Try path = Split(aline, "\"")[1]
+                Else
+              Try path = Split(aline, " ")[0]
+            Endif
 
-               If b_file Ends ".xbel" Then 
-                 Try path = Split(aline, "\"")[1]
-                    Else
-                  Try path = Split(aline, " ")[0]
-               Endif
-
-               If Not Error Then
-                 If Not (b_file Ends ".xbel") Then path = Replace(path, " ", "%20")
-                 If path Ends "/" Then path = Left(path, -1) 'this is necessary to eliminate dupes
-
-                 If bookmarks.find(path) < 0 Then 
-                   bookmarks.Add(path)
-                   rResult = create_item(path)
-                   If rResult <> Null Then rResults.Add(rResult)
-
-                 Endif 
-
-               Endif 'not error
-
-             Endif
-           Next 'aline
-
-        Endif 
-      Next
+            If Lower(path) Begins "file:" Then
+              If Lower(path) Begins "file://" Then
+                file_path = Right(path, -7)
+                  Else
+                file_path = Right(path, -5)
+              Endif
+            Endif 
+            
+            If file_path = "" Then 
+              ok_to_create = True
+                Else
+              ok_to_create = False
+              Try ok_to_create = Exist(file_path, True)
+            Endif
+              
+            If Not Error And ok_to_create Then
+              If Not (b_file Ends ".xbel") Then path = Replace(path, " ", "%20")
+              If path Ends "/" Then path = Left(path, -1) 'this is necessary to eliminate dupes
+              If bookmarks.find(path) < 0 Then 
+                bookmarks.Add(path)
+                rResult = create_item(path)
+                If rResult <> Null Then rResults.Add(rResult)
+              Endif 
+            Endif 'not error
+          Endif
+        Next 'aline
+      Endif 
+    Next 'b_file
   Return rResults
 
 End
