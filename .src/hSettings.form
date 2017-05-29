@@ -70,6 +70,25 @@
           List = [("xterm"), ("lxterminal"), ("xfce4-terminal"), ("gnome-terminal"), ("konsole")]
         }
       }
+      { Separator1 Separator
+        MoveScaled(11,25,48,1)
+      }
+      { Panel14 HBox
+        MoveScaled(0,27,73,5)
+        Spacing = True
+        { LabelHotkey5 Label
+          MoveScaled(1,0,40,4)
+          Expand = True
+          AutoResize = True
+          Text = ("Input lag in seconds (responsivity vs cpu use)")
+          Alignment = Align.Left
+        }
+        { ComboboxLag ComboBox
+          MoveScaled(45,0,25.7143,4)
+          List = [("0.00 - immediate"), ("0.05 - Very fast cpu"), ("0.10 - Fast cpu"), ("0.20 - Slow cpu"), ("0.30 - Very slow cpu"), ("0.40 "), ("0.50 ")]
+          Text = ("0.10")
+        }
+      }
     }
     Index = 1
     Text = ("Plugins")

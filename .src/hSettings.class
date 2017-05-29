@@ -323,3 +323,10 @@ Public Sub Button3_Click()
   fmain.init_hsettings()
 
 End
+
+
+Public Sub ComboboxLag_Change()
+  Settings["input_lag"] = Trim(Left(ComboboxLag.text, InStr(ComboboxLag.text, " ")))
+  Debug Settings["input_lag"] 
+  Settings.Save()
+End

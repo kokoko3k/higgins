@@ -75,8 +75,7 @@ Public Sub TextBox1_Change()
   Try p_previous_search = TextBox1.text
   If Error Then Return
 
-  Wait 0.2
-  'Wait 0.01
+  Wait CFloat(Settings["input_lag", "0.1"])
   If p_previous_search <> textbox1.text Then 
     Goto returnlabel 'user is typing
   Endif
