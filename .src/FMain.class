@@ -75,6 +75,7 @@ Public Sub TextBox1_Change()
 
                                                     'Debug
   Wait 0.2
+  'Wait 0.01
   If p_previous_search <> textbox1.text Then 
     Goto returnlabel 'user is typing
   Endif
@@ -541,12 +542,14 @@ Public Sub ResultGrid_activate()
 End
 
 Public Sub TextBox1_KeyPress()
-
   Select Key.Code
 
     Case Key.end 'fill complete
       global.object_lock(textbox1)
-      If textbox1.pos = Len(textbox2.Text) Then Return
+      If textbox1.pos = Len(textbox2.Text) Then
+        global.object_unlock(textbox1)
+        Return
+      Endif
       If textbox1.pos = textbox1.Length Then
         If textbox2.text <> "" Then 
           textbox1.text = textbox2.text
@@ -626,21 +629,24 @@ Public Sub ResultGrid_KeyPress()
     Case Key.right 'browse the filesystem, go inside folders
       If ResultGrid.row < 0 Then Return
       If results_list[resultgrid.row].plugin Ends "_LS" Then
+        'Debug "LOCKING TEXTBOX1"
         Object.Lock(textbox1)
           textbox1.text = results_list[resultgrid.row].Action_p
           'immediate_search(textbox1)
           textbox1_change_delay.Trigger()
          textBox_change_noglitch(textbox2, Complete(TextBox1.text))
-          Debug
-        Object.unLock(textbox1)
+        Debug "UNLOCKING TEXTBOX1"  
+        'Object.unLock(textbox1)
         Stop Event
       Endif 
     Case Key.left 'browse the filesystem go up in folders
       If Not Exist(textbox1.text, True) Then Return
+      'Debug "LOCKING TEXTBOX1"
       Object.Lock(textbox1)
         textbox1.text = File.Dir(textbox1.text)
          textbox1_change_delay.Trigger()
         textBox_change_noglitch(textbox2, Complete(TextBox1.text))
+      'Debug "UNLOCKING TEXTBOX1"
       Object.unLock(textbox1)
       Stop Event
       
