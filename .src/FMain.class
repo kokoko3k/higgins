@@ -120,11 +120,11 @@ Public Sub initgrid()
   Wait
 End
 
-Public Sub reinit()
+Public Sub reinit(Optional WithGrid As Boolean = True)
 
   results_list.Clear()
   picture_list.Clear()
-  initgrid()
+  If withgrid Then initgrid()
   MyDesktop.init()
   mouse_normal()
 
@@ -196,7 +196,7 @@ Public Sub immediate_search(textcontrol As Object)
   Endif
   previous_search = textcontrol.text                'don't know why this is important, but works.
   
-  reinit()
+  reinit(False)
   mouse_busy()
   
   Debug "starting search...", textcontrol.text
@@ -221,6 +221,8 @@ Public Sub immediate_search(textcontrol As Object)
   
   'timer_expand_check.start
   'timer_expand_check.stop
+  
+  ResultGrid.Rows.count = results_list.Count
   timer_expand_check.Trigger
 
   mouse_normal()
@@ -271,10 +273,19 @@ Public Sub plugin_event_new_results(rResults As RItemT[])
 
 End
 
+Private lastdata As New _GridView_data[]
+
 Public Sub ResultGrid_Data(Row As Integer, Column As Integer)
   Dim rcResult As New RItemT
   
-  If results_list.count = 0 Then Return
+  If row > results_list.max Then
+    If lastdata[row] <> Null Then
+      Try resultgrid.Data.richtext = lastdata[row].RichText
+      Try resultgrid.Data.picture = lastdata[row].picture
+    Endif  
+    Return
+  Endif
+
   
   resultgrid.Data.Foreground = Global.textgrid_foreground
   rcResult = results_list[Row]
@@ -327,6 +338,9 @@ fallback:
   
   'cache picture
   If resultgrid.Data.picture <> Null Then picture_list[row] = resultgrid.Data.picture
+  
+  lastdata.Resize(resultgrid.Rows.count)
+  lastdata[row] = ResultGrid.data
   
 End
 
