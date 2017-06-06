@@ -163,10 +163,9 @@ End
 
 Private previous_search As String
 
-Private Sub showgrid()
+'Private Sub showgrid()
   ' Dim pad As Integer
   ' Dim minh As Integer = resultgrid.Font.TextHeight("|") * 7
-  Return 'stub
   ' If (fmain.h > resultgrid.h) Then 
   '   If fmain.h > minh Then Return 'grid is already visible
   ' Endif
@@ -179,8 +178,7 @@ Private Sub showgrid()
   ' not_save_hsize = True
   ' FMain.h = Max(global.form_open_h, TextBox1.h + (pad * 3) + Max(resultgrid.h, minh))
   ' gstyle.make_background()
-
-End
+'End
 
 Public Sub immediate_search(textcontrol As Object)
 
@@ -190,8 +188,8 @@ Public Sub immediate_search(textcontrol As Object)
   Dim is_blocking As Boolean
 
    timer_expand_check = New Timer As "timer_expand_check"
-   timer_expand_check.delay = 100
-  ' timer_expand_check.start
+   'timer_expand_check.delay = 100
+   'timer_expand_check.start
 
   If previous_search = textcontrol.text Then 
     Return 'don't know why this is important, but works.
@@ -199,7 +197,6 @@ Public Sub immediate_search(textcontrol As Object)
   previous_search = textcontrol.text                'don't know why this is important, but works.
   
   reinit()
-  showgrid()
   mouse_busy()
   
   Debug "starting search...", textcontrol.text
@@ -554,7 +551,6 @@ Public Sub TextBox1_KeyPress()
         Try start_item(resultgrid.row)
         If Not Error Then timerClose.Trigger()
       Else
-        showgrid()
         Try resultgrid.row = 0
       Endif
       
@@ -564,7 +560,6 @@ Public Sub TextBox1_KeyPress()
         Try start_item(resultgrid.row)
         If Not Error Then timerClose.Trigger()
       Else
-        showgrid()
         Try resultgrid.row = 0
       Endif
     
