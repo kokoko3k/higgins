@@ -20,7 +20,7 @@
       Alignment = Align.Center
     }
     { HBox1 HBox
-      MoveScaled(2,5,72,49)
+      MoveScaled(2,5,72,54)
       Expand = True
       Spacing = True
       { VBox3 VBox
@@ -42,7 +42,7 @@
         }
       }
       { HBox3 VBox
-        MoveScaled(49,2,20,46)
+        MoveScaled(50,2,20,51)
         AutoResize = True
         Spacing = True
         { Panel1 Panel
@@ -84,38 +84,43 @@
           Expand = True
         }
         { LabelLimit Label
-          MoveScaled(3,19,14,3)
+          MoveScaled(3,17,14,3)
           AutoResize = True
           Text = ("Limit results to:")
         }
         { SpinMaxResults SpinBox
-          MoveScaled(2,22,16,4.5714)
+          MoveScaled(1,21,16,4.5714)
           MaxValue = 10000
           Value = 50
         }
+        { CheckboxMatchFullPath CheckBox
+          MoveScaled(1,27,15,4)
+          AutoResize = True
+          Text = ("Match Full Pathname")
+        }
         { Separator2 Separator
-          MoveScaled(1,27,16,1)
+          MoveScaled(1,32,16,1)
         }
         { VBox2 VBox
-          MoveScaled(1,29,16,1)
+          MoveScaled(1,34,16,1)
           Expand = True
         }
         { Label2 Label
-          MoveScaled(1,30,17,4)
+          MoveScaled(1,35,17,4)
           AutoResize = True
           Text = ("Update index every:")
           Alignment = Align.Left
         }
         { ValueBoxReindex ValueBox
-          MoveScaled(1,34,17,4.5714)
+          MoveScaled(1,40,17,4.5714)
           Text = ("00:30")
           Type = ValueBox.Time
         }
         { Separator3 Separator
-          MoveScaled(2,39,16,1)
+          MoveScaled(2,45,16,1)
         }
         { ButtonReindex Button
-          MoveScaled(1,41,16,4)
+          MoveScaled(1,46,16,4)
           Text = ("IndexNow")
           Picture = Picture["icon:/small/find"]
         }

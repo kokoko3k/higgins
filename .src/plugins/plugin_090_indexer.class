@@ -80,6 +80,8 @@ Public Sub find(textcontrol As Object) As RItemT[]
   Dim got_items As New String[]
   Dim fd, fn As String
   Dim matched As Boolean = False
+  Dim file_name As String
+  Dim match_fullpath As Boolean = (plugin_indexer_gui.CheckboxMatchFullPath.value = CheckBox.true)
   
   If Not trigged(textcontrol.text) Then Return
 
@@ -192,8 +194,13 @@ Public Sub find(textcontrol As Object) As RItemT[]
   For i = 0 To index_db.max
     matched = False
     If got_items.Find(i) < 0 'this avoids searching for already displayed items
-      If InStr(Lower(index_db[i]), Lower(current_search)) Then matched = True
-      If (Not matched) Then Try matched = (index_db[i] Like "*" & current_search & "*") 
+      If match_fullpath Then
+        file_name = index_db[i]
+          Else
+        file_name = File.name(index_db[i])
+      Endif
+      If InStr(Lower(file_name), Lower(current_search)) Then matched = True
+      If (Not matched) Then Try matched = (file_name Like "*" & current_search & "*") 
       If matched Then
         rResult = create_item(index_db[i])
         If rResult <> Null Then 

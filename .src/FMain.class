@@ -187,9 +187,6 @@ Public Sub immediate_search(textcontrol As Object)
   Dim iResults As Integer
   Dim is_blocking As Boolean
 
-   timer_expand_check = New Timer As "timer_expand_check"
-   'timer_expand_check.delay = 100
-   'timer_expand_check.start
 
   If previous_search = textcontrol.text Then 
     Return 'don't know why this is important, but works.
@@ -219,10 +216,9 @@ Public Sub immediate_search(textcontrol As Object)
   Next
   Debug "Search ends here."
   
-  'timer_expand_check.start
-  'timer_expand_check.stop
   
   ResultGrid.Rows.count = results_list.Count
+  timer_expand_check = New Timer As "timer_expand_check"
   timer_expand_check.Trigger
 
   mouse_normal()
