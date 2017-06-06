@@ -581,7 +581,7 @@ Public Sub TextBox1_KeyPress()
 End
 
 Public Sub ResultGrid_KeyPress()
-  
+  Dim dirname As String
   Select Key.Code
     Case Key.Enter
       If ResultGrid.row < 0 Then Return
@@ -597,19 +597,23 @@ Public Sub ResultGrid_KeyPress()
       If ResultGrid.Rows[0].Selected Then TextBox1.SetFocus()
     Case Key.PageUp
       If ResultGrid.Rows[0].Selected Then TextBox1.SetFocus()
+
+
     Case Key.right 'browse the filesystem, go inside folders
       If ResultGrid.row < 0 Then Return
-      If results_list[resultgrid.row].plugin Ends "_LS" Then
-        'Debug "LOCKING TEXTBOX1"
-        Object.Lock(textbox1)
-          textbox1.text = results_list[resultgrid.row].Action_p
-          'immediate_search(textbox1)
+      'If results_list[resultgrid.row].plugin Ends "_LS" Or (results_list[resultgrid.row].plugin Ends "_INDEXER") Then
+        dirname = results_list[resultgrid.row].Action_p
+        If Exist(dirname, True) Then
+          Object.Lock(textbox1)
+          textbox1.text = dirname
           textbox1_change_delay.Trigger()
-         textBox_change_noglitch(textbox2, Complete(TextBox1.text))
-        'Debug "UNLOCKING TEXTBOX1"  
-        Object.unLock(textbox1)
+          textBox_change_noglitch(textbox2, Complete(TextBox1.text))
+          Object.unLock(textbox1)
+        Endif
         Stop Event
-      Endif 
+      'Endif 
+
+
     Case Key.left 'browse the filesystem go up in folders
       If Not Exist(textbox1.text, True) Then Return
       'Debug "LOCKING TEXTBOX1"
@@ -620,11 +624,14 @@ Public Sub ResultGrid_KeyPress()
       'Debug "UNLOCKING TEXTBOX1"
       Object.unLock(textbox1)
       Stop Event
+
       
     Case Else
       If Key.text <> "" Then SelectFileviewFromKey(Lower(Left(Key.text)))
   End Select
 End
+
+
 
 
 Private Sub SelectFileviewFromKey(k As String)
