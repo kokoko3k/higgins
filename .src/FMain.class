@@ -164,21 +164,21 @@ End
 Private previous_search As String
 
 Private Sub showgrid()
-  Dim pad As Integer
-  Dim minh As Integer = resultgrid.Font.TextHeight("|") * 7
-  Return
-  If (fmain.h > resultgrid.h) Then 
-    If fmain.h > minh Then Return 'grid is already visible
-  Endif
-
-  If panel2.padding = 0 Then 
-    pad = Desktop.scale
-      Else
-    pad = panel2.padding
-  Endif
-  not_save_hsize = True
-  FMain.h = Max(global.form_open_h, TextBox1.h + (pad * 3) + Max(resultgrid.h, minh))
-  gstyle.make_background()
+  ' Dim pad As Integer
+  ' Dim minh As Integer = resultgrid.Font.TextHeight("|") * 7
+  Return 'stub
+  ' If (fmain.h > resultgrid.h) Then 
+  '   If fmain.h > minh Then Return 'grid is already visible
+  ' Endif
+  ' 
+  ' If panel2.padding = 0 Then 
+  '   pad = Desktop.scale
+  '     Else
+  '   pad = panel2.padding
+  ' Endif
+  ' not_save_hsize = True
+  ' FMain.h = Max(global.form_open_h, TextBox1.h + (pad * 3) + Max(resultgrid.h, minh))
+  ' gstyle.make_background()
 
 End
 
@@ -189,9 +189,9 @@ Public Sub immediate_search(textcontrol As Object)
   Dim iResults As Integer
   Dim is_blocking As Boolean
 
-  timer_expand_check = New Timer As "timer_expand_check"
-  timer_expand_check.delay = 100
-  timer_expand_check.start
+   timer_expand_check = New Timer As "timer_expand_check"
+   timer_expand_check.delay = 100
+  ' timer_expand_check.start
 
   If previous_search = textcontrol.text Then 
     Return 'don't know why this is important, but works.
@@ -222,30 +222,36 @@ Public Sub immediate_search(textcontrol As Object)
   Next
   Debug "Search ends here."
   
-  timer_expand_check.stop
+  'timer_expand_check.start
+  'timer_expand_check.stop
   timer_expand_check.Trigger
 
   mouse_normal()
 End
 
 Public Function timer_expand_check_timer()
-   Dim newh As Integer = 0
-   Dim pad As Integer = 0 
-
-   If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
-
-    If panel2.padding = 0 Then 
-       pad = Desktop.scale
-         Else
-       pad = panel2.padding
-    Endif
-   
-   not_save_hsize = True
-   
-   If resultgrid.Rows.count = 0 Then Return
-   resultgrid.visible = True
-   newh = (resultgrid.Rows.count * resultgrid.Rows.Height) + fmain_minh() + pad * 2
-   fmain.h = Min(global.form_open_h, newh)
+  Dim newh As Integer = 0
+  Dim pad As Integer = 0 
+  
+  If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
+  
+   If panel2.padding = 0 Then 
+      pad = Desktop.scale
+        Else
+      pad = panel2.padding
+   Endif
+  
+  not_save_hsize = True
+  
+  If resultgrid.Rows.count = 0 Then 
+    resultgrid.visible = False
+    check_min_size(True)
+    Return
+      Else
+    resultgrid.visible = True
+    newh = (resultgrid.Rows.count * resultgrid.Rows.Height) + fmain_minh() + pad * 2
+    fmain.h = Min(global.form_open_h, newh)
+  Endif
 End
 
 
