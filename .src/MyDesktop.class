@@ -105,7 +105,7 @@ Static Public Sub GetIcon(dIconName As String, Optional Size As Integer = 16) As
   Dim sSize As String
   Dim hSvg As SvgImage
   Dim s As String
-
+Stop
   If Exist(dIconName, True) Then 
     If dIconName Ends ".svg" Then
       hSvg = SvgImage.Load(dIconName)
@@ -120,7 +120,7 @@ Static Public Sub GetIcon(dIconName As String, Optional Size As Integer = 16) As
     
   Else
       If ((dIconName Ends ".png") Or (dIconName Ends ".xpm")) Then dIconName = File.BaseName(dIconName)
-    For Each sDir In [Desktop.DataDir &/ "icons", "/usr/share/icons"]
+    For Each sDir In [Desktop.DataDir &/ "icons", "/usr/share/icons", "/usr/local/share/icons"]
       'For Each sSize In [CStr(Size), "128", "64", "32"]      
       For Each sSize In [CStr(Size), "256", "128", "64", "48", "32" "22", "16", "8"]
         sPath = Subst(sDir &/ "hicolor/&1x&1/apps/&2.png", sSize, dIconName)
