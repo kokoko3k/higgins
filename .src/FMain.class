@@ -613,7 +613,7 @@ Public Sub ResultGrid_KeyPress()
         Stop Event
       'Endif 
 
-
+ 
     Case Key.left 'browse the filesystem go up in folders
       If Not Exist(textbox1.text, True) Then Return
       'Debug "LOCKING TEXTBOX1"
