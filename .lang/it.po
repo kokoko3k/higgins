@@ -1,0 +1,307 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: higgins 3.9.2\n"
+"PO-Revision-Date: 2017-07-25 12:29 UTC\n"
+"Last-Translator: kokoko3k <kokoko3k@gmail.com>\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: .project:1
+msgid "Higgins"
+msgstr "-"
+
+#: .project:2
+msgid "Higgins:\nApplication launcher,\nstarts applications and search for things.\n\nCurrently it:\nEvaluate expressions (calculator)\nFind recently opened documents\nFind desktop applications\nFind executables\nFind local bookmarks\nLists the content of folders\nFind files by indexing user-specified folders\n\nSupport external plugins; take a look to External_plugin_locate.sh for an example"
+msgstr "Higgins: Lanciatore di applicazioni,\navvia applicazioni e cerca cose.\n\nAttualmente è in grado, tra l'altro di:\nValutare espressioni (calcolatrice)\nTrovare documenti recenti\nTrovare applicazioni\nTrovare eseguibili\nTrovare segnalibri locali\nMostrare il contenuto delle cartelle\nTrovare file indicizzando cartelle selezionate\nSupporta plugin esterni; (dai uno sguardo a External_plugin_locate.sh per un esempio)"
+
+#: FMain.class:466
+msgid "Execute file?"
+msgstr "Eseguire il file?"
+
+#: FMain.class:1182
+msgid "Do not auto-hide main window"
+msgstr "Non nascondere higgins automaticamente"
+
+#: FMain.class:1183
+msgid "Do not use a tray icon"
+msgstr "Non usare l'icona nel vassoio"
+
+#: FMain.class:1184
+msgid "Clear the previous search on hide"
+msgstr "Cancella l'ultima ricerca alla scomparsa"
+
+#: FMain.class:1209
+msgid "Higgins is not configured"
+msgstr "Higgins non è configurato"
+
+#: FMain.class:1210
+msgid "Please configure at least the hotkey"
+msgstr "Prego, configura almeno la scorciatoia"
+
+#: FMain.class:1211
+msgid "to show the higgins window."
+msgstr "Per mostrare la finestra di higgins."
+
+#: FMain.form:33
+msgid "TrayMenu"
+msgstr "-"
+
+#: FMain.form:37
+msgid "Options"
+msgstr "Opzioni"
+
+#: FMain.form:42
+msgid "Show"
+msgstr "Mostra"
+
+#: FMain.form:47
+msgid "Quit"
+msgstr "Esci"
+
+#: FMain.form:53
+msgid "Menu1"
+msgstr "-"
+
+#: FMain.form:57
+msgid "Open containing folder"
+msgstr "Apri la cartella contenente"
+
+#: FMain.form:62
+msgid "Open File"
+msgstr "Apri il file"
+
+#: FMain.form:67
+msgid "Copy to Clipboard"
+msgstr "Copia nella clipboard"
+
+#: hSettings.class:135
+msgid "Choose a picture"
+msgstr "Scegli un'immagine"
+
+#: hSettings.class:285
+msgid "Load an image"
+msgstr "Carica un'immagine"
+
+#: hSettings.form:71
+msgid "Higgins settings"
+msgstr "Impostazioni di Higgins"
+
+#: hSettings.form:86
+msgid "General"
+msgstr "Generale"
+
+#: hSettings.form:104
+msgid "Hide/show shortcut:"
+msgstr "Scorciatoia per Nascondi/Mostra:"
+
+#: hSettings.form:110
+msgid "Change"
+msgstr "Cambia"
+
+#: hSettings.form:123
+msgid "Terminal"
+msgstr "Terminale"
+
+#: hSettings.form:129
+msgid "gnome-terminal"
+msgstr "-"
+
+#: hSettings.form:129
+msgid "konsole"
+msgstr "-"
+
+#: hSettings.form:129
+msgid "lxterminal"
+msgstr "-"
+
+#: hSettings.form:129
+msgid "xfce4-terminal"
+msgstr "-"
+
+#: hSettings.form:129
+msgid "xterm"
+msgstr "-"
+
+#: hSettings.form:141
+msgid "Fallback icons (or current desktop icon theme)"
+msgstr "Tema di icone di ripiego (o tema corrente)"
+
+#: hSettings.form:163
+msgid "Input lag in seconds (responsivity vs cpu use)"
+msgstr "Ritardo in secondi (responsività vs uso cpu)"
+
+#: hSettings.form:169
+msgid "0.00 - immediate"
+msgstr "0.00 - istantaneo"
+
+#: hSettings.form:169
+msgid "0.05 - Very fast cpu"
+msgstr "0.05 - cpu molto veloce"
+
+#: hSettings.form:169
+msgid "0.10 - Fast cpu"
+msgstr "0.10 - cpu veloce"
+
+#: hSettings.form:169
+msgid "0.20 - Slow cpu"
+msgstr "0.20 - cpu lenta"
+
+#: hSettings.form:169
+msgid "0.30 - Very slow cpu"
+msgstr "0.30 - cpu molto lenta"
+
+#: hSettings.form:169
+msgid "0.40 "
+msgstr "-"
+
+#: hSettings.form:169
+msgid "0.50 "
+msgstr "-"
+
+#: hSettings.form:169
+msgid "Adaptive "
+msgstr "Adattivo"
+
+#: hSettings.form:170
+msgid "0.10"
+msgstr "0.10"
+
+#: hSettings.form:175
+msgid "Plugins"
+msgstr "Plugin"
+
+#: hSettings.form:194
+msgid "Open External plugins directory"
+msgstr "Apri la cartella dei plugin esterni"
+
+#: hSettings.form:201
+msgid "Refresh External plugins list"
+msgstr "Aggiorna la lista di plugin esterni"
+
+#: hSettings.form:206
+msgid "Style"
+msgstr "Stile"
+
+#: hSettings.form:224
+msgid "Undecorated Window"
+msgstr "Finestra non decorata"
+
+#: hSettings.form:231
+msgid "Window border"
+msgstr "Bordo della finestra"
+
+#: hSettings.form:244
+msgid "Input field border"
+msgstr "Bordo del campo di immissione"
+
+#: hSettings.form:252
+msgid "Show scrollbar"
+msgstr "Mostra le barre di scorrimento"
+
+#: hSettings.form:267
+msgid "Window color"
+msgstr "Colore della finestra"
+
+#: hSettings.form:291
+msgid "Search (background, text, opacity)"
+msgstr "Ricerca (sfondo,testo,opacità)"
+
+#: hSettings.form:326
+msgid "Results (background, text, opacity)"
+msgstr "Risultati (sfondo,testo,opacità)"
+
+#: hSettings.form:362
+msgid "Extra window padding"
+msgstr "Contorno aggiuntivo"
+
+#: hSettings.form:379
+msgid "Background picture"
+msgstr "Immagine di sfondo"
+
+#: hSettings.form:394
+msgid "The followings need a compositor"
+msgstr "I seguenti necessitano di un compositore"
+
+#: hSettings.form:404
+msgid "Shadow"
+msgstr "Ombra"
+
+#: hSettings.form:416
+msgid "S:"
+msgstr "-"
+
+#: hSettings.form:429
+msgid "G:"
+msgstr "-"
+
+#: hSettings.form:442
+msgid "A:"
+msgstr ""
+
+#: hSettings.form:462
+msgid "Window corner round radius"
+msgstr "Raggio degli angoli arrotondati"
+
+#: plugin_010_calculator.class:150
+msgid "-1 (boolean TRUE)"
+msgstr "-1 (logico vero)"
+
+#: plugin_010_calculator.class:151
+msgid "0 (boolean FALSE)"
+msgstr "0 (logico falso)"
+
+#: plugin_020_apps.class:149
+msgid "In: "
+msgstr "In:"
+
+#: plugin_apps_gui.class:17 plugin_indexer_gui.class:49
+msgid "Directory"
+msgstr "Cartella"
+
+#: plugin_apps_gui.form:36
+msgid "Also search for apps in the following folders (Not recursive)"
+msgstr "Cerca le applicazioni anche nelle seguenti cartelle (non ricorsivo)"
+
+#: plugin_apps_gui.form:117
+msgid "Identify desktop files by extension only (faster)"
+msgstr "Identifica i file del desktop dall'estensione (più veloce)"
+
+#: plugin_indexer_gui.class:48
+msgid "Depth"
+msgstr "Profondità"
+
+#: plugin_indexer_gui.class:138
+msgid "items indexed."
+msgstr "oggetti indicizzati."
+
+#: plugin_indexer_gui.form:32
+msgid "indexer plugin config"
+msgstr "Configurazione del plugin indicizzatore"
+
+#: plugin_indexer_gui.form:48
+msgid "Directories to index"
+msgstr "Cartelle da indicizzare"
+
+#: plugin_indexer_gui.form:133
+msgid "Limit results to:"
+msgstr "Limita i risultati a:"
+
+#: plugin_indexer_gui.form:145
+msgid "Match Full Pathname"
+msgstr "Trova percorsi completi"
+
+#: plugin_indexer_gui.form:160
+msgid "Update index every:"
+msgstr "Aggiorna l'indice ogni:"
+
+#: plugin_indexer_gui.form:166
+msgid "00:30"
+msgstr "-"
+
+#: plugin_indexer_gui.form:176
+msgid "Index Now"
+msgstr "Indicizza ora"
+
