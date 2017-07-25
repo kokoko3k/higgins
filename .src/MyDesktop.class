@@ -94,6 +94,17 @@ Static Public Sub Mime_exe(path As String) As String
   Return False
 End
 
+Static Private Function svg2image(svg_file As String, w As Integer, h As Integer) As Image
+  Dim hsvg As SvgImage
+  Dim himage As Image
+    hSvg = SvgImage.Load(svg_file)
+    hImage = New Image(w, h, Color.transparent)
+    Paint.Begin(hImage)
+    hSvg.Resize(w, h)
+    hSvg.Paint
+    Paint.End
+    Return hImage
+End
 
 
 
@@ -103,25 +114,39 @@ Static Public Sub GetIcon(dIconName As String, Optional Size As Integer = 16) As
   Dim hImage As Image
   Dim sDir As String
   Dim sSize As String
-  Dim hSvg As SvgImage
   Dim s As String
-
+If dIconName = "mldonkey" Then Stop
   If Exist(dIconName, True) Then 
     If dIconName Ends ".svg" Then
-      hSvg = SvgImage.Load(dIconName)
-      hImage = New Image(Size, Size, Color.transparent)
-      Paint.Begin(hImage)
-      hSvg.Resize(size, Size)
-      hSvg.Paint
-      Paint.End
+      hImage = svg2image(dIconName, Size, Size)
     Else
       Try hImage = Image.Load(dIconName)
     Endif
     
   Else
-      If ((dIconName Ends ".png") Or (dIconName Ends ".xpm")) Then dIconName = File.BaseName(dIconName)
+    If ((dIconName Ends ".png") Or (dIconName Ends ".xpm") Or (dIconName Ends ".svg")) Then dIconName = File.BaseName(dIconName)
+    
+
     For Each sDir In [Desktop.DataDir &/ "icons", "/usr/share/icons", "/usr/local/share/icons"]
-      'For Each sSize In [CStr(Size), "128", "64", "32"]      
+      
+      sPath = sDir & "/" & dIconName & ".png"
+      If Exist(sPath) Then
+        Try hImage = Image.Load(sPath)
+        If hImage Then Break
+      Endif
+      
+      sPath = sDir & "/" & dIconName & ".xpm"
+      If Exist(sPath) Then
+        Try hImage = Image.Load(sPath)
+        If hImage Then Break
+      Endif
+      
+      sPath = sDir & "/" & dIconName & ".svg"
+      If Exist(sPath) Then
+        Try hImage = svg2image(sPath, size, size)
+        If hImage Then Break
+      Endif
+      
       For Each sSize In [CStr(Size), "256", "128", "64", "48", "32" "22", "16", "8"]
         sPath = Subst(sDir &/ "hicolor/&1x&1/apps/&2.png", sSize, dIconName)
         If Exist(sPath, True) Then 
