@@ -1,8 +1,8 @@
 ' Gambas class file
 
 Create Static
-Static Public Description As String = "Expression evaluator"
-Static Public Friendly_name As String = "Calculator"
+Static Public Description As String = ("Expression evaluator")
+Static Public Friendly_name As String = ("Calculator")
 Static Public configurable As Boolean = False
 Static Public Default_enabled As Boolean = True
 Static Public default_blocking As Boolean = True                  'Should the subsequent plugins be blocked when

@@ -1,8 +1,8 @@
 ' Gambas class file
 
 Create Static
-Static Public Description As String = "Executables launcher"
-Static Public Friendly_name As String = "Executables"
+Static Public Description As String = ("Executables launcher")
+Static Public Friendly_name As String = ("Executables")
 Static Public configurable As Boolean = False
 Static Public Default_enabled As Boolean = True
 Static Public default_blocking As Boolean = False                 'Should the subsequent plugins be blocked when

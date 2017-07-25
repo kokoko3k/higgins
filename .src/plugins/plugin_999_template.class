@@ -1,8 +1,8 @@
 ' Gambas class file
 
 Create Static
-Static Public Description As String = "Example plugin"    'A description for this plugin
-Static Public Friendly_name As String = "Example plugin"  'A friendly name for this plugin
+Static Public Description As String = ("Example plugin description")    'A description for this plugin
+Static Public Friendly_name As String = ("Example plugin")  'A friendly name for this plugin
 Static Public configurable As Boolean = False             'Does this plugin provides a configure() method?
 Static Public Default_enabled As Boolean = False          'Does this plugin have to be enabled by default?
 Static Public default_blocking As Boolean = False                 'Should the subsequent plugins be blocked when
