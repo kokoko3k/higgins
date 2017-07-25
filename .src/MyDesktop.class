@@ -115,7 +115,7 @@ Static Public Sub GetIcon(dIconName As String, Optional Size As Integer = 16) As
   Dim sDir As String
   Dim sSize As String
   Dim s As String
-If dIconName = "mldonkey" Then Stop
+
   If Exist(dIconName, True) Then 
     If dIconName Ends ".svg" Then
       hImage = svg2image(dIconName, Size, Size)
