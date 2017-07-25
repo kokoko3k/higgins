@@ -965,7 +965,7 @@ Public Sub Draw_plugin(plugin_name As String, enabled As Boolean, Optional redra
         configurable = False
         Try configurable = Object.GetProperty(plugin_class, "Configurable")
           Else
-        description = "Bridge to external plugin"
+        description = ("Bridge to external plugin")
         friendly_name = Right(plugin_name, - InStr(plugin_name, ":"))
         configurable = False
       Endif

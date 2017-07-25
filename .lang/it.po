@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: higgins 3.9.2\n"
-"PO-Revision-Date: 2017-07-25 12:29 UTC\n"
+"PO-Revision-Date: 2017-07-25 12:55 UTC\n"
 "Last-Translator: kokoko3k <kokoko3k@gmail.com>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -20,6 +20,10 @@ msgstr "Higgins: Lanciatore di applicazioni,\navvia applicazioni e cerca cose.\n
 #: FMain.class:466
 msgid "Execute file?"
 msgstr "Eseguire il file?"
+
+#: FMain.class:968
+msgid "Bridge to external plugin"
+msgstr "Ponte per plugin esterni"
 
 #: FMain.class:1182
 msgid "Do not auto-hide main window"
@@ -239,11 +243,27 @@ msgstr "-"
 
 #: hSettings.form:442
 msgid "A:"
-msgstr ""
+msgstr "A:"
 
 #: hSettings.form:462
 msgid "Window corner round radius"
 msgstr "Raggio degli angoli arrotondati"
+
+#: plugin_009_history.class:4
+msgid "Finds previously selected items"
+msgstr "Trova oggetti usati in precedenza"
+
+#: plugin_009_history.class:5
+msgid "History plugin"
+msgstr "Cronologia"
+
+#: plugin_010_calculator.class:4
+msgid "Expression evaluator"
+msgstr "Valuta le espressioni"
+
+#: plugin_010_calculator.class:5
+msgid "Calculator"
+msgstr "Calcolatrice"
 
 #: plugin_010_calculator.class:150
 msgid "-1 (boolean TRUE)"
@@ -253,9 +273,65 @@ msgstr "-1 (logico vero)"
 msgid "0 (boolean FALSE)"
 msgstr "0 (logico falso)"
 
+#: plugin_015_recent.class:4
+msgid "Search for Recent Documents"
+msgstr "Trova i documenti aperti di recente"
+
+#: plugin_015_recent.class:5
+msgid "Recent Documents"
+msgstr "Documenti recenti"
+
+#: plugin_020_apps.class:4
+msgid "Find desktop applications"
+msgstr "Trova le applicazioni installate"
+
+#: plugin_020_apps.class:5
+msgid "Desktop apps"
+msgstr "Applicazioni del desktop"
+
 #: plugin_020_apps.class:149
 msgid "In: "
 msgstr "In:"
+
+#: plugin_030_executable.class:4
+msgid "Executables launcher"
+msgstr "Avviatore di eseguibili"
+
+#: plugin_030_executable.class:5
+msgid "Executables"
+msgstr "Eseguibili"
+
+#: plugin_040_fbookmarks.class:4
+msgid "Search through desktop bookmarks"
+msgstr "Trova i segnalibri del sistema"
+
+#: plugin_040_fbookmarks.class:5
+msgid "Folder bookmarks"
+msgstr "Segnalibri delle cartelle"
+
+#: plugin_050_ls.class:4
+msgid "List files from a folder"
+msgstr "Mostra i file da una cartella"
+
+#: plugin_050_ls.class:5
+msgid "list plugin"
+msgstr "Lista"
+
+#: plugin_090_indexer.class:4
+msgid "Index filenames from user-defined folders."
+msgstr "Indicizza i nomi dei file da cartelle selezionate"
+
+#: plugin_090_indexer.class:5
+msgid "Indexer"
+msgstr "Indicizzatore"
+
+#: plugin_999_template.class:4
+msgid "Example plugin description"
+msgstr "descrizione del plugin di esempio"
+
+#: plugin_999_template.class:5
+msgid "Example plugin"
+msgstr "Plugin di esempio"
 
 #: plugin_apps_gui.class:17 plugin_indexer_gui.class:49
 msgid "Directory"

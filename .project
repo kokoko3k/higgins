@@ -22,6 +22,7 @@ Description="Higgins:\nApplication launcher,\nstarts applications and search for
 Authors="Antonio Orefice"
 Arguments=[["-c"]]
 CurrentArgument=0
+Environment="LANGUAGE=it_IT"
 TabSize=2
 Translate=1
 Language=it
