@@ -514,7 +514,7 @@ Public Sub ResultGrid_activate()
 End
 
 Public Sub TextBox1_KeyPress()
-
+  
   Select Key.Code
 
     Case Key.end 'fill complete
@@ -576,7 +576,9 @@ Public Sub TextBox1_KeyPress()
     Case Key.Up
      textBox_change_noglitch(textbox2, complete(textbox1.text, True))
   End Select
-  
+
+  Catch
+    Debug "Warning, error in TextBox1_KeyPress!"
 
 End
 

@@ -6,7 +6,8 @@ plugin_indexer=[38]
 Count=0
 
 [DebugWindow]
-Count=0
+Count=1
+DebugWindow[1]="hImage"
 
 [DebugWindow/$aApps]
 Geometry=[1305,399,246,471]
@@ -505,33 +506,33 @@ Path="/tmp/higgins.gambas"
 
 [OpenFile]
 File[1]="higgins.desktop:16.7"
-Active=10
+Active=7
 File[2]=".src/MySettings.module:20.10"
 Count=28
 File[3]=".src/plugins/plugin_apps_gui.form"
 File[4]=".src/plugins/plugin_indexer_gui.form"
-File[5]=".src/plugins/plugin_015_recent.class:28.165"
+File[5]=".src/plugins/plugin_015_recent.class:41.4"
 File[6]=".src/FMain.form"
-File[7]=".src/FMain.class:1.615"
+File[7]=".src/FMain.class:4.964"
 File[8]=".src/hSettings.class:31.314"
 File[9]=".src/Global.module:3.78"
-File[10]=".src/MyDesktop.class:0.107"
+File[10]=".src/MyDesktop.class:81.110"
 File[11]=".src/XbindKeys.class:15.115"
 File[12]=".src/hSettings.form"
 File[13]=".src/StartClass.class:18.3"
-File[14]=".src/plugins/plugin_020_apps.class:22.90"
+File[14]=".src/plugins/plugin_020_apps.class:41.4"
 File[15]=".src/DesktopApps.class:39.117"
 File[16]=".src/gstyle.module:16.143"
-File[17]=".src/plugins/plugin_090_indexer.class:28.121"
+File[17]=".src/plugins/plugin_090_indexer.class:41.4"
 File[18]=".src/plugins/bridge.class:6.119"
 File[19]="appicon.png"
-File[20]=".src/plugins/plugin_010_calculator.class:33.143"
+File[20]=".src/plugins/plugin_010_calculator.class:41.4"
 File[21]=".src/plugins/plugin_indexer_gui.class:87.38"
-File[22]=".src/plugins/plugin_030_executable.class:20.53"
-File[23]=".src/plugins/plugin_050_ls.class:0.34"
-File[24]=".src/plugins/plugin_040_fbookmarks.class:18.72"
-File[25]=".src/plugins/plugin_999_template.class:48.38"
-File[26]=".src/plugins/plugin_009_history.class:0.64"
+File[22]=".src/plugins/plugin_030_executable.class:62.3"
+File[23]=".src/plugins/plugin_050_ls.class:66.3"
+File[24]=".src/plugins/plugin_040_fbookmarks.class:41.4"
+File[25]=".src/plugins/plugin_999_template.class:0.9"
+File[26]=".src/plugins/plugin_009_history.class:41.4"
 File[27]="extbin/External_plugin_grep.sh:0.24"
 File[28]="extbin/External_plugin_kill.sh:0.23"
 
