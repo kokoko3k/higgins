@@ -20,7 +20,6 @@ Public Struct rItemT
   Action_p As Variant          'the parameter for Action
 End Struct
 
-
 Private plugin As String
 Private iconsize As Integer
 Private minchar As Integer = 4   'exit if the search term is lower than that
@@ -40,7 +39,7 @@ id = Rnd(0, 1)
   
   plugin = p_plugin
   iconsize = p_iconsize
-  Try index_db = Split(File.Load(index_file))
+  Try index_db = Split(File.Load(index_file), "\n")
   plugin_indexer_gui.init(Me)
   plugin_indexer_gui.LoadSettings()
   restart_timer()  
@@ -293,12 +292,11 @@ End
 Public Sub reindex_timer_Timer()
   Dim time_diff As Integer
   time_diff = DateDiff(plugin_indexer_gui.last_index_time, Now(), gb.Minute)
-  'cercami
-  'Debug reindex_minutes_timeout - time_diff, "minutes to go"
-  'If time_diff >= reindex_minutes_timeout Then
+  Debug reindex_minutes_timeout - time_diff, "minutes to go"
+  If time_diff >= reindex_minutes_timeout Then
     reindex_timer.stop
     ReIndex()
-  'Endif
+  Endif
 
 End
 
@@ -314,13 +312,12 @@ Public Sub ReIndex()
   If indexing Then Return
   reindex_timer.stop
   Try indexprocess.kill
-  index_db.clear
   For r = 0 To aGrid.Rows.max
     sPath = aGrid[r, 1].text
     If Not (sPath Ends "/") Then sPath &= "/"
     depth = aGrid[r, 0].text
     dir = "'" & sPath & "'"
-    cmdline &= "; nice -n 19 ionice -c3 schedtool -B -e find " & dir & " -maxdepth " & depth & " \\( -xtype d -printf \"%p/\\n\" , -not -xtype d -print \\)"
+    cmdline &= " ; nice -n 19 ionice -c3 schedtool -B -e find " & dir & " -maxdepth " & depth & " \\( -xtype d -printf \"%p/\\n\" , -not -xtype d -print \\)"
   Next
   Try Kill index_file
   If cmdline Begins ";" Then cmdline = Right(cmdline, -1)
@@ -333,15 +330,12 @@ Public Sub ReIndex()
 End
 
 Public Sub indexprocess_kill()
-
   Debug "find process has ended, building index db."
   Try index_db = Split(File.Load(index_file), "\n")  
   Debug "Finished indexing"
   indexing = False
   
-  File.Save(index_file, index_db.Join())
   plugin_indexer_gui.last_index_time = Now()
-  Try index_db = Split(File.Load(index_file))
   plugin_indexer_gui.SaveSettings()
   reindex_timer.start
   plugin_indexer_gui.UpdateLabelIndexSize
