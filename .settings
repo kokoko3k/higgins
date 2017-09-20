@@ -152,6 +152,9 @@ Geometry=[45,0,224,280]
 [DebugWindow/Split(File.Load(desktopfile), "\n")]
 Geometry=[52,234,224,732]
 
+[DebugWindow/Split(File.Load(index_file))]
+Geometry=[52,0,224,280]
+
 [DebugWindow/Split(File.Load(sAppPath), "\n")]
 Geometry=[1280,0,224,280]
 
@@ -297,7 +300,7 @@ Geometry=[45,-3,224,280]
 Geometry=[45,299,224,280]
 
 [DebugWindow/index_db]
-Geometry=[45,-3,595,923]
+Geometry=[52,69,1025,923]
 
 [DebugWindow/indexer_out]
 Geometry=[-240,589,689,449]
@@ -505,35 +508,36 @@ Path="/tmp/higgins.gambas"
 
 [OpenFile]
 File[1]="higgins.desktop:16.7"
-Active=7
+Active=26
 File[2]=".src/MySettings.module:20.10"
-Count=28
+Count=29
 File[3]=".src/plugins/plugin_apps_gui.form"
 File[4]=".src/plugins/plugin_indexer_gui.form"
 File[5]=".src/plugins/plugin_015_recent.class:41.4"
 File[6]=".src/FMain.form"
-File[7]=".src/FMain.class:6.556"
+File[7]=".src/FMain.class:2.119"
 File[8]=".src/hSettings.class:31.314"
 File[9]=".src/Global.module:3.78"
 File[10]=".src/MyDesktop.class:81.110"
-File[11]=".src/XbindKeys.class:15.115"
+File[11]=".src/XbindKeys.class:0.117"
 File[12]=".src/hSettings.form"
 File[13]=".src/StartClass.class:18.3"
 File[14]=".src/plugins/plugin_020_apps.class:41.4"
-File[15]=".src/DesktopApps.class:39.117"
+File[15]=".src/DesktopApps.class:27.215"
 File[16]=".src/gstyle.module:16.143"
-File[17]=".src/plugins/plugin_090_indexer.class:41.4"
-File[18]=".src/plugins/bridge.class:6.119"
+File[17]=".src/plugins/plugin_090_indexer.class:2.297"
+File[18]=".src/plugins/bridge.class:35.82"
 File[19]="appicon.png"
 File[20]=".src/plugins/plugin_010_calculator.class:41.4"
-File[21]=".src/plugins/plugin_indexer_gui.class:87.38"
+File[21]=".src/plugins/plugin_indexer_gui.class:3.98"
 File[22]=".src/plugins/plugin_030_executable.class:62.3"
 File[23]=".src/plugins/plugin_050_ls.class:66.3"
 File[24]=".src/plugins/plugin_040_fbookmarks.class:41.4"
 File[25]=".src/plugins/plugin_999_template.class:0.9"
-File[26]=".src/plugins/plugin_009_history.class:41.4"
+File[26]=".src/plugins/plugin_009_history.class:0.62"
 File[27]="extbin/External_plugin_grep.sh:0.24"
 File[28]="extbin/External_plugin_kill.sh:0.23"
+File[29]="extbin/External_plugin_locate.sh:0.0"
 
 [Watches]
 Count=0

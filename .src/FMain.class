@@ -89,7 +89,7 @@ Public Sub TextBox1_Change()
 
   immediate_search(textbox1)
 
-  Wait 0.3
+ Wait 0.3
 
   Try current_search = TextBox1.text 
   If Error Then Return
