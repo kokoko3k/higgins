@@ -6,8 +6,7 @@ plugin_indexer=[38]
 Count=0
 
 [DebugWindow]
-Count=1
-DebugWindow[1]="hImage"
+Count=0
 
 [DebugWindow/$aApps]
 Geometry=[1305,399,246,471]
@@ -513,7 +512,7 @@ File[3]=".src/plugins/plugin_apps_gui.form"
 File[4]=".src/plugins/plugin_indexer_gui.form"
 File[5]=".src/plugins/plugin_015_recent.class:41.4"
 File[6]=".src/FMain.form"
-File[7]=".src/FMain.class:4.964"
+File[7]=".src/FMain.class:6.556"
 File[8]=".src/hSettings.class:31.314"
 File[9]=".src/Global.module:3.78"
 File[10]=".src/MyDesktop.class:81.110"
