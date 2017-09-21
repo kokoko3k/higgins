@@ -447,11 +447,8 @@ Stop
 
   If MyDesktop.dTerminal Then 
     terminal_emulator = settings["terminal_emulator", Global.find_term()]
-    If MyDesktop.dPath <> "" Then
-      Shell Global.terminal_cmdline(terminal_emulator, exe) With ["PWD=" & MyDesktop.dPath]
-        Else
-      Shell Global.terminal_cmdline(terminal_emulator, exe)
-    Endif
+    If MyDesktop.dPath <> "" Then exe = "cd " & MyDesktop.dPath & " ; " & exe
+    Shell Global.terminal_cmdline(terminal_emulator, exe)
   Else
     If MyDesktop.dPath <> "" Then
       Shell exe With ["PWD=" & MyDesktop.dPath] 'For Input Output
