@@ -47,15 +47,15 @@ Public Sub find(textcontrol As Object) As RItemT[]
   Dim rResult As RItemT
   Dim current_search As String = textcontrol.text
   Dim exe_found, cmd As String
-  
+
   If Not trigged(textcontrol.text) Then Return
 
   If Exist(current_search, True) Then
     If Stat(current_search, True).type = gb.Directory Then Return
   Endif
   
-  cmd = Split(current_search, " ")[0]
-  
+  cmd = Split(current_search, " ", "", True)[0]
+
   Try exe_found = System.Find(cmd)
   If exe_found = "" Then Return
 
