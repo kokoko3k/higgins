@@ -45,6 +45,21 @@ Public Sub textbox1_change_delay_timer()
  textBox_change_noglitch(textbox2, complete(textbox1.text))
 End
 
+
+Public Sub Trim_textobj_atomic(textcontrol As Object)
+  Dim t As String
+  Try t = Object.GetProperty(textcontrol, "text")
+  If Error Then
+    Debug "Called on a control without text property or what!?"
+    Return
+  Endif
+  
+  Object.Lock(textcontrol)
+  textbox1.text = Trim(textcontrol.text)
+  Object.Unlock(textcontrol)
+End
+
+
 Public Sub TextBox1_Change()
 
   Dim p_previous_search, current_search As String
@@ -187,7 +202,7 @@ Public Sub immediate_search(textcontrol As Object)
   Dim iResults As Integer
   Dim is_blocking As Boolean
 
-
+  Trim_textobj_atomic(textcontrol)
   If previous_search = textcontrol.text Then 
     Return 'don't know why this is important, but works.
   Endif
