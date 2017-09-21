@@ -95,6 +95,7 @@
         }
         { CheckboxMatchFullPath CheckBox
           MoveScaled(1,27,15,4)
+          ToolTip = ("Example:\nPath /aa/bb/cc exists. and you search for \"aa\" or \"bb\"\nOption checked -> You get \"/aa/bb/cc\"\nOption unchecked -> You DONT get \"/aa/bb/cc\"")
           AutoResize = True
           Text = ("Match Full Pathname")
         }

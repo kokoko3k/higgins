@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: higgins 3.9.2\n"
-"PO-Revision-Date: 2017-09-21 12:34 UTC\n"
+"PO-Revision-Date: 2017-09-21 12:38 UTC\n"
 "Last-Translator: kokoko3k <kokoko3k@gmail.com>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -365,27 +365,31 @@ msgstr "Cartelle da indicizzare"
 msgid "Limit results to:"
 msgstr "Limita i risultati a:"
 
-#: plugin_indexer_gui.form:146
+#: plugin_indexer_gui.form:145
+msgid "Example:\nPath /aa/bb/cc exists. and you search for \"aa\" or \"bb\"\nOption checked -> You get \"/aa/bb/cc\"\nOption unchecked -> You DONT get \"/aa/bb/cc\""
+msgstr "Esempio:\nIl percorso /aa/bb/cc esiste. e tu cerchi \"aa\" oppure \"bb\"\nOpzione abilitata -> Avrai il risultato \"/aa/bb/cc\"\nOpzione disabilitata -> NON Avrai il risultato \"/aa/bb/cc\""
+
+#: plugin_indexer_gui.form:147
 msgid "Match Full Pathname"
 msgstr "Corrispondenza in percorsi completi"
 
-#: plugin_indexer_gui.form:151
+#: plugin_indexer_gui.form:152
 msgid "Show hidden files or not in search list.\nHidden files are still shown if search begins with \".\""
 msgstr "Mostra i file nascosti o meno nella lista.\n I file nascosti sono comunque mostrati se la ricerca comincia con \".\""
 
-#: plugin_indexer_gui.form:153
+#: plugin_indexer_gui.form:154
 msgid "Match hidden files"
 msgstr "Trova anche file nascosti"
 
-#: plugin_indexer_gui.form:168
+#: plugin_indexer_gui.form:169
 msgid "Update index every:"
 msgstr "Aggiorna l'indice ogni:"
 
-#: plugin_indexer_gui.form:174
+#: plugin_indexer_gui.form:175
 msgid "00:30"
 msgstr "-"
 
-#: plugin_indexer_gui.form:184
+#: plugin_indexer_gui.form:185
 msgid "Index Now"
 msgstr "Indicizza ora"
 
