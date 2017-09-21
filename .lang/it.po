@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: higgins 3.9.2\n"
-"PO-Revision-Date: 2017-07-25 12:55 UTC\n"
+"PO-Revision-Date: 2017-09-21 12:34 UTC\n"
 "Last-Translator: kokoko3k <kokoko3k@gmail.com>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -17,35 +17,35 @@ msgstr "-"
 msgid "Higgins:\nApplication launcher,\nstarts applications and search for things.\n\nCurrently it:\nEvaluate expressions (calculator)\nFind recently opened documents\nFind desktop applications\nFind executables\nFind local bookmarks\nLists the content of folders\nFind files by indexing user-specified folders\n\nSupport external plugins; take a look to External_plugin_locate.sh for an example"
 msgstr "Higgins: Lanciatore di applicazioni,\navvia applicazioni e cerca cose.\n\nAttualmente è in grado, tra l'altro di:\nValutare espressioni (calcolatrice)\nTrovare documenti recenti\nTrovare applicazioni\nTrovare eseguibili\nTrovare segnalibri locali\nMostrare il contenuto delle cartelle\nTrovare file indicizzando cartelle selezionate\nSupporta plugin esterni; (dai uno sguardo a External_plugin_locate.sh per un esempio)"
 
-#: FMain.class:466
+#: FMain.class:486
 msgid "Execute file?"
 msgstr "Eseguire il file?"
 
-#: FMain.class:968
+#: FMain.class:990
 msgid "Bridge to external plugin"
 msgstr "Ponte per plugin esterni"
 
-#: FMain.class:1182
+#: FMain.class:1204
 msgid "Do not auto-hide main window"
 msgstr "Non nascondere higgins automaticamente"
 
-#: FMain.class:1183
+#: FMain.class:1205
 msgid "Do not use a tray icon"
 msgstr "Non usare l'icona nel vassoio"
 
-#: FMain.class:1184
+#: FMain.class:1206
 msgid "Clear the previous search on hide"
 msgstr "Cancella l'ultima ricerca alla scomparsa"
 
-#: FMain.class:1209
+#: FMain.class:1231
 msgid "Higgins is not configured"
 msgstr "Higgins non è configurato"
 
-#: FMain.class:1210
+#: FMain.class:1232
 msgid "Please configure at least the hotkey"
 msgstr "Prego, configura almeno la scorciatoia"
 
-#: FMain.class:1211
+#: FMain.class:1233
 msgid "to show the higgins window."
 msgstr "Per mostrare la finestra di higgins."
 
@@ -333,7 +333,7 @@ msgstr "descrizione del plugin di esempio"
 msgid "Example plugin"
 msgstr "Plugin di esempio"
 
-#: plugin_apps_gui.class:17 plugin_indexer_gui.class:49
+#: plugin_apps_gui.class:17 plugin_indexer_gui.class:51
 msgid "Directory"
 msgstr "Cartella"
 
@@ -345,39 +345,47 @@ msgstr "Cerca le applicazioni anche nelle seguenti cartelle (non ricorsivo)"
 msgid "Identify desktop files by extension only (faster)"
 msgstr "Identifica i file del desktop dall'estensione (più veloce)"
 
-#: plugin_indexer_gui.class:48
+#: plugin_indexer_gui.class:50
 msgid "Depth"
 msgstr "Profondità"
 
-#: plugin_indexer_gui.class:138
+#: plugin_indexer_gui.class:140
 msgid "items indexed."
 msgstr "oggetti indicizzati."
 
-#: plugin_indexer_gui.form:32
+#: plugin_indexer_gui.form:33
 msgid "indexer plugin config"
 msgstr "Configurazione del plugin indicizzatore"
 
-#: plugin_indexer_gui.form:48
+#: plugin_indexer_gui.form:49
 msgid "Directories to index"
 msgstr "Cartelle da indicizzare"
 
-#: plugin_indexer_gui.form:133
+#: plugin_indexer_gui.form:134
 msgid "Limit results to:"
 msgstr "Limita i risultati a:"
 
-#: plugin_indexer_gui.form:145
+#: plugin_indexer_gui.form:146
 msgid "Match Full Pathname"
-msgstr "Trova percorsi completi"
+msgstr "Corrispondenza in percorsi completi"
 
-#: plugin_indexer_gui.form:160
+#: plugin_indexer_gui.form:151
+msgid "Show hidden files or not in search list.\nHidden files are still shown if search begins with \".\""
+msgstr "Mostra i file nascosti o meno nella lista.\n I file nascosti sono comunque mostrati se la ricerca comincia con \".\""
+
+#: plugin_indexer_gui.form:153
+msgid "Match hidden files"
+msgstr "Trova anche file nascosti"
+
+#: plugin_indexer_gui.form:168
 msgid "Update index every:"
 msgstr "Aggiorna l'indice ogni:"
 
-#: plugin_indexer_gui.form:166
+#: plugin_indexer_gui.form:174
 msgid "00:30"
 msgstr "-"
 
-#: plugin_indexer_gui.form:176
+#: plugin_indexer_gui.form:184
 msgid "Index Now"
 msgstr "Indicizza ora"
 
