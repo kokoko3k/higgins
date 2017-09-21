@@ -28,6 +28,7 @@ Public Sub SaveSettings()
   Settings["plugin_indexer/last_index_time"] = last_index_time
   Settings["plugin_indexer/maxresults"] = SpinMaxResults.value
   Settings["plugin_indexer/matchfullpath"] = CheckBoxmatchfullpath.value
+  Settings["plugin_indexer/matchhidden"] = CheckBoxmatchhidden.value
   SaveGrid()
   Settings.Save()
 End
@@ -37,6 +38,7 @@ Public Sub LoadSettings()
   ValueBoxReindex.value = Settings["plugin_indexer/interval", "00:31"] 
   SpinMaxResults.value = Settings["plugin_indexer/maxresults", 50]
   CheckBoxmatchfullpath.value = Settings["plugin_indexer/matchfullpath", CheckBox.false]
+  CheckBoxmatchhidden.value = Settings["plugin_indexer/matchhidden", CheckBox.false]
   LoadGrid()
   'fixme altro da fare?
 End

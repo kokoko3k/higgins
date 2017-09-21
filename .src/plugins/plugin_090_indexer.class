@@ -80,7 +80,7 @@ Public Sub find(textcontrol As Object) As RItemT[]
   Dim matched As Boolean = False
   Dim file_name As String
   Dim match_fullpath As Boolean = (plugin_indexer_gui.CheckboxMatchFullPath.value = CheckBox.true)
-  
+  Dim match_hidden As Boolean = (plugin_indexer_gui.CheckBoxMatchHidden.value = CheckBox.true)
   If Not trigged(textcontrol.text) Then Return
 
   'directories whose name = query
@@ -196,6 +196,9 @@ Public Sub find(textcontrol As Object) As RItemT[]
         file_name = index_db[i]
           Else
         file_name = File.name(index_db[i])
+      Endif
+      If file_name Begins "." Then
+        If Not match_hidden Then Continue
       Endif
       If InStr(Lower(file_name), Lower(current_search)) Then matched = True
       If (Not matched) Then Try matched = (file_name Like "*" & current_search & "*") 
