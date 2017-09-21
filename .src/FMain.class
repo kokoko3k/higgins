@@ -65,7 +65,6 @@ Public Sub TextBox1_Change()
                                                   'Debug
   Wait 0.01 'glitch textbox
 
-
   If Len(current_search) < 2 Then 
     previous_search = ""
     resize_form()
@@ -432,7 +431,7 @@ Public Sub start_dot_desktop_exe(sPath As String)
   MyDesktop.parse(sPath)
   
   exe = MyDesktop.dExec
-Stop
+
   'strip args
   For Each code In field_codes
     exe = Replace(exe, " %" & code & " ", " ")
@@ -1247,6 +1246,7 @@ Public Sub first_init()
   setup_xbindkeys()
   global.fullyloaded = True
   gstyle.applystyle()
+  initgrid()
 End
 
 
