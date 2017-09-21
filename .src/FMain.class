@@ -41,7 +41,7 @@ End
 Public textbox1_change_delay As Timer 
 
 Public Sub textbox1_change_delay_timer()
- immediate_search(textbox1)
+ immediate_search(Trim(textbox1))
  textBox_change_noglitch(textbox2, complete(textbox1.text))
 End
 
@@ -86,7 +86,7 @@ Public Sub TextBox1_Change()
     Goto returnlabel 'user is typing
   Endif
 
-  immediate_search(textbox1)
+  immediate_search(Trim(textbox1))
 
   Try Wait 0.3
 
