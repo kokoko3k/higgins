@@ -4,6 +4,7 @@
  
 Public dname As String
 Public dExec As String
+Public dPath As String
 Public dTerminal As Boolean
 Public dType As String
 Public dIconName As String
@@ -44,6 +45,7 @@ Public Function parse(desktopfile As String)
         If LCase(sSection) <> "desktop entry" Then Break
       Endif
       If sLine Begins "Name=" Then dName = Right(sLine, - InStr(sLine, "="))
+      If sLine Begins "Path=" Then dPath = Right(sLine, - InStr(sLine, "="))
        If sLine Begins "Exec" Then dExec = Right(sLine, - InStr(sLine, "="))
       If sLine Begins "Terminal" Then
         dTerminal = (Lower((Right(sLine, - InStr(sLine, "=")))) = "true")

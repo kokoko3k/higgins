@@ -89,7 +89,8 @@ Public Sub TextBox1_Change()
 
   immediate_search(textbox1)
 
- Wait 0.3
+  Try Wait 0.3
+
 
   Try current_search = TextBox1.text 
   If Error Then Return
@@ -422,16 +423,16 @@ End
 
 
 
-Public Sub start_dot_desktop_exe(dPath As String)
+Public Sub start_dot_desktop_exe(sPath As String)
   Dim exe As String
   Dim field_codes As String[] = ["f", "F", "u", "U", "d", "D", "n", "N", "v", "m"]
   Dim terminal_emulator As String
   Dim code As String
 
-  MyDesktop.parse(dPath)
+  MyDesktop.parse(sPath)
   
   exe = MyDesktop.dExec
-  
+Stop
   'strip args
   For Each code In field_codes
     exe = Replace(exe, " %" & code & " ", " ")
@@ -441,14 +442,22 @@ Public Sub start_dot_desktop_exe(dPath As String)
   'fill args
   exe = Replace(exe, "%i", "--icon " & "\"" & MyDesktop.dIconName & "\"")
   exe = Replace(exe, "%c", "\"" & MyDesktop.dname & "\"")
-  exe = Replace(exe, "%k", "\"" & dpath & "\"")
+  exe = Replace(exe, "%k", "\"" & sPath & "\"")
   
 
   If MyDesktop.dTerminal Then 
     terminal_emulator = settings["terminal_emulator", Global.find_term()]
-    Shell Global.terminal_cmdline(terminal_emulator, exe)
+    If MyDesktop.dPath <> "" Then
+      Shell Global.terminal_cmdline(terminal_emulator, exe) With ["PWD=" & MyDesktop.dPath]
+        Else
+      Shell Global.terminal_cmdline(terminal_emulator, exe)
+    Endif
   Else
-    Shell exe 'For Input Output
+    If MyDesktop.dPath <> "" Then
+      Shell exe With ["PWD=" & MyDesktop.dPath] 'For Input Output
+        Else
+      Shell exe
+    Endif
   Endif
 
 End
@@ -1513,7 +1522,9 @@ Private Sub Form_LostFocus_workaround()
   Endif
   
   If global.unfocused_hide Then
-    Wait 0.1
+    Repeat
+      Try Wait 0.1
+    Until Not Error
     If Not (Desktop.ActiveWindow = fmain.Handle) Then 
       If Not (Desktop.activewindow = hsettings.handle) Then
         form_hide()
