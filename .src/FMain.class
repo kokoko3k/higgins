@@ -48,6 +48,7 @@ End
 
 Public Sub Trim_textobj_atomic(textcontrol As Object)
   Dim t As String
+  Return 'stubbed
   Try t = Object.GetProperty(textcontrol, "text")
   If Error Then
     Debug "Called on a control without text property or what!?"

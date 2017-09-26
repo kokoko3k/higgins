@@ -82,7 +82,7 @@ Static Public Sub WarmCache()
   Dim sPath As String
   Dim WarmList As String = " "
   Dim warmcmd As String = "" 
-  
+
   For Each sPath In GetDataDir()
     Debug "Warming recursive: " & (sPath &/ "applications")
     WarmList &= sPath &/ "applications" & " "
