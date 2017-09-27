@@ -62,8 +62,8 @@ Public Sub find(textcontrol As Object) As RItemT[]
 
   For Each app In DesktopApps
       Try happ = DesktopApps[app]
+      If Error Then Continue
       If Not (happ.NoDisplay) Then
-        If Error Then Continue
         If happ.Exec_R <> "" Then
           ismatched = InStr(Lower(happ.Get("Name")), Lower(current_search)) > 0 
           If Not ismatched Then 
