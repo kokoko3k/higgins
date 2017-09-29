@@ -1,0 +1,440 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: higgins 3.9.2\n"
+"PO-Revision-Date: 2017-09-29 21:51+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: \n"
+"Language-Team: \n"
+"X-Generator: Poedit 2.0.2\n"
+"Last-Translator: Heimen Stoffels <vistausss@outlook.com>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: nl_NL\n"
+
+#: .project:1
+msgid "Higgins"
+msgstr "Higgins"
+
+#: .project:2
+msgid ""
+"Higgins:\n"
+"Application launcher,\n"
+"starts applications and search for things.\n"
+"\n"
+"Currently it:\n"
+"Evaluate expressions (calculator)\n"
+"Find recently opened documents\n"
+"Find desktop applications\n"
+"Find executables\n"
+"Find local bookmarks\n"
+"Lists the content of folders\n"
+"Find files by indexing user-specified folders\n"
+"\n"
+"Support external plugins; take a look to External_plugin_locate.sh for an "
+"example"
+msgstr ""
+"Higgins:\n"
+"Applicatiestarter;\n"
+"start applicaties en zoekt naar dingen.\n"
+"\n"
+"Huidige mogelijkheden:\n"
+"Berekeningen maken (rekenmachine)\n"
+"Zoeken naar recent geopende documenten\n"
+"Zoeken naar applicaties\n"
+"Zoeken naar uitvoerbare bestanden\n"
+"Zoeken naar lokale bladwijzers\n"
+"Inhoud van mappen opsommen\n"
+"Zoeken naar bestanden door het indexeren van door de gebruiker opgegeven "
+"mappen\n"
+"\n"
+"Ondersteunt externe plug-ins: zie bijv. External_plugin_locate.sh"
+
+#: FMain.class:486
+msgid "Execute file?"
+msgstr "Bestand uitvoeren?"
+
+#: FMain.class:990
+msgid "Bridge to external plugin"
+msgstr "Overbrugging naar externe plug-in"
+
+#: FMain.class:1204
+msgid "Do not auto-hide main window"
+msgstr "Hoofdvenster niet automatisch verbergen"
+
+#: FMain.class:1205
+msgid "Do not use a tray icon"
+msgstr "Geen systeemvakpictogram gebruiken"
+
+#: FMain.class:1206
+msgid "Clear the previous search on hide"
+msgstr "Vorige zoekopdracht wissen bij verbergen"
+
+#: FMain.class:1231
+msgid "Higgins is not configured"
+msgstr "Higgins is niet ingesteld"
+
+#: FMain.class:1232
+msgid "Please configure at least the hotkey"
+msgstr "Stel op zijn minst de sneltoets in"
+
+#: FMain.class:1233
+msgid "to show the higgins window."
+msgstr "om het Higgins-venster weer te geven."
+
+#: FMain.form:33
+msgid "TrayMenu"
+msgstr "Systeemvakmenu"
+
+#: FMain.form:37
+msgid "Options"
+msgstr "Opties"
+
+#: FMain.form:42
+msgid "Show"
+msgstr "Weergeven"
+
+#: FMain.form:47
+msgid "Quit"
+msgstr "Afsluiten"
+
+#: FMain.form:53
+msgid "Menu1"
+msgstr "Menu1"
+
+#: FMain.form:57
+msgid "Open containing folder"
+msgstr "Bijbehorende map openen"
+
+#: FMain.form:62
+msgid "Open File"
+msgstr "Bestand openen"
+
+#: FMain.form:67
+msgid "Copy to Clipboard"
+msgstr "Kopiëren naar klembord"
+
+#: hSettings.class:135
+msgid "Choose a picture"
+msgstr "Afbeelding kiezen"
+
+#: hSettings.class:285
+msgid "Load an image"
+msgstr "Afbeelding laden"
+
+#: hSettings.form:71
+msgid "Higgins settings"
+msgstr "Higgins-instellingen"
+
+#: hSettings.form:86
+msgid "General"
+msgstr "Algemeen"
+
+#: hSettings.form:104
+msgid "Hide/show shortcut:"
+msgstr "Sneltoets voor weergeven/verbergen:"
+
+#: hSettings.form:110
+msgid "Change"
+msgstr "Wijzigen"
+
+#: hSettings.form:123
+msgid "Terminal"
+msgstr "Terminal"
+
+#: hSettings.form:129
+msgid "gnome-terminal"
+msgstr "gnome-terminal"
+
+#: hSettings.form:129
+msgid "konsole"
+msgstr "konsole"
+
+#: hSettings.form:129
+msgid "lxterminal"
+msgstr "lxterminal"
+
+#: hSettings.form:129
+msgid "xfce4-terminal"
+msgstr "xfce4-terminal"
+
+#: hSettings.form:129
+msgid "xterm"
+msgstr "xterm"
+
+#: hSettings.form:141
+msgid "Fallback icons (or current desktop icon theme)"
+msgstr "Terugvalpictogramset (of huidig werkomgevingspictogramthema)"
+
+#: hSettings.form:163
+msgid "Input lag in seconds (responsivity vs cpu use)"
+msgstr "Invoervertraging in seconden (responsiviteit vs CPU-gebruik)"
+
+#: hSettings.form:169
+msgid "0.00 - immediate"
+msgstr "0.00 - onmiddelijk"
+
+#: hSettings.form:169
+msgid "0.05 - Very fast cpu"
+msgstr "0.05 - Erg snelle CPU"
+
+#: hSettings.form:169
+msgid "0.10 - Fast cpu"
+msgstr "0.10 - Snelle CPU"
+
+#: hSettings.form:169
+msgid "0.20 - Slow cpu"
+msgstr "0.20 - Langzame CPU"
+
+#: hSettings.form:169
+msgid "0.30 - Very slow cpu"
+msgstr "0.30 - Erg langzame CPU"
+
+#: hSettings.form:169
+msgid "0.40 "
+msgstr "0.40 "
+
+#: hSettings.form:169
+msgid "0.50 "
+msgstr "0.50 "
+
+#: hSettings.form:169
+msgid "Adaptive "
+msgstr "Dynamisch "
+
+#: hSettings.form:170
+msgid "0.10"
+msgstr "0.10"
+
+#: hSettings.form:175
+msgid "Plugins"
+msgstr "Plug-ins"
+
+#: hSettings.form:194
+msgid "Open External plugins directory"
+msgstr "Externe plug-insmap openen"
+
+#: hSettings.form:201
+msgid "Refresh External plugins list"
+msgstr "Externe plug-inslijst verversen"
+
+#: hSettings.form:206
+msgid "Style"
+msgstr "Stijl"
+
+#: hSettings.form:224
+msgid "Undecorated Window"
+msgstr "Venster zonder opmaak"
+
+#: hSettings.form:231
+msgid "Window border"
+msgstr "Vensterrand"
+
+#: hSettings.form:244
+msgid "Input field border"
+msgstr "Invoerveld-rand"
+
+#: hSettings.form:252
+msgid "Show scrollbar"
+msgstr "Scrollbalk weergeven"
+
+#: hSettings.form:267
+msgid "Window color"
+msgstr "Vensterkleur"
+
+#: hSettings.form:291
+msgid "Search (background, text, opacity)"
+msgstr "Zoeken (achtergrond, tekst, doorzichtigheid)"
+
+#: hSettings.form:326
+msgid "Results (background, text, opacity)"
+msgstr "Resultaten (achtergrond, tekst, doorzichtigheid)"
+
+#: hSettings.form:362
+msgid "Extra window padding"
+msgstr "Extra vensteropvulling"
+
+#: hSettings.form:379
+msgid "Background picture"
+msgstr "Achtergrondafbeelding"
+
+#: hSettings.form:394
+msgid "The followings need a compositor"
+msgstr "De volgende dingen vereisen een compositor"
+
+#: hSettings.form:404
+msgid "Shadow"
+msgstr "Schaduw"
+
+#: hSettings.form:416
+msgid "S:"
+msgstr "S:"
+
+#: hSettings.form:429
+msgid "G:"
+msgstr "G:"
+
+#: hSettings.form:442
+msgid "A:"
+msgstr "A:"
+
+#: hSettings.form:462
+msgid "Window corner round radius"
+msgstr "Rondheidsstraal van vensterhoek"
+
+#: plugin_009_history.class:4
+msgid "Finds previously selected items"
+msgstr "Zoekt naar eerder geselecteerde items"
+
+#: plugin_009_history.class:5
+msgid "History plugin"
+msgstr "Geschiedenisplug-in"
+
+#: plugin_010_calculator.class:4
+msgid "Expression evaluator"
+msgstr "Berekeningen maken"
+
+#: plugin_010_calculator.class:5
+msgid "Calculator"
+msgstr "Rekenmachine"
+
+#: plugin_010_calculator.class:150
+msgid "-1 (boolean TRUE)"
+msgstr "-1 (boolean TRUE)"
+
+#: plugin_010_calculator.class:151
+msgid "0 (boolean FALSE)"
+msgstr "0 (boolean FALSE)"
+
+#: plugin_015_recent.class:4
+msgid "Search for Recent Documents"
+msgstr "Zoeken naar recente documenten"
+
+#: plugin_015_recent.class:5
+msgid "Recent Documents"
+msgstr "Recente documenten"
+
+#: plugin_020_apps.class:4
+msgid "Find desktop applications"
+msgstr "Zoeken naar applicaties"
+
+#: plugin_020_apps.class:5
+msgid "Desktop apps"
+msgstr "Applicaties"
+
+#: plugin_020_apps.class:149
+msgid "In: "
+msgstr "In: "
+
+#: plugin_030_executable.class:4
+msgid "Executables launcher"
+msgstr "Uitvoerbare bestanden starten"
+
+#: plugin_030_executable.class:5
+msgid "Executables"
+msgstr "Uitvoerbare bestanden"
+
+#: plugin_040_fbookmarks.class:4
+msgid "Search through desktop bookmarks"
+msgstr "Zoeken in lokale bladwijzers"
+
+#: plugin_040_fbookmarks.class:5
+msgid "Folder bookmarks"
+msgstr "Bladwijzermap"
+
+#: plugin_050_ls.class:4
+msgid "List files from a folder"
+msgstr "Bestanden uit een map opsommen"
+
+#: plugin_050_ls.class:5
+msgid "list plugin"
+msgstr "Opsomplug-in"
+
+#: plugin_090_indexer.class:4
+msgid "Index filenames from user-defined folders."
+msgstr "Bestandsnamen indexeren uit door de gebruiker opgegeven mappen."
+
+#: plugin_090_indexer.class:5
+msgid "Indexer"
+msgstr "Indexeerder"
+
+#: plugin_999_template.class:4
+msgid "Example plugin description"
+msgstr "Omschrijving van voorbeeldplug-in"
+
+#: plugin_999_template.class:5
+msgid "Example plugin"
+msgstr "Voorbeeldplug-in"
+
+#: plugin_apps_gui.class:17 plugin_indexer_gui.class:51
+msgid "Directory"
+msgstr "Map"
+
+#: plugin_apps_gui.form:36
+msgid "Also search for apps in the following folders (Not recursive)"
+msgstr "Ook zoeken naar apps in de volgende mappen (niet-recursief)"
+
+#: plugin_apps_gui.form:117
+msgid "Identify desktop files by extension only (faster)"
+msgstr "Bestanden identificeren aan de hand van de extensie (sneller)"
+
+#: plugin_indexer_gui.class:50
+msgid "Depth"
+msgstr "Diepte"
+
+#: plugin_indexer_gui.class:140
+msgid "items indexed."
+msgstr "geïndexeerde items."
+
+#: plugin_indexer_gui.form:33
+msgid "indexer plugin config"
+msgstr "instellingen van indexeerplug-in"
+
+#: plugin_indexer_gui.form:49
+msgid "Directories to index"
+msgstr "Te indexeren mappen"
+
+#: plugin_indexer_gui.form:134
+msgid "Limit results to:"
+msgstr "Resultaten beperken tot:"
+
+#: plugin_indexer_gui.form:145
+msgid ""
+"Example:\n"
+"Path /aa/bb/cc exists. and you search for \"aa\" or \"bb\"\n"
+"Option checked -> You get \"/aa/bb/cc\"\n"
+"Option unchecked -> You DONT get \"/aa/bb/cc\""
+msgstr ""
+"Voorbeeld:\n"
+"Pad /aa/bb/cc bestaat en u zoekt naar \"aa\" of \"bb\"\n"
+"Indien optie is aangevinkt -> resultaat is \"/aa/bb/cc\"\n"
+"Indien optie is uitgevinkt -> resultaat is GEEN \"/aa/bb/cc\""
+
+#: plugin_indexer_gui.form:147
+msgid "Match Full Pathname"
+msgstr "Volledige padnaam moet overeenkomen"
+
+#: plugin_indexer_gui.form:152
+msgid ""
+"Show hidden files or not in search list.\n"
+"Hidden files are still shown if search begins with \".\""
+msgstr ""
+"Verborgen bestanden weergeven of verbergen in resultatenlijst.\n"
+"Verborgen bestanden worden nog steeds weergegeven als de zoekopdracht "
+"begint met \".\""
+
+#: plugin_indexer_gui.form:154
+msgid "Match hidden files"
+msgstr "Verborgen bestanden opnemen"
+
+#: plugin_indexer_gui.form:169
+msgid "Update index every:"
+msgstr "Index bijwerken, elke:"
+
+#: plugin_indexer_gui.form:175
+msgid "00:30"
+msgstr "00:30"
+
+#: plugin_indexer_gui.form:185
+msgid "Index Now"
+msgstr "Nu indexeren"
