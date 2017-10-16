@@ -1253,7 +1253,6 @@ Public Sub first_init()
   resize_form()
   
   init_hSettings()
-  
   textbox1_change_delay = New Timer As "textbox1_change_delay"
   textbox1_change_delay.enabled = False
   

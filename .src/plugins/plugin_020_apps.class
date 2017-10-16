@@ -34,7 +34,6 @@ Public Sub _new(p_plugin As String, p_iconsize As Integer)
   update_apps.enabled = False
 
   plugin_apps_gui.init(Me)
-
   DesktopApps.WarmCache()
 
 End
@@ -61,6 +60,7 @@ Public Sub find(textcontrol As Object) As RItemT[]
   If Not trigged(textcontrol.text) Then Return
 
   For Each app In DesktopApps
+
       Try happ = DesktopApps[app]
       If Error Then Continue
       If Not (happ.NoDisplay) Then

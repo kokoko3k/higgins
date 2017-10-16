@@ -58,6 +58,7 @@ Static Private sLanguage As String[] = Split(System.Language, "_", "", True, Fal
 Static Public Sub MakeAppList()
   Dim path As String
   Dim sPath As String
+
   $aApps = New String[]
 
   For Each sPath In GetDataDir()
@@ -94,8 +95,8 @@ Static Public Sub WarmCache()
     WarmList &= sPath & " "
   Next
   
-  warmcmd = "nice -n -19 ionice -c3 find " & WarmList & " -iname \"*.desktop\" -type f -exec cat {} \\; > /dev/null ; "
-  warmcmd &= "nice -n -19 ionice -c3 find " & WarmList & " -maxdepth 1 -iname \"*.desktop\"  -type f -exec cat {} \\; > /dev/null ; "
+  warmcmd = "nice -n 19 ionice -c3 find " & WarmList & " -iname \"*.desktop\" -type f -exec cat {} \\; > /dev/null ; "
+  warmcmd &= "nice -n 19 ionice -c3 find " & WarmList & " -maxdepth 1 -iname \"*.desktop\"  -type f -exec cat {} \\; > /dev/null ; "
   
   ProcWarm = Shell warmcmd For Read As "ProcWarm" 
 
