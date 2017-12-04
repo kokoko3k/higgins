@@ -319,7 +319,7 @@ Public Sub ReIndex()
     If Not (sPath Ends "/") Then sPath &= "/"
     depth = aGrid[r, 0].text
     dir = "'" & sPath & "'"
-    cmdline &= "; nice -n 19 ionice -c3 schedtool -B -e find " & dir & " -maxdepth " & depth & " \\( -xtype d -printf \"%p/\\n\" , -not -xtype d -print \\)"
+    cmdline &= "; nice -n 19 ionice -c3 schedtool -B -e find -L " & dir & " -maxdepth " & depth & " \\( -xtype d -printf \"%p/\\n\" , -not -xtype d -print \\)"
   Next
   Try Kill index_file
   If cmdline Begins ";" Then cmdline = Right(cmdline, -1)
