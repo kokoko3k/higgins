@@ -14,7 +14,6 @@ gb.desktop
 gb.eval
 gb.settings
 gb.gui.trayicon
-gb.inotify
 gb.net
 gb.util
 gb.web
