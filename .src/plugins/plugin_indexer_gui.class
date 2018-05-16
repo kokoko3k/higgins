@@ -54,6 +54,7 @@ End
 
 
 Public Sub ButtonAdd_Click()
+  If Dialog.path = "" Then Dialog.path = User.home
   If Dialog.SelectDirectory() Then Return
   GridIndex.Rows.count += 1
   GridIndex[GridIndex.Rows.max, 1].text = Dialog.Path

@@ -43,6 +43,7 @@ Public Sub LoadSettings()
 End
 
 Public Sub ButtonAdd_Click()
+  If Dialog.path = "" Then Dialog.path = User.home
   If Dialog.SelectDirectory() Then Return
   GridPaths.Rows.count += 1
   GridPaths[GridPaths.Rows.max, 0].text = Dialog.Path

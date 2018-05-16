@@ -132,6 +132,7 @@ End
 Public Sub ComboPicture_Click()
   Dim prevtext As String
   If ComboPicture.Current.text = ComboPicture[0].text Then 
+    If Dialog.path = "" Then Dialog.path = User.home
     Dialog.title = ("Choose a picture")
     If Not Dialog.OpenFile() Then
       ComboPicture.text = Dialog.path
