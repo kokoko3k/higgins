@@ -402,6 +402,8 @@ Public Sub start_item(i As Integer)
     Case "XDGOPEN"
       Desktop.Open(p)
       add_history(p)
+    Case "WINDOWS"
+      Try Desktop.Windows.FromHandle(p).Activate
     Case "GUESS"
       If Exist(p, True) Then
         

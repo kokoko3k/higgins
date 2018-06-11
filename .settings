@@ -483,7 +483,7 @@ Geometry=[1671,159,540,654]
 Geometry=[45,-3,224,280]
 
 [DebugWindow/textcontrol]
-Geometry=[45,-3,224,280]
+Geometry=[52,0,224,280]
 
 [DebugWindow/tmp]
 Geometry=[1280,-3,224,280]
@@ -508,14 +508,14 @@ Path="/tmp/higgins.gambas"
 
 [OpenFile]
 File[1]="higgins.desktop:16.7"
-Active=22
+Active=15
 File[2]=".src/MySettings.module:20.10"
-Count=30
+Count=31
 File[3]=".src/plugins/plugin_apps_gui.form"
 File[4]=".src/plugins/plugin_indexer_gui.form"
 File[5]=".src/plugins/plugin_015_recent.class:41.4"
 File[6]=".src/FMain.form"
-File[7]=".src/FMain.class:39.148"
+File[7]=".src/FMain.class:26.345"
 File[8]=".src/hSettings.class:39.60"
 File[9]=".src/Global.module:11.54"
 File[10]=".src/MyDesktop.class:34.72"
@@ -523,22 +523,23 @@ File[11]=".src/XbindKeys.class:1.15"
 File[12]=".src/hSettings.form"
 File[13]=".src/StartClass.class:18.3"
 File[14]=".src/plugins/plugin_020_apps.class:17.95"
-File[15]=".src/DesktopApps.class:18.191"
+File[15]=".src/DesktopApps.class:0.205"
 File[16]=".src/gstyle.module:16.143"
 File[17]=".src/plugins/plugin_090_indexer.class:23.326"
-File[18]=".src/plugins/bridge.class:35.82"
+File[18]=".src/plugins/bridge.class:11.21"
 File[19]="appicon.png"
 File[20]=".src/plugins/plugin_010_calculator.class:41.4"
 File[21]=".src/plugins/plugin_indexer_gui.class:66.29"
-File[22]=".src/plugins/plugin_030_executable.class:0.58"
+File[22]=".src/plugins/plugin_030_executable.class:65.74"
 File[23]=".src/plugins/plugin_050_ls.class:0.40"
 File[24]=".src/plugins/plugin_040_fbookmarks.class:41.4"
 File[25]=".src/plugins/plugin_999_template.class:0.9"
-File[26]=".src/plugins/plugin_009_history.class:41.67"
+File[26]=".src/plugins/plugin_009_history.class:30.7"
 File[27]="extbin/External_plugin_grep.sh:0.24"
 File[28]="extbin/External_plugin_kill.sh:0.23"
 File[29]="extbin/External_plugin_locate.sh:0.0"
 File[30]=".src/plugins/plugin_apps_gui.class:6.17"
+File[31]="extbin/External_plugin_windowcontrol.sh:0.46"
 
 [Watches]
 Count=0
