@@ -85,16 +85,15 @@ Public Sub find(textcontrol As Object) As RItemT[]
   Dim w As DesktopWindow
   Dim rResults As New RItemT[]
   Dim rResult As RItemT
-  Dim current_search As String = textcontrol.text
+  Dim current_search As String = Lower(textcontrol.text)
   
   If Not trigged(textcontrol.text) Then Return
   For Each w In Desktop.Windows
     If w.SkipTaskbar = False Then
-      If InStr(w.name, Lower(current_search)) Then
+      If InStr(Lower(w.name), current_search) Then
       rResult = create_item(w)
       If rResult <> Null Then rResults.Add(rResult)
-      If textcontrol.text <> current_search Then Return
-        If textcontrol.text <> current_search Then Return
+      If Lower(textcontrol.text) <> Lower(current_search) Then Return
       Endif
     Endif
   Next 'anItem
@@ -112,7 +111,7 @@ Private Function create_item(w As DesktopWindow) As RItemT
   return_item.Action_p = w.id
   return_item.Clipboard_data = ""
   return_item.image_file = "icon:/" & iconsize & "/new-window"
-  return_item.Text = w.name
+  return_item.Text = "Window: " & w.name
   return_item.SubText = "Activate the window"
   Return return_item
 End

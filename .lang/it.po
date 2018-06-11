@@ -1,8 +1,8 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: higgins 3.9.2\n"
-"PO-Revision-Date: 2017-09-21 12:38 UTC\n"
+"Project-Id-Version: higgins 3.10.0\n"
+"PO-Revision-Date: 2018-06-11 10:06 UTC\n"
 "Last-Translator: kokoko3k <kokoko3k@gmail.com>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -17,35 +17,35 @@ msgstr "-"
 msgid "Higgins:\nApplication launcher,\nstarts applications and search for things.\n\nCurrently it:\nEvaluate expressions (calculator)\nFind recently opened documents\nFind desktop applications\nFind executables\nFind local bookmarks\nLists the content of folders\nFind files by indexing user-specified folders\n\nSupport external plugins; take a look to External_plugin_locate.sh for an example"
 msgstr "Higgins: Lanciatore di applicazioni,\navvia applicazioni e cerca cose.\n\nAttualmente è in grado, tra l'altro di:\nValutare espressioni (calcolatrice)\nTrovare documenti recenti\nTrovare applicazioni\nTrovare eseguibili\nTrovare segnalibri locali\nMostrare il contenuto delle cartelle\nTrovare file indicizzando cartelle selezionate\nSupporta plugin esterni; (dai uno sguardo a External_plugin_locate.sh per un esempio)"
 
-#: FMain.class:486
+#: FMain.class:495
 msgid "Execute file?"
 msgstr "Eseguire il file?"
 
-#: FMain.class:990
+#: FMain.class:999
 msgid "Bridge to external plugin"
 msgstr "Ponte per plugin esterni"
 
-#: FMain.class:1204
+#: FMain.class:1213
 msgid "Do not auto-hide main window"
 msgstr "Non nascondere higgins automaticamente"
 
-#: FMain.class:1205
+#: FMain.class:1214
 msgid "Do not use a tray icon"
 msgstr "Non usare l'icona nel vassoio"
 
-#: FMain.class:1206
+#: FMain.class:1215
 msgid "Clear the previous search on hide"
 msgstr "Cancella l'ultima ricerca alla scomparsa"
 
-#: FMain.class:1231
+#: FMain.class:1240
 msgid "Higgins is not configured"
 msgstr "Higgins non è configurato"
 
-#: FMain.class:1232
+#: FMain.class:1241
 msgid "Please configure at least the hotkey"
 msgstr "Prego, configura almeno la scorciatoia"
 
-#: FMain.class:1233
+#: FMain.class:1242
 msgid "to show the higgins window."
 msgstr "Per mostrare la finestra di higgins."
 
@@ -81,11 +81,11 @@ msgstr "Apri il file"
 msgid "Copy to Clipboard"
 msgstr "Copia nella clipboard"
 
-#: hSettings.class:135
+#: hSettings.class:136
 msgid "Choose a picture"
 msgstr "Scegli un'immagine"
 
-#: hSettings.class:285
+#: hSettings.class:286
 msgid "Load an image"
 msgstr "Carica un'immagine"
 
@@ -317,6 +317,10 @@ msgstr "Mostra i file da una cartella"
 msgid "list plugin"
 msgstr "Lista"
 
+#: plugin_080_windows.class:4 plugin_100_windows.class:4
+msgid "Search and activate windows"
+msgstr "Cerca e attiva le finestre"
+
 #: plugin_090_indexer.class:4
 msgid "Index filenames from user-defined folders."
 msgstr "Indicizza i nomi dei file da cartelle selezionate"
@@ -349,7 +353,7 @@ msgstr "Identifica i file del desktop dall'estensione (più veloce)"
 msgid "Depth"
 msgstr "Profondità"
 
-#: plugin_indexer_gui.class:140
+#: plugin_indexer_gui.class:141
 msgid "items indexed."
 msgstr "oggetti indicizzati."
 
