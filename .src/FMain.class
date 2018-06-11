@@ -202,13 +202,14 @@ Public Sub immediate_search(textcontrol As Object)
   Dim t0 As Float
   Dim iResults As Integer
   Dim is_blocking As Boolean
+  Dim current_search As String = ""
 
   Trim_textobj_atomic(textcontrol)
   If previous_search = textcontrol.text Then 
     Return 'don't know why this is important, but works.
   Endif
-  previous_search = textcontrol.text                'don't know why this is important, but works.
-  
+  previous_search = textcontrol.text 'don't know why this is important, but works.
+  current_search = textcontrol.text
   reinit(False)
   mouse_busy()
   
@@ -216,8 +217,13 @@ Public Sub immediate_search(textcontrol As Object)
   'For Each aplugin In plugins
 
   For Each aplugin In plugins_enabled
+    If current_search <> textcontrol.text Then
+      Debug "[!!] Search terms changed while iterating plugins. aborted queued search for " & current_search
+      Return 
+    Endif
+
     t0 = Timer()
-    Debug "[START]", aplugin
+    Debug "[STARTING ID]", aplugin
     iResults = 0
     iResults = run_plugin(aPlugin, textbox1)
     is_blocking = False
