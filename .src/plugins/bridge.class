@@ -104,6 +104,8 @@ Public Sub ext_read()
       Return
     Endif 
   
+  iLine = Trim(iLine)
+  
   Select iLine
     
     Case "BEGIN"
