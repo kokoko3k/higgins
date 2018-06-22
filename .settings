@@ -6,7 +6,8 @@ plugin_indexer=[38]
 Count=0
 
 [DebugWindow]
-Count=0
+Count=1
+DebugWindow[1]="Desktop.Windows"
 
 [DebugWindow/$aApps]
 Geometry=[1305,399,246,471]
@@ -28,6 +29,15 @@ Geometry=[1280,-3,226,280]
 
 [DebugWindow/Classes]
 Geometry=[45,-3,224,280]
+
+[DebugWindow/Desktop.Windows]
+Geometry=[52,0,224,280]
+
+[DebugWindow/Desktop.Windows[0]]
+Geometry=[66,14,224,280]
+
+[DebugWindow/Desktop.Windows[1]]
+Geometry=[66,14,224,280]
 
 [DebugWindow/DesktopApps]
 Geometry=[1280,0,224,280]
@@ -521,12 +531,12 @@ File[9]=".src/Global.module:11.54"
 File[10]=".src/MyDesktop.class:34.72"
 File[11]=".src/XbindKeys.class:1.15"
 File[12]=".src/hSettings.form"
-File[13]=".src/StartClass.class:18.3"
+File[13]=".src/StartClass.class:0.11"
 File[14]=".src/plugins/plugin_020_apps.class:17.95"
 File[15]=".src/DesktopApps.class:0.205"
 File[16]=".src/gstyle.module:16.143"
 File[17]=".src/plugins/plugin_090_indexer.class:23.326"
-File[18]=".src/plugins/bridge.class:11.21"
+File[18]=".src/plugins/bridge.class:2.106"
 File[19]="appicon.png"
 File[20]=".src/plugins/plugin_010_calculator.class:41.4"
 File[21]=".src/plugins/plugin_indexer_gui.class:66.29"
@@ -540,7 +550,7 @@ File[28]="extbin/External_plugin_kill.sh:0.23"
 File[29]="extbin/External_plugin_locate.sh:0.0"
 File[30]=".src/plugins/plugin_apps_gui.class:6.17"
 File[31]="extbin/External_plugin_windowcontrol.sh:0.46"
-File[32]=".src/plugins/plugin_100_windows.class:69.95"
+File[32]=".src/plugins/plugin_100_windows.class:31.92"
 
 [Watches]
 Count=0

@@ -86,7 +86,7 @@ Public Sub find(textcontrol As Object) As RItemT[]
   Dim rResults As New RItemT[]
   Dim rResult As RItemT
   Dim current_search As String = Lower(textcontrol.text)
-  
+  Desktop.Windows.Refresh
   If Not trigged(textcontrol.text) Then Return
   For Each w In Desktop.Windows
     If w.SkipTaskbar = False Then
