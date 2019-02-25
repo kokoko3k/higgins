@@ -882,7 +882,8 @@ End
 
 
 Public Sub setup_xbindkeys()
-  Shell "killall xbindkeys_higgins &>/dev/null" Wait
+Stop
+  Shell "for p in `pidof xbindkeys_higgins` ; do kill $p ; done" Wait
   Wait 0.1
   Shell "killall -9 xbindkeys_higgins &>/dev/null" Wait
   xb = New XbindKeys(xb_rcpath, confpath & "/xbindkeys_higgins", hsettings) As "xb"
