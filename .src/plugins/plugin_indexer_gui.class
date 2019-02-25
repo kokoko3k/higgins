@@ -132,7 +132,7 @@ End
 
 Public Sub ValueBoxReindex_Change()
 
-Try caller.restart_timer()
+ Try caller.restart_timer()
 
 End
 
