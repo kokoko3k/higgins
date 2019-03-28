@@ -28,9 +28,8 @@
         Expand = True
         Spacing = True
         { GridIndex TableView
-          MoveScaled(2,2,36,36)
+          MoveScaled(2,1,36,36)
           Expand = True
-          Border = False
           Mode = Select.Single
           Grid = False
           ShowCursor = True
