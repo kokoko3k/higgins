@@ -94,7 +94,7 @@
     Text = ("Plugins")
     Picture = Picture["icon:/small/connect"]
     { Frame1 ScrollView
-      MoveScaled(2,3,74,22)
+      MoveScaled(1,2,74,22)
       Background = Color.TextBackground
       Expand = True
       Arrangement = Arrange.Vertical
@@ -299,6 +299,7 @@
           Expand = True
           MinValue = 2
           Step = 2
+          Value = 2
         }
         { Label2 Label
           MoveScaled(17,1,4,4)

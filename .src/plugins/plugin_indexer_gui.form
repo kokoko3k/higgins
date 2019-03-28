@@ -24,19 +24,20 @@
       Expand = True
       Spacing = True
       { VBox3 VBox
-        MoveScaled(3,1,40,45)
+        MoveScaled(1,2,40,45)
         Expand = True
         Spacing = True
         { GridIndex TableView
-          MoveScaled(4,4,23,27)
+          MoveScaled(2,2,36,36)
           Expand = True
+          Border = False
           Mode = Select.Single
           Grid = False
           ShowCursor = True
           Header = GridView.Horizontal
         }
         { LabelIndexSize Label
-          MoveScaled(8,40,17,4)
+          MoveScaled(3,40,17,4)
           AutoResize = True
           Alignment = Align.Left
         }

@@ -9,12 +9,12 @@ gb.image
 gb.qt5
 gb.form
 gb.dbus
-gb.desktop.x11
 gb.desktop
+gb.desktop.x11
 gb.eval
+gb.util
 gb.settings
 gb.gui.trayicon
 gb.net
-gb.util
 gb.web
 
