@@ -137,7 +137,7 @@ Private Function create_item_g(path As String) As RItemT 'a lot of code duplicat
 
   return_item = New RItemT
   
-  url = Right(path, - InStr(path, "://") - 2) 'strip protocol
+  url = Right(path, -InStr(path, "://") - 2) 'strip protocol
   url = Replace(url, "$HOME", User.home)
   
   If Lower(path) Begins "file://" Then 
@@ -171,9 +171,9 @@ Private Function create_item_k(path As String) As RItemT 'a lot of code duplicat
     MyDesktop.parse(path)
     If InStr(mydesktop.durl, "://") > 0 Then
       'new kde version uses file:filename, old uses file:// (??)
-      url = Right(mydesktop.durl, - InStr(mydesktop.durl, "://") - 2) 'strip protocol
+      url = Right(mydesktop.durl, -InStr(mydesktop.durl, "://") - 2) 'strip protocol
         Else
-      url = Right(mydesktop.durl, - InStr(mydesktop.durl, ":")) 'strip protocol
+      url = Right(mydesktop.durl, -InStr(mydesktop.durl, ":")) 'strip protocol
     Endif
     url = Replace(url, "$HOME", User.home)
 

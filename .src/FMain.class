@@ -154,7 +154,7 @@ Public Sub load_plugin(plugin_name As String, iconsize As Integer)
   If Not (plugin_name Begins "EXT:") Then 
       Try myplugin = Object.New(plugin_name, [plugin_name, iconsize])
       Else
-    Try myplugin = Object.New("bridge", [plugin_name, iconsize, extbinpath & "/" & Right(plugin_name, - InStr(plugin_name, ":"))])
+    Try myplugin = Object.New("bridge", [plugin_name, iconsize, extbinpath & "/" & Right(plugin_name, -InStr(plugin_name, ":"))])
   Endif
   If Error Then
     Debug "Couldn't load " & plugin_name
@@ -998,7 +998,7 @@ Public Sub Draw_plugin(plugin_name As String, enabled As Boolean, Optional redra
         Try configurable = Object.GetProperty(plugin_class, "Configurable")
           Else
         description = ("Bridge to external plugin")
-        friendly_name = Right(plugin_name, - InStr(plugin_name, ":"))
+        friendly_name = Right(plugin_name, -InStr(plugin_name, ":"))
         configurable = False
       Endif
     Else

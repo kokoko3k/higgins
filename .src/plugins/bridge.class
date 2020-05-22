@@ -116,42 +116,42 @@ Public Sub ext_read()
         Debug "Error: Item not yet initialized, missing \"BEGIN\"?"
         Return
       Endif
-      current_item.Text = Right(iLine, - InStr(iLine, "="))
+      current_item.Text = Right(iLine, -InStr(iLine, "="))
 
     Case Like "SubText=*"
       If current_item = Null Then 
         Debug "Error: Item not yet initialized, missing \"BEGIN\"?"
         Return
       Endif
-      current_item.SubText = Right(iLine, - InStr(iLine, "="))
+      current_item.SubText = Right(iLine, -InStr(iLine, "="))
       
     Case Like "Image_file=*"
       If current_item = Null Then 
         Debug "Error: Item not yet initialized, missing \"BEGIN\"?"
         Return
       Endif
-      current_item.Image_file = Right(iLine, - InStr(iLine, "="))
+      current_item.Image_file = Right(iLine, -InStr(iLine, "="))
       
     Case Like "Clipboard_data=*"
       If current_item = Null Then 
         Debug "Error: Item not yet initialized, missing \"BEGIN\"?"
         Return
       Endif
-      current_item.Clipboard_data = Right(iLine, - InStr(iLine, "="))
+      current_item.Clipboard_data = Right(iLine, -InStr(iLine, "="))
       
     Case Like "Action=*"
       If current_item = Null Then 
         Debug "Error: Item not yet initialized, missing \"BEGIN\"?"
         Return
       Endif
-      current_item.Action = Right(iLine, - InStr(iLine, "="))
+      current_item.Action = Right(iLine, -InStr(iLine, "="))
       
     Case Like "Action_p=*"
       If current_item = Null Then 
         Debug "Error: Item not yet initialized, missing \"BEGIN\"?"
         Return
       Endif
-      current_item.Action_p = Right(iLine, - InStr(iLine, "="))
+      current_item.Action_p = Right(iLine, -InStr(iLine, "="))
       
     Case "END"
       If current_item = Null Then 

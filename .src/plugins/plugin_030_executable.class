@@ -78,7 +78,7 @@ Private Function create_item(result As String, Optional terminal As Boolean = Fa
   Dim cmd, params As String
   
   cmd = Split(result, " ")[0]
-  params = Right(result, - Len(cmd))
+  params = Right(result, -Len(cmd))
   
     return_item = New RItemT
     return_item.plugin = plugin

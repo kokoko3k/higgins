@@ -234,15 +234,15 @@ Static Public Function _get(AppName As String) As DesktopApps
     For Each sLine In sLines
       If sLine Begins "[" Then Break
       sLine = Trim(sLine)
-      If sLine Begins "Exec" Then hDApps._$Exec = Right(sLine, - InStr(sLine, "="))
-      If sLine Begins "Icon" Then hDApps._$IconName = Right(sLine, - InStr(sLine, "="))
-      If sLine Begins "NoDisplay" Then hDApps._$NoDisplay = CBool(Right(sLine, - InStr(sLine, "=")))
-      If sLine Begins "DisplayOnlyIn" Then hDApps._$DisplayOnlyIn = CBool(Right(sLine, - InStr(sLine, "=")))
-      If sLine Begins "NotShowIn" Then hDApps._$NotShowIn = CBool(Right(sLine, - InStr(sLine, "=")))
+      If sLine Begins "Exec" Then hDApps._$Exec = Right(sLine, -InStr(sLine, "="))
+      If sLine Begins "Icon" Then hDApps._$IconName = Right(sLine, -InStr(sLine, "="))
+      If sLine Begins "NoDisplay" Then hDApps._$NoDisplay = CBool(Right(sLine, -InStr(sLine, "=")))
+      If sLine Begins "DisplayOnlyIn" Then hDApps._$DisplayOnlyIn = CBool(Right(sLine, -InStr(sLine, "=")))
+      If sLine Begins "NotShowIn" Then hDApps._$NotShowIn = CBool(Right(sLine, -InStr(sLine, "=")))
 
       If sLine Like "*=*" Then
         f = Left(sLine, InStr(sLine, "=") - 1)
-        v = Right(sLine, - InStr(sLine, "="))
+        v = Right(sLine, -InStr(sLine, "="))
         Try hDApps.PropertyValue[f] = v
       Endif
     Next

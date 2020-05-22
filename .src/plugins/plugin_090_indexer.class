@@ -320,7 +320,8 @@ Public Sub ReIndex()
     sPath = aGrid[r, 1].text
     If Not (sPath Ends "/") Then sPath &= "/"
     depth = aGrid[r, 0].text
-    dir = "'" & sPath & "'"
+    'dir = "'" & sPath & "'"
+    dir = Replace(sPath, " ", "\\ ")
     cmdline &= "; nice -n 19 ionice -c3 schedtool -B -e find -L " & dir & " -maxdepth " & depth & " \\( -xtype d -printf \"%p/\\n\" , -not -xtype d -print \\)"
   Next
   Try Kill index_file
