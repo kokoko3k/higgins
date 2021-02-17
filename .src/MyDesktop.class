@@ -181,7 +181,7 @@ Static Public Sub GetIcon(dIconName As String, Optional Size As Integer = 16) As
       If hImage Then Break
     Next
   Endif
-  If dIconName = "preferences-desktop-theme-windowdecorations" Then Stop
+  'If dIconName = "preferences-desktop-theme-windowdecorations" Then Stop
   If Not hImage Then hImage = fallback_icon(dIconName, size)
   If hImage.W <> Size Or If hImage.H <> Size Then hImage = hImage.Stretch(Size, Size)
   Return hImage
@@ -203,19 +203,23 @@ Static Private Sub fallback_icon(iconname As String, size As Integer) As Image
   Dim i, s As Integer
   Dim himage As Image
   Dim t0 As Float
-  
+  Dim try_icon_theme As String
   Debug "getting fallback icon"
   
   icon_theme = Settings["icon_theme", ""]
   If icon_theme = "" Then Stop
   t0 = Timer()
-  
+
   If icon_theme <> "" Then 
-    If Exist(User.home & "/.icons/" & icon_theme, True) Then
-      tpath = User.home & "/" & icon_theme
-        Else
-      tpath = "/usr/share/icons/" & icon_theme
-    Endif
+    For Each try_icon_theme In [icon_theme, Lower(icon_theme)] 
+      tpath = User.home & "/.icons/" & try_icon_theme
+      If Exist(tpath, True) Then Goto found
+      tpath = "/usr/share/icons/" & try_icon_theme
+      If Exist(tpath, True) Then Goto found
+    Next 
+  found:
+
+
 
     iconfiles = RDir(tPath, "*/*")
     For i = 0 To iconfiles.Max
