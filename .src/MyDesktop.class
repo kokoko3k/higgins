@@ -212,6 +212,8 @@ Static Private Sub fallback_icon(iconname As String, size As Integer) As Image
 
   If icon_theme <> "" Then 
     For Each try_icon_theme In [icon_theme, Lower(icon_theme)] 
+      tpath = User.home & "/.local/share/icons/" & try_icon_theme
+      If Exist(tpath, True) Then Goto found
       tpath = User.home & "/.icons/" & try_icon_theme
       If Exist(tpath, True) Then Goto found
       tpath = "/usr/share/icons/" & try_icon_theme
