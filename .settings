@@ -1,13 +1,13 @@
 [Bookmarks]
 FMain=[438,1378]
 plugin_indexer=[38]
+MyDesktop=[]
 
 [Breakpoints]
 Count=0
 
 [DebugWindow]
-Count=1
-DebugWindow[1]="plugins_all"
+Count=0
 
 [DebugWindow/$aApps]
 Geometry=[1305,399,246,471]
@@ -518,22 +518,22 @@ Path="/tmp/higgins.gambas"
 
 [OpenFile]
 File[1]="higgins.desktop:16.7"
-Active=4
+Active=10
 File[2]=".src/MySettings.module:20.10"
 Count=32
 File[3]=".src/plugins/plugin_apps_gui.form"
 File[4]=".src/plugins/plugin_indexer_gui.form"
 File[5]=".src/plugins/plugin_015_recent.class:41.4"
 File[6]=".src/FMain.form"
-File[7]=".src/FMain.class:0.884"
+File[7]=".src/FMain.class:17.328"
 File[8]=".src/hSettings.class:32.54"
 File[9]=".src/Global.module:11.54"
-File[10]=".src/MyDesktop.class:34.72"
+File[10]=".src/MyDesktop.class:31.213"
 File[11]=".src/XbindKeys.class:7.92"
 File[12]=".src/hSettings.form"
 File[13]=".src/StartClass.class:0.11"
-File[14]=".src/plugins/plugin_020_apps.class:17.95"
-File[15]=".src/DesktopApps.class:0.101"
+File[14]=".src/plugins/plugin_020_apps.class:55.91"
+File[15]=".src/DesktopApps.class:18.319"
 File[16]=".src/gstyle.module:16.143"
 File[17]=".src/plugins/plugin_090_indexer.class:21.326"
 File[18]=".src/plugins/bridge.class:2.106"

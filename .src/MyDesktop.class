@@ -117,7 +117,6 @@ Static Public Sub GetIcon(dIconName As String, Optional Size As Integer = 16) As
   Dim sDir As String
   Dim sSize As String
   Dim s As String
-
   If Exist(dIconName, True) Then 
     If dIconName Ends ".svg" Then
       hImage = svg2image(dIconName, Size, Size)
@@ -182,6 +181,7 @@ Static Public Sub GetIcon(dIconName As String, Optional Size As Integer = 16) As
       If hImage Then Break
     Next
   Endif
+  If dIconName = "preferences-desktop-theme-windowdecorations" Then Stop
   If Not hImage Then hImage = fallback_icon(dIconName, size)
   If hImage.W <> Size Or If hImage.H <> Size Then hImage = hImage.Stretch(Size, Size)
   Return hImage
@@ -211,7 +211,7 @@ Static Private Sub fallback_icon(iconname As String, size As Integer) As Image
   t0 = Timer()
   
   If icon_theme <> "" Then 
-    If Exist(User.home & "/" & icon_theme, True) Then
+    If Exist(User.home & "/.icons/" & icon_theme, True) Then
       tpath = User.home & "/" & icon_theme
         Else
       tpath = "/usr/share/icons/" & icon_theme
