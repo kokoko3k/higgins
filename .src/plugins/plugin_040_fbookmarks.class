@@ -17,7 +17,7 @@ Public Struct rItemT
   Action As String            'string that indicates an action
   Action_p As Variant          'the parameter for Action
 End Struct
-
+  
 
 Private plugin As String
 Private iconsize As Integer
@@ -48,7 +48,7 @@ Public Sub find(textcontrol As Object) As RItemT[]
 
   Dim b_file_split As New String[]
   Dim b_files As New String[]
-  Dim bookmarks As New String[]
+  Dim my_bookmarks As New String[]
   Dim b_file, aLine, path, file_path As String
   Dim ok_to_create As Boolean = False
   Dim match_str As String
@@ -73,8 +73,9 @@ Public Sub find(textcontrol As Object) As RItemT[]
               Else
             match_str = "*://*" & term & "*" 'gtk2,3
           Endif
-
+                                                                                          
           If aline Like match_str Then
+                                                                          If b_file Ends ".xbel" Then Stop
             If b_file Ends ".xbel" Then 
               Try path = Split(aline, "\"")[1]
                 Else
@@ -99,8 +100,8 @@ Public Sub find(textcontrol As Object) As RItemT[]
             If Not Error And ok_to_create Then
               If Not (b_file Ends ".xbel") Then path = Replace(path, " ", "%20")
               If path Ends "/" Then path = Left(path, -1) 'this is necessary to eliminate dupes
-              If bookmarks.find(path) < 0 Then 
-                bookmarks.Add(path)
+              If my_bookmarks.find(path) < 0 Then 
+                my_bookmarks.Add(path)
                 rResult = create_item(path)
                 If rResult <> Null Then rResults.Add(rResult)
               Endif 
