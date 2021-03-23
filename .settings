@@ -517,7 +517,7 @@ Path="/tmp/higgins.gambas"
 
 [OpenFile]
 File[1]="higgins.desktop:16.7"
-Active=10
+Active=14
 File[2]=".src/MySettings.module:30.11"
 Count=32
 File[3]=".src/plugins/plugin_apps_gui.form"
@@ -527,12 +527,12 @@ File[6]=".src/FMain.form"
 File[7]=".src/FMain.class:17.328"
 File[8]=".src/hSettings.class:20.64"
 File[9]=".src/Global.module:11.54"
-File[10]=".src/MyDesktop.class:41.214"
+File[10]=".src/MyDesktop.class:36.204"
 File[11]=".src/XbindKeys.class:7.92"
 File[12]=".src/hSettings.form"
 File[13]=".src/StartClass.class:0.11"
-File[14]=".src/plugins/plugin_020_apps.class:55.91"
-File[15]=".src/DesktopApps.class:18.319"
+File[14]=".src/plugins/plugin_020_apps.class:15.56"
+File[15]=".src/DesktopApps.class:6.76"
 File[16]=".src/gstyle.module:16.143"
 File[17]=".src/plugins/plugin_090_indexer.class:21.326"
 File[18]=".src/plugins/bridge.class:2.106"

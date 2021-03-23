@@ -455,7 +455,13 @@ Public Sub start_dot_desktop_exe(sPath As String)
 
   MyDesktop.parse(sPath)
   
-  exe = MyDesktop.dExec
+  If MyDesktop.dExec <> "" Then
+    exe = MyDesktop.dExec
+      Else
+    If MyDesktop.dXKDEServiceTypes <> "" Then
+      exe = "kcmshell5 " & MyDesktop.dXKDELibrary
+    Endif
+  Endif
 
   'strip args
   For Each code In field_codes

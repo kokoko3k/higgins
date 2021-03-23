@@ -64,7 +64,13 @@ Public Sub find(textcontrol As Object) As RItemT[]
       Try happ = DesktopApps[app]
       If Error Then Continue
       If Not (happ.NoDisplay) Then
-        If happ.Exec_R <> "" Then
+        
+                                                                                                                                                  'Dim foundebug As Boolean = False
+        
+        If (happ.Exec_R <> "") Or (Lower(happ.XKDEServiceTypes) = "kcmodule") Then
+                                                                                                                                          'if (Lower(happ.XKDEServiceTypes) = "kcmodule") Then Stop
+                                                                                                                                          'If happ.file_path Like "*kcm_kscreen.desktop" Then foundebug = "true"
+          
           ismatched = InStr(Lower(happ.Get("Name")), Lower(current_search)) > 0 
           If Not ismatched Then 
             If Not ismatched Then ismatched = InStr(Lower(happ.Get("Comment")), Lower(current_search)) > 0 

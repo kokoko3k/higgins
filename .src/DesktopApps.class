@@ -27,6 +27,9 @@ Export
 Property Read IconName As String
 Property Read Exec_R As String
 
+Property Read XKDEServiceTypes As String
+Property Read XKDELibrary As String
+
 Property Read NoDisplay As Boolean
 Property Read DisplayOnlyIn As Boolean
 
@@ -40,6 +43,9 @@ Public _$Exec As String
 Public _$NoDisplay As Boolean
 Public _$DisplayOnlyIn As String
 Public _$NotShowIn As String
+Public _$XKDEServiceTypes As String
+Public _$XKDELibrary As String
+
 
 Public Language As String = ((Left(System.Language, 2)))
 
@@ -237,9 +243,11 @@ Static Public Function _get(AppName As String) As DesktopApps
       If sLine Begins "Exec" Then hDApps._$Exec = Right(sLine, -InStr(sLine, "="))
       If sLine Begins "Icon" Then hDApps._$IconName = Right(sLine, -InStr(sLine, "="))
       If sLine Begins "NoDisplay" Then hDApps._$NoDisplay = CBool(Right(sLine, -InStr(sLine, "=")))
-      If sLine Begins "DisplayOnlyIn" Then hDApps._$DisplayOnlyIn = CBool(Right(sLine, -InStr(sLine, "=")))
-      If sLine Begins "NotShowIn" Then hDApps._$NotShowIn = CBool(Right(sLine, -InStr(sLine, "=")))
-
+      If sLine Begins "DisplayOnlyIn" Then hDApps._$DisplayOnlyIn = Right(sLine, -InStr(sLine, "="))
+      If sLine Begins "NotShowIn" Then hDApps._$NotShowIn = Right(sLine, -InStr(sLine, "="))
+      If sLine Begins "X-KDE-ServiceTypes" Then hDApps._$XKDEServiceTypes = Right(sLine, -InStr(sLine, "="))
+      If sLine Begins "X-KDE-Library" Then hDApps._$XKDELibrary = Right(sLine, -InStr(sLine, "="))
+      
       If sLine Like "*=*" Then
         f = Left(sLine, InStr(sLine, "=") - 1)
         v = Right(sLine, -InStr(sLine, "="))
@@ -434,6 +442,19 @@ Private Function Exec_R_Read() As String
   Return _$Exec
   
 End
+
+Private Function XKDEServiceTypes_Read() As String
+  
+  Return _$XKDEServiceTypes
+  
+End
+
+Private Function XKDELibrary_Read() As String
+  
+  Return _$XKDELibrary
+  
+End
+
 
 
 Private Function file_path_read() As String

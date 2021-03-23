@@ -15,7 +15,8 @@ Public dNoDisplay As Boolean
 Public dDisplayOnlyIn As String
 Public dNotShowIn As String
 Public dURL As String
-
+Public dXKDELibrary As String
+Public dXKDEServiceTypes As String
 
 Public Sub init()
  dname = ""
@@ -30,6 +31,8 @@ Public Sub init()
  dDisplayOnlyIn = ""
  dNotShowIn = ""
  dURL = ""
+ dXKDELibrary = ""
+ dXKDEServiceTypes = ""
 End
 
 
@@ -57,8 +60,10 @@ Public Function parse(desktopfile As String)
       If sLine Begins "GenericName=" Then dGenericName = Right(sLine, -InStr(sLine, "="))
       If sLine Begins "Comment=" Then dComment = Right(sLine, -InStr(sLine, "="))
       If sLine Begins "NoDisplay" Then dNoDisplay = CBool(Right(sLine, -InStr(sLine, "=")))
-      If sLine Begins "DisplayOnlyIn" Then dDisplayOnlyIn = CBool(Right(sLine, -InStr(sLine, "=")))
-      If sLine Begins "NotShowIn" Then dNotShowIn = CBool(Right(sLine, -InStr(sLine, "=")))
+      If sLine Begins "DisplayOnlyIn" Then dDisplayOnlyIn = Right(sLine, -InStr(sLine, "="))
+      If sLine Begins "NotShowIn" Then dNotShowIn = Right(sLine, -InStr(sLine, "="))
+      If sLine Begins "X-KDE-ServiceTypes" Then dXKDEServiceTypes = Right(sLine, -InStr(sLine, "="))
+      If sLine Begins "X-KDE-Library" Then dXKDELibrary = Right(sLine, -InStr(sLine, "="))
     Next
 End
 
