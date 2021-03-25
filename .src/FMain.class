@@ -457,7 +457,8 @@ Public Sub start_dot_desktop_exe(sPath As String)
     exe = MyDesktop.dExec
       Else
     If MyDesktop.dXKDEServiceTypes <> "" Then
-      exe = "kcmshell5 " & MyDesktop.dXKDELibrary
+      'exe = "kcmshell5 " & MyDesktop.dXKDELibrary
+      exe = "kioclient5 exec " & sPath
     Endif
   Endif
 

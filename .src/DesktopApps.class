@@ -28,7 +28,7 @@ Property Read IconName As String
 Property Read Exec_R As String
 
 Property Read XKDEServiceTypes As String
-Property Read XKDELibrary As String
+'Property Read XKDELibrary As String
 
 Property Read NoDisplay As Boolean
 Property Read DisplayOnlyIn As Boolean
@@ -44,7 +44,7 @@ Public _$NoDisplay As Boolean
 Public _$DisplayOnlyIn As String
 Public _$NotShowIn As String
 Public _$XKDEServiceTypes As String
-Public _$XKDELibrary As String
+'Public _$XKDELibrary As String
 
 
 Public Language As String = ((Left(System.Language, 2)))
@@ -246,7 +246,7 @@ Static Public Function _get(AppName As String) As DesktopApps
       If sLine Begins "DisplayOnlyIn" Then hDApps._$DisplayOnlyIn = Right(sLine, -InStr(sLine, "="))
       If sLine Begins "NotShowIn" Then hDApps._$NotShowIn = Right(sLine, -InStr(sLine, "="))
       If sLine Begins "X-KDE-ServiceTypes" Then hDApps._$XKDEServiceTypes = Right(sLine, -InStr(sLine, "="))
-      If sLine Begins "X-KDE-Library" Then hDApps._$XKDELibrary = Right(sLine, -InStr(sLine, "="))
+      'If sLine Begins "X-KDE-Library" Then hDApps._$XKDELibrary = Right(sLine, -InStr(sLine, "="))
       
       If sLine Like "*=*" Then
         f = Left(sLine, InStr(sLine, "=") - 1)
@@ -449,11 +449,11 @@ Private Function XKDEServiceTypes_Read() As String
   
 End
 
-Private Function XKDELibrary_Read() As String
+'Private Function XKDELibrary_Read() As String
   
-  Return _$XKDELibrary
+'  Return _$XKDELibrary
   
-End
+'End
 
 
 
