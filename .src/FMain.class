@@ -1665,27 +1665,6 @@ Public Sub timer_end_resize_Timer()
 End
 
 
-
-Public Sub Form_Resize()
-  If Not global.fullyloaded Then Return
-
-  If fmain.w < 200 Then fmain.w = 200
-
-
-  object.lock(fmain)
-  check_min_size(Not resultgrid.visible)  
-  Object.unLock(fmain)
-  
-  fmain_old_w = fmain.W
-  fmain_old_h = fmain.H
-
-  PictureBoxBackground.Move(0, 0, fmain.w, fmain.h)
-  gstyle.make_background(True)
-  timer_end_resize = New Timer As "timer_end_resize"
-  timer_end_resize.delay = 100
-  timer_end_resize.start
-End
-
 Public Sub ResultGrid_Enter()
   panel2.mouse = Mouse.default
 End
@@ -1738,4 +1717,25 @@ Public Sub ResultGrid_MouseMove()
   
 End
 
+Public Sub Panel2_MouseDrag()
+  If Not global.fullyloaded Then Return
 
+  If fmain.w < 200 Then fmain.w = 200
+
+
+  object.lock(fmain)
+  check_min_size(Not resultgrid.visible)  
+  Object.unLock(fmain)
+  
+  fmain_old_w = fmain.W
+  fmain_old_h = fmain.H
+  Repeat
+    PictureBoxBackground.Move(0, 0, fmain.w, fmain.h)
+    Wait
+    Debug PictureBoxBackground.h
+  Until PictureBoxBackground.h = fmain.h
+  gstyle.make_background(True)
+  timer_end_resize = New Timer As "timer_end_resize"
+  timer_end_resize.delay = 100
+  timer_end_resize.start
+End

@@ -46,7 +46,7 @@
     }
   }
   { Panel2 Panel
-    MoveScaled(2,3,73,38)
+    MoveScaled(3,2,73,38)
     Tracking = True
     Arrangement = Arrange.Vertical
     Spacing = True
@@ -95,7 +95,7 @@
     }
   }
   { PictureBoxBackground PictureBox
-    MoveScaled(61,32,16,16)
+    MoveScaled(57,31,16,16)
     Ignore = True
     Stretch = True
   }
