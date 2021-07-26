@@ -522,7 +522,9 @@ Geometry=[45,-3,224,280]
 Geometry=[1280,-3,224,280]
 
 [Executable]
-Path="/tmp/higgins.gambas"
+Path="higgins.gambas"
+DoNotIncrementVersion=False
+NoTestModule=False
 
 [OpenFile]
 File[1]="higgins.desktop:16.7"
