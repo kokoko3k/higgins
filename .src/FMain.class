@@ -1341,6 +1341,7 @@ Public Sub Form_Show()
     fmain.picture = iMask.Picture
     global.object_unlock(TextBox1) '<--?? needed?
   Endif
+  form_resize()
   
   timer_shown = New Timer As "timer_shown"
   timer_shown.trigger
