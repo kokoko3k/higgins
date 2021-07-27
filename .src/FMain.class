@@ -36,6 +36,7 @@ Public Sub resize_form()
     pad = panel2.padding
   Endif
   check_min_size(True)
+  form_resize()
 End
 
 Public textbox1_change_delay As Timer 
