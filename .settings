@@ -6,7 +6,9 @@ plugin_indexer=[38]
 Count=0
 
 [DebugWindow]
-Count=0
+Count=2
+DebugWindow[1]="Desktop.Windows"
+DebugWindow[2]="Desktop.Windows[1]"
 
 [DebugWindow/$aApps]
 Geometry=[1176,178,726,870]
@@ -30,13 +32,22 @@ Geometry=[1280,-3,226,280]
 Geometry=[45,-3,224,280]
 
 [DebugWindow/Desktop.Windows]
-Geometry=[52,0,224,280]
+Geometry=[155,339,583,709]
 
 [DebugWindow/Desktop.Windows[0]]
 Geometry=[66,14,224,280]
 
+[DebugWindow/Desktop.Windows[10]]
+Geometry=[819,235,583,709]
+
+[DebugWindow/Desktop.Windows[11]]
+Geometry=[218,227,569,709]
+
+[DebugWindow/Desktop.Windows[16]]
+Geometry=[888,158,583,709]
+
 [DebugWindow/Desktop.Windows[1]]
-Geometry=[66,14,224,280]
+Geometry=[868,145,583,709]
 
 [DebugWindow/DesktopApps]
 Geometry=[1280,0,542,627]
@@ -518,6 +529,9 @@ Geometry=[1534,194,422,815]
 [DebugWindow/update_apps_timer]
 Geometry=[45,-3,224,280]
 
+[DebugWindow/w]
+Geometry=[1920,0,338,524]
+
 [DebugWindow/xb]
 Geometry=[1280,-3,224,280]
 
@@ -528,21 +542,21 @@ NoTestModule=False
 
 [OpenFile]
 File[1]="higgins.desktop:16.7"
-Active=14
+Active=32
 File[2]=".src/MySettings.module:20.10"
 Count=32
 File[3]=".src/plugins/plugin_apps_gui.form"
 File[4]=".src/plugins/plugin_indexer_gui.form"
 File[5]=".src/plugins/plugin_015_recent.class:41.4"
 File[6]=".src/FMain.form"
-File[7]=".src/FMain.class:3.61"
+File[7]=".src/FMain.class:0.970"
 File[8]=".src/hSettings.class:32.54"
 File[9]=".src/Global.module:11.54"
 File[10]=".src/MyDesktop.class:0.71"
 File[11]=".src/XbindKeys.class:3.119"
 File[12]=".src/hSettings.form"
 File[13]=".src/StartClass.class:18.3"
-File[14]=".src/plugins/plugin_020_apps.class:54.72"
+File[14]=".src/plugins/plugin_020_apps.class:0.60"
 File[15]=".src/DesktopApps.class:0.458"
 File[16]=".src/gstyle.module:16.143"
 File[17]=".src/plugins/plugin_090_indexer.class:21.326"
@@ -560,7 +574,7 @@ File[28]="extbin/External_plugin_kill.sh:0.23"
 File[29]="extbin/External_plugin_locate.sh:0.0"
 File[30]=".src/plugins/plugin_apps_gui.class:3.20"
 File[31]="extbin/External_plugin_windowcontrol.sh:0.46"
-File[32]=".src/plugins/plugin_100_windows.class:31.92"
+File[32]=".src/plugins/plugin_100_windows.class:106.5"
 
 [Watches]
 Count=0

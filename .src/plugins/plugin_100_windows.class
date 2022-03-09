@@ -1,10 +1,10 @@
 ' Gambas class file
 
 Create Static
-Static Public Description As String = ("Search and activate windows")    'A description for this plugin
+Static Public Description As String = ("[BROKEN, hangs with windows with long titles] Search and activate windows")    'A description for this plugin
 Static Public Friendly_name As String = ("Search and activate windows") 'A friendly name for this plugin
 Static Public configurable As Boolean = False             'Does this plugin provides a configure() method?
-Static Public Default_enabled As Boolean = True          'Does this plugin have to be enabled by default?
+Static Public Default_enabled As Boolean = False          'Does this plugin have to be enabled by default?
 Static Public default_blocking As Boolean = False                 'Should the subsequent plugins be blocked when
                                                           'this plugin finds some results?
 
@@ -87,16 +87,28 @@ Public Sub find(textcontrol As Object) As RItemT[]
   Dim rResult As RItemT
   Dim current_search As String = Lower(textcontrol.text)
   Desktop.Windows.Refresh
+  Stop
   If Not trigged(textcontrol.text) Then Return
+  Stop
   For Each w In Desktop.Windows
+          Debug "prima1"
+          Debug w
+      Debug w.name
+      Debug "dopo"
+      If w.name Like "Telegram*" Then Stop
     If w.SkipTaskbar = False Then
       If InStr(Lower(w.name), current_search) Then
-      rResult = create_item(w)
-      If rResult <> Null Then rResults.Add(rResult)
-      If Lower(textcontrol.text) <> Lower(current_search) Then Return
+        Stop
+        rResult = create_item(w)
+        If rResult <> Null Then rResults.Add(rResult)
+        If Lower(textcontrol.text) <> Lower(current_search) Then Return
       Endif
     Endif
+      Debug "next"
+      Stop
   Next 'anItem
+
+  Stop
   Return rResults
 
 End
