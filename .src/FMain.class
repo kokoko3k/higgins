@@ -1389,8 +1389,7 @@ End
 '-- END FMAIN FUNCTIONS  ---------------------------------------------------------------------
 
 Public Sub QuitMenu_Click()
-  TrayIcon2.Visible = False
-  'myQuit()
+  myQuit()
 End
 
 Public Sub TextBox1_GotFocus()
