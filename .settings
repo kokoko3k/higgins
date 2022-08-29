@@ -2,8 +2,9 @@
 FMain=[438,1378]
 plugin_indexer=[38]
 
-[Breakpoints]
-Count=0
+[Debug]
+Arguments=[["-c"]]
+Environment=["LANGUAGE=it_IT"]
 
 [DebugWindow]
 Count=2
@@ -574,7 +575,7 @@ File[28]="extbin/External_plugin_kill.sh:0.23"
 File[29]="extbin/External_plugin_locate.sh:0.0"
 File[30]=".src/plugins/plugin_apps_gui.class:3.20"
 File[31]="extbin/External_plugin_windowcontrol.sh:0.46"
-File[32]=".src/plugins/plugin_100_windows.class:106.5"
+File[32]=".src/plugins/plugin_100_windows.class:46.37"
 
 [Watches]
 Count=0

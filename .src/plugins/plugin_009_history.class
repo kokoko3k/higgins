@@ -1,7 +1,7 @@
 ' Gambas class file
 
 Create Static
-Static Public Description As String = ("Finds previously selected items")
+Static Public Description As String = ("Finds previously selected documents")
 Static Public Friendly_name As String = ("History plugin")
 Static Public configurable As Boolean = False
 Static Public Default_enabled As Boolean = True
