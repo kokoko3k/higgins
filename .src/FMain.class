@@ -849,9 +849,7 @@ Public Sub MenuTrayOptions_Click()
 End
 
 Public Sub QuitMenuTray_Click()
-
   myQuit()
-
 End
 
 Public Sub MenuTrayShow_click()
@@ -1198,7 +1196,6 @@ Public Sub TimerClose_Timer()
 End
 
 Public Sub myQuit()
-
   Try save_plugin_list()
   Try MySettings.save()
   Try xb.close
@@ -1211,7 +1208,7 @@ Public Sub myQuit()
   Try TrayIcon2.Delete()
   fmain.Close()
   fmain.Delete()
-  
+  Quit 
 End
 
 Private Sub cmdline_args()
@@ -1392,7 +1389,8 @@ End
 '-- END FMAIN FUNCTIONS  ---------------------------------------------------------------------
 
 Public Sub QuitMenu_Click()
-  myQuit()
+  TrayIcon2.Visible = False
+  'myQuit()
 End
 
 Public Sub TextBox1_GotFocus()
