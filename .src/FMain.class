@@ -1205,7 +1205,7 @@ Public Sub myQuit()
   Try hSettings.close
   plugins.clear
   fmain.persistent = False
-  Try TrayIcon2.Delete()
+  'Try TrayIcon2.Delete()
   fmain.Close()
   fmain.Delete()
   Quit 
