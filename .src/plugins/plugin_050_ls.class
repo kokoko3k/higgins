@@ -78,9 +78,10 @@ Public Sub find(textcontrol As Object) As RItemT[]
       If textcontrol.text <> current_search Then Return
     Next
   Endif
-  Return rResults
+  Raise new_results(rResults)
 End
 
+Event new_results(rResults As RItemT[])
 
 Private Function create_item(path As String) As RItemT
   Dim return_item As RItemT

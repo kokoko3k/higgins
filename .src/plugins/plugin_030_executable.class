@@ -67,9 +67,10 @@ Public Sub find(textcontrol As Object) As RItemT[]
   rResult = create_item(current_search, True)
   If rResult <> Null Then rResults.Add(rResult)
 
-  Return rResults
-
+  Raise new_results(rResults)
 End
+
+Event new_results(rResults As RItemT[])
 
 
 Private Function create_item(result As String, Optional terminal As Boolean = False) As RItemT

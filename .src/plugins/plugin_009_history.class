@@ -36,7 +36,7 @@ Private Sub trigged(query As String) As Boolean
   Return True
 End
 
-
+Event new_results(rResults As RItemT[])
 Public Sub find(textcontrol As Object) As RItemT[]
   'evualuate expressions
   Dim rResults As New RItemT[]
@@ -57,7 +57,7 @@ Public Sub find(textcontrol As Object) As RItemT[]
     Endif
   Next
   
-  Return rResults
+  Raise new_results(rResults)
 
 End
 

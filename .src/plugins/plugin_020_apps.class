@@ -103,9 +103,10 @@ Public Sub find(textcontrol As Object) As RItemT[]
     Next 'happ
 
   update_apps.start()
-  Return rResults
-    
+  Raise new_results(rResults)
 End
+
+Event new_results(rResults As RItemT[])
 
 Public Sub update_apps_timer()
   update_apps.stop

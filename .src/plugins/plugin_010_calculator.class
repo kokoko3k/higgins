@@ -109,6 +109,7 @@ Private Sub trigged(query As String) As Boolean
   Return False
 End
 
+Event new_results(rResults As RItemT[])
 
 Public Sub find(textcontrol As Object) As RItemT[]
   'evualuate expressions
@@ -123,7 +124,7 @@ Public Sub find(textcontrol As Object) As RItemT[]
 
   If textcontrol.text <> current_search Then Return
   Wait 
-
+  Raise new_results(rResults)
   Return rResults
 
 End

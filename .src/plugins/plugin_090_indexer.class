@@ -231,9 +231,10 @@ Public Sub find(textcontrol As Object) As RItemT[]
   
    If current_search <> Lower(textcontrol.text) Then Return
   
-  Return rResults
-
+  Raise new_results(rResults)
 End
+
+Event new_results(rResults As RItemT[])
 
 
 Private Function create_item(path As String) As RItemT
@@ -269,7 +270,6 @@ End
 
 
 
-Event new_results(rResults As RItemT[])
 
 Public reindex_timer As Timer
 Private reindex_minutes_timeout As Integer 

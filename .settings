@@ -542,14 +542,14 @@ NoTestModule=False
 
 [OpenFile]
 File[1]="higgins.desktop:16.7"
-Active=24
+Active=7
 File[2]=".src/MySettings.module:20.10"
 Count=32
 File[3]=".src/plugins/plugin_apps_gui.form"
 File[4]=".src/plugins/plugin_indexer_gui.form"
 File[5]=".src/plugins/plugin_015_recent.class:39.101"
 File[6]=".src/FMain.form"
-File[7]=".src/FMain.class:0.44"
+File[7]=".src/FMain.class:27.239"
 File[8]=".src/hSettings.class:32.54"
 File[9]=".src/Global.module:11.54"
 File[10]=".src/MyDesktop.class:0.71"
@@ -560,7 +560,7 @@ File[14]=".src/plugins/plugin_020_apps.class:0.60"
 File[15]=".src/DesktopApps.class:0.458"
 File[16]=".src/gstyle.module:16.143"
 File[17]=".src/plugins/plugin_090_indexer.class:21.326"
-File[18]=".src/plugins/bridge.class:2.106"
+File[18]=".src/plugins/bridge.class:21.97"
 File[19]="appicon.png"
 File[20]=".src/plugins/plugin_010_calculator.class:41.4"
 File[21]=".src/plugins/plugin_indexer_gui.class:3.136"

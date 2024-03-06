@@ -115,9 +115,10 @@ Public Sub find(textcontrol As Object) As RItemT[]
     If (find_similar(rResult, rResults) = -1) Then rResults.Add(rResult, 0)
   Next
 
-  Return rResults
-
+  Raise new_results(rResults)
 End
+
+Event new_results(rResults As RItemT[])
 
 Private Function find_similar(a As RItemT, ritems As RItemT[]) As Integer
   Dim i As Integer

@@ -205,6 +205,8 @@ Public Sub immediate_search(textcontrol As Object)
   Dim is_blocking As Boolean
   Dim current_search As String = ""
 
+  timer_expand_check = New Timer As "timer_expand_check"
+
   Trim_textobj_atomic(textcontrol)
   If previous_search = textcontrol.text Then 
     Return 'don't know why this is important, but works.
@@ -241,7 +243,6 @@ Public Sub immediate_search(textcontrol As Object)
   
   
   ResultGrid.Rows.count = results_list.Count
-  timer_expand_check = New Timer As "timer_expand_check"
   mouse_normal()
 End
 
@@ -277,15 +278,17 @@ Public Function run_plugin(plugin_name As String, textcontrol As Object) As Inte
   Dim rResults As RItemT[]
 
   Try rResults = Object.Call(plugins[plugin_name], "find", [textcontrol]) 'call the find method
+  'Object.Call(plugins[plugin_name], "find", [textcontrol]) 'call the find method
   If Error Then Debug "Could not query " & plugin_name
   If rResults = Null Then Return
   
-  results_list.Insert(rResults)
-  ResultGrid.Rows.count += rResults.Count
+  'results_list.Insert(rResults)
+  'ResultGrid.Rows.count += rResults.Count
   Return rResults.Count
 End
 
 Public Sub plugin_event_new_results(rResults As RItemT[])
+
   results_list.Insert(rResults)
   ResultGrid.Rows.count += rResults.Count
   timer_expand_check.Trigger

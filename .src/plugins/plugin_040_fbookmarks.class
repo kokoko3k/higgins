@@ -110,9 +110,10 @@ Public Sub find(textcontrol As Object) As RItemT[]
         Next 'aline
       Endif 
     Next 'b_file
-  Return rResults
-
+  Raise new_results(rResults)
 End
+
+Event new_results(rResults As RItemT[])
 
 ' Editable part of the template follows:
 
