@@ -1,3 +1,4 @@
+ 
 #!/bin/bash
 #Simple locate plugin example.
 #Put me in ~/.config/gambas3/higgins/extbin to use me
@@ -36,10 +37,10 @@ fi
 
 
 #Finally, start the search:
-for file in $(locate -i "$query") ; do
+locate -i "$query" | while read file ; do
     echo BEGIN
     # For fields description and possible values, please refer to plugins/plugin_999_template
-      echo Text=$(basename $file)
+      echo Text="[Locate:] $(basename $file)"
       echo SubText="in " $(dirname $file)"/"
       echo Image_file="mimetype://$file"
       echo Clipboard_data="$file"

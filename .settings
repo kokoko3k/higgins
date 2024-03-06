@@ -5,11 +5,10 @@ plugin_indexer=[38]
 [Debug]
 Arguments=[["-c"]]
 Environment=["LANGUAGE=it_IT"]
+Breakpoints={}
 
 [DebugWindow]
-Count=2
-DebugWindow[1]="Desktop.Windows"
-DebugWindow[2]="Desktop.Windows[1]"
+Count=0
 
 [DebugWindow/$aApps]
 Geometry=[1176,178,726,870]
@@ -543,14 +542,14 @@ NoTestModule=False
 
 [OpenFile]
 File[1]="higgins.desktop:16.7"
-Active=7
+Active=24
 File[2]=".src/MySettings.module:20.10"
 Count=32
 File[3]=".src/plugins/plugin_apps_gui.form"
 File[4]=".src/plugins/plugin_indexer_gui.form"
-File[5]=".src/plugins/plugin_015_recent.class:41.4"
+File[5]=".src/plugins/plugin_015_recent.class:39.101"
 File[6]=".src/FMain.form"
-File[7]=".src/FMain.class:94.1388"
+File[7]=".src/FMain.class:0.44"
 File[8]=".src/hSettings.class:32.54"
 File[9]=".src/Global.module:11.54"
 File[10]=".src/MyDesktop.class:0.71"
@@ -567,9 +566,9 @@ File[20]=".src/plugins/plugin_010_calculator.class:41.4"
 File[21]=".src/plugins/plugin_indexer_gui.class:3.136"
 File[22]=".src/plugins/plugin_030_executable.class:65.74"
 File[23]=".src/plugins/plugin_050_ls.class:0.40"
-File[24]=".src/plugins/plugin_040_fbookmarks.class:66.62"
+File[24]=".src/plugins/plugin_040_fbookmarks.class:15.74"
 File[25]=".src/plugins/plugin_999_template.class:0.124"
-File[26]=".src/plugins/plugin_009_history.class:30.7"
+File[26]=".src/plugins/plugin_009_history.class:13.22"
 File[27]="extbin/External_plugin_grep.sh:0.24"
 File[28]="extbin/External_plugin_kill.sh:0.23"
 File[29]="extbin/External_plugin_locate.sh:0.0"

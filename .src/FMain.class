@@ -37,7 +37,7 @@ Public Sub resize_form()
   Endif
   check_min_size(True)
   form_resize()
-End
+End  
 
 Public textbox1_change_delay As Timer 
 
@@ -242,15 +242,13 @@ Public Sub immediate_search(textcontrol As Object)
   
   ResultGrid.Rows.count = results_list.Count
   timer_expand_check = New Timer As "timer_expand_check"
-  timer_expand_check.Trigger
-
   mouse_normal()
 End
 
 Public Function timer_expand_check_timer()
   Dim newh As Integer = 0
   Dim pad As Integer = 0 
-  
+
   If resultgrid.current = Null Then Try resultgrid.Rows[0].Selected = True
   
    If panel2.padding = 0 Then 
@@ -288,10 +286,9 @@ Public Function run_plugin(plugin_name As String, textcontrol As Object) As Inte
 End
 
 Public Sub plugin_event_new_results(rResults As RItemT[])
-
   results_list.Insert(rResults)
   ResultGrid.Rows.count += rResults.Count
-
+  timer_expand_check.Trigger
 End
 
 Private lastdata As New _GridView_data[]
@@ -545,7 +542,6 @@ End
 
 Public Sub ResultGrid_activate()
   If results_list[resultgrid.row].Action_p = Null Then Return
-
   start_item(resultgrid.row)
   TimerClose.Trigger
 End
@@ -579,7 +575,6 @@ Public Sub TextBox1_KeyPress()
       
     Case Key.down
       If resultgrid.Rows.count > 0 Then 
-        timer_expand_check.Trigger
         ResultGrid.SetFocus()
         If resultgrid.Rows.count > 1 Then 
           resultgrid.row += 1
@@ -588,7 +583,6 @@ Public Sub TextBox1_KeyPress()
 
     Case Key.PageDown
       If resultgrid.Rows.count > 0 Then 
-        timer_expand_check.Trigger
         ResultGrid.SetFocus()
       Endif
       
@@ -995,7 +989,7 @@ Public Sub Draw_plugin(plugin_name As String, enabled As Boolean, Optional redra
   Dim o_separator As Separator
 
     Try plugin_class = Class.Load(plugin_name)
-    If (Not Error ) Or (plugin_name Begins "EXT:") Then
+    If (Not Error) Or (plugin_name Begins "EXT:") Then
       If Not (plugin_name Begins "EXT:") Then
         description = Object.GetProperty(plugin_class, "Description")
         friendly_name = Object.GetProperty(plugin_class, "Friendly_name")

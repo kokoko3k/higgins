@@ -105,7 +105,7 @@ Public Sub ext_read()
     Endif 
   
   iLine = Trim(iLine)
-  
+
   Select iLine
     Case "BEGIN"
       current_item = New RItemT

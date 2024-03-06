@@ -134,7 +134,7 @@ End
 Private Function create_item_g(path As String) As RItemT 'a lot of code duplication here
   Dim return_item As RItemT
   Dim url As String
-
+  Debug path
   return_item = New RItemT
   
   url = Right(path, -InStr(path, "://") - 2) 'strip protocol
