@@ -288,10 +288,22 @@ Public Function run_plugin(plugin_name As String, textcontrol As Object) As Inte
 End
 
 Public Sub plugin_event_new_results(rResults As RItemT[])
+  Dim pre_result_count As Integer
+  If rResults.max = -1 Then
+    Return
+  Endif
+ 
+  results_list.add(rResults.last)
 
-  results_list.Insert(rResults)
-  ResultGrid.Rows.count += rResults.Count
-  timer_expand_check.Trigger
+  pre_result_count = ResultGrid.Rows.count
+  
+  ResultGrid.Rows.count = results_list.count
+  
+  'spare cpu by not checking if results are already more than 50
+  If pre_result_count < 50 Then
+    timer_expand_check.Trigger  
+  Endif
+  
 End
 
 Private lastdata As New _GridView_data[]

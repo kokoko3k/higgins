@@ -58,7 +58,7 @@
       Arrangement = Arrange.Horizontal
       { TextBox1 TextBox
         MoveScaled(22,0,24,4.5714)
-        Background = &HFF000000&
+        Background = &HFF000000
         Foreground = Color.TextForeground
         Expand = True
         Border = False
@@ -69,7 +69,7 @@
         Border = False
       }
       { TextBox2 TextBox
-        MoveScaled(0,0,20,4.5714)
+        MoveScaled(1,0,20,4.5714)
         Background = Color.TextBackground
         Foreground = Color.LightForeground
         NoTabFocus = True
@@ -82,7 +82,7 @@
       MoveScaled(8,8,58,25)
       Visible = False
       Font = Font["+1"]
-      Background = &HFFFFFF&
+      Background = &HFFFFFF
       Tracking = True
       Expand = True
       Border = False

@@ -75,7 +75,6 @@ Public Sub find(textcontrol As Object) As RItemT[]
           Endif
                                                                                           
           If aline Like match_str Then
-                                                                          If b_file Ends ".xbel" Then Stop
             If b_file Ends ".xbel" Then 
               Try path = Split(aline, "\"")[1]
                 Else

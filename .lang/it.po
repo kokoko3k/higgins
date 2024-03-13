@@ -2,6 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: higgins 3.10.0\n"
+"POT-Creation-Date: 2024-03-06 11:57 UTC\n"
 "PO-Revision-Date: 2018-06-11 10:06 UTC\n"
 "Last-Translator: kokoko3k <kokoko3k@gmail.com>\n"
 "Language: it\n"
@@ -14,38 +15,64 @@ msgid "Higgins"
 msgstr "-"
 
 #: .project:2
-msgid "Higgins:\nApplication launcher,\nstarts applications and search for things.\n\nCurrently it:\nEvaluate expressions (calculator)\nFind recently opened documents\nFind desktop applications\nFind executables\nFind local bookmarks\nLists the content of folders\nFind files by indexing user-specified folders\n\nSupport external plugins; take a look to External_plugin_locate.sh for an example"
-msgstr "Higgins: Lanciatore di applicazioni,\navvia applicazioni e cerca cose.\n\nAttualmente è in grado, tra l'altro di:\nValutare espressioni (calcolatrice)\nTrovare documenti recenti\nTrovare applicazioni\nTrovare eseguibili\nTrovare segnalibri locali\nMostrare il contenuto delle cartelle\nTrovare file indicizzando cartelle selezionate\nSupporta plugin esterni; (dai uno sguardo a External_plugin_locate.sh per un esempio)"
+msgid ""
+"Higgins:\n"
+"Application launcher,\n"
+"starts applications and search for things.\n"
+"\n"
+"Currently it:\n"
+"Evaluate expressions (calculator)\n"
+"Find recently opened documents\n"
+"Find desktop applications\n"
+"Find executables\n"
+"Find local bookmarks\n"
+"Lists the content of folders\n"
+"Find files by indexing user-specified folders\n"
+"\n"
+"Support external plugins; take a look to External_plugin_locate.sh for an example"
+msgstr ""
+"Higgins: Lanciatore di applicazioni,\n"
+"avvia applicazioni e cerca cose.\n"
+"\n"
+"Attualmente è in grado, tra l'altro di:\n"
+"Valutare espressioni (calcolatrice)\n"
+"Trovare documenti recenti\n"
+"Trovare applicazioni\n"
+"Trovare eseguibili\n"
+"Trovare segnalibri locali\n"
+"Mostrare il contenuto delle cartelle\n"
+"Trovare file indicizzando cartelle selezionate\n"
+"Supporta plugin esterni; (dai uno sguardo a External_plugin_locate.sh per un esempio)"
 
-#: FMain.class:495
+#: FMain.class:507
 msgid "Execute file?"
 msgstr "Eseguire il file?"
 
-#: FMain.class:999
+#: FMain.class:1006
 msgid "Bridge to external plugin"
 msgstr "Ponte per plugin esterni"
 
-#: FMain.class:1213
+#: FMain.class:1218
 msgid "Do not auto-hide main window"
 msgstr "Non nascondere higgins automaticamente"
 
-#: FMain.class:1214
+#: FMain.class:1219
 msgid "Do not use a tray icon"
 msgstr "Non usare l'icona nel vassoio"
 
-#: FMain.class:1215
+#: FMain.class:1220
 msgid "Clear the previous search on hide"
 msgstr "Cancella l'ultima ricerca alla scomparsa"
 
-#: FMain.class:1240
+#: FMain.class:1245
 msgid "Higgins is not configured"
 msgstr "Higgins non è configurato"
 
-#: FMain.class:1241
+#: FMain.class:1246
 msgid "Please configure at least the hotkey"
 msgstr "Prego, configura almeno la scorciatoia"
 
-#: FMain.class:1242
+#: FMain.class:1247
 msgid "to show the higgins window."
 msgstr "Per mostrare la finestra di higgins."
 
@@ -237,20 +264,21 @@ msgstr "Ombra"
 msgid "S:"
 msgstr "-"
 
-#: hSettings.form:429
+#: hSettings.form:430
 msgid "G:"
 msgstr "-"
 
-#: hSettings.form:442
+#: hSettings.form:443
 msgid "A:"
 msgstr "A:"
 
-#: hSettings.form:462
+#: hSettings.form:463
 msgid "Window corner round radius"
 msgstr "Raggio degli angoli arrotondati"
 
 #: plugin_009_history.class:4
-msgid "Finds previously selected items"
+#, fuzzy
+msgid "Finds previously selected documents"
 msgstr "Trova oggetti usati in precedenza"
 
 #: plugin_009_history.class:5
@@ -265,11 +293,11 @@ msgstr "Valuta le espressioni"
 msgid "Calculator"
 msgstr "Calcolatrice"
 
-#: plugin_010_calculator.class:150
+#: plugin_010_calculator.class:151
 msgid "-1 (boolean TRUE)"
 msgstr "-1 (logico vero)"
 
-#: plugin_010_calculator.class:151
+#: plugin_010_calculator.class:152
 msgid "0 (boolean FALSE)"
 msgstr "0 (logico falso)"
 
@@ -289,7 +317,7 @@ msgstr "Trova le applicazioni installate"
 msgid "Desktop apps"
 msgstr "Applicazioni del desktop"
 
-#: plugin_020_apps.class:149
+#: plugin_020_apps.class:160
 msgid "In: "
 msgstr "In:"
 
@@ -317,10 +345,6 @@ msgstr "Mostra i file da una cartella"
 msgid "list plugin"
 msgstr "Lista"
 
-#: plugin_080_windows.class:4 plugin_100_windows.class:4
-msgid "Search and activate windows"
-msgstr "Cerca e attiva le finestre"
-
 #: plugin_090_indexer.class:4
 msgid "Index filenames from user-defined folders."
 msgstr "Indicizza i nomi dei file da cartelle selezionate"
@@ -328,6 +352,14 @@ msgstr "Indicizza i nomi dei file da cartelle selezionate"
 #: plugin_090_indexer.class:5
 msgid "Indexer"
 msgstr "Indicizzatore"
+
+#: plugin_100_windows.class:4
+msgid "[BROKEN, hangs with windows with long titles] Search and activate windows"
+msgstr ""
+
+#: plugin_100_windows.class:5
+msgid "Search and activate windows"
+msgstr "Cerca e attiva le finestre"
 
 #: plugin_999_template.class:4
 msgid "Example plugin description"
@@ -370,16 +402,28 @@ msgid "Limit results to:"
 msgstr "Limita i risultati a:"
 
 #: plugin_indexer_gui.form:145
-msgid "Example:\nPath /aa/bb/cc exists. and you search for \"aa\" or \"bb\"\nOption checked -> You get \"/aa/bb/cc\"\nOption unchecked -> You DONT get \"/aa/bb/cc\""
-msgstr "Esempio:\nIl percorso /aa/bb/cc esiste. e tu cerchi \"aa\" oppure \"bb\"\nOpzione abilitata -> Avrai il risultato \"/aa/bb/cc\"\nOpzione disabilitata -> NON Avrai il risultato \"/aa/bb/cc\""
+msgid ""
+"Example:\n"
+"Path /aa/bb/cc exists. and you search for \"aa\" or \"bb\"\n"
+"Option checked -> You get \"/aa/bb/cc\"\n"
+"Option unchecked -> You DONT get \"/aa/bb/cc\""
+msgstr ""
+"Esempio:\n"
+"Il percorso /aa/bb/cc esiste. e tu cerchi \"aa\" oppure \"bb\"\n"
+"Opzione abilitata -> Avrai il risultato \"/aa/bb/cc\"\n"
+"Opzione disabilitata -> NON Avrai il risultato \"/aa/bb/cc\""
 
 #: plugin_indexer_gui.form:147
 msgid "Match Full Pathname"
 msgstr "Corrispondenza in percorsi completi"
 
 #: plugin_indexer_gui.form:152
-msgid "Show hidden files or not in search list.\nHidden files are still shown if search begins with \".\""
-msgstr "Mostra i file nascosti o meno nella lista.\n I file nascosti sono comunque mostrati se la ricerca comincia con \".\""
+msgid ""
+"Show hidden files or not in search list.\n"
+"Hidden files are still shown if search begins with \".\""
+msgstr ""
+"Mostra i file nascosti o meno nella lista.\n"
+" I file nascosti sono comunque mostrati se la ricerca comincia con \".\""
 
 #: plugin_indexer_gui.form:154
 msgid "Match hidden files"
@@ -396,4 +440,3 @@ msgstr "-"
 #: plugin_indexer_gui.form:185
 msgid "Index Now"
 msgstr "Indicizza ora"
-

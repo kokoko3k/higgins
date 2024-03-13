@@ -6,9 +6,12 @@ plugin_indexer=[38]
 Arguments=[["-c"]]
 Environment=["LANGUAGE=it_IT"]
 Breakpoints={}
+DebugInside=False
 
 [DebugWindow]
-Count=0
+Count=2
+DebugWindow[1]="rResult"
+DebugWindow[2]="rResults"
 
 [DebugWindow/$aApps]
 Geometry=[1176,178,726,870]
@@ -413,10 +416,10 @@ Geometry=[47,0,224,280]
 Geometry=[0,306,224,280]
 
 [DebugWindow/rResult]
-Geometry=[1497,374,443,280]
+Geometry=[1477,374,443,280]
 
 [DebugWindow/rResults]
-Geometry=[1495,518,224,280]
+Geometry=[1190,574,224,280]
 
 [DebugWindow/rResults[0]]
 Geometry=[1509,532,224,280]
@@ -455,7 +458,7 @@ Geometry=[47,0,224,280]
 Geometry=[1280,-3,224,280]
 
 [DebugWindow/results_list]
-Geometry=[1493,204,643,535]
+Geometry=[1277,204,643,535]
 
 [DebugWindow/results_list[0]]
 Geometry=[651,293,643,535]
@@ -541,40 +544,20 @@ DoNotIncrementVersion=False
 NoTestModule=False
 
 [OpenFile]
-File[1]="higgins.desktop:16.7"
-Active=7
-File[2]=".src/MySettings.module:20.10"
-Count=32
-File[3]=".src/plugins/plugin_apps_gui.form"
-File[4]=".src/plugins/plugin_indexer_gui.form"
-File[5]=".src/plugins/plugin_015_recent.class:39.101"
-File[6]=".src/FMain.form"
-File[7]=".src/FMain.class:27.239"
-File[8]=".src/hSettings.class:32.54"
-File[9]=".src/Global.module:11.54"
-File[10]=".src/MyDesktop.class:0.71"
-File[11]=".src/XbindKeys.class:3.119"
-File[12]=".src/hSettings.form"
-File[13]=".src/StartClass.class:18.3"
-File[14]=".src/plugins/plugin_020_apps.class:0.60"
-File[15]=".src/DesktopApps.class:0.458"
-File[16]=".src/gstyle.module:16.143"
-File[17]=".src/plugins/plugin_090_indexer.class:21.326"
-File[18]=".src/plugins/bridge.class:21.97"
-File[19]="appicon.png"
-File[20]=".src/plugins/plugin_010_calculator.class:41.4"
-File[21]=".src/plugins/plugin_indexer_gui.class:3.136"
-File[22]=".src/plugins/plugin_030_executable.class:65.74"
-File[23]=".src/plugins/plugin_050_ls.class:0.40"
-File[24]=".src/plugins/plugin_040_fbookmarks.class:15.74"
-File[25]=".src/plugins/plugin_999_template.class:0.124"
-File[26]=".src/plugins/plugin_009_history.class:13.22"
-File[27]="extbin/External_plugin_grep.sh:0.24"
-File[28]="extbin/External_plugin_kill.sh:0.23"
-File[29]="extbin/External_plugin_locate.sh:0.0"
-File[30]=".src/plugins/plugin_apps_gui.class:3.20"
-File[31]="extbin/External_plugin_windowcontrol.sh:0.46"
-File[32]=".src/plugins/plugin_100_windows.class:0.49"
+File[1]=".src/plugins/plugin_010_calculator.class:0.128"
+Active=2
+File[2]=".src/FMain.class:2.282"
+Count=12
+File[3]=".src/plugins/plugin_009_history.class:0.26"
+File[4]=".src/plugins/plugin_050_ls.class:0.80"
+File[5]=".src/plugins/plugin_015_recent.class:18.117"
+File[6]=".src/plugins/plugin_020_apps.class:39.108"
+File[7]=".src/plugins/plugin_030_executable.class:39.72"
+File[8]=".src/plugins/plugin_040_fbookmarks.class:39.115"
+File[9]=".src/plugins/plugin_090_indexer.class:30.7"
+File[10]=".src/plugins/plugin_100_windows.class:2.110"
+File[11]=".src/plugins/plugin_999_template.class:39.103"
+File[12]=".src/plugins/plugin_apps_gui.form"
 
 [Watches]
 Count=0
