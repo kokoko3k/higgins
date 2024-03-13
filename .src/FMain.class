@@ -292,7 +292,7 @@ Public Sub plugin_event_new_results(rResults As RItemT[])
   If rResults.max = -1 Then
     Return
   Endif
- 
+
   results_list.add(rResults.last)
 
   pre_result_count = ResultGrid.Rows.count

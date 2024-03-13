@@ -7,7 +7,6 @@ Static Public configurable As Boolean = False             'Does this plugin prov
 Static Public Default_enabled As Boolean = False          'Does this plugin have to be enabled by default?
 
 Private wait_time As Float = 0.0005 
-Private queue_size As Integer = 10 ' item queue size
 
 Public Sub _free()
     Stop() 
@@ -91,12 +90,9 @@ End
 Private current_item As RItemT
 Private items As New RItemT[]
 
-Private t0 As Float = 0
-Private interval As Float = 0
 
 Public Sub ext_read()
   Dim iLine As String
-  Dim push As Boolean = False
   Line Input #ext, iLine
   
     If ext.tag <> textcontrol_copy.text Then
@@ -159,16 +155,7 @@ Public Sub ext_read()
         Return
       Endif
       items.Add(current_item)
-      interval = Timer() - t0
-      push = (items.count >= queue_size)
-      push = push Or (t0 = 0) 
-      push = push Or interval > 0.1
-      If push Then 
-        Raise new_results(items)
-        items.Clear
-        t0 = Timer()
-      Endif  
-            
+      Raise new_results(items)   
   End Select
 
 End

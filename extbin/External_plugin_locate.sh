@@ -37,7 +37,7 @@ fi
 
 
 #Finally, start the search:
-locate -i "$query" | while read file ; do
+locate --limit 100 -i "$query" | while read file ; do
     echo BEGIN
     # For fields description and possible values, please refer to plugins/plugin_999_template
       echo Text="[Locate:] $(basename $file)"
