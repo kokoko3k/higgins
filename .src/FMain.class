@@ -590,14 +590,16 @@ Public Sub TextBox1_KeyPress()
       
     Case Key.down
       If resultgrid.Rows.count > 0 Then 
+        timer_expand_check.Trigger()
         ResultGrid.SetFocus()
-        If resultgrid.Rows.count > 1 Then 
-          resultgrid.row += 1
-        Endif
+        resultgrid.visible = True
+        resultgrid.row += 1
       Endif
 
     Case Key.PageDown
       If resultgrid.Rows.count > 0 Then 
+        resultgrid.visible = True
+        timer_expand_check.Trigger()
         ResultGrid.SetFocus()
       Endif
       
