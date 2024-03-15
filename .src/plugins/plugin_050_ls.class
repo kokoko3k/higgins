@@ -63,7 +63,7 @@ Public Sub find(textcontrol As Object) As RItemT[]
   'If Not (Stat(s_path, True).type = gb.Directory) Then Return
 
   rResults.Add(create_item(s_path))
-  
+  Raise new_results(rResults)
   Try aDir = Dir(s_path).Sort(gb.Natural + gb.IgnoreCase)
   If Not Error Then
     For Each path In aDir
