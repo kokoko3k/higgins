@@ -100,7 +100,10 @@ Public Sub find(textcontrol As Object) As RItemT[]
       If InStr(Lower(w.name), current_search) Then
         Stop
         rResult = create_item(w)
-        If rResult <> Null Then rResults.Add(rResult)
+        If rResult <> Null Then
+          rResults.Add(rResult)
+          Raise new_results(rResults)
+        Endif
         If Lower(textcontrol.text) <> Lower(current_search) Then Return
       Endif
     Endif
@@ -108,8 +111,7 @@ Public Sub find(textcontrol As Object) As RItemT[]
       Stop
   Next 'anItem
 
-  
-  Raise new_results(rResults)
+  Return rResults
 End
 
 Event new_results(rResults As RItemT[])

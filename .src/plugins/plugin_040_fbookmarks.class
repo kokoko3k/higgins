@@ -102,6 +102,7 @@ Public Sub find(textcontrol As Object) As RItemT[]
               If my_bookmarks.find(path) < 0 Then 
                 my_bookmarks.Add(path)
                 rResult = create_item(path)
+                Raise new_results(rResults)
                 If rResult <> Null Then rResults.Add(rResult)
               Endif 
             Endif 'not error
@@ -109,7 +110,7 @@ Public Sub find(textcontrol As Object) As RItemT[]
         Next 'aline
       Endif 
     Next 'b_file
-  Raise new_results(rResults)
+  Return rResults
 End
 
 Event new_results(rResults As RItemT[])

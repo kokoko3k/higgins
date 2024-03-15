@@ -68,6 +68,7 @@ Public Sub find(textcontrol As Object) As RItemT[]
   If rResult <> Null Then rResults.Add(rResult)
 
   Raise new_results(rResults)
+  Return rResults
 End
 
 Event new_results(rResults As RItemT[])

@@ -51,13 +51,16 @@ Public Sub find(textcontrol As Object) As RItemT[]
   For Each item In history
     If InStr(Lower(item), Lower(textcontrol.text)) Then
       rResult = create_item(item)
-      If rResult <> Null Then rResults.Add(rResult)
+      If rResult <> Null Then 
+        rResults.Add(rResult)
+        Raise new_results(rResults)
+      Endif
       If textcontrol.text <> current_search Then Return
       Wait     
     Endif
   Next
-  
-  Raise new_results(rResults)
+
+  Return rResults
 
 End
 

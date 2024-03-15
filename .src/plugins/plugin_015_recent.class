@@ -80,7 +80,7 @@ Public Sub find(textcontrol As Object) As RItemT[]
         For Each k_recent In Dir(kde_path, "*.desktop")
           If InStr(Lower(k_recent), Lower(term)) > 0 Then
             rResult = create_item_k(kde_path & "/" & k_recent)
-            If rResult <> Null Then rResults.Add(rResult)
+            If rResult <> Null Then add_no_dupe(rResult, rResults)
           Endif
         Next
       Endif
@@ -100,23 +100,22 @@ Public Sub find(textcontrol As Object) As RItemT[]
         If Not Error Then
           path = URL.Decode(path)
           rResult = create_item_g(path)
-          If rResult <> Null Then rResults.Add(rResult)
+          If rResult <> Null Then add_no_dupe(rResult, rResults)
         Endif
       Endif
     Next 'aline
   Endif 
-
-
-  'deDupe
-  For Each rResult In rResults
-    For i = rResults.max DownTo 0
-      Try rResults.Delete(find_similar(rResult, rResults))
-    Next
-    If (find_similar(rResult, rResults) = -1) Then rResults.Add(rResult, 0)
-  Next
-
-  Raise new_results(rResults)
+  Return rResults
 End
+
+
+Private Function add_no_dupe(a As RItemT, ritems As RItemT[])
+    If (find_similar(a, ritems) = -1) Then 
+      ritems.Add(a)
+      Raise new_results(ritems)
+    Endif
+End
+
 
 Event new_results(rResults As RItemT[])
 

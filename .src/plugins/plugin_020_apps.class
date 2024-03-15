@@ -97,13 +97,16 @@ Public Sub find(textcontrol As Object) As RItemT[]
     For Each happ In happs
       rResult = create_item(happ)
 
-      If rResult <> Null Then rResults.Add(rResult)
+      If rResult <> Null Then
+        rResults.Add(rResult)
+        Raise new_results(rResults)
+      Endif
       Wait 'if calculations are heavy a wait may be handy.
       If textcontrol.text <> current_search Then Return
     Next 'happ
 
   update_apps.start()
-  Raise new_results(rResults)
+  Return rResults
 End
 
 Event new_results(rResults As RItemT[])

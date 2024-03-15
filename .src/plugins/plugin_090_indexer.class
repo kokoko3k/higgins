@@ -205,13 +205,11 @@ Public Sub find(textcontrol As Object) As RItemT[]
       If matched Then
         rResult = create_item(index_db[i])
         If rResult <> Null Then 
-          rResults.Add(rResult)
-          If rResults.count >= 5 Then 
-            Raise new_results(rResults)
-            results_pushed += rResults.Count
-            If results_pushed >= plugin_indexer_gui.SpinMaxResults.value Then Return
-            rResults.clear
-          Endif
+          rResults.Add(rResult)      
+          Raise new_results(rResults)
+          results_pushed += rResults.Count
+          If results_pushed >= plugin_indexer_gui.SpinMaxResults.value Then Return
+          rResults.clear
         Endif
           If current_search <> Lower(textcontrol.text) Then
           Debug "Cancelled previous search " & current_search
@@ -231,7 +229,7 @@ Public Sub find(textcontrol As Object) As RItemT[]
   
    If current_search <> Lower(textcontrol.text) Then Return
   
-  Raise new_results(rResults)
+  Return rResults
 End
 
 Event new_results(rResults As RItemT[])

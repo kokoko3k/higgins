@@ -73,12 +73,15 @@ Public Sub find(textcontrol As Object) As RItemT[]
         path = s_path & "/" & path
       Endif
       rResult = create_item(path)
-      If rResult <> Null Then rResults.Add(rResult)
+      If rResult <> Null Then 
+        rResults.Add(rResult)
+        Raise new_results(rResults)
+      Endif
       Wait
       If textcontrol.text <> current_search Then Return
     Next
   Endif
-  Raise new_results(rResults)
+  Return rResults
 End
 
 Event new_results(rResults As RItemT[])

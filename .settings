@@ -550,15 +550,16 @@ NoTestModule=False
 
 [OpenFile]
 File[1]=".src/plugins/plugin_010_calculator.class:0.128"
-Active=2
-File[2]=".src/FMain.class:30.594"
-Count=8
+Active=9
+File[2]=".src/FMain.class:36.592"
+Count=9
 File[3]=".src/plugins/plugin_apps_gui.form"
 File[4]=".src/plugins/bridge.class:2.101"
 File[5]=".src/plugins/plugin_040_fbookmarks.class:38.76"
 File[6]=".src/FMain.form"
 File[7]=".src/DesktopApps.class:0.0"
 File[8]=".src/plugins/plugin_020_apps.class:39.108"
+File[9]=".src/plugins/plugin_050_ls.class:10.73"
 
 [Watches]
 Count=0
