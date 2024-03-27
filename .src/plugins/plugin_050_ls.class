@@ -62,22 +62,26 @@ Public Sub find(textcontrol As Object) As RItemT[]
   If Not Exist(s_path, True) Then Return
   'If Not (Stat(s_path, True).type = gb.Directory) Then Return
 
-  rResults.Add(create_item(s_path))
+ rResults.Add(create_item(s_path))
   Raise new_results(rResults)
   Try aDir = Dir(s_path).Sort(gb.Natural + gb.IgnoreCase)
   If Not Error Then
     For Each path In aDir
+      Debug aDir
+      Wait 0.0005
       If s_path Ends "/" Then 
         path = s_path & path
           Else
         path = s_path & "/" & path
       Endif
       rResult = create_item(path)
+
       If rResult <> Null Then 
         rResults.Add(rResult)
         Raise new_results(rResults)
+
       Endif
-      Wait
+
       If textcontrol.text <> current_search Then Return
     Next
   Endif

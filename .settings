@@ -9,11 +9,7 @@ Breakpoints={}
 DebugInside=False
 
 [DebugWindow]
-Count=4
-DebugWindow[1]="rResults.Last"
-DebugWindow[2]="results_list"
-DebugWindow[3]="lastdata"
-DebugWindow[4]="current_item"
+Count=0
 
 [DebugWindow/$aApps]
 Geometry=[1176,178,726,870]
@@ -418,25 +414,31 @@ Geometry=[47,0,224,280]
 Geometry=[0,306,224,280]
 
 [DebugWindow/rResult]
-Geometry=[1477,374,443,280]
+Geometry=[1054,371,737,260]
 
 [DebugWindow/rResults]
-Geometry=[1190,574,224,280]
+Geometry=[1052,112,535,654]
 
 [DebugWindow/rResults.Last]
-Geometry=[766,388,851,352]
+Geometry=[870,596,851,352]
 
 [DebugWindow/rResults[0]]
-Geometry=[1509,532,224,280]
+Geometry=[1066,126,535,654]
 
 [DebugWindow/rResults[1]]
-Geometry=[889,568,224,280]
+Geometry=[459,233,535,280]
+
+[DebugWindow/rResults[27]]
+Geometry=[1066,126,535,654]
 
 [DebugWindow/rResults[2]]
-Geometry=[1337,259,697,280]
+Geometry=[1350,768,535,280]
 
 [DebugWindow/rResults[3]]
-Geometry=[1337,566,697,280]
+Geometry=[1066,126,535,654]
+
+[DebugWindow/rResults[8]]
+Geometry=[1066,126,535,654]
 
 [DebugWindow/rcResult]
 Geometry=[141,168,464,335]
@@ -551,15 +553,20 @@ NoTestModule=False
 [OpenFile]
 File[1]=".src/plugins/plugin_010_calculator.class:0.128"
 Active=9
-File[2]=".src/FMain.class:36.592"
-Count=9
+File[2]=".src/FMain.class:36.239"
+Count=14
 File[3]=".src/plugins/plugin_apps_gui.form"
 File[4]=".src/plugins/bridge.class:2.101"
-File[5]=".src/plugins/plugin_040_fbookmarks.class:38.76"
+File[5]=".src/plugins/plugin_040_fbookmarks.class:43.104"
 File[6]=".src/FMain.form"
 File[7]=".src/DesktopApps.class:0.0"
-File[8]=".src/plugins/plugin_020_apps.class:39.108"
-File[9]=".src/plugins/plugin_050_ls.class:10.73"
+File[8]=".src/plugins/plugin_020_apps.class:23.87"
+File[9]=".src/plugins/plugin_050_ls.class:17.70"
+File[10]=".src/plugins/plugin_009_history.class:0.61"
+File[11]=".src/plugins/plugin_015_recent.class:35.78"
+File[12]=".src/plugins/plugin_030_executable.class:17.70"
+File[13]=".src/plugins/plugin_090_indexer.class:17.231"
+File[14]=".src/plugins/plugin_100_windows.class:0.112"
 
 [Watches]
 Count=0
