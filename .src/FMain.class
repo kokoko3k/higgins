@@ -1173,29 +1173,32 @@ End
 Public Sub save_plugin_list()
   
   Dim o As Object  
-  Dim is_plugin As Boolean
+
   Dim savename As String
   
   plugins_all = New String[]
   plugins_enabled.clear
   plugins_enabled = New String[]
   
+  Dim o_hbox As Object
 
-  For Each o In hSettings.Controls
-    is_plugin = False
-    If o Is CheckBox Then
-      If (o.tag Begins "PLUGIN_") Or (o.tag Begins "EXT:") Then
-        Debug "saving " & o.handle, o.tag
-        Try savename = o.tag
-        If o.value = CheckBox.True Then plugins_enabled.Add(savename)
-        plugins_all.Add(savename)
-      Endif
+   For Each o_hbox In hsettings.Frame1.children
+    If o_hbox Is Hbox Then
+      For Each o In o_hbox.children
+        If o Is CheckBox Then
+          If (o.tag Begins "PLUGIN_") Or (o.tag Begins "EXT:") Then
+            Debug "saving " & o.handle, o.tag
+            Try savename = o.tag
+            If o.value = CheckBox.True Then plugins_enabled.Add(savename)
+            plugins_all.Add(savename)
+          Endif
+        Endif
+      Next
     Endif
   Next
 
   Settings["hsettings/plist"] = plugins_enabled.Join()
   Settings["hsettings/plist_all"] = plugins_all.Join()
-
 
 End
 
