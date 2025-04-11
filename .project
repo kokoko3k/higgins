@@ -2,7 +2,7 @@
 Title=Higgins
 Startup=StartClass
 Icon=appicon.png
-Version=0.9.3108
+Version=0.9.3109
 Component=gb.args
 Component=gb.image
 Component=gb.qt5
@@ -18,8 +18,6 @@ Component=gb.net
 Component=gb.web
 Description="Higgins:\nApplication launcher,\nstarts applications and search for things.\n\nCurrently it:\nEvaluate expressions (calculator)\nFind recently opened documents\nFind desktop applications\nFind executables\nFind local bookmarks\nLists the content of folders\nFind files by indexing user-specified folders\n\nSupport external plugins; take a look to External_plugin_locate.sh for an example"
 Authors="Antonio Orefice"
-Arguments=[["-c"]]
-Environment="LANGUAGE=it_IT"
 TabSize=2
 Translate=1
 Language=it
