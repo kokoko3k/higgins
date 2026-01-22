@@ -243,7 +243,21 @@ Static Private Sub fallback_icon(iconname As String, size As Integer) As Image
 
   If maxscore > (Len(File.BaseName(iconname)) Div 2) Then
     best_item = tpath & "/" & iconfiles[best_item_index]
-    If best_item Ends "*.svg" Then Try Return Global.image_from_svg(best_item, size)
+    
+    If file.basename(best_item) <> iconname Then
+      tpath = "/usr/share/pixmaps"
+      If Exist(tpath, True) Then
+         iconfiles = RDir(tPath)
+         For i = 0 To iconfiles.Max
+           iconfiles_name = File.BaseName(iconfiles[i])
+           If iconfiles_name = iconname Then
+             best_item = tpath & "/" & iconfiles[i]
+           Endif
+         Next
+      Endif
+    Endif
+    
+    If Lower(best_item) Ends ".svg" Then Try Return Global.image_from_svg(best_item, size)
     Try Return Image.Load(best_item)
   Endif
 
