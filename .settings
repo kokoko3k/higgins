@@ -9,9 +9,7 @@ Breakpoints={}
 DebugInside=False
 
 [DebugWindow]
-Count=2
-DebugWindow[1]="DesktopApps"
-DebugWindow[2]="DesktopApps[app]"
+Count=0
 
 [DebugWindow/$aApps]
 Geometry=[1176,178,726,870]
@@ -53,7 +51,7 @@ Geometry=[888,158,583,709]
 Geometry=[868,145,583,709]
 
 [DebugWindow/DesktopApps]
-Geometry=[1008,237,542,259]
+Geometry=[2743,512,273,259]
 
 [DebugWindow/DesktopApps.ProcWarm]
 Geometry=[1294,14,542,334]
@@ -62,7 +60,7 @@ Geometry=[1294,14,542,334]
 Geometry=[1308,28,273,259]
 
 [DebugWindow/DesktopApps[app]]
-Geometry=[1175,565,273,259]
+Geometry=[2743,512,273,259]
 
 [DebugWindow/DesktopIcon]
 Geometry=[1280,0,224,549]
@@ -551,12 +549,13 @@ Geometry=[1280,-3,224,280]
 Path="higgins.gambas"
 DoNotIncrementVersion=False
 NoTestModule=False
+NoPublicDirectory=False
 
 [OpenFile]
 File[1]=".src/plugins/plugin_010_calculator.class:0.128"
-Active=7
-File[2]=".src/FMain.class:4.1548"
-Count=20
+Active=11
+File[2]=".src/FMain.class:22.1339"
+Count=21
 File[3]=".src/plugins/plugin_apps_gui.form"
 File[4]=".src/plugins/bridge.class:2.101"
 File[5]=".src/plugins/plugin_040_fbookmarks.class:43.104"
@@ -565,7 +564,7 @@ File[7]=".src/DesktopApps.class:23.40"
 File[8]=".src/plugins/plugin_020_apps.class:24.54"
 File[9]=".src/plugins/plugin_050_ls.class:0.77"
 File[10]=".src/plugins/plugin_009_history.class:0.61"
-File[11]=".src/plugins/plugin_015_recent.class:35.78"
+File[11]=".src/plugins/plugin_015_recent.class:35.102"
 File[12]=".src/plugins/plugin_030_executable.class:17.70"
 File[13]=".src/plugins/plugin_090_indexer.class:0.0"
 File[14]=".src/plugins/plugin_100_windows.class:0.112"
@@ -575,6 +574,7 @@ File[17]=".src/gstyle.module:0.0"
 File[18]=".src/hSettings.form"
 File[19]=".src/plugins/plugin_indexer_gui.form"
 File[20]=".src/plugins/plugin_indexer_gui.class:2.112"
+File[21]=".src/StartClass.class:2.3"
 
 [Watches]
 Count=0

@@ -1372,6 +1372,7 @@ Public Sub timer_shown_timer()
   fmain.tag = ""
   resize_form()
   gstyle.make_background()
+  
   TextBox1.SetFocus()
   fmain.Border = decorated
 

@@ -2,7 +2,6 @@
 
 { Form Form
   MoveScaled(0,0,83,50)
-  Visible = False
   Icon = Picture["appicon.png"]
   Persistent = True
   Stacking = Window.Above
@@ -98,5 +97,9 @@
     MoveScaled(57,31,16,16)
     Ignore = True
     Stretch = True
+  }
+  { Timer1 #Timer
+    #MoveScaled(64,42)
+    Enabled = True
   }
 }

@@ -58,6 +58,7 @@ Public Sub find(textcontrol As Object) As RItemT[]
   Dim gtk_path As String
   
   Dim i As Integer
+  Dim item As String
   
   If Not trigged(textcontrol.text) Then Return
 
@@ -96,7 +97,12 @@ Public Sub find(textcontrol As Object) As RItemT[]
   If Not Error Then 'parseit
     For Each aline In b_file_split
       If aline Like match_str Then 
-        Try path = Split(aline, "\"")[1]
+        For Each item In Split(aline, " ")
+          If item Like "href=*" Then
+            Try path = Split(item, "\"")[1]
+            If Not Error Then Break
+          Endif
+        Next
         If Not Error Then
           path = URL.Decode(path)
           rResult = create_item_g(path)
